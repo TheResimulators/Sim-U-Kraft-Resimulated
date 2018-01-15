@@ -9,10 +9,20 @@ item.simukraft:granules.copper.name=Copper Granules
 item.simukraft:granules.gold.name=Gold Granules
 item.simukraft:granules.iron.name=Iron Granules
 item.simukraft:granules.tin.name=Tin Granules
+item.simukraft:burger.name=Burger
+item.simukraft:cheese.name=Cheese
+item.simukraft:cheeseburger.name=Cheeseburger
+item.simukraft:fries.name=Fries
 
 #############################################################################
 #                                  Blocks                                   #
 #############################################################################
+tile.simukraft:cheeseblock.name=Cheese Block
+tile.simukraft:compositebrick.name=Composite Bricks
+tile.simukraft:citybox.name=City Box
+tile.simukraft:constructorbox.name=Constructor Box
+tile.simukraft:controlbox.name=Control Box
+tile.simukraft:milkblock.name=Milk
 
 #############################################################################
 #                                Meta Blocks                                #
