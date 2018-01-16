@@ -1,5 +1,6 @@
 package com.resimulators.simukraft;
 
+import com.resimulators.simukraft.init.ModBlocks;
 import com.resimulators.simukraft.init.ModItems;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
@@ -12,7 +13,7 @@ public class SimUTab {
     public static CreativeTabs SUTab = new CreativeTabs(Reference.MOD_ID) {
         @Override
         public ItemStack getTabIconItem() {
-            return new ItemStack(Items.STICK);
+            return new ItemStack(ModBlocks.CONTROL_BOX);
         }
     };
 }

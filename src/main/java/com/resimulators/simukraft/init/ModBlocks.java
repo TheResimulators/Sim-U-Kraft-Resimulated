@@ -40,7 +40,7 @@ public class ModBlocks {
     }
 
     private static void registerFluidBlock(Block block, Fluid fluid) {
-        RegistryHandler.registerBlock(block);
+        RegistryHandler.registerFluid(block, fluid);
         fluid.setBlock(block);
     }
 }
