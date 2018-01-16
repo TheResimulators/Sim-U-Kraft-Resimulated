@@ -1,6 +1,6 @@
 [
 {
-  "modid": "simukraftresim",
+  "modid": "simukraft",
   "name": "Sim-U-Kraft: Resimulated",
   "description": "A full rewrite of Sim-U-Kraft",
   "version": "${version}",
