@@ -14,8 +14,8 @@ import net.minecraft.world.World;
 /**
  * Created by fabbe on 15/01/2018 - 8:43 PM.
  */
-public class BlockContructorBox extends BlockBase {
-    public BlockContructorBox(String name, CreativeTabs tab, Material blockMaterialIn, MapColor blockMapColorIn) {
+public class BlockConstructorBox extends BlockBase {
+    public BlockConstructorBox(String name, CreativeTabs tab, Material blockMaterialIn, MapColor blockMapColorIn) {
         super(name, tab, blockMaterialIn, blockMapColorIn);
     }
 
