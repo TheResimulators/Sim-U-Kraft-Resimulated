@@ -1,0 +1,24 @@
+{
+  "type": "crafting_shaped",
+  "pattern":[
+    "CCC",
+    "WTW",
+    "WWW"
+  ],
+  "key":{
+    "C":{
+      "item": "minecraft:cobblestone"
+    },
+    "W": {
+      "item": "forge:ore_dict",
+      "ore": "plankWood"
+    },
+    "T": {
+      "item": "minecraft:crafting_table"
+    }
+  },
+  "result": {
+    "item": "simukratf:constructorblock",
+    "count": 1
+  }
+}
