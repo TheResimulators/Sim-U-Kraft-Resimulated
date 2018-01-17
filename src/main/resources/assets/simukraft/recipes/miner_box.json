@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":[
+    "CCC",
+    "WPW",
+    "WWW"
+  ],
+  "key":{
+    "C":{
+      "item": "minecraft:cobblestone"
+    },
+    "W": {
+      "type": "forge:ore_dict",
+      "ore": "plankWood"
+    },
+    "P": {
+      "item": "minecraft:stone_pickaxe"
+    }
+  },
+  "result": {
+    "item": "simukraft:minerbox",
+    "count": 1
+  }
+}

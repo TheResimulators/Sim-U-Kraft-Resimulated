@@ -12,7 +12,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraftforge.fluids.Fluid;
-
+///add minerblock 18/1 - 1030
 /**
  * Created by fabbe on 06/01/2018 - 2:47 AM.
  */
@@ -26,6 +26,7 @@ public class ModBlocks {
     public static final Block CONSTRUCTOR_BOX = new BlockConstructorBox("constructorbox", SimUTab.SUTab, Material.ANVIL, MapColor.GRAY);
     public static final Block CONTROL_BOX = new BlockControlBox("controlbox", SimUTab.SUTab, Material.ANVIL, MapColor.GRAY);
     public static final Block FARM_BOX = new BlockFarmingBox("farmbox",SimUTab.SUTab, Material.ANVIL, MapColor.GRAY);
+    public static final Block MINER_BOX = new BlockFarmingBox("minerbox",SimUTab.SUTab, Material.ANVIL, MapColor.GRAY);
     //Fluid Blocks
     public static final Block MILK_BLOCK = new BlockFluidBase(ModFluids.MILK, "milkblock", null, Material.WATER);
 
@@ -37,6 +38,7 @@ public class ModBlocks {
         RegistryHandler.registerBlock(CONSTRUCTOR_BOX);
         RegistryHandler.registerBlock(CONTROL_BOX);
         RegistryHandler.registerBlock(FARM_BOX);
+        RegistryHandler.registerBlock(MINER_BOX);
         registerFluidBlock(MILK_BLOCK, ModFluids.MILK);
     }
 
