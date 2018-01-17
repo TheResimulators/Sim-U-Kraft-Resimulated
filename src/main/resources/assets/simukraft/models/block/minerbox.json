@@ -1,6 +1,7 @@
 {
-  "parent": "block/cube_all",
+  "parent": "block/cube_column",
   "textures": {
-    "all": "simukraft:blocks/blockmining"
+    "end": "simukraft:blocks/blockmining_top",
+    "side": "simukraft:blocks/blockmining_side"
   }
 }
