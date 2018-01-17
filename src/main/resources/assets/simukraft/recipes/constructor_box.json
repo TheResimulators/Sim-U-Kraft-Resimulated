@@ -1,5 +1,5 @@
 {
-  "type": "crafting_shaped",
+  "type": "minecraft:crafting_shaped",
   "pattern":[
     "CCC",
     "WTW",
@@ -10,7 +10,7 @@
       "item": "minecraft:cobblestone"
     },
     "W": {
-      "item": "forge:ore_dict",
+      "type": "forge:ore_dict",
       "ore": "plankWood"
     },
     "T": {
@@ -18,7 +18,7 @@
     }
   },
   "result": {
-    "item": "simukratf:constructorblock",
+    "item": "simukraft:constructorbox",
     "count": 1
   }
 }
