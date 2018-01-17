@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "normal": { "model": "simukraft:farmbox" },
+    "inventory": { "model": "simukraft:farmbox" }
+  }
+}
