@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "normal": { "model": "simukraft:citybox" },
+    "inventory": { "model": "simukraft:citybox" }
+  }
+}
