@@ -23,7 +23,7 @@ tile.simukraft:citybox.name=City Box
 tile.simukraft:constructorbox.name=Constructor Box
 tile.simukraft:controlbox.name=Control Box
 tile.simukraft:milkblock.name=Milk
-tile.simukraft.farmbox.name = Farm box
+tile.simukraft:farmbox.name=Farm Box
 
 #############################################################################
 #                                Meta Blocks                                #
