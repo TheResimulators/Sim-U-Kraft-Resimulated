@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "normal": { "model": "simukraft:minerbox" },
+    "inventory": { "model": "simukraft:minerbox" }
+  }
+}
