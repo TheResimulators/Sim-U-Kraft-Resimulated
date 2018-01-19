@@ -3,27 +3,23 @@ package com.resimulators.simukraft.registry;
 import com.resimulators.simukraft.Reference;
 import com.resimulators.simukraft.SimUKraft;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.registries.IForgeRegistry;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by fabbe on 06/01/2018 - 2:45 AM.
@@ -100,32 +96,20 @@ public class RegistryHandler {
             }
         }
 
+        @SideOnly(Side.CLIENT)
         private static void registerItemModel(Item item) {
             registerItemModel(item, 0);
         }
 
+        @SideOnly(Side.CLIENT)
         private static void registerItemModel(Item item, int meta) {
             registerItemModel(item, meta, item.getRegistryName().getResourcePath());
         }
 
+        @SideOnly(Side.CLIENT)
         private static void registerItemModel(Item item, int meta, String name) {
             ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation(Reference.MOD_ID + ":" + name, "inventory"));
         }
     }
 
-    @SideOnly(Side.CLIENT)
-    private static class FluidStateMapper extends StateMapperBase {
-
-        private final ModelResourceLocation location;
-
-        private FluidStateMapper(Fluid fluid) {
-            this.location = new ModelResourceLocation(Reference.MOD_ID + ":fluid_block" ,fluid.getName());
-        }
-
-        @Override
-        protected ModelResourceLocation getModelResourceLocation(IBlockState iBlockState) {
-            return location;
-        }
-
-    }
 }
