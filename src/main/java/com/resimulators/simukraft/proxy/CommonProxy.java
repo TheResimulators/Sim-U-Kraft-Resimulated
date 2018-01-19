@@ -1,9 +1,6 @@
 package com.resimulators.simukraft.proxy;
 
-import com.resimulators.simukraft.init.ModBlocks;
-import com.resimulators.simukraft.init.ModFluids;
-import com.resimulators.simukraft.init.ModItems;
-import com.resimulators.simukraft.init.ModTileEntities;
+import com.resimulators.simukraft.init.*;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -18,6 +15,7 @@ public class CommonProxy {
         ModBlocks.init();
         ModItems.init();
         ModTileEntities.init();
+        ModEntities.init();
     }
 
     public void init(FMLInitializationEvent event) {

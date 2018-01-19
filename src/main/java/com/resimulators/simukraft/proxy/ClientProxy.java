@@ -1,5 +1,9 @@
 package com.resimulators.simukraft.proxy;
 
+import com.resimulators.simukraft.client.render.RenderSim;
+import com.resimulators.simukraft.common.entities.EntitySim;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -11,6 +15,7 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void preInit(FMLPreInitializationEvent event) {
         super.preInit(event);
+        RenderingRegistry.registerEntityRenderingHandler(EntitySim.class, RenderSim::new);
     }
 
     @Override
