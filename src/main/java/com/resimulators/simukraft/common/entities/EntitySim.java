@@ -1,11 +1,15 @@
 package com.resimulators.simukraft.common.entities;
 
+import com.resimulators.simukraft.GuiHandler;
+import com.resimulators.simukraft.SimUKraft;
 import com.resimulators.simukraft.common.ai.AISimChildPlay;
+import com.resimulators.simukraft.temp.NameStorage;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -21,6 +25,7 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
+import java.util.Random;
 
 /**
  * Created by fabbe on 19/01/2018 - 11:36 AM.
@@ -28,8 +33,10 @@ import javax.annotation.Nullable;
 public class EntitySim extends EntityAgeable implements INpc {
     private static final DataParameter<Integer> VARIATION = EntityDataManager.createKey(EntitySim.class, DataSerializers.VARINT);
     private static final DataParameter<Integer> PROFESSION = EntityDataManager.createKey(EntitySim.class, DataSerializers.VARINT);
+    private static final DataParameter<Boolean> FEMALE = EntityDataManager.createKey(EntitySim.class, DataSerializers.BOOLEAN);
 
     private boolean isPlaying;
+    private EntityPlayer commander;
 
     private boolean areAdditionalTasksSet;
     private int wealth;
@@ -37,19 +44,20 @@ public class EntitySim extends EntityAgeable implements INpc {
     private final InventoryBasic inventory;
 
     public EntitySim(World world) {
-        this(world, 0, 0);
+        this(world, 0, 0, false);
     }
 
-    public EntitySim(World worldIn, int variationID, int professionID) {
+    public EntitySim(World worldIn, int variationID, int professionID, boolean female) {
         super(worldIn);
         this.inventory = new InventoryBasic("Items", false, 8);
         this.setVariation(variationID);
         this.setProfession(professionID);
+        this.setFemale(female);
         this.setSize(0.6f, 1.95f);
         ((PathNavigateGround)this.getNavigator()).setBreakDoors(true);
         this.setCanPickUpLoot(true);
         this.setCustomNameTag("Sim (WIP)");
-        this.setAlwaysRenderNameTag(true);
+        this.setAlwaysRenderNameTag(false);
     }
 
     @Override
@@ -92,14 +100,31 @@ public class EntitySim extends EntityAgeable implements INpc {
 
     @Override
     public boolean processInteract(EntityPlayer player, EnumHand hand) {
-        return super.processInteract(player, hand);
+        ItemStack itemStack = player.getHeldItem(hand);
+        boolean flag = itemStack.getItem() == Items.NAME_TAG;
+
+        if (flag) {
+            itemStack.interactWithEntity(player, this, hand);
+            return true;
+        } else if (!this.holdingSpawnEggOfClass(itemStack, this.getClass()) && this.isEntityAlive() && !isRecievingOrders() && !isChild() && !player.isSneaking()) {
+            if (this.world.isRemote) {
+                this.setCommander(player);
+                NBTTagCompound tags = player.getEntityData();
+                tags.setInteger("simInteract", this.getEntityId());
+                player.writeToNBT(tags);
+            }
+            return true;
+        } else {
+            return super.processInteract(player, hand);
+        }
     }
 
     @Override
     protected void entityInit() {
         super.entityInit();
-        this.dataManager.register(VARIATION, 0);
+        this.dataManager.register(VARIATION, rand.nextInt(50));
         this.dataManager.register(PROFESSION, 0);
+        this.dataManager.register(FEMALE, randomizeGender());
     }
 
     @Override
@@ -107,6 +132,7 @@ public class EntitySim extends EntityAgeable implements INpc {
         super.writeEntityToNBT(compound);
         compound.setInteger("Variation", this.getVariation());
         compound.setInteger("profession", this.getProfession());
+        compound.setBoolean("female", this.getFemale());
         compound.setInteger("Riches", this.wealth);
 
         NBTTagList nbtTagList = new NBTTagList();
@@ -127,6 +153,7 @@ public class EntitySim extends EntityAgeable implements INpc {
         super.readEntityFromNBT(compound);
         this.setVariation(compound.getInteger("Variation"));
         this.setProfession(compound.getInteger("Profession"));
+        this.setFemale(compound.getBoolean("female"));
         this.wealth = compound.getInteger("Riches");
 
         NBTTagList nbtTagList = compound.getTagList("Inventory", 10);
@@ -168,6 +195,21 @@ public class EntitySim extends EntityAgeable implements INpc {
         return Math.max(this.dataManager.get(PROFESSION), 0);
     }
 
+    public void setFemale(boolean female) {
+        this.dataManager.set(FEMALE, female);
+    }
+
+    public boolean getFemale() {
+        return this.dataManager.get(FEMALE);
+    }
+
+    public String getGender() {
+        if (this.dataManager.get(FEMALE))
+            return "female";
+        else
+            return "male";
+    }
+
     public void setPlaying(boolean playing) {
         this.isPlaying = playing;
     }
@@ -188,8 +230,30 @@ public class EntitySim extends EntityAgeable implements INpc {
     @Override
     public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata) {
         IEntityLivingData livingData = super.onInitialSpawn(difficulty, livingdata);
+        this.setFemale(randomizeGender());
+        if (this.getFemale()) {
+            this.setCustomNameTag(NameStorage.femalenames.get(new Random().nextInt(NameStorage.femalenames.size())));
+            this.setVariation(rand.nextInt(10));
+        } else {
+            this.setCustomNameTag(NameStorage.malenames.get(new Random().nextInt(NameStorage.malenames.size())));
+            this.setVariation(rand.nextInt(5));
+        }
+
         this.setAdditionalAITasks();
         return livingData;
+    }
+
+    public void setCommander(@Nullable EntityPlayer player) {
+        this.commander = player;
+    }
+
+    @Nullable
+    public EntityPlayer getCommander() {
+        return this.commander;
+    }
+
+    public boolean isRecievingOrders() {
+        return this.commander != null;
     }
 
     @Override
@@ -209,5 +273,11 @@ public class EntitySim extends EntityAgeable implements INpc {
     private boolean canSimPickupItem(Item item) {
         //Used for specifying items Sim can pick up
         return false;
+    }
+
+    //return false for male, return true for female
+    private boolean randomizeGender() {
+        int dice = rand.nextInt(2);
+        return dice != 0 && dice == 1;
     }
 }

@@ -1,5 +1,6 @@
 package com.resimulators.simukraft.client.render;
 
+import com.resimulators.simukraft.Reference;
 import com.resimulators.simukraft.client.model.ModelSim;
 import com.resimulators.simukraft.common.entities.EntitySim;
 import net.minecraft.client.model.ModelBiped;
@@ -16,36 +17,28 @@ import net.minecraft.util.ResourceLocation;
  * Created by fabbe on 19/01/2018 - 9:04 PM.
  */
 public class RenderSim extends RenderLiving<EntitySim> {
-    private final boolean smallArms;
-
     public RenderSim(RenderManager renderManager) {
-        this(renderManager, false);
-    }
-
-    public RenderSim(RenderManager renderManager, boolean useSmallArms) {
-        super(renderManager, new ModelSim(0.0F, useSmallArms), 0.5F);
-        this.smallArms = useSmallArms;
+        super(renderManager, new ModelSim(0.0F), 0.5F);
         this.addLayer(new LayerBipedArmor(this));
         this.addLayer(new LayerHeldItem(this));
         this.addLayer(new LayerArrow(this));
         this.addLayer(new LayerCustomHead(this.getMainModel().bipedHead));
-        this.addLayer(new LayerEntityOnShoulder(renderManager));
     }
 
     public ModelSim getMainModel() {
         return (ModelSim)super.getMainModel();
     }
 
-    public void doRender(EntitySim entity, double x, double y, double z, float entityYaw, float partialTicks) {
+    public void doRender(EntitySim entitySim, double x, double y, double z, float entityYaw, float partialTicks) {
         double d0 = y;
-        this.bindEntityTexture(entity);
+        this.bindEntityTexture(entitySim);
 
-        if (entity.isSneaking()) {
+        if (entitySim.isSneaking()) {
             d0 = y - 0.125D;
         }
 
-        this.setModelVisibilities(entity);
-        super.doRender(entity, x, d0, z, entityYaw, partialTicks);
+        this.setModelVisibilities(entitySim);
+        super.doRender(entitySim, x, d0, z, entityYaw, partialTicks);
     }
 
     private void setModelVisibilities(EntitySim entitySim) {
@@ -95,59 +88,29 @@ public class RenderSim extends RenderLiving<EntitySim> {
 
     }
 
-    public ResourceLocation getEntityTexture(EntitySim entity) {
-        //TODO: add actual resource table
-        return new ResourceLocation("textures/entity/steve.png");
+    public ResourceLocation getEntityTexture(EntitySim entitySim) {
+        //TODO: this system is all temporary
+        if (entitySim.getFemale())
+            return new ResourceLocation(Reference.MOD_ID, "textures/entities/sims/human/female/" + entitySim.getVariation() + ".png");
+        else if (!entitySim.getFemale())
+            return new ResourceLocation(Reference.MOD_ID, "textures/entities/sims/human/male/" + entitySim.getVariation() + ".png");
+        else
+            return new ResourceLocation("textures/entity/steve.png");
     }
 
     public void transformHeldFull3DItemLayer() {
         GlStateManager.translate(0.0F, 0.1875F, 0.0F);
     }
 
-    protected void preRenderCallback(EntitySim entitylivingbaseIn, float partialTickTime) {
-        float f = 0.9375F;
+    protected void preRenderCallback(EntitySim entitySim, float partialTickTime) {
         GlStateManager.scale(0.9375F, 0.9375F, 0.9375F);
     }
 
-    public void renderRightArm(EntitySim entitySim) {
-        float f = 1.0F;
-        GlStateManager.color(1.0F, 1.0F, 1.0F);
-        float f1 = 0.0625F;
-        ModelSim model = this.getMainModel();
-        this.setModelVisibilities(entitySim);
-        GlStateManager.enableBlend();
-        model.swingProgress = 0.0F;
-        model.isSneak = false;
-        model.setRotationAngles(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, entitySim);
-        model.bipedRightArm.rotateAngleX = 0.0F;
-        model.bipedRightArm.render(0.0625F);
-        model.bipedRightArmwear.rotateAngleX = 0.0F;
-        model.bipedRightArmwear.render(0.0625F);
-        GlStateManager.disableBlend();
+    protected void renderLivingAt(EntitySim entitySim, double x, double y, double z) {
+        super.renderLivingAt(entitySim, x, y, z);
     }
 
-    public void renderLeftArm(EntitySim entitySim) {
-        float f = 1.0F;
-        GlStateManager.color(1.0F, 1.0F, 1.0F);
-        float f1 = 0.0625F;
-        ModelSim model = this.getMainModel();
-        this.setModelVisibilities(entitySim);
-        GlStateManager.enableBlend();
-        model.isSneak = false;
-        model.swingProgress = 0.0F;
-        model.setRotationAngles(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, entitySim);
-        model.bipedLeftArm.rotateAngleX = 0.0F;
-        model.bipedLeftArm.render(0.0625F);
-        model.bipedLeftArmwear.rotateAngleX = 0.0F;
-        model.bipedLeftArmwear.render(0.0625F);
-        GlStateManager.disableBlend();
-    }
-
-    protected void renderLivingAt(EntitySim entityLivingBaseIn, double x, double y, double z) {
-        super.renderLivingAt(entityLivingBaseIn, x, y, z);
-    }
-
-    protected void applyRotations(EntitySim entityLiving, float p_77043_2_, float rotationYaw, float partialTicks) {
-        super.applyRotations(entityLiving, p_77043_2_, rotationYaw, partialTicks);
+    protected void applyRotations(EntitySim entitySim, float rotationPitch, float rotationYaw, float partialTicks) {
+        super.applyRotations(entitySim, rotationPitch, rotationYaw, partialTicks);
     }
 }

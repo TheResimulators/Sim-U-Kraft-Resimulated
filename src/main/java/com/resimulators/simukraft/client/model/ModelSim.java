@@ -18,37 +18,19 @@ public class ModelSim extends ModelBiped {
     public ModelRenderer bipedLeftLegwear;
     public ModelRenderer bipedRightLegwear;
     public ModelRenderer bipedBodyWear;
-    private final boolean smallArms;
 
-    public ModelSim(float modelSize, boolean smallArmsIn) {
+    public ModelSim(float modelSize) {
         super(modelSize, 0.0F, 64, 64);
-        this.smallArms = smallArmsIn;
 
-        if (smallArmsIn) {
-            this.bipedLeftArm = new ModelRenderer(this, 32, 48);
-            this.bipedLeftArm.addBox(-1.0F, -2.0F, -2.0F, 3, 12, 4, modelSize);
-            this.bipedLeftArm.setRotationPoint(5.0F, 2.5F, 0.0F);
-            this.bipedRightArm = new ModelRenderer(this, 40, 16);
-            this.bipedRightArm.addBox(-2.0F, -2.0F, -2.0F, 3, 12, 4, modelSize);
-            this.bipedRightArm.setRotationPoint(-5.0F, 2.5F, 0.0F);
-            this.bipedLeftArmwear = new ModelRenderer(this, 48, 48);
-            this.bipedLeftArmwear.addBox(-1.0F, -2.0F, -2.0F, 3, 12, 4, modelSize + 0.25F);
-            this.bipedLeftArmwear.setRotationPoint(5.0F, 2.5F, 0.0F);
-            this.bipedRightArmwear = new ModelRenderer(this, 40, 32);
-            this.bipedRightArmwear.addBox(-2.0F, -2.0F, -2.0F, 3, 12, 4, modelSize + 0.25F);
-            this.bipedRightArmwear.setRotationPoint(-5.0F, 2.5F, 10.0F);
-        } else {
-            this.bipedLeftArm = new ModelRenderer(this, 32, 48);
-            this.bipedLeftArm.addBox(-1.0F, -2.0F, -2.0F, 4, 12, 4, modelSize);
-            this.bipedLeftArm.setRotationPoint(5.0F, 2.0F, 0.0F);
-            this.bipedLeftArmwear = new ModelRenderer(this, 48, 48);
-            this.bipedLeftArmwear.addBox(-1.0F, -2.0F, -2.0F, 4, 12, 4, modelSize + 0.25F);
-            this.bipedLeftArmwear.setRotationPoint(5.0F, 2.0F, 0.0F);
-            this.bipedRightArmwear = new ModelRenderer(this, 40, 32);
-            this.bipedRightArmwear.addBox(-3.0F, -2.0F, -2.0F, 4, 12, 4, modelSize + 0.25F);
-            this.bipedRightArmwear.setRotationPoint(-5.0F, 2.0F, 10.0F);
-        }
-
+        this.bipedLeftArm = new ModelRenderer(this, 32, 48);
+        this.bipedLeftArm.addBox(-1.0F, -2.0F, -2.0F, 4, 12, 4, modelSize);
+        this.bipedLeftArm.setRotationPoint(5.0F, 2.0F, 0.0F);
+        this.bipedLeftArmwear = new ModelRenderer(this, 48, 48);
+        this.bipedLeftArmwear.addBox(-1.0F, -2.0F, -2.0F, 4, 12, 4, modelSize + 0.25F);
+        this.bipedLeftArmwear.setRotationPoint(5.0F, 2.0F, 0.0F);
+        this.bipedRightArmwear = new ModelRenderer(this, 40, 32);
+        this.bipedRightArmwear.addBox(-3.0F, -2.0F, -2.0F, 4, 12, 4, modelSize + 0.25F);
+        this.bipedRightArmwear.setRotationPoint(-5.0F, 2.0F, 10.0F);
         this.bipedLeftLeg = new ModelRenderer(this, 16, 48);
         this.bipedLeftLeg.addBox(-2.0F, 0.0F, -2.0F, 4, 12, 4, modelSize);
         this.bipedLeftLeg.setRotationPoint(1.9F, 12.0F, 0.0F);
@@ -62,8 +44,8 @@ public class ModelSim extends ModelBiped {
         this.bipedBodyWear.addBox(-4.0F, 0.0F, -2.0F, 8, 12, 4, modelSize + 0.25F);
         this.bipedBodyWear.setRotationPoint(0.0F, 0.0F, 0.0F);
     }
-    public void render(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-        super.render(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+    public void render(Entity entitySim, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+        super.render(entitySim, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
         GlStateManager.pushMatrix();
 
         if (this.isChild) {
@@ -76,7 +58,7 @@ public class ModelSim extends ModelBiped {
             this.bipedRightArmwear.render(scale);
             this.bipedBodyWear.render(scale);
         } else {
-            if (entityIn.isSneaking()) {
+            if (entitySim.isSneaking()) {
                 GlStateManager.translate(0.0F, 0.2F, 0.0F);
             }
 
@@ -110,14 +92,6 @@ public class ModelSim extends ModelBiped {
 
     public void postRenderArm(float scale, EnumHandSide side) {
         ModelRenderer modelrenderer = this.getArmForSide(side);
-
-        if (this.smallArms) {
-            float f = 0.5F * (float) (side == EnumHandSide.RIGHT ? 1 : -1);
-            modelrenderer.rotationPointX += f;
-            modelrenderer.postRender(scale);
-            modelrenderer.rotationPointX -= f;
-        } else {
-            modelrenderer.postRender(scale);
-        }
+        modelrenderer.postRender(scale);
     }
 }
