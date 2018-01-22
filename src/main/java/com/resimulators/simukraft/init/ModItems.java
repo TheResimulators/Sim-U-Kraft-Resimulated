@@ -5,6 +5,7 @@ import com.resimulators.simukraft.common.items.ItemGranules;
 import com.resimulators.simukraft.common.items.base.ItemFoodBase;
 import com.resimulators.simukraft.registry.RegistryHandler;
 import net.minecraft.item.Item;
+import net.minecraftforge.oredict.OreDictionary;
 
 /**
  * Created by fabbe on 06/01/2018 - 2:47 AM.
@@ -22,5 +23,9 @@ public class ModItems {
         RegistryHandler.registerItem(CHEESE);
         RegistryHandler.registerItem(CHEESEBURGER);
         RegistryHandler.registerItem(FRIES);
+        OreDictionary.registerOre("granules-copper",GRANULES);
+        OreDictionary.registerOre("granules-gold",GRANULES);
+        OreDictionary.registerOre("granules-iron",GRANULES);
+        OreDictionary.registerOre("granules-tin",GRANULES);
     }
 }
