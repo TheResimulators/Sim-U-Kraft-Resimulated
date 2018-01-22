@@ -1,6 +1,10 @@
 #############################################################################
 #                                  Items                                    #
 #############################################################################
+item.simukraft:burger.name=Burger
+item.simukraft:cheese.name=Cheese
+item.simukraft:cheeseburger.name=Cheeseburger
+item.simukraft:fries.name=Fries
 
 #############################################################################
 #                                Meta Items                                 #
@@ -9,10 +13,6 @@ item.simukraft:granules.copper.name=Copper Granules
 item.simukraft:granules.gold.name=Gold Granules
 item.simukraft:granules.iron.name=Iron Granules
 item.simukraft:granules.tin.name=Tin Granules
-item.simukraft:burger.name=Burger
-item.simukraft:cheese.name=Cheese
-item.simukraft:cheeseburger.name=Cheeseburger
-item.simukraft:fries.name=Fries
 
 #############################################################################
 #                                  Blocks                                   #
