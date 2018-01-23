@@ -25,6 +25,7 @@ tile.simukraft:controlbox.name=Control Box
 tile.simukraft:milkblock.name=Milk
 tile.simukraft:farmbox.name=Farm Box
 tile.simukraft:minerbox.name=Miner Box
+//not sure if these go here or in Misc
 tile.simukraft:whitelight.name = White light
 tile.simukraft:orangelight.name = Orange light
 tile.simukraft:greenlight.name = Green light
