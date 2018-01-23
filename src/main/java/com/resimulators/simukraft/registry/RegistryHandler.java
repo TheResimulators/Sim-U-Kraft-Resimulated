@@ -29,7 +29,7 @@ public class RegistryHandler {
         registerBlock(block, new ItemBlock(block).setRegistryName(block.getRegistryName()), names);
     }
 
-    public static void registerBlock(Block block, Item item, String... names) {
+    public static void registerBlock(Block block, Item item, String[] names) {
         BlockRegistrationHandler.blocks.add(block);
         ItemRegistrationHandler.items.put(item, names);
     }
