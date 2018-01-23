@@ -25,6 +25,14 @@ tile.simukraft:controlbox.name=Control Box
 tile.simukraft:milkblock.name=Milk
 tile.simukraft:farmbox.name=Farm Box
 tile.simukraft:minerbox.name=Miner Box
+tile.simukraft:whitelight.name = White light
+tile.simukraft:orangelight.name = Orange light
+tile.simukraft:greenlight.name = Green light
+tile.simukraft:purplelight.name = Purple light
+tile.simukraft:redlight.name = Red light
+tile.simukraft:yellowlight.name = Yellow light
+tile.simukraft:bluelight.name = Blue light
+tile.simukraft:rainbowlight.name - Rainbow light
 
 #############################################################################
 #                                Meta Blocks                                #
