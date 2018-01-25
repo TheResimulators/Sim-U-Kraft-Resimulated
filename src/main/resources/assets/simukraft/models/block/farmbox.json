@@ -1,7 +1,0 @@
-{
-  "parent": "block/cube_column",
-  "textures": {
-    "end": "simukraft:blocks/blockfarming_top",
-    "side": "simukraft:blocks/blockfarming_side"
-  }
-}

@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "normal": { "model": "simukraft:mine_box" },
+    "inventory": { "model": "simukraft:mine_box" }
+  }
+}

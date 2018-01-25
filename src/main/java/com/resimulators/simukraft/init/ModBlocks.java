@@ -8,36 +8,32 @@ import com.resimulators.simukraft.registry.RegistryHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraftforge.fluids.Fluid;
 
-import static net.minecraft.block.material.MapColor.GRAY;
-///add minerblock 18/1 - 1030
+import java.util.Arrays;
+
 /**
  * Created by fabbe on 06/01/2018 - 2:47 AM.
  */
 public class ModBlocks {
     //Basic Blocks
-    public static final Block CHEESE_BLOCK = new BlockBase("cheeseblock", SimUTab.SUTab, Material.SPONGE, MapColor.YELLOW);
-    public static final Block COMPOSITE_BRICK = new BlockBase("compositebrick", SimUTab.SUTab, Material.ROCK, GRAY);
+    public static final Block CHEESE_BLOCK = new BlockBase("cheese_block", SimUTab.SUTab, Material.SPONGE, MapColor.YELLOW);
+    public static final Block COMPOSITE_BRICK = new BlockBase("composite_brick", SimUTab.SUTab, Material.ROCK, MapColor.STONE);
 
     //Sim-U Kraft Structure Blocks
-    public static final Block CITY_BOX = new BlockCityBox("citybox", SimUTab.SUTab, Material.ANVIL, GRAY);
-    public static final Block CONSTRUCTOR_BOX = new BlockConstructorBox("constructorbox", SimUTab.SUTab, Material.ANVIL, GRAY);
-    public static final Block CONTROL_BOX = new BlockControlBox("controlbox", SimUTab.SUTab, Material.ANVIL, GRAY);
-    public static final Block FARM_BOX = new BlockFarmingBox("farmbox",SimUTab.SUTab, Material.ANVIL, GRAY);
-    public static final Block MINER_BOX = new BlockFarmingBox("minerbox",SimUTab.SUTab, Material.ANVIL, GRAY);
-    //Sim-u Kraft deco blocks
-    public static final Block LIGHT_WHITE_BLOCK = new BlockwhiteLight("whitelight",SimUTab.SUTab,Material.ANVIL,GRAY);
-    public static final Block LIGHT_ORANGE_BLOCK = new BlockorangeLight("orangelight",SimUTab.SUTab,Material.ANVIL,GRAY);
-    public static final Block LIGHT_GREEN_BLOCK = new BlockgreenLight("greenlight",SimUTab.SUTab,Material.ANVIL,GRAY);
-    public static final Block LIGHT_PURPLE_BLOCK = new BlockpurpleLight("purplelight",SimUTab.SUTab,Material.ANVIL,GRAY);
-    public static final Block LIGHT_RED_BLOCK = new BlockredLight("redlight",SimUTab.SUTab,Material.ANVIL,GRAY);
-    public static final Block LIGHT_YELLOW_BLOCK = new BlockyellowLight("yellowlight",SimUTab.SUTab,Material.ANVIL,GRAY);
-    public static final Block LIGHT_BLUE_BLOCK = new BlockblueLight("bluelight",SimUTab.SUTab,Material.ANVIL,GRAY);
-    public static final Block LIGHT_RAINBOW_BLOCK = new BlockrainbowLight("rainbowlight",SimUTab.SUTab,Material.ANVIL,GRAY);
+    public static final Block CITY_BOX = new BlockCityBox("city_box", SimUTab.SUTab, Material.IRON, MapColor.IRON);
+    public static final Block CONSTRUCTOR_BOX = new BlockConstructorBox("constructor_box", SimUTab.SUTab, Material.ROCK, MapColor.GREEN);
+    public static final Block CONTROL_BOX = new BlockControlBox("control_box", SimUTab.SUTab, Material.IRON, MapColor.IRON);
+    public static final Block FARM_BOX = new BlockFarmBox("farm_box",SimUTab.SUTab, Material.ROCK, MapColor.DIRT);
+    public static final Block MINE_BOX = new BlockMineBox("mine_box",SimUTab.SUTab, Material.ROCK, MapColor.WOOD);
+
+    //Sim-u Kraft Deco Blocks
+    public static final Block LIGHT = new BlockLightColored("light",SimUTab.SUTab, Material.WOOD);
+    public static final Block RAINBOW_LIGHT = new BlockLight("rainbow_light",SimUTab.SUTab,Material.WOOD,MapColor.SILVER);
 
     //Fluid Blocks
-    public static final Block MILK_BLOCK = new BlockFluidBase(ModFluids.MILK, "milkblock", null, Material.WATER);
+    public static final Block MILK_BLOCK = new BlockFluidBase(ModFluids.MILK, "milk_block", null, Material.WATER);
 
     public static void init() {
         RegistryHandler.registerBlock(CHEESE_BLOCK);
@@ -47,17 +43,10 @@ public class ModBlocks {
         RegistryHandler.registerBlock(CONSTRUCTOR_BOX);
         RegistryHandler.registerBlock(CONTROL_BOX);
         RegistryHandler.registerBlock(FARM_BOX);
-        RegistryHandler.registerBlock(MINER_BOX);
+        RegistryHandler.registerBlock(MINE_BOX);
 
-        RegistryHandler.registerBlock(LIGHT_WHITE_BLOCK);
-        RegistryHandler.registerBlock(LIGHT_ORANGE_BLOCK);
-        RegistryHandler.registerBlock(LIGHT_GREEN_BLOCK);
-        RegistryHandler.registerBlock(LIGHT_PURPLE_BLOCK);
-        RegistryHandler.registerBlock(LIGHT_RED_BLOCK);
-        RegistryHandler.registerBlock(LIGHT_YELLOW_BLOCK);
-        RegistryHandler.registerBlock(LIGHT_BLUE_BLOCK);
-        RegistryHandler.registerBlock(LIGHT_RAINBOW_BLOCK);
-
+        RegistryHandler.registerBlock(LIGHT, Arrays.stream(EnumDyeColor.values()).map(EnumDyeColor::getName).toArray(String[]::new));
+        RegistryHandler.registerBlock(RAINBOW_LIGHT);
 
         registerFluidBlock(MILK_BLOCK, ModFluids.MILK);
     }

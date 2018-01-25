@@ -9,7 +9,7 @@ import net.minecraft.util.NonNullList;
  * Created by fabbe on 06/01/2018 - 5:22 AM.
  */
 public class ItemGranules extends ItemBase {
-    private final String[] types = new String[]{"copper", "gold", "iron", "tin"};
+    public static final String[] TYPES = new String[]{"copper", "gold", "iron", "tin"};
 
     public ItemGranules(String name, CreativeTabs tab) {
         super(name, tab);
@@ -21,7 +21,7 @@ public class ItemGranules extends ItemBase {
         int i = stack.getMetadata();
         if (i > 3)
             i = 0;
-        return super.getUnlocalizedName() + "." + types[i];
+        return super.getUnlocalizedName() + "." + TYPES[i];
     }
 
     @Override

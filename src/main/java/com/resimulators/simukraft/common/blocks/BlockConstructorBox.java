@@ -1,7 +1,7 @@
 package com.resimulators.simukraft.common.blocks;
 
 import com.resimulators.simukraft.common.blocks.base.BlockContainerBase;
-import com.resimulators.simukraft.common.tiles.base.TileBuilderBase;
+import com.resimulators.simukraft.common.tiles.TileConstructor;
 import com.resimulators.simukraft.common.tiles.structure.Structure;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -33,14 +33,14 @@ public class BlockConstructorBox extends BlockContainerBase {
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         //TODO: implement logic
         TileEntity tile = worldIn.getTileEntity(pos);
-        if (tile instanceof TileBuilderBase)
-            ((TileBuilderBase) tile).setBuilding(!((TileBuilderBase) tile).isBuilding());
+        if (tile instanceof TileConstructor)
+            ((TileConstructor) tile).building = true;
         return true;
     }
 
     @Override
     public TileEntity createNewTileEntity(World world, int i) {
-        TileBuilderBase tile = new TileBuilderBase();
+        TileConstructor tile = new TileConstructor();
         tile.setStructure(new Structure(new IBlockState[][][]{ { {Blocks.COBBLESTONE.getDefaultState(), Blocks.COBBLESTONE.getDefaultState(), Blocks.STONE_SLAB.getStateFromMeta(1)}, {Blocks.COBBLESTONE.getDefaultState(), Blocks.STONE_SLAB.getStateFromMeta(1), Blocks.AIR.getDefaultState()}, {Blocks.COBBLESTONE.getDefaultState(), Blocks.COBBLESTONE.getDefaultState(), Blocks.STONE_SLAB.getStateFromMeta(1)} }, { {Blocks.COBBLESTONE.getDefaultState(), Blocks.STONE_SLAB.getStateFromMeta(1), Blocks.AIR.getDefaultState()}, {Blocks.AIR.getDefaultState(), Blocks.AIR.getDefaultState(), Blocks.AIR.getDefaultState()}, {Blocks.COBBLESTONE.getDefaultState(), Blocks.STONE_SLAB.getStateFromMeta(1), Blocks.AIR.getDefaultState()} }, { {Blocks.COBBLESTONE.getDefaultState(), Blocks.COBBLESTONE.getDefaultState(), Blocks.STONE_SLAB.getStateFromMeta(1)}, {Blocks.COBBLESTONE.getDefaultState(), Blocks.STONE_SLAB.getStateFromMeta(1), Blocks.AIR.getDefaultState()}, {Blocks.COBBLESTONE.getDefaultState(), Blocks.COBBLESTONE.getDefaultState(), Blocks.STONE_SLAB.getStateFromMeta(1)} } }));
         return tile;
     }

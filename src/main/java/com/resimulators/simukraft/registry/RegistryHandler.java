@@ -6,6 +6,8 @@ import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.event.RegistryEvent;
@@ -26,10 +28,10 @@ import java.util.Set;
  */
 public class RegistryHandler {
     public static void registerBlock(Block block, String... names) {
-        registerBlock(block, new ItemBlock(block).setRegistryName(block.getRegistryName()), names);
+        registerBlock(block, new ItemBlockMulti(block, names).setRegistryName(block.getRegistryName()), names);
     }
 
-    public static void registerBlock(Block block, Item item, String[] names) {
+    public static void registerBlock(Block block, Item item, String... names) {
         BlockRegistrationHandler.blocks.add(block);
         ItemRegistrationHandler.items.put(item, names);
     }
@@ -92,7 +94,7 @@ public class RegistryHandler {
                 if (s.length == 0)
                     registerItemModel(entry.getKey());
                 else for (int i = 0; i < s.length; i++)
-                    registerItemModel(entry.getKey(), i, s[i]);
+                    registerItemModel(entry.getKey(), i, new ResourceLocation(entry.getKey().getRegistryName() + "_" + s[i]));
             }
         }
 
@@ -103,13 +105,38 @@ public class RegistryHandler {
 
         @SideOnly(Side.CLIENT)
         private static void registerItemModel(Item item, int meta) {
-            registerItemModel(item, meta, item.getRegistryName().getResourcePath());
+            registerItemModel(item, meta, item.getRegistryName());
         }
 
         @SideOnly(Side.CLIENT)
-        private static void registerItemModel(Item item, int meta, String name) {
-            ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation(Reference.MOD_ID + ":" + name, "inventory"));
+        private static void registerItemModel(Item item, int meta, ResourceLocation location) {
+            ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation(location, "inventory"));
         }
+    }
+
+    private static class ItemBlockMulti extends ItemBlock {
+
+        private final String[] names;
+
+        private ItemBlockMulti(Block block, String... names) {
+            super(block);
+            this.names = names;
+            if (names.length > 1)
+                this.setHasSubtypes(true);
+        }
+
+        @Override
+        public String getUnlocalizedName(ItemStack p_getUnlocalizedName_1_) {
+            if (p_getUnlocalizedName_1_.getMetadata() < names.length)
+                return super.getUnlocalizedName(p_getUnlocalizedName_1_) + "." + names[p_getUnlocalizedName_1_.getMetadata()];
+            return super.getUnlocalizedName(p_getUnlocalizedName_1_);
+        }
+
+        @Override
+        public int getMetadata(int p_getMetadata_1_) {
+            return p_getMetadata_1_ < names.length ? p_getMetadata_1_ : 0;
+        }
+
     }
 
 }

@@ -33,6 +33,6 @@ public class Structure {
 		return data[x][y][z];
 	}
 
-	// TODO: JSON loading
+	// TODO: JSON loading ?
 
 }

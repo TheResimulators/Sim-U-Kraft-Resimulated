@@ -17,28 +17,26 @@ item.simukraft:granules.tin.name=Tin Granules
 #############################################################################
 #                                  Blocks                                   #
 #############################################################################
-tile.simukraft:cheeseblock.name=Cheese Block
-tile.simukraft:compositebrick.name=Composite Bricks
-tile.simukraft:citybox.name=City Box
-tile.simukraft:constructorbox.name=Constructor Box
-tile.simukraft:controlbox.name=Control Box
-tile.simukraft:milkblock.name=Milk
-tile.simukraft:farmbox.name=Farm Box
-tile.simukraft:minerbox.name=Miner Box
-
-//not sure if these go here or in Misc
-tile.simukraft:whitelight.name=White light
-tile.simukraft:orangelight.name=Orange light
-tile.simukraft:greenlight.name=Green light
-tile.simukraft:purplelight.name=Purple light
-tile.simukraft:redlight.name=Red light
-tile.simukraft:yellowlight.name=Yellow light
-tile.simukraft:bluelight.name=Blue light
-tile.simukraft:rainbowlight.name=Rainbow light
+tile.simukraft:cheese_block.name=Cheese Block
+tile.simukraft:composite_brick.name=Composite Bricks
+tile.simukraft:city_box.name=City Box
+tile.simukraft:constructor_box.name=Constructor Box
+tile.simukraft:control_box.name=Control Box
+tile.simukraft:milk_block.name=Milk
+tile.simukraft:farm_box.name=Farm Box
+tile.simukraft:mine_box.name=Mine Box
+tile.simukraft:rainbow_light.name=Rainbow Light
 
 #############################################################################
 #                                Meta Blocks                                #
 #############################################################################
+tile.simukraft:light.white.name=White Light
+tile.simukraft:light.orange.name=Orange Light
+tile.simukraft:light.green.name=Green Light
+tile.simukraft:light.purple.name=Purple Light
+tile.simukraft:light.red.name=Red Light
+tile.simukraft:light.yellow.name=Yellow Light
+tile.simukraft:light.blue.name=Blue Light
 
 #############################################################################
 #                                   Mobs                                    #
@@ -56,4 +54,4 @@ tile.simukraft:rainbowlight.name=Rainbow light
 #                                    GUI                                    #
 #############################################################################
 #CreativeTabs
-itemGroup.simukraft=Sim-U-Kraft Tab
+itemGroup.simukraft=Sim-U-Kraft

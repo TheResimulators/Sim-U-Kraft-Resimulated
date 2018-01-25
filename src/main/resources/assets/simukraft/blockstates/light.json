@@ -1,0 +1,11 @@
+{
+  "variants": {
+    "color=blue": { "model": "simukraft:light_blue" },
+    "color=green": { "model": "simukraft:light_green" },
+    "color=orange": { "model": "simukraft:light_orange" },
+    "color=purple": { "model": "simukraft:light_purple" },
+    "color=red": { "model": "simukraft:light_red" },
+    "color=white": { "model": "simukraft:light_white" },
+    "color=yellow": { "model": "simukraft:light_yellow" }
+  }
+}
