@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "normal": { "model": "simukraft:whitelight" },
+    "inventory": { "model": "simukraft:whitelight" }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "normal": { "model": "simukraft:purplelight" },
+    "inventory": { "model": "simukraft:purplelight" }
+  }
+}
