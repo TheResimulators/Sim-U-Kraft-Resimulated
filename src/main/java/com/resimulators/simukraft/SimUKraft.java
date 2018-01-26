@@ -1,7 +1,6 @@
 package com.resimulators.simukraft;
 
 import com.resimulators.simukraft.proxy.CommonProxy;
-import net.minecraft.init.Blocks;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -24,19 +23,19 @@ public class SimUKraft {
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         logger = event.getModLog();
-        this.proxy.preInit(event);
+        proxy.preInit(event);
     }
     @EventHandler
     public void init(FMLInitializationEvent event) {
-        this.proxy.init(event);
+        proxy.init(event);
     }
     @EventHandler
     public void postInit(FMLPostInitializationEvent event) {
-        this.proxy.postInit(event);
+        proxy.postInit(event);
     }
     @EventHandler
     public void onServerStarted(FMLServerStartedEvent event) {
-        this.proxy.onServerStarted(event);
+        proxy.onServerStarted(event);
     }
 
     public static Logger getLogger() {
