@@ -1,4 +1,4 @@
-package com.resimulators.simukraft.common.tiles.structure;
+package com.resimulators.simukraft.common.tileentity.structure;
 
 import com.google.common.base.Optional;
 import net.minecraft.block.Block;
@@ -8,10 +8,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -110,6 +107,48 @@ public class Structure {
 	@SuppressWarnings("unchecked")
 	private static <T extends Comparable<T>, V extends T> IBlockState withProperty(IBlockState state, IProperty property, Object value) {
 		return state.withProperty((IProperty<T>) property, (V) value);
+	}
+
+	@SuppressWarnings("unchecked")
+	private static <T extends Comparable<T>, V extends T> String getValue(IProperty property, Object value) {
+		return ((IProperty<T>) property).getName((V) value);
+	}
+
+	public boolean save(File file) {
+		Map<IBlockState, Character> key = new HashMap<>();
+		char cur = ' ';
+		StringBuilder states = new StringBuilder();
+		StringBuilder blocks = new StringBuilder();
+		for (IBlockState[][] a0 : data) {
+			for (IBlockState[] a1 : a0) {
+				for (IBlockState a2 : a1) {
+					if (!key.containsKey(a2)) {
+						if (cur > '~')
+							return false;
+						if (states.length() > 0)
+							states.append(";");
+						states.append(cur).append("=").append(a2.getBlock().getRegistryName());
+						for (Map.Entry<IProperty<?>, Comparable<?>> entry : a2.getProperties().entrySet())
+							states.append(",").append(entry.getKey().getName()).append("=").append(getValue(entry.getKey(), entry.getValue()));
+						key.put(a2, cur);
+						do
+							cur += 1;
+						while (cur == '=' || cur == ',' || cur == ';');
+					}
+					blocks.append(key.get(a2));
+				}
+			}
+		}
+		try {
+			PrintWriter writer = new PrintWriter(file);
+			writer.println(width + "x" + height + "x" + depth);
+			writer.println(states);
+			writer.println(blocks);
+			writer.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return true;
 	}
 
 	public int getWidth() {

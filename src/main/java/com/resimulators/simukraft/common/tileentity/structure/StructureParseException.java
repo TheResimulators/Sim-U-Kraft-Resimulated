@@ -1,4 +1,4 @@
-package com.resimulators.simukraft.common.tiles.structure;
+package com.resimulators.simukraft.common.tileentity.structure;
 
 /**
  * Created by Astavie on 26/01/2018 - 8:21 PM.

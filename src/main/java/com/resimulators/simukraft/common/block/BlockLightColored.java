@@ -1,4 +1,4 @@
-package com.resimulators.simukraft.common.blocks;
+package com.resimulators.simukraft.common.block;
 
 import net.minecraft.block.BlockColored;
 import net.minecraft.block.material.MapColor;

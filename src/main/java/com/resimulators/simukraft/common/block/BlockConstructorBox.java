@@ -1,9 +1,9 @@
-package com.resimulators.simukraft.common.blocks;
+package com.resimulators.simukraft.common.block;
 
 import com.resimulators.simukraft.Reference;
-import com.resimulators.simukraft.common.blocks.base.BlockContainerBase;
-import com.resimulators.simukraft.common.tiles.TileConstructor;
-import com.resimulators.simukraft.common.tiles.structure.Structure;
+import com.resimulators.simukraft.common.block.base.BlockContainerBase;
+import com.resimulators.simukraft.common.tileentity.TileConstructor;
+import com.resimulators.simukraft.common.tileentity.structure.Structure;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -22,7 +22,8 @@ import java.io.File;
  * Created by fabbe on 15/01/2018 - 8:43 PM.
  */
 public class BlockConstructorBox extends BlockContainerBase {
-    private static final Structure structure = Structure.load(new File(Loader.instance().getConfigDir(), Reference.MOD_ID + ".struct"));
+    private static final File FILE = new File(Loader.instance().getConfigDir(), Reference.MOD_ID + ".struct");
+    public static Structure structure = Structure.load(FILE);
 
     public BlockConstructorBox(String name, CreativeTabs tab, Material blockMaterialIn, MapColor blockMapColorIn) {
         super(name, tab, blockMaterialIn, blockMapColorIn);
@@ -40,6 +41,7 @@ public class BlockConstructorBox extends BlockContainerBase {
         TileEntity tile = worldIn.getTileEntity(pos);
         if (tile instanceof TileConstructor)
             ((TileConstructor) tile).building = true;
+        structure.save(FILE);
         return true;
     }
 

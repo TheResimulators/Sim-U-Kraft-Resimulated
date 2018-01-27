@@ -1,4 +1,4 @@
-package com.resimulators.simukraft.common.blocks.base;
+package com.resimulators.simukraft.common.block.base;
 
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.MapColor;

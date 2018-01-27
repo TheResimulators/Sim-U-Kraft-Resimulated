@@ -1,6 +1,6 @@
-package com.resimulators.simukraft.common.tiles;
+package com.resimulators.simukraft.common.tileentity;
 
-import com.resimulators.simukraft.common.tiles.base.TileBuilderBase;
+import com.resimulators.simukraft.common.tileentity.base.TileBuilderBase;
 import net.minecraft.util.ITickable;
 
 /**

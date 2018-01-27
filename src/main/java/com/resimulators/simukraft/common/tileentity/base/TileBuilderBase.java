@@ -1,6 +1,6 @@
-package com.resimulators.simukraft.common.tiles.base;
+package com.resimulators.simukraft.common.tileentity.base;
 
-import com.resimulators.simukraft.common.tiles.structure.Structure;
+import com.resimulators.simukraft.common.tileentity.structure.Structure;
 import net.minecraft.tileentity.TileEntity;
 
 /**

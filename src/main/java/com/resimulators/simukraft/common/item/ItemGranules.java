@@ -1,6 +1,6 @@
-package com.resimulators.simukraft.common.items;
+package com.resimulators.simukraft.common.item;
 
-import com.resimulators.simukraft.common.items.base.ItemBase;
+import com.resimulators.simukraft.common.item.base.ItemBase;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;

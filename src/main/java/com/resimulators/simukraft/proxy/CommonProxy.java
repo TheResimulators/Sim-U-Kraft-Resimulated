@@ -24,6 +24,7 @@ public class CommonProxy {
 
     public void init(FMLInitializationEvent event) {
         NetworkRegistry.INSTANCE.registerGuiHandler(SimUKraft.instance, new GuiHandler());
+        ModOreDict.init();
     }
 
     public void postInit(FMLPostInitializationEvent event) {

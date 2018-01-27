@@ -1,6 +1,6 @@
-package com.resimulators.simukraft.common.blocks;
+package com.resimulators.simukraft.common.block;
 
-import com.resimulators.simukraft.common.blocks.base.BlockBase;
+import com.resimulators.simukraft.common.block.base.BlockBase;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;

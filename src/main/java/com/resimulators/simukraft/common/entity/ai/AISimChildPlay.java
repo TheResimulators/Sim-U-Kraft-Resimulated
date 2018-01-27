@@ -1,6 +1,6 @@
-package com.resimulators.simukraft.common.ai;
+package com.resimulators.simukraft.common.entity.ai;
 
-import com.resimulators.simukraft.common.entities.EntitySim;
+import com.resimulators.simukraft.common.entity.EntitySim;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.RandomPositionGenerator;

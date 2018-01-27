@@ -1,4 +1,4 @@
-package com.resimulators.simukraft.common.items.base;
+package com.resimulators.simukraft.common.item.base;
 
 import com.resimulators.simukraft.Reference;
 import net.minecraft.creativetab.CreativeTabs;

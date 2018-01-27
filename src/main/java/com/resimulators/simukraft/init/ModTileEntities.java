@@ -1,6 +1,6 @@
 package com.resimulators.simukraft.init;
 
-import com.resimulators.simukraft.common.tiles.TileConstructor;
+import com.resimulators.simukraft.common.tileentity.TileConstructor;
 import net.minecraft.tileentity.TileEntity;
 
 /**

@@ -1,8 +1,6 @@
-package com.resimulators.simukraft.common.entities;
+package com.resimulators.simukraft.common.entity;
 
-import com.resimulators.simukraft.GuiHandler;
-import com.resimulators.simukraft.SimUKraft;
-import com.resimulators.simukraft.common.ai.AISimChildPlay;
+import com.resimulators.simukraft.common.entity.ai.AISimChildPlay;
 import com.resimulators.simukraft.temp.NameStorage;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
