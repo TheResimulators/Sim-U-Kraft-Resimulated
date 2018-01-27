@@ -80,9 +80,9 @@ public class Structure {
 
 					IBlockState[][][] data = new IBlockState[width][height][depth];
 					int i = 0;
-					for (int z = 0; z < depth; z++) {
+					for (int x = 0; x < width; x++) {
 						for (int y = 0; y < height; y++) {
-							for (int x = 0; x < width; x++) {
+							for (int z = 0; z < depth; z++) {
 								IBlockState state = key.get(blocks[i]);
 								if (state != null) {
 									data[x][y][z] = state;
