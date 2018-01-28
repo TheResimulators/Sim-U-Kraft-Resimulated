@@ -4,8 +4,10 @@ import com.resimulators.simukraft.SimUTab;
 import com.resimulators.simukraft.common.items.ItemGranules;
 import com.resimulators.simukraft.common.items.base.ItemFoodBase;
 import com.resimulators.simukraft.registry.RegistryHandler;
+import com.resimulators.simukraft.debug.ItemDebug;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.oredict.OreDictionary;
 
 /**
@@ -18,6 +20,8 @@ public class ModItems {
 	public static final Item CHEESEBURGER = new ItemFoodBase("cheeseburger", SimUTab.SUTab, 14, 10, false);
 	public static final Item FRIES = new ItemFoodBase("fries", SimUTab.SUTab, 5, 6, false);
 
+	public static final Item DEBUG = new ItemDebug("debug", SimUTab.SUTab);
+
 	public static void init() {
 		RegistryHandler.registerItem(GRANULES, ItemGranules.TYPES);
 		RegistryHandler.registerItem(BURGER);
@@ -29,5 +33,10 @@ public class ModItems {
 		OreDictionary.registerOre("dustGold", new ItemStack(GRANULES, 1, 2));
 		OreDictionary.registerOre("dustIron", new ItemStack(GRANULES, 1, 3));
 		OreDictionary.registerOre("dustTin", new ItemStack(GRANULES, 1, 4));
+
+		if ((Boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment")) {
+		    //Register all debug items here!
+		    RegistryHandler.registerItem(DEBUG);
+        }
 	}
 }

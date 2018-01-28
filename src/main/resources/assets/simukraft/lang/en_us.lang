@@ -5,6 +5,7 @@ item.simukraft:burger.name=Burger
 item.simukraft:cheese.name=Cheese
 item.simukraft:cheeseburger.name=Cheeseburger
 item.simukraft:fries.name=Fries
+item.simukraft:debug.name=Debug Stick
 
 #############################################################################
 #                                Meta Items                                 #
