@@ -1,9 +1,11 @@
-package com.resimulators.simukraft.common.entities;
+package com.resimulators.simukraft.common.entities.entitysim;
 
 import com.resimulators.simukraft.GuiHandler;
 import com.resimulators.simukraft.SimUKraft;
+import com.resimulators.simukraft.common.ai.AISimBuild;
 import com.resimulators.simukraft.common.ai.AISimChildPlay;
-import com.resimulators.simukraft.temp.NameStorage;
+import com.resimulators.simukraft.common.tiles.structure.Structure;
+import com.resimulators.simukraft.init.ModItems;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.item.EntityItem;
@@ -37,6 +39,8 @@ public class EntitySim extends EntityAgeable implements INpc {
 
     private boolean isPlaying;
     private EntityPlayer commander;
+    private Structure structure;
+    private boolean isAllowedToBuild;
 
     private boolean areAdditionalTasksSet;
     private int wealth;
@@ -64,12 +68,14 @@ public class EntitySim extends EntityAgeable implements INpc {
     protected void initEntityAI() {
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIAvoidEntity(this, EntityZombie.class, 8.0f, 0.6d, 0.6d));
+        //this.tasks.addTask(2, new AISimBuild(this));
         this.tasks.addTask(2, new EntityAIMoveIndoors(this));
         this.tasks.addTask(3, new EntityAIRestrictOpenDoor(this));
         this.tasks.addTask(4, new EntityAIOpenDoor(this, true));
         this.tasks.addTask(5, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0f, 1.0f));
         this.tasks.addTask(5, new EntityAIWanderAvoidWater(this, 0.6d));
         this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityLiving.class, 8.0f));
+        this.targetTasks.addTask(2, new AISimBuild(this));
     }
 
     private void setAdditionalAITasks() {
@@ -102,17 +108,14 @@ public class EntitySim extends EntityAgeable implements INpc {
     public boolean processInteract(EntityPlayer player, EnumHand hand) {
         ItemStack itemStack = player.getHeldItem(hand);
         boolean flag = itemStack.getItem() == Items.NAME_TAG;
-
+        boolean flag2 = itemStack.getItem() == ModItems.DEBUG;
         if (flag) {
             itemStack.interactWithEntity(player, this, hand);
             return true;
-        } else if (!this.holdingSpawnEggOfClass(itemStack, this.getClass()) && this.isEntityAlive() && !isRecievingOrders() && !isChild() && !player.isSneaking()) {
-            if (this.world.isRemote) {
-                this.setCommander(player);
-                NBTTagCompound tags = player.getEntityData();
-                tags.setInteger("simInteract", this.getEntityId());
-                player.writeToNBT(tags);
-            }
+        } else if (!this.holdingSpawnEggOfClass(itemStack, this.getClass()) && this.isEntityAlive() && !isRecievingOrders() && !isChild() && !player.isSneaking() && !flag2) {
+            this.setCommander(player);
+            player.addTag("ID" + this.getEntityId());
+            player.openGui(SimUKraft.instance, GuiHandler.GUI_SIM, this.world, this.getPosition().getX(), this.getPosition().getY(), this.getPosition().getZ());
             return true;
         } else {
             return super.processInteract(player, hand);
@@ -193,6 +196,22 @@ public class EntitySim extends EntityAgeable implements INpc {
 
     public int getProfession() {
         return Math.max(this.dataManager.get(PROFESSION), 0);
+    }
+
+    public void setStructure(Structure structure) {
+        this.structure = structure;
+    }
+
+    public Structure getStructure() {
+        return this.structure;
+    }
+
+    public void setAllowedToBuild(boolean allowed) {
+        this.isAllowedToBuild = allowed;
+    }
+
+    public boolean isAllowedToBuild() {
+        return isAllowedToBuild;
     }
 
     public void setFemale(boolean female) {
