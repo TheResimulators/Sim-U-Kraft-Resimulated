@@ -2,12 +2,10 @@ package com.resimulators.simukraft.proxy;
 
 import com.resimulators.simukraft.GuiHandler;
 import com.resimulators.simukraft.SimUKraft;
-import com.resimulators.simukraft.common.entities.entitysim.NameStorage;
+import com.resimulators.simukraft.common.command.CommandStructure;
+import com.resimulators.simukraft.common.entity.entitysim.NameStorage;
 import com.resimulators.simukraft.init.*;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
+import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 /**
@@ -26,13 +24,14 @@ public class CommonProxy {
 
     public void init(FMLInitializationEvent event) {
         NetworkRegistry.INSTANCE.registerGuiHandler(SimUKraft.instance, new GuiHandler());
+        ModOreDict.init();
     }
 
     public void postInit(FMLPostInitializationEvent event) {
 
     }
 
-    public void onServerStarted(FMLServerStartedEvent event) {
-
+    public void onServerStarting(FMLServerStartingEvent event) {
+        event.registerServerCommand(new CommandStructure());
     }
 }

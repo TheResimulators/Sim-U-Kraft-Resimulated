@@ -1,9 +1,9 @@
 package com.resimulators.simukraft.init;
 
 import com.resimulators.simukraft.SimUTab;
-import com.resimulators.simukraft.common.blocks.*;
-import com.resimulators.simukraft.common.blocks.base.BlockBase;
-import com.resimulators.simukraft.common.blocks.base.BlockFluidBase;
+import com.resimulators.simukraft.common.block.*;
+import com.resimulators.simukraft.common.block.base.BlockBase;
+import com.resimulators.simukraft.common.block.base.BlockFluidBase;
 import com.resimulators.simukraft.registry.RegistryHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;

@@ -7,9 +7,6 @@ item.simukraft:cheeseburger.name=Cheeseburger
 item.simukraft:fries.name=Fries
 item.simukraft:debug.name=Debug Stick
 
-#############################################################################
-#                                Meta Items                                 #
-#############################################################################
 item.simukraft:granules.copper.name=Copper Granules
 item.simukraft:granules.gold.name=Gold Granules
 item.simukraft:granules.iron.name=Iron Granules
@@ -28,9 +25,6 @@ tile.simukraft:farm_box.name=Farm Box
 tile.simukraft:mine_box.name=Mine Box
 tile.simukraft:rainbow_light.name=Rainbow Light
 
-#############################################################################
-#                                Meta Blocks                                #
-#############################################################################
 tile.simukraft:light.white.name=White Light
 tile.simukraft:light.orange.name=Orange Light
 tile.simukraft:light.green.name=Green Light
@@ -40,15 +34,11 @@ tile.simukraft:light.yellow.name=Yellow Light
 tile.simukraft:light.blue.name=Blue Light
 
 #############################################################################
-#                                   Mobs                                    #
+#                                 Entities                                  #
 #############################################################################
 
 #############################################################################
-#                               Miscellaneous                               #
-#############################################################################
-
-#############################################################################
-#                                Achievement                                #
+#                               Advancements                                #
 #############################################################################
 
 #############################################################################
@@ -56,3 +46,13 @@ tile.simukraft:light.blue.name=Blue Light
 #############################################################################
 #CreativeTabs
 itemGroup.simukraft=Sim-U-Kraft
+
+#############################################################################
+#                                  Commands                                 #
+#############################################################################
+commands.simukraft:structure.usage=/structure <save|help> ...
+commands.simukraft:structure.save.usage=/structure save <x1> <y1> <z1> <x2> <y2> <z2>
+
+#############################################################################
+#                               Miscellaneous                               #
+#############################################################################

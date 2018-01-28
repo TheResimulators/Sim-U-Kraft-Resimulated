@@ -4,10 +4,7 @@ import com.resimulators.simukraft.proxy.CommonProxy;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
+import net.minecraftforge.fml.common.event.*;
 import org.apache.logging.log4j.Logger;
 
 @Mod(name = Reference.MOD_NAME, modid = Reference.MOD_ID, version = Reference.VERSION)
@@ -34,8 +31,8 @@ public class SimUKraft {
         proxy.postInit(event);
     }
     @EventHandler
-    public void onServerStarted(FMLServerStartedEvent event) {
-        proxy.onServerStarted(event);
+    public void onServerStarting(FMLServerStartingEvent event) {
+        proxy.onServerStarting(event);
     }
 
     public static Logger getLogger() {

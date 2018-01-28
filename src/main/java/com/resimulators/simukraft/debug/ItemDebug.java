@@ -2,9 +2,9 @@ package com.resimulators.simukraft.debug;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
 import com.resimulators.simukraft.Reference;
-import com.resimulators.simukraft.common.entities.entitysim.EntitySim;
-import com.resimulators.simukraft.common.items.base.ItemBase;
-import com.resimulators.simukraft.common.tiles.structure.Structure;
+import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
+import com.resimulators.simukraft.common.item.base.ItemBase;
+import com.resimulators.simukraft.common.tileentity.structure.Structure;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;

@@ -2,7 +2,6 @@ package com.resimulators.simukraft.client.render;
 
 import com.resimulators.simukraft.Reference;
 import com.resimulators.simukraft.client.model.ModelSim;
-import com.resimulators.simukraft.common.entities.entitysim.EntitySim;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLiving;

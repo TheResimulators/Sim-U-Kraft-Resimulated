@@ -2,7 +2,6 @@ package com.resimulators.simukraft.init;
 
 import com.resimulators.simukraft.Reference;
 import com.resimulators.simukraft.SimUKraft;
-import com.resimulators.simukraft.common.entities.entitysim.EntitySim;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 
