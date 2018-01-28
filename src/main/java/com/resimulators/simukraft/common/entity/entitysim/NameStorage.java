@@ -34,6 +34,7 @@ public class NameStorage {
         }
     }
 
+    //Work in progress
     private static List<String> loadFemaleNames() throws IOException {
         if (!new File(Loader.instance().getConfigDir() + "/" + Reference.MOD_ID, "femalenames.txt").exists())
             new File(Loader.instance().getConfigDir() + "/" + Reference.MOD_ID).mkdir();
@@ -42,6 +43,7 @@ public class NameStorage {
         return reader.lines().collect(Collectors.toList());
     }
 
+    //Work in progress
     private static List<String> loadMaleNames() throws IOException {
         if (!new File(Loader.instance().getConfigDir() + "/" + Reference.MOD_ID, "malenames.txt").exists())
             new File(Loader.instance().getConfigDir() + "/" + Reference.MOD_ID).mkdir();

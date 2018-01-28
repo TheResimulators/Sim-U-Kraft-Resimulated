@@ -28,7 +28,7 @@ public class ModItems {
 		RegistryHandler.registerItem(FRIES);
 
 		if ((Boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment")) {
-		    //Register all debug items here!
+		    //Register all debug items here, these will only show up in a development environment!
 		    RegistryHandler.registerItem(DEBUG);
         }
 	}
