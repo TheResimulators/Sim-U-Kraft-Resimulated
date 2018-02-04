@@ -127,7 +127,7 @@ public class EntitySim extends EntityAgeable implements INpc {
     public void writeEntityToNBT(NBTTagCompound compound) {
         super.writeEntityToNBT(compound);
         compound.setInteger("Variation", this.getVariation());
-        compound.setInteger("profession", this.getProfession());
+        compound.setInteger("Profession", this.getProfession());
         compound.setBoolean("female", this.getFemale());
         compound.setInteger("Riches", this.wealth);
 
@@ -202,6 +202,12 @@ public class EntitySim extends EntityAgeable implements INpc {
                 return "Nitwit";
             case 1:
                 return "Builder";
+            case 2:
+                return "Farmer";
+            case 3:
+                return "Fisher";
+            case 4:
+                return "Butcher";
         }
 
         return "Oh well, this is awkward.";
@@ -267,8 +273,7 @@ public class EntitySim extends EntityAgeable implements INpc {
     public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata) {
         IEntityLivingData livingData = super.onInitialSpawn(difficulty, livingdata);
         this.setFemale(randomizeBoolean());
-        this.setProfession(rand.nextInt(2));
-        SimUKraft.getLogger().info(this.getProfession());
+        this.setProfession(rand.nextInt(2)); //TODO: add more professions.
         if (this.getFemale()) {
             this.setCustomNameTag(NameStorage.femalenames.get(new Random().nextInt(NameStorage.femalenames.size())));
             this.setVariation(rand.nextInt(10));
@@ -278,6 +283,7 @@ public class EntitySim extends EntityAgeable implements INpc {
         }
 
         this.setAdditionalAITasks();
+        this.writeEntityToNBT(this.getEntityData());
         return livingData;
     }
 
