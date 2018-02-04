@@ -128,7 +128,7 @@ public class EntitySim extends EntityAgeable implements INpc {
         super.writeEntityToNBT(compound);
         compound.setInteger("Variation", this.getVariation());
         compound.setInteger("Profession", this.getProfession());
-        compound.setBoolean("female", this.getFemale());
+        compound.setBoolean("Female", this.getFemale());
         compound.setInteger("Riches", this.wealth);
 
         NBTTagList nbtTagList = new NBTTagList();
@@ -152,8 +152,8 @@ public class EntitySim extends EntityAgeable implements INpc {
             this.setVariation(compound.getInteger("Variation"));
         if (compound.hasKey("Profession"))
             this.setProfession(compound.getInteger("Profession"));
-        if (compound.hasKey("female"))
-            this.setFemale(compound.getBoolean("female"));
+        if (compound.hasKey("Female"))
+            this.setFemale(compound.getBoolean("Female"));
         if (compound.hasKey("Riches"))
             this.wealth = compound.getInteger("Riches");
 
