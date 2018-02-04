@@ -46,7 +46,7 @@ public class ItemBlueprint extends ItemBase {
         if (!worldIn.isRemote && (Boolean)Launch.blackboard.get("fml.deobfuscatedEnvironment")) {
             if (player.getHeldItem(hand).getItem() == ModItems.BLUEPRINT) {
                 if (worldIn.getBlockState(pos).getBlock() == ModBlocks.CONSTRUCTOR_BOX && player.isSneaking()) {
-                    this.setStructure(player.getHeldItem(hand), new File(Loader.instance().getConfigDir() + "\\" + "simukraft" + ".struct"), "Test Structure");
+                    this.setStructure(player.getHeldItem(hand), new File(Loader.instance().getConfigDir() + "\\simukraft\\structures\\" + "slab_test" + ".struct"));
                     return EnumActionResult.SUCCESS;
                 }
             }
@@ -106,12 +106,13 @@ public class ItemBlueprint extends ItemBase {
         return new BlockPos(posX, posY, posZ);
     }
 
-    public void setStructure(ItemStack stack, File structure, String structureName) {
+    public void setStructure(ItemStack stack, File structure) {
         NBTTagCompound compound = stack.getTagCompound();
         if (compound == null)
             compound = new NBTTagCompound();
 
         String structureFileName = structure.getAbsolutePath();
+        String structureName = structure.getName().replace(".struct", "");
 
         compound.setString("structurename", structureName);
         compound.setString("structurefile", structureFileName);
