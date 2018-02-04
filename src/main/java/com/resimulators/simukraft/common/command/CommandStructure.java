@@ -6,9 +6,14 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.command.*;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.server.command.CommandTreeBase;
 import net.minecraftforge.server.command.CommandTreeHelp;
+
+import java.io.File;
+import java.io.IOException;
 
 
 /**
@@ -60,7 +65,7 @@ public class CommandStructure extends CommandTreeBase {
 
 		@Override
 		public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-			if (args.length != 6) throw new WrongUsageException(getUsage(sender));
+			if (args.length != 7) throw new WrongUsageException(getUsage(sender));
 
 			BlockPos corner0 = parseBlockPos(sender, args, 0, false);
 			BlockPos corner1 = parseBlockPos(sender, args, 3, false);
@@ -79,7 +84,22 @@ public class CommandStructure extends CommandTreeBase {
 				for (int y = 0; y < height; y++)
 					for (int x = 0; x < width; x++)
 						data[x][y][z] = sender.getEntityWorld().getBlockState(new BlockPos(x + bounds.minX, y + bounds.minY, z + bounds.minZ));
-			new Structure(data).save(BlockConstructorBox.FILE); // TODO: Save to specified file
+
+			if (!new File(Loader.instance().getConfigDir() + "\\simukraft\\structures").exists())
+                new File(Loader.instance().getConfigDir() + "\\simukraft\\structures\\").mkdir();
+
+			if (!new File(Loader.instance().getConfigDir() + "\\simukraft\\structures\\", args[6] + ".struct").exists()) {
+                try {
+                    new File(Loader.instance().getConfigDir() + "\\simukraft\\structures\\", args[6] + ".struct").createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                File file = new File(Loader.instance().getConfigDir() + "\\simukraft\\structures\\", args[6] + ".struct");
+                new Structure(data).save(file);
+                sender.sendMessage(new TextComponentString("Structure Saved!"));
+            } else {
+			    throw new CommandException("command.simukraft:structure.save.fileexists");
+            }
 		}
 
 	}
