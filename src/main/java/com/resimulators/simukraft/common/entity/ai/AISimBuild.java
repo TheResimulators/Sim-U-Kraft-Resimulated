@@ -6,6 +6,8 @@ import com.resimulators.simukraft.common.tileentity.structure.Structure;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.RandomPositionGenerator;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -22,6 +24,7 @@ public class AISimBuild extends EntityAIBase {
     private BlockPos startPos;
     private BlockPos currentPos;
     private int cooldown = 0;
+    private int tries = 0;
     Random rand = new Random();
 
     public AISimBuild(EntitySim entitySim) {
@@ -77,16 +80,28 @@ public class AISimBuild extends EntityAIBase {
             int y = (progress / structure.getWidth()) / structure.getDepth();
             if (y >= structure.getHeight()) {
                 progress = 0;
+                boolean success = this.entitySim.getNavigator().tryMoveToXYZ(entitySim.getStartPos().getX(), entitySim.getStartPos().getY(), entitySim.getStartPos().getZ(), 0.7);
+                if (!success) {
+                    for (int i = 0; i < 20; i++) {
+                        boolean tpSuccess = this.entitySim.attemptTeleport(entitySim.getStartPos().getX() + (rand.nextInt(2) - 1) + 0.5, entitySim.getStartPos().getY() + (rand.nextInt(2)), entitySim.getStartPos().getZ() + (rand.nextInt(2) - 1) + 0.5);
+                        if (tpSuccess)
+                            break;
+                    }
+                }
+                this.entitySim.setHeldItem(EnumHand.MAIN_HAND, ItemStack.EMPTY);
                 this.entitySim.setStructure(null);
                 this.entitySim.setAllowedToBuild(false);
                 this.entitySim.setStartPos(null);
             } else {
                 // TODO: make it require items from inventory
-                if (currentPos.getDistance((int) this.entitySim.posX, (int) this.entitySim.posY, (int) this.entitySim.posZ) < 3) {
+                if (structure.getBlock(x, y, z).getBlock() == Blocks.AIR && this.entitySim.world.getBlockState(currentPos.add(x + 1, y, z)).getBlock() == Blocks.AIR) {
+                    currentPos = startPos.add(x + 1, y, z);
+                    progress++;
+                } else if (currentPos.getDistance((int) this.entitySim.posX, (int) this.entitySim.posY, (int) this.entitySim.posZ) < 4) {
                     if (cooldown == 0) {
                         currentPos = startPos.add(x + 1, y, z);
-                        this.entitySim.getLookHelper().setLookPosition(currentPos.getX(), currentPos.getY(), currentPos.getZ(), 30, 30);
-                        this.entitySim.getLookHelper().onUpdateLook();
+                        this.entitySim.setHeldItem(EnumHand.MAIN_HAND, structure.getItemStack(x, y, z));
+                        this.entitySim.getLookHelper().setLookPosition(currentPos.getX(), currentPos.getY(), currentPos.getZ(), 360, 360);
                         this.entitySim.world.setBlockState(currentPos, structure.getBlock(x, y, z));
                         this.entitySim.swingArm(EnumHand.MAIN_HAND);
                         progress++;
@@ -96,12 +111,28 @@ public class AISimBuild extends EntityAIBase {
                     }
                 } else {
                     if (this.entitySim.getDistanceSq(currentPos) > 256.0D) {
-                        Vec3d vec3d = RandomPositionGenerator.findRandomTargetBlockTowards(this.entitySim, 14, 3, new Vec3d((double) this.currentPos.getX() + 0.5D, (double) this.currentPos.getY(), (double) this.currentPos.getZ() + 0.5D));
+                        Vec3d vec3d = RandomPositionGenerator.findRandomTargetBlockTowards(this.entitySim, 14, 7, new Vec3d((double) this.currentPos.getX() + 0.5D, (double) this.currentPos.getY(), (double) this.currentPos.getZ() + 0.5D));
                         if (vec3d != null) {
-                            this.entitySim.getNavigator().tryMoveToXYZ(vec3d.x, vec3d.y, vec3d.z, 0.7D);
+                            boolean success = this.entitySim.getNavigator().tryMoveToXYZ(vec3d.x, vec3d.y, vec3d.z, 0.7D);
+                            if (!success) {
+                                if (tries == 0) {
+                                    this.entitySim.attemptTeleport(vec3d.x + (rand.nextInt(20) - 10) + 0.5, vec3d.y + (rand.nextInt(20) - 10), vec3d.z + (rand.nextInt(20) - 10) + 0.5);
+                                    tries = 5;
+                                } else {
+                                    tries--;
+                                }
+                            }
                         }
                     } else {
-                        this.entitySim.getNavigator().tryMoveToXYZ(this.currentPos.getX(), this.currentPos.getY(), this.currentPos.getZ(), 0.7D);
+                        boolean success = this.entitySim.getNavigator().tryMoveToXYZ(this.currentPos.getX(), this.currentPos.getY(), this.currentPos.getZ(), 0.7D);
+                        if (!success) {
+                            if (tries == 0) {
+                                this.entitySim.attemptTeleport(this.currentPos.getX() + (rand.nextInt(2) - 1) + 0.5, this.currentPos.getY() + (rand.nextInt(2) - 1), this.currentPos.getZ() + (rand.nextInt(2) - 1) + 0.5);
+                                tries = 20;
+                            } else {
+                                tries--;
+                            }
+                        }
                     }
                 }
             }
