@@ -1,6 +1,7 @@
 package com.resimulators.simukraft.common.tileentity.structure;
 
 import com.google.common.base.Optional;
+import com.resimulators.simukraft.SimUKraft;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.BlockStoneSlab;
@@ -8,6 +9,7 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
@@ -172,6 +174,6 @@ public class Structure {
 
 	public ItemStack getItemStack(int x, int y, int z) {
 		IBlockState temp = data[x][y][z];
-		return new ItemStack(temp.getBlock(), 1, temp.getBlock().getMetaFromState(temp));
+		return temp.getBlock().getItem(null, null, temp);
 	}
 }
