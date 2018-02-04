@@ -13,7 +13,6 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
  */
 public class CommonProxy {
     public void preInit(FMLPreInitializationEvent event) {
-        com.resimulators.simukraft.debug.StructureStore.init(); //Temporary!
         NameStorage.init();
         ModFluids.init();
         ModBlocks.init();

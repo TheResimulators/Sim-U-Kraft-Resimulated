@@ -1,6 +1,7 @@
 package com.resimulators.simukraft.init;
 
 import com.resimulators.simukraft.SimUTab;
+import com.resimulators.simukraft.common.item.ItemBlueprint;
 import com.resimulators.simukraft.common.item.ItemGranules;
 import com.resimulators.simukraft.common.item.base.ItemFoodBase;
 import com.resimulators.simukraft.registry.RegistryHandler;
@@ -17,6 +18,7 @@ public class ModItems {
 	public static final Item CHEESE = new ItemFoodBase("cheese", SimUTab.SUTab, 4, 4, false);
 	public static final Item CHEESEBURGER = new ItemFoodBase("cheeseburger", SimUTab.SUTab, 14, 10, false);
 	public static final Item FRIES = new ItemFoodBase("fries", SimUTab.SUTab, 5, 6, false);
+	public static final Item BLUEPRINT = new ItemBlueprint("blueprint", SimUTab.SUTab);
 
 	public static final Item DEBUG = new ItemDebug("debug", SimUTab.SUTab);
 
@@ -26,6 +28,7 @@ public class ModItems {
 		RegistryHandler.registerItem(CHEESE);
 		RegistryHandler.registerItem(CHEESEBURGER);
 		RegistryHandler.registerItem(FRIES);
+		RegistryHandler.registerItem(BLUEPRINT);
 
 		if ((Boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment")) {
 		    //Register all debug items here, these will only show up in a development environment!

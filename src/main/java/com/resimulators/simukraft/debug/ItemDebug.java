@@ -14,6 +14,7 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Loader;
 
@@ -31,26 +32,13 @@ public class ItemDebug extends ItemBase {
     }
 
     @Override
-    public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        if (!worldIn.isRemote) {
-            EntitySim sim = new EntitySim(worldIn);
-            sim.setPosition(pos.getX(), pos.getY() + 1, pos.getZ());
-            sim.setProfession(1);
-            sim.setStructure(new Structure(StructureStore.debugStructure1));
-            sim.setAllowedToBuild(true);
-            sim.setFemale(randomizeGender());
-            worldIn.spawnEntity(sim);
-        }
-
-        return EnumActionResult.SUCCESS;
-    }
-
-    @Override
     public boolean itemInteractionForEntity(ItemStack stack, EntityPlayer playerIn, EntityLivingBase target, EnumHand hand) {
-        if (target instanceof EntitySim) {
-            ((EntitySim) target).setProfession(1);
-            ((EntitySim) target).setStructure(Structure.load(new File(Loader.instance().getConfigDir(), Reference.MOD_ID + ".struct")));
-            ((EntitySim) target).setAllowedToBuild(true);
+        if (!playerIn.world.isRemote) {
+            if (target instanceof EntitySim) {
+                playerIn.sendMessage(new TextComponentString("Profession: " + ((EntitySim) target).getProfession()));
+                playerIn.sendMessage(new TextComponentString("Gender: " + ((EntitySim) target).getGender()));
+                playerIn.sendMessage(new TextComponentString("Variation: " + ((EntitySim) target).getVariation()));
+            }
         }
 
         return true;
@@ -58,13 +46,5 @@ public class ItemDebug extends ItemBase {
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(ChatFormatting.LIGHT_PURPLE + "Right click on ground to spawn a random Sim ready to build.");
-        tooltip.add(ChatFormatting.LIGHT_PURPLE + "Right click on Sim to initialize the building AI ones more.");
-    }
-
-    private boolean randomizeGender() {
-        Random rand = new Random();
-        int dice = rand.nextInt(2);
-        return dice != 0 && dice == 1;
     }
 }

@@ -3,9 +3,11 @@ package com.resimulators.simukraft.client.render;
 import com.resimulators.simukraft.Reference;
 import com.resimulators.simukraft.client.model.ModelSim;
 import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLiving;
+import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.layers.*;
 import net.minecraft.item.EnumAction;
@@ -13,13 +15,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHandSide;
 import net.minecraft.util.ResourceLocation;
 
+import java.awt.*;
+
 /**
  * Created by fabbe on 19/01/2018 - 9:04 PM.
  */
-public class RenderSim extends RenderLiving<EntitySim> {
+public class RenderSim extends RenderLivingBase<EntitySim> {
     public RenderSim(RenderManager renderManager) {
         super(renderManager, new ModelSim(0.0F), 0.5F);
-        this.addLayer(new LayerBipedArmor(this));
         this.addLayer(new LayerHeldItem(this));
         this.addLayer(new LayerArrow(this));
         this.addLayer(new LayerCustomHead(this.getMainModel().bipedHead));

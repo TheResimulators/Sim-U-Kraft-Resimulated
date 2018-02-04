@@ -41,22 +41,16 @@ public class EntitySim extends EntityAgeable implements INpc {
     private EntityPlayer commander;
     private Structure structure;
     private boolean isAllowedToBuild;
+    private BlockPos startPos;
 
     private boolean areAdditionalTasksSet;
     private int wealth;
 
     private final InventoryBasic inventory;
 
-    public EntitySim(World world) {
-        this(world, 0, 0, false);
-    }
-
-    public EntitySim(World worldIn, int variationID, int professionID, boolean female) {
+    public EntitySim(World worldIn) {
         super(worldIn);
         this.inventory = new InventoryBasic("Items", false, 8);
-        this.setVariation(variationID);
-        this.setProfession(professionID);
-        this.setFemale(female);
         this.setSize(0.6f, 1.95f);
         ((PathNavigateGround)this.getNavigator()).setBreakDoors(true);
         this.setCanPickUpLoot(true);
@@ -68,14 +62,13 @@ public class EntitySim extends EntityAgeable implements INpc {
     protected void initEntityAI() {
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIAvoidEntity(this, EntityZombie.class, 8.0f, 0.6d, 0.6d));
-        //this.tasks.addTask(2, new AISimBuild(this));
-        this.tasks.addTask(2, new EntityAIMoveIndoors(this));
-        this.tasks.addTask(3, new EntityAIRestrictOpenDoor(this));
-        this.tasks.addTask(4, new EntityAIOpenDoor(this, true));
-        this.tasks.addTask(5, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0f, 1.0f));
-        this.tasks.addTask(5, new EntityAIWanderAvoidWater(this, 0.6d));
-        this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityLiving.class, 8.0f));
-        this.targetTasks.addTask(2, new AISimBuild(this));
+        this.tasks.addTask(2, new AISimBuild(this));
+        this.tasks.addTask(3, new EntityAIMoveIndoors(this));
+        this.tasks.addTask(4, new EntityAIRestrictOpenDoor(this));
+        this.tasks.addTask(5, new EntityAIOpenDoor(this, true));
+        this.tasks.addTask(6, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0f, 1.0f));
+        this.tasks.addTask(6, new EntityAIWanderAvoidWater(this, 0.6d));
+        this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityLiving.class, 8.0f));
     }
 
     private void setAdditionalAITasks() {
@@ -108,7 +101,7 @@ public class EntitySim extends EntityAgeable implements INpc {
     public boolean processInteract(EntityPlayer player, EnumHand hand) {
         ItemStack itemStack = player.getHeldItem(hand);
         boolean flag = itemStack.getItem() == Items.NAME_TAG;
-        boolean flag2 = itemStack.getItem() == ModItems.DEBUG;
+        boolean flag2 = itemStack.getItem() == ModItems.DEBUG || itemStack.getItem() == ModItems.BLUEPRINT;
         if (flag) {
             itemStack.interactWithEntity(player, this, hand);
             return true;
@@ -125,9 +118,9 @@ public class EntitySim extends EntityAgeable implements INpc {
     @Override
     protected void entityInit() {
         super.entityInit();
-        this.dataManager.register(VARIATION, rand.nextInt(50));
+        this.dataManager.register(VARIATION, 0);
         this.dataManager.register(PROFESSION, 0);
-        this.dataManager.register(FEMALE, randomizeGender());
+        this.dataManager.register(FEMALE, false);
     }
 
     @Override
@@ -154,10 +147,15 @@ public class EntitySim extends EntityAgeable implements INpc {
     @Override
     public void readEntityFromNBT(NBTTagCompound compound) {
         super.readEntityFromNBT(compound);
-        this.setVariation(compound.getInteger("Variation"));
-        this.setProfession(compound.getInteger("Profession"));
-        this.setFemale(compound.getBoolean("female"));
-        this.wealth = compound.getInteger("Riches");
+
+        if (compound.hasKey("Variation"))
+            this.setVariation(compound.getInteger("Variation"));
+        if (compound.hasKey("Profession"))
+            this.setProfession(compound.getInteger("Profession"));
+        if (compound.hasKey("female"))
+            this.setFemale(compound.getBoolean("female"));
+        if (compound.hasKey("Riches"))
+            this.wealth = compound.getInteger("Riches");
 
         NBTTagList nbtTagList = compound.getTagList("Inventory", 10);
         for (int i = 0; i < nbtTagList.tagCount(); i++) {
@@ -198,12 +196,31 @@ public class EntitySim extends EntityAgeable implements INpc {
         return Math.max(this.dataManager.get(PROFESSION), 0);
     }
 
+    public String getLabeledProfession() {
+        switch (getProfession()) {
+            case 0:
+                return "Nitwit";
+            case 1:
+                return "Builder";
+        }
+
+        return "Oh well, this is awkward.";
+    }
+
     public void setStructure(Structure structure) {
         this.structure = structure;
     }
 
     public Structure getStructure() {
         return this.structure;
+    }
+
+    public void setStartPos(BlockPos startPos) {
+        this.startPos = startPos;
+    }
+
+    public BlockPos getStartPos() {
+        return startPos;
     }
 
     public void setAllowedToBuild(boolean allowed) {
@@ -249,7 +266,9 @@ public class EntitySim extends EntityAgeable implements INpc {
     @Override
     public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata) {
         IEntityLivingData livingData = super.onInitialSpawn(difficulty, livingdata);
-        this.setFemale(randomizeGender());
+        this.setFemale(randomizeBoolean());
+        this.setProfession(rand.nextInt(2));
+        SimUKraft.getLogger().info(this.getProfession());
         if (this.getFemale()) {
             this.setCustomNameTag(NameStorage.femalenames.get(new Random().nextInt(NameStorage.femalenames.size())));
             this.setVariation(rand.nextInt(10));
@@ -294,8 +313,7 @@ public class EntitySim extends EntityAgeable implements INpc {
         return false;
     }
 
-    //return false for male, return true for female
-    private boolean randomizeGender() {
+    private boolean randomizeBoolean() {
         int dice = rand.nextInt(2);
         return dice != 0 && dice == 1;
     }

@@ -6,6 +6,7 @@ item.simukraft:cheese.name=Cheese
 item.simukraft:cheeseburger.name=Cheeseburger
 item.simukraft:fries.name=Fries
 item.simukraft:debug.name=Debug Stick
+item.simukraft:blueprint.name=Blueprint
 
 item.simukraft:granules.copper.name=Copper Granules
 item.simukraft:granules.gold.name=Gold Granules
@@ -36,6 +37,7 @@ tile.simukraft:light.blue.name=Blue Light
 #############################################################################
 #                                 Entities                                  #
 #############################################################################
+entity.sim.name=Sim
 
 #############################################################################
 #                               Advancements                                #
