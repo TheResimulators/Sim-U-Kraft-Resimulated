@@ -56,6 +56,7 @@ itemGroup.simukraft=Sim-U-Kraft
 commands.simukraft:structure.usage=/structure <save|help> ...
 commands.simukraft:structure.save.usage=/structure save <x1> <y1> <z1> <x2> <y2> <z2> <name>
 commands.simukraft:structure.save.fileexists=File already exists. Specify another name.
+commands.simukraft:structure.load.usage=/structure load <name>
 
 #############################################################################
 #                               Miscellaneous                               #

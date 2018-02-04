@@ -4,6 +4,7 @@ import com.mojang.realmsclient.gui.ChatFormatting;
 import com.resimulators.simukraft.Reference;
 import com.resimulators.simukraft.SimUKraft;
 import com.resimulators.simukraft.SimUTab;
+import com.resimulators.simukraft.Utilities;
 import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
 import com.resimulators.simukraft.common.item.base.ItemBase;
 import com.resimulators.simukraft.common.tileentity.structure.Structure;
@@ -43,15 +44,6 @@ public class ItemBlueprint extends ItemBase {
 
     @Override
     public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        if (!worldIn.isRemote && (Boolean)Launch.blackboard.get("fml.deobfuscatedEnvironment")) {
-            if (player.getHeldItem(hand).getItem() == ModItems.BLUEPRINT) {
-                if (worldIn.getBlockState(pos).getBlock() == ModBlocks.CONSTRUCTOR_BOX && player.isSneaking()) {
-                    this.setStructure(player.getHeldItem(hand), new File(Loader.instance().getConfigDir() + "\\simukraft\\structures\\" + "slab_test" + ".struct"));
-                    return EnumActionResult.SUCCESS;
-                }
-            }
-        }
-
         if (!worldIn.isRemote && player.isSneaking()) {
             this.setStartPos(player.getHeldItem(hand), pos.offset(facing));
         }
@@ -138,10 +130,11 @@ public class ItemBlueprint extends ItemBase {
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-        tooltip.add("Structure: " + ChatFormatting.DARK_PURPLE + getStructureName(stack));
+        if (getStructureName(stack).length() > 0)
+            tooltip.add("Structure: " + ChatFormatting.DARK_PURPLE + Utilities.upperCaseFirstLetterInEveryWord(getStructureName(stack).split("_")));
+        else
+            tooltip.add("Structure: " + ChatFormatting.DARK_PURPLE + "No structure set");
         BlockPos pos = getStartPos(stack);
-        tooltip.add("Build Position: " + ChatFormatting.DARK_GRAY + "[" + ChatFormatting.GOLD + "X" + ChatFormatting.GRAY + ": " + ChatFormatting.DARK_PURPLE + pos.getX() + ChatFormatting.DARK_GRAY + "] ["
-                + ChatFormatting.GOLD + "Y" + ChatFormatting.GRAY + ": " + ChatFormatting.DARK_PURPLE + pos.getY() + ChatFormatting.DARK_GRAY + "] [" +
-                ChatFormatting.GOLD + "Z" + ChatFormatting.GRAY + ": " + ChatFormatting.DARK_PURPLE + pos.getZ() + ChatFormatting.DARK_GRAY + "]");
+        tooltip.add("Build Position: " + Utilities.formatBlockPos(pos));
     }
 }
