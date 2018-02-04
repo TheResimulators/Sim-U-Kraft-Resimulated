@@ -3,11 +3,13 @@ package com.resimulators.simukraft.common.entity.ai;
 import com.resimulators.simukraft.SimUKraft;
 import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
 import com.resimulators.simukraft.common.tileentity.structure.Structure;
+import net.minecraft.block.BlockDoor;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -80,14 +82,7 @@ public class AISimBuild extends EntityAIBase {
             int y = (progress / structure.getWidth()) / structure.getDepth();
             if (y >= structure.getHeight()) {
                 progress = 0;
-                boolean success = this.entitySim.getNavigator().tryMoveToXYZ(entitySim.getStartPos().getX(), entitySim.getStartPos().getY(), entitySim.getStartPos().getZ(), 0.7);
-                if (!success) {
-                    for (int i = 0; i < 20; i++) {
-                        boolean tpSuccess = this.entitySim.attemptTeleport(entitySim.getStartPos().getX() + (rand.nextInt(2) - 1) + 0.5, entitySim.getStartPos().getY() + (rand.nextInt(2)), entitySim.getStartPos().getZ() + (rand.nextInt(2) - 1) + 0.5);
-                        if (tpSuccess)
-                            break;
-                    }
-                }
+                this.entitySim.attemptTeleport(entitySim.getStartPos().getX() - 1, entitySim.getStartPos().getY(), entitySim.getStartPos().getZ());
                 this.entitySim.setHeldItem(EnumHand.MAIN_HAND, ItemStack.EMPTY);
                 this.entitySim.setStructure(null);
                 this.entitySim.setAllowedToBuild(false);
@@ -102,7 +97,11 @@ public class AISimBuild extends EntityAIBase {
                         currentPos = startPos.add(x + 1, y, z);
                         this.entitySim.setHeldItem(EnumHand.MAIN_HAND, structure.getItemStack(x, y, z));
                         this.entitySim.getLookHelper().setLookPosition(currentPos.getX(), currentPos.getY(), currentPos.getZ(), 360, 360);
-                        this.entitySim.world.setBlockState(currentPos, structure.getBlock(x, y, z));
+                        if (structure.getBlock(x, y, z).getBlock() instanceof BlockDoor && structure.getBlock(x, y, z) == structure.getBlock(x, y, z).withProperty(BlockDoor.HALF, BlockDoor.EnumDoorHalf.LOWER)) {
+                            this.entitySim.world.setBlockState(currentPos, structure.getBlock(x, y, z));
+                            this.entitySim.world.setBlockState(currentPos.offset(EnumFacing.UP), structure.getBlock(x, y + 1, z));
+                        } else
+                            this.entitySim.world.setBlockState(currentPos, structure.getBlock(x, y, z));
                         this.entitySim.swingArm(EnumHand.MAIN_HAND);
                         progress++;
                         cooldown = rand.nextInt(10) + 5;
