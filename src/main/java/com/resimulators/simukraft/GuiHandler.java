@@ -1,5 +1,6 @@
 package com.resimulators.simukraft;
 
+import com.resimulators.simukraft.client.gui.GuiSim;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
@@ -22,7 +23,7 @@ public class GuiHandler implements IGuiHandler {
     @Override
     public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
         if (ID == GUI_SIM) {
-            // return new GuiSim(player);
+            return new GuiSim(player);
         }
 
         return null;
