@@ -1,6 +1,7 @@
 package com.resimulators.simukraft.init;
 
 import com.resimulators.simukraft.common.tileentity.TileConstructor;
+import com.resimulators.simukraft.common.tileentity.TileFarm;
 import net.minecraft.tileentity.TileEntity;
 
 /**
@@ -9,5 +10,8 @@ import net.minecraft.tileentity.TileEntity;
 public class ModTileEntities {
     public static void init() {
         TileEntity.register("constructor", TileConstructor.class);
+        TileEntity.register("farm", TileFarm.class);
     }
-}
+
+    }
+
