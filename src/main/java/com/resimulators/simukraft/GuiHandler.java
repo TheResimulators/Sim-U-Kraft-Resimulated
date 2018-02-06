@@ -1,9 +1,12 @@
 package com.resimulators.simukraft;
 
+import com.resimulators.simukraft.client.gui.GuiFarm;
 import com.resimulators.simukraft.client.gui.GuiSim;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 
@@ -12,20 +15,21 @@ import javax.annotation.Nullable;
  */
 public class GuiHandler implements IGuiHandler {
     public static final int GUI_SIM = 0;
-
+    public static final int GUI_Farm = 1;
     @Nullable
     @Override
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
         return null;
     }
-
+    @SideOnly(Side.CLIENT)
     @Nullable
     @Override
     public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-        if (ID == GUI_SIM) {
+        if (ID == GUI_SIM)
             return new GuiSim(player);
+        if (ID ==  GUI_Farm){
+            return new GuiFarm();
         }
-
         return null;
     }
 }
