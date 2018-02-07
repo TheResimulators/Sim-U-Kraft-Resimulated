@@ -8,9 +8,6 @@ public class TileFarmBase extends TileEntity {
     protected int length = 5;
 
     public void CreateFarm() {
-        int x = 1;
-        int z = 1;
-        int y = 0;
 
 
 

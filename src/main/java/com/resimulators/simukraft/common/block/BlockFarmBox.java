@@ -1,7 +1,6 @@
 package com.resimulators.simukraft.common.block;
 
 import com.resimulators.simukraft.common.block.base.BlockBase;
-import com.resimulators.simukraft.common.tileentity.base.TileFarmBase;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -29,12 +28,10 @@ public class BlockFarmBox extends BlockBase {
 
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-
     }
 
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        //TODO: implement logic
         return false;
     }
 }
