@@ -1,6 +1,5 @@
 package com.resimulators.simukraft.common.command;
 
-import com.resimulators.simukraft.common.block.BlockConstructorBox;
 import com.resimulators.simukraft.common.item.ItemBlueprint;
 import com.resimulators.simukraft.common.tileentity.structure.Structure;
 import com.resimulators.simukraft.init.ModItems;
@@ -74,7 +73,7 @@ public class CommandStructure extends CommandTreeBase {
 		@Override
 		public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
             int i = 0;
-            StructureBoundingBox bounds = null;
+            StructureBoundingBox bounds;
 			if (args.length == 7) {
                 i = 6;
                 BlockPos corner0 = parseBlockPos(sender, args, 0, false);
