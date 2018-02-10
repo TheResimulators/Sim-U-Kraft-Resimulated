@@ -1,29 +1,23 @@
 package com.resimulators.simukraft.common.item;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
-import com.resimulators.simukraft.Reference;
 import com.resimulators.simukraft.SimUKraft;
-import com.resimulators.simukraft.SimUTab;
 import com.resimulators.simukraft.Utilities;
 import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
 import com.resimulators.simukraft.common.item.base.ItemBase;
 import com.resimulators.simukraft.common.tileentity.structure.Structure;
-import com.resimulators.simukraft.init.ModBlocks;
-import com.resimulators.simukraft.init.ModItems;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.launchwrapper.Launch;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.Loader;
-import org.lwjgl.input.Keyboard;
 
 import javax.annotation.Nullable;
 import java.io.File;
@@ -38,8 +32,21 @@ public class ItemBlueprint extends ItemBase {
     }
 
     @Override
-    public void onCreated(ItemStack stack, World worldIn, EntityPlayer playerIn) {
-        super.onCreated(stack, worldIn, playerIn);
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
+        if (!worldIn.isRemote && playerIn.isSneaking() && playerIn.rayTrace(6, 20) == null) {
+            ItemStack stack = playerIn.getHeldItem(handIn);
+            NBTTagCompound compound = stack.getTagCompound();
+            if (compound != null) {
+                compound.removeTag("structurename");
+                compound.removeTag("structurefile");
+                compound.removeTag("posx");
+                compound.removeTag("posy");
+                compound.removeTag("posz");
+                stack.setTagCompound(compound);
+            }
+        }
+
+        return ActionResult.newResult(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn));
     }
 
     @Override
