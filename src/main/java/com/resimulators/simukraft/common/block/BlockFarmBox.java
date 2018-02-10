@@ -35,7 +35,7 @@ public class BlockFarmBox extends BlockBase {
 
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-    playerIn.openGui(SimUKraft.instance,GuiHandler.GUI_FARM,worldIn, pos.getX(), pos.getY(), pos.getZ());
+        playerIn.openGui(SimUKraft.instance, GuiHandler.GUI_FARM, worldIn, pos.getX(), pos.getY(), pos.getZ());
         return false;
     }
 }

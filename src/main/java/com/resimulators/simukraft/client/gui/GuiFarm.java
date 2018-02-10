@@ -16,13 +16,15 @@ public class GuiFarm extends GuiScreen {
     public void drawScreen(int mouseX, int mouseY,float partialTicks)
     {
         drawDefaultBackground();
-        super.drawScreen(mouseX,mouseY, partialTicks);
-        drawString(mc.fontRenderer, "Gender:",guiWidth,guiHeight, Color.WHITE.getRGB() );
+        super.drawScreen(mouseX, mouseY, partialTicks);
+        drawString(mc.fontRenderer, "Gender:", guiWidth, guiHeight, Color.WHITE.getRGB());
     }
+
     @Override
     public void initGui() {
         super.initGui();
     }
+
     @Override
     protected void actionPerformed(GuiButton button) throws IOException{
         super.actionPerformed(button);
