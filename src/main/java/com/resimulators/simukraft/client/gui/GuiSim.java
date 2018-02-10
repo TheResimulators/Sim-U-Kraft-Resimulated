@@ -41,9 +41,6 @@ public class GuiSim extends GuiScreen {
         super.drawScreen(mouseX, mouseY, partialTicks);
         GlStateManager.pushMatrix();
         {
-            TextureManager manager = mc.getTextureManager();
-            manager.bindTexture(new ResourceLocation("textures/gui/demo_background.png"));
-
             GlStateManager.disableLighting();
             drawString(mc.fontRenderer, simName, (width / 2 - 125 + 8), (height / 2 - 100 + 8), Color.WHITE.getRGB());
             drawString(mc.fontRenderer, "Gender: " + entitySim.getGender(), (width / 2 - 125 + 8), (height / 2 - 100 + 20), Color.WHITE.getRGB());
