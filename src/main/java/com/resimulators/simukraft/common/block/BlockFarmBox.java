@@ -1,5 +1,8 @@
 package com.resimulators.simukraft.common.block;
 
+import com.resimulators.simukraft.GuiHandler;
+import com.resimulators.simukraft.SimUKraft;
+import com.resimulators.simukraft.client.gui.GuiFarm;
 import com.resimulators.simukraft.common.block.base.BlockBase;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -32,6 +35,7 @@ public class BlockFarmBox extends BlockBase {
 
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    playerIn.openGui(SimUKraft.instance,GuiHandler.GUI_FARM,worldIn, pos.getX(), pos.getY(), pos.getZ());
         return false;
     }
 }
