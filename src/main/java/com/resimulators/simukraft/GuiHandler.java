@@ -15,19 +15,21 @@ import javax.annotation.Nullable;
  */
 public class GuiHandler implements IGuiHandler {
     public static final int GUI_SIM = 0;
-    public static final int GUI_Farm = 1;
+    public static final int GUI_FARM = 1;
+
     @Nullable
     @Override
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
         return null;
     }
+
     @SideOnly(Side.CLIENT)
     @Nullable
     @Override
     public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
         if (ID == GUI_SIM)
             return new GuiSim(player);
-        if (ID ==  GUI_Farm){
+        if (ID == GUI_FARM){
             return new GuiFarm();
         }
         return null;
