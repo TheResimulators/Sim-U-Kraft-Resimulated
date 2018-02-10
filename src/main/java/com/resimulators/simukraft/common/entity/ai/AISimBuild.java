@@ -146,6 +146,7 @@ public class AISimBuild extends EntityAIBase {
         this.entitySim.getLookHelper().setLookPosition(currentPos.getX(), currentPos.getY(), currentPos.getZ(), 360, 360);
         this.entitySim.setHeldItem(EnumHand.MAIN_HAND, blockState.getBlock().getItem(null, null, blockState));
         this.entitySim.world.setBlockState(pos, blockState);
+        this.entitySim.world.playSound(null, pos, blockState.getBlock().getSoundType().getPlaceSound(), SoundCategory.BLOCKS, 1.0f, (rand.nextFloat() - 0.5f) / 5);
         this.entitySim.swingArm(EnumHand.MAIN_HAND);
     }
 }
