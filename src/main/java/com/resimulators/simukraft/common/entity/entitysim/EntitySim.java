@@ -25,6 +25,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
+import net.minecraft.world.gen.structure.StructureBoundingBox;
 
 import javax.annotation.Nullable;
 import java.util.Random;
@@ -39,9 +40,17 @@ public class EntitySim extends EntityAgeable implements INpc {
 
     private boolean isPlaying;
     private EntityPlayer commander;
+
+    //Builder profession related
     private Structure structure;
     private boolean isAllowedToBuild;
     private BlockPos startPos;
+
+    //Farmer profession related
+    private BlockPos farmPos1;
+    private BlockPos farmPos2;
+    private StructureBoundingBox bounds;
+
 
     private boolean areAdditionalTasksSet;
     private int wealth;
@@ -61,14 +70,18 @@ public class EntitySim extends EntityAgeable implements INpc {
     @Override
     protected void initEntityAI() {
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(1, new EntityAIAvoidEntity(this, EntityZombie.class, 8.0f, 0.6d, 0.6d));
-        this.tasks.addTask(2, new AISimBuild(this));
+        this.tasks.addTask(1, new EntityAIAvoidEntity<>(this, EntityZombie.class, 8.0f, 0.6d, 0.6d));
+        this.setProfessionAIs();
         this.tasks.addTask(3, new EntityAIMoveIndoors(this));
         this.tasks.addTask(4, new EntityAIRestrictOpenDoor(this));
         this.tasks.addTask(5, new EntityAIOpenDoor(this, true));
         this.tasks.addTask(6, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0f, 1.0f));
         this.tasks.addTask(6, new EntityAIWanderAvoidWater(this, 0.6d));
         this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityLiving.class, 8.0f));
+    }
+
+    private void setProfessionAIs() {
+        this.tasks.addTask(2, new AISimBuild(this));
     }
 
     private void setAdditionalAITasks() {
@@ -81,8 +94,6 @@ public class EntitySim extends EntityAgeable implements INpc {
 
     @Override
     protected void onGrowingAdult() {
-        //Add specific profession activities here.
-
         super.onGrowingAdult();
     }
 
@@ -105,7 +116,7 @@ public class EntitySim extends EntityAgeable implements INpc {
         if (flag) {
             itemStack.interactWithEntity(player, this, hand);
             return true;
-        } else if (!this.holdingSpawnEggOfClass(itemStack, this.getClass()) && this.isEntityAlive() && !isRecievingOrders() && !isChild() && !player.isSneaking() && !flag2) {
+        } else if (!this.holdingSpawnEggOfClass(itemStack, this.getClass()) && this.isEntityAlive() && !isReceivingOrders() && !isChild() && !player.isSneaking() && !flag2) {
             this.setCommander(player);
             player.addTag("ID" + this.getEntityId());
             player.openGui(SimUKraft.instance, GuiHandler.GUI_SIM, this.world, this.getPosition().getX(), this.getPosition().getY(), this.getPosition().getZ());
@@ -130,6 +141,10 @@ public class EntitySim extends EntityAgeable implements INpc {
         compound.setInteger("Profession", this.getProfession());
         compound.setBoolean("Female", this.getFemale());
         compound.setInteger("Riches", this.wealth);
+        if (this.getFarmPos1() != null)
+            compound.setIntArray("FarmPos1", new int[]{this.getFarmPos1().getX(), this.getFarmPos1().getY(), this.getFarmPos1().getZ()});
+        if (this.getFarmPos2() != null)
+            compound.setIntArray("FarmPos2", new int[]{this.getFarmPos2().getX(), this.getFarmPos2().getY(), this.getFarmPos2().getZ()});
 
         NBTTagList nbtTagList = new NBTTagList();
 
@@ -156,6 +171,12 @@ public class EntitySim extends EntityAgeable implements INpc {
             this.setFemale(compound.getBoolean("Female"));
         if (compound.hasKey("Riches"))
             this.wealth = compound.getInteger("Riches");
+        if (compound.hasKey("FarmPos1"))
+            this.setFarmPos1(new BlockPos(compound.getIntArray("FarmPos1")[0], compound.getIntArray("FarmPos1")[1], compound.getIntArray("FarmPos1")[2]));
+        if (compound.hasKey("FarmPos2"))
+            this.setFarmPos2(new BlockPos(compound.getIntArray("FarmPos2")[0], compound.getIntArray("FarmPos2")[1], compound.getIntArray("FarmPos2")[2]));
+        if (compound.hasKey("FarmPos1") && compound.hasKey("FarmPos1"))
+            this.setBounds(new StructureBoundingBox(this.getFarmPos1(), this.getFarmPos2()));
 
         NBTTagList nbtTagList = compound.getTagList("Inventory", 10);
         for (int i = 0; i < nbtTagList.tagCount(); i++) {
@@ -229,6 +250,30 @@ public class EntitySim extends EntityAgeable implements INpc {
         return startPos;
     }
 
+    public void setFarmPos1(BlockPos farmPos1) {
+        this.farmPos1 = farmPos1;
+    }
+
+    public BlockPos getFarmPos1() {
+        return farmPos1;
+    }
+
+    public void setFarmPos2(BlockPos farmPos2) {
+        this.farmPos2 = farmPos2;
+    }
+
+    public BlockPos getFarmPos2() {
+        return farmPos2;
+    }
+
+    public void setBounds(StructureBoundingBox bounds) {
+        this.bounds = bounds;
+    }
+
+    public StructureBoundingBox getBounds() {
+        return bounds;
+    }
+
     public void setAllowedToBuild(boolean allowed) {
         this.isAllowedToBuild = allowed;
     }
@@ -296,7 +341,7 @@ public class EntitySim extends EntityAgeable implements INpc {
         return this.commander;
     }
 
-    public boolean isRecievingOrders() {
+    public boolean isReceivingOrders() {
         return this.commander != null;
     }
 
@@ -322,5 +367,10 @@ public class EntitySim extends EntityAgeable implements INpc {
     private boolean randomizeBoolean() {
         int dice = rand.nextInt(2);
         return dice != 0 && dice == 1;
+    }
+
+    @Override
+    public float getSwingProgress(float partialTickTime) {
+        return super.getSwingProgress(partialTickTime);
     }
 }
