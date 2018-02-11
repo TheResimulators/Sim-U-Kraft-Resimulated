@@ -12,16 +12,30 @@ public class GuiFarm extends GuiScreen {
 
     int guiWidth = 175;
     int guiHeight = 228;
+    int buttonwidth = 200;
+    int buttonheight = 20;
+    int buttonoffset = 40;
+    GuiButton Button1;
+    GuiButton Button2;
+    int BUTTON1 = 1;
+    int BUTTON2 = 2;
+
     @Override
     public void drawScreen(int mouseX, int mouseY,float partialTicks)
     {
         drawDefaultBackground();
+        drawString(mc.fontRenderer,"Farmer",width/2-buttonwidth/2,height/4-10, 0);
         super.drawScreen(mouseX, mouseY, partialTicks);
-        drawString(mc.fontRenderer, "Gender:", guiWidth, guiHeight, Color.WHITE.getRGB());
+
     }
 
     @Override
     public void initGui() {
+        buttonList.clear();
+        buttonList.add(Button1 = new GuiButton(BUTTON1,width/2-buttonwidth/2,height/4+0*buttonoffset,"Hire"));
+        buttonList.add(Button2 = new GuiButton(BUTTON2,width/2-buttonwidth/2,height/4+4*buttonoffset,"Cancel"));
+
+
         super.initGui();
     }
 
