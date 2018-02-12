@@ -24,7 +24,7 @@ public class GuiFarm extends GuiScreen {
     public void drawScreen(int mouseX, int mouseY,float partialTicks)
     {
         drawDefaultBackground();
-        drawString(mc.fontRenderer,"Farmer",width/2-buttonwidth/2,height/4-10, 0);
+        drawString(mc.fontRenderer,"Farmer", (width / 2) - (buttonwidth / 2)height/4-10, Color.WHITE.getRGB());
         super.drawScreen(mouseX, mouseY, partialTicks);
 
     }
