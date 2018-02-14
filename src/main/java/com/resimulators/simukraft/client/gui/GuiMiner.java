@@ -14,10 +14,11 @@ public class GuiMiner extends GuiScreen {
     int buttonwidth = 200;
     int buttonheight = 20;
     int buttonoffsetheight = 40;
+    String status;
     GuiButton Button1;
     GuiButton Button2;
-    int BUTTON1 = 1;
-    int BUTTON2 = 2;
+    final int BUTTON1 = 1;
+    final int BUTTON2 = 2;
 
     @Override
     public void drawScreen(int mouseX, int mouseY,float partialTicks)
@@ -40,7 +41,19 @@ public class GuiMiner extends GuiScreen {
 
     @Override
     protected void actionPerformed(GuiButton button) throws IOException {
+        switch (button.id){
+            case BUTTON1:
+                status = "hiring";
+        updatebuttons();
+        }
         super.actionPerformed(button);
+    }
+
+    private void updatebuttons(){
+        if (status == "hiring"){
+            Button1.visible = false;
+            Button1.enabled = false;
+        }
     }
 
     @Override
