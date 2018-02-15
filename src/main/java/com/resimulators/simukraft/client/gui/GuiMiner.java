@@ -2,6 +2,8 @@ package com.resimulators.simukraft.client.gui;
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.entity.Entity;
+import net.minecraft.world.World;
 
 import java.awt.*;
 import java.io.IOException;
@@ -62,6 +64,7 @@ public class GuiMiner extends GuiScreen {
     }
 
 }
+
 
 
 
