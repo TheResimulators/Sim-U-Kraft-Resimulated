@@ -1,18 +1,20 @@
 package com.resimulators.simukraft.common.entity.entitysim;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-
-import java.util.ArrayList;
-import java.util.List;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class SimToHire {
-    ArrayList<String> sims = new ArrayList<String>;
-
+    private EntitySim entitySim;
+    private String simName;
+    EntityPlayer player ;
+    @SubscribeEvent
     public void Avalablesims(LivingSpawnEvent event){
         if (!(event.getEntity() instanceof EntitySim)){
             return;
 
         }
-
     }
 }
