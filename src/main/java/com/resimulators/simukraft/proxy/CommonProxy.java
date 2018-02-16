@@ -39,6 +39,5 @@ public class CommonProxy {
 
     public void onServerStarted(FMLServerStartedEvent event) {
         MinecraftForge.EVENT_BUS.register(new SimToHire());
-
     }
 }

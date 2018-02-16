@@ -15,27 +15,21 @@ public class GuiFarm extends GuiScreen {
     int buttonwidth = 200;
     int buttonheight = 20;
     int buttonoffsetheight = 40;
-    GuiButton Button1;
-    GuiButton Button2;
-    int BUTTON1 = 1;
-    int BUTTON2 = 2;
+    GuiButton button1;
+    GuiButton button2;
 
     @Override
-    public void drawScreen(int mouseX, int mouseY,float partialTicks)
-    {
+    public void drawScreen(int mouseX, int mouseY,float partialTicks) {
         drawDefaultBackground();
-        drawString(mc.fontRenderer,"Farmer", (width / 2) - (buttonwidth / 3) ,height/4-10, Color.WHITE.getRGB());
+        drawString(mc.fontRenderer, "Farmer", (width / 2) - (buttonwidth / 3) , height / 4 - 10, Color.WHITE.getRGB());
         super.drawScreen(mouseX, mouseY, partialTicks);
-
     }
 
     @Override
     public void initGui() {
         buttonList.clear();
-        buttonList.add(Button1 = new GuiButton(BUTTON1,width/2-buttonwidth/2,height/4+0,"Hire"));
-        buttonList.add(Button2 = new GuiButton(BUTTON2,width/2-buttonwidth/2,height/4+4*buttonoffsetheight,"Cancel"));
-
-
+        buttonList.add(button1 = new GuiButton(0, width / 2 - buttonwidth / 2, height / 4, "Hire"));
+        buttonList.add(button2 = new GuiButton(1, width / 2 - buttonwidth / 2, height / 4 + 4 * buttonoffsetheight, "Cancel"));
         super.initGui();
     }
 
@@ -48,5 +42,4 @@ public class GuiFarm extends GuiScreen {
     public boolean doesGuiPauseGame() {
         return false;
     }
-
 }

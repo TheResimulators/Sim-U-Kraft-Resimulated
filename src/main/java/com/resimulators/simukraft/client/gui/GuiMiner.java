@@ -4,73 +4,61 @@ import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
 import com.resimulators.simukraft.common.entity.entitysim.SimToHire;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.entity.Entity;
-import net.minecraft.world.World;
 
 import java.awt.*;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class GuiMiner extends GuiScreen {
-    String HiredSim = "";
+    String hiredSim = "";
 
-    int guiWidth = 175;
-    int guiHeight = 228;
-    int buttonwidth = 200;
-    int buttonwidth2 = 100;
-    int xoffset = 10;
-    int yoffset = 0;
-    String status;
-    GuiButton Button1;
-    GuiButton Button2;
-    List<EntitySim> Sims = SimToHire.Sims;
-    String name;
-    int i;
-    final int BUTTON1 = 1;
-    final int BUTTON2 = 2;
+    private int buttonWidth = 200;
+    private int xOffset = 10;
+    private int yOffset = 0;
+    private String status;
+    private GuiButton button1;
+    private GuiButton button2;
+    private List<EntitySim> sims;
 
     @Override
-    public void drawScreen(int mouseX, int mouseY,float partialTicks)
-    {
+    public void drawScreen(int mouseX, int mouseY,float partialTicks) {
         drawDefaultBackground();
-        drawString(mc.fontRenderer,"Miner", (width / 2) - (buttonwidth / 3) ,height/4-10, Color.WHITE.getRGB());
+        drawString(mc.fontRenderer, "Miner", (width / 2) - (buttonWidth / 3), height / 4 - 10, Color.WHITE.getRGB());
         super.drawScreen(mouseX, mouseY, partialTicks);
-
     }
 
     @Override
     public void initGui() {
+        sims = SimToHire.sims;
         buttonList.clear();
-        for(i = 0; i < Sims.size(); i++){
-            name = Sims.get(i).getName();
-            buttonList.add(i,new GuiButton(i,i*xoffset,yoffset,name));
-            if (i>5){
-                yoffset = 40;
+        for (int i = 2; i < sims.size(); i++) {
+            String name = sims.get(i).getName();
+            buttonList.add(new GuiButton(i, i * xOffset, yOffset, name));
+            if (i > 5) {
+                yOffset = 40;
             }
         }
-        buttonList.add(Button1 = new GuiButton(BUTTON1,width/2-buttonwidth/2,height/4,"Hire"));
-
-        buttonList.add(Button2 = new GuiButton(BUTTON2,width/2-buttonwidth/2,height/4+4*yoffset,"Cancel"));
-
+        buttonList.add(button1 = new GuiButton(0, width / 2 - buttonWidth / 2, height / 4, "Hire"));
+        buttonList.add(button2 = new GuiButton(1, width / 2 - buttonWidth / 2, height / 4 + (4 * yOffset), "Cancel"));
 
         super.initGui();
     }
 
     @Override
     protected void actionPerformed(GuiButton button) throws IOException {
-        switch (button.id){
-            case BUTTON1:
+        switch (button.id) {
+            case 0:
                 status = "hiring";
-        updatebuttons();
+                updateButtons();
+                break;
         }
         super.actionPerformed(button);
     }
 
-    private void updatebuttons(){
-        if (status == "hiring"){
-            Button1.visible = false;
-            Button1.enabled = false;
+    private void updateButtons(){
+        if (status.equals("hiring")){
+            button1.visible = false;
+            button1.enabled = false;
         }
     }
 
@@ -78,7 +66,6 @@ public class GuiMiner extends GuiScreen {
     public boolean doesGuiPauseGame() {
         return false;
     }
-
 }
 
 
