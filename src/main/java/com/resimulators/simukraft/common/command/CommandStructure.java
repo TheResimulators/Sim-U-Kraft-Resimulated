@@ -30,7 +30,8 @@ public class CommandStructure extends CommandTreeBase {
 	public CommandStructure() {
 		addSubcommand(new CommandStructureSave());
 		addSubcommand(new CommandStructureLoad());
-		addSubcommand(new CommandTreeHelp(this));
+        addSubcommand(new CommandStructureList());
+        addSubcommand(new CommandTreeHelp(this));
 	}
 
 	@Override
@@ -163,6 +164,46 @@ public class CommandStructure extends CommandTreeBase {
                             sender.sendMessage(new TextComponentString("Structure Loaded!"));
                         } else
                             throw new WrongUsageException(getUsage(sender));
+                    } else
+                        throw new WrongUsageException(getUsage(sender));
+                } else
+                    throw new WrongUsageException(getUsage(sender));
+            } else
+                throw new WrongUsageException(getUsage(sender));
+        }
+    }
+    public static class CommandStructureList extends CommandBase {
+        @Override
+        public String getName() {
+            return "list";
+        }
+
+        @Override
+        public String getUsage(ICommandSender sender) {
+            return "commands.simukraft:structure.list.usage";
+        }
+
+        @Override
+        public int getRequiredPermissionLevel() {
+            return 2;
+        }
+
+        @Override
+        public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
+            if (args.length == 0) {
+                Entity entity = sender.getCommandSenderEntity();
+                if (entity instanceof EntityPlayer) {
+                    if (new File(Loader.instance().getConfigDir() + "\\simukraft\\structures\\").exists()) {
+                        File file = new File(Loader.instance().getConfigDir() + "\\simukraft\\structures\\");
+                        String[] fileNames = file.list();
+                        StringBuilder builder = new StringBuilder();
+                        builder.append("Structure files: ");
+                        assert fileNames != null;
+                        for(String s : fileNames) {
+                            builder.append(s).append(", ");
+                        }
+                        String str = builder.toString().replace(".struct", "");
+                        sender.sendMessage(new TextComponentString(str.substring(0, str.length() - 2)));
                     } else
                         throw new WrongUsageException(getUsage(sender));
                 } else
