@@ -22,17 +22,25 @@ public class SimUKraft {
         logger = event.getModLog();
         proxy.preInit(event);
     }
+
     @EventHandler
     public void init(FMLInitializationEvent event) {
         proxy.init(event);
     }
+
     @EventHandler
     public void postInit(FMLPostInitializationEvent event) {
         proxy.postInit(event);
     }
+
     @EventHandler
     public void onServerStarting(FMLServerStartingEvent event) {
         proxy.onServerStarting(event);
+    }
+
+    @EventHandler
+    public void onServerStarted(FMLServerStartedEvent event) {
+        proxy.onServerStarted(event);
     }
 
     public static Logger getLogger() {
