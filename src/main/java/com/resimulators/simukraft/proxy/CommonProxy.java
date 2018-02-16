@@ -4,7 +4,9 @@ import com.resimulators.simukraft.GuiHandler;
 import com.resimulators.simukraft.SimUKraft;
 import com.resimulators.simukraft.common.command.CommandStructure;
 import com.resimulators.simukraft.common.entity.entitysim.NameStorage;
+import com.resimulators.simukraft.common.entity.entitysim.SimToHire;
 import com.resimulators.simukraft.init.*;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 
@@ -23,6 +25,7 @@ public class CommonProxy {
 
     public void init(FMLInitializationEvent event) {
         NetworkRegistry.INSTANCE.registerGuiHandler(SimUKraft.instance, new GuiHandler());
+
         ModOreDict.init();
     }
 
@@ -35,6 +38,7 @@ public class CommonProxy {
     }
 
     public void onServerStarted(FMLServerStartedEvent event) {
+        MinecraftForge.EVENT_BUS.register(new SimToHire());
 
     }
 }
