@@ -1,7 +1,6 @@
 package com.resimulators.simukraft.common.entity.entitysim;
 import net.minecraft.entity.Entity;
 import net.minecraftforge.event.entity.EntityEvent;
-import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import java.util.ArrayList;
 import java.util.List;

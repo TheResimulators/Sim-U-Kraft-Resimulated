@@ -3,10 +3,9 @@ package com.resimulators.simukraft.client.gui;
 import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ResourceLocation;
+
 
 import java.awt.*;
 
