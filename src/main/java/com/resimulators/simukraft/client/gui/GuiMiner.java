@@ -16,9 +16,10 @@ public class GuiMiner extends GuiScreen {
     String hiredSim = "";
 
     private int buttonWidth = 200;
-    private int xOffset = 10;
+    private int xOffset = 50;
     private int yOffset = 0;
-    private String status;
+    private int x = -1;
+    private String status = "";
     private GuiButton button1;
     private GuiButton button2;
     private List<EntitySim> sims;
@@ -28,7 +29,9 @@ public class GuiMiner extends GuiScreen {
     @Override
     public void drawScreen(int mouseX, int mouseY,float partialTicks) {
         drawDefaultBackground();
-        drawString(mc.fontRenderer, "Miner", (width / 2) - (buttonWidth / 3), height / 4 - 10, Color.WHITE.getRGB());
+        if (status != "hiring") {
+            drawString(mc.fontRenderer, "Miner", (width / 2) - (buttonWidth / 3), height / 4 - 10, Color.WHITE.getRGB());
+        }
         this.mouseX = mouseX;
         this.mouseY = mouseY;
         super.drawScreen(mouseX, mouseY, partialTicks);
@@ -38,15 +41,21 @@ public class GuiMiner extends GuiScreen {
     public void initGui() {
         sims = SimToHire.sims;
         buttonList.clear();
-        buttonList.add(button1 = new GuiButton(0, width / 2 - buttonWidth / 2, height - 80, "Hire"));
+        if (status.equals("hiring")) {
+        } else {
+            buttonList.add(button1 = new GuiButton(0, width / 2 - buttonWidth / 2, height - 80, "Hire"));
+        }
         buttonList.add(button2 = new GuiButton(1, width / 2 - buttonWidth / 2, height - 50, "Cancel"));
+        if (status.equals("hiring")){
         for (int i = 2; i < sims.size(); i++) {
             String name = sims.get(i).getName();
-            buttonList.add(new GuiButton(i, i * xOffset, yOffset + 10, name));
-            if (i > 5) {
+            buttonList.add(new GuiButton(i, x * xOffset+10, yOffset + 10,75,20, name));
+            if (i == 4) {
                 yOffset = 30;
+                x = 0;
+            ;
             }
-        }
+        }}
 
         super.initGui();
     }
@@ -70,6 +79,7 @@ public class GuiMiner extends GuiScreen {
         if (status.equals("hiring")){
             button1.visible = false;
             button1.enabled = false;
+            initGui();
         }
     }
 
