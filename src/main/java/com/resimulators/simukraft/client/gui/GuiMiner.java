@@ -16,7 +16,7 @@ public class GuiMiner extends GuiScreen {
     String hiredSim = "";
 
     private int buttonWidth = 200;
-    private int xOffset = 60;
+    private int xOffset = 80;
     private int yOffset = 0;
     private int x = 0;
     private String status = "";
@@ -47,16 +47,26 @@ public class GuiMiner extends GuiScreen {
         }
         buttonList.add(button2 = new GuiButton(1, width / 2 - buttonWidth / 2, height - 50, "Cancel"));
         if (status.equals("hiring")){
-        for (int i = 2; i < sims.size(); i++) {
+        for (int i = 0; i < sims.size(); i++){
+            x++;
             String name = sims.get(i).getName();
-            buttonList.add(new GuiButton(i, x * xOffset+10, yOffset + 10,75,20, name));
-            if (i == 4) {
+            buttonList.add(new GuiButton(i, x * xOffset-30, yOffset + 10,75,20, name));
+            if (i == 5) {
                 yOffset = 30;
                 x = 0;
-            x++;
+            }if (i == 10){
+                yOffset = 60;
+                x = 0;
+            if (i == 15) {
+                yOffset = 90;
+                x = 0;
+            }
+            }
 
             }
-        }}
+
+            }
+
 
         super.initGui();
     }
