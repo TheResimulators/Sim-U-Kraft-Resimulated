@@ -8,6 +8,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraftforge.fml.client.GuiScrollingList;
+import org.lwjgl.opengl.Display;
 
 import java.awt.*;
 import java.io.IOException;
@@ -15,12 +16,12 @@ import java.util.List;
 
 public class GuiMiner extends GuiScreen {
     String hiredSim = "";
-
+    
     private int buttonWidth = 200;
-    private int screen_width = width;
-    private int xOffset = 80;
+    private int screen_width = 1080;
+    private int xOffset = 105;
     private int yOffset = 0;
-    private int x = -1;
+    private int x = 0;
     private String status = "";
     private GuiButton button1;
     private GuiButton button2;
@@ -41,6 +42,8 @@ public class GuiMiner extends GuiScreen {
 
     @Override
     public void initGui() {
+        x = 0;
+        yOffset = 10;
         sims = SimToHire.sims;
         buttonList.clear();
         if (status.equals("hiring")) {
@@ -51,13 +54,14 @@ public class GuiMiner extends GuiScreen {
         if (status.equals("hiring")){
         for (int i = 0; i < sims.size(); i++){
             x++;
-            if (x*xOffset+45 > screen_width){
-                yOffset += 30;
-                x = 0;
-                System.out.println(width + "," + x*xOffset+45);
+            if (((x * xOffset) + 30) > width){
+                yOffset += 25;
+                x = 1;
+
             }
+            System.out.println(width + "," + x*xOffset+45);
             String name = sims.get(i).getName();
-            buttonList.add(new GuiButton(i, x * xOffset-30, yOffset + 10,75,20, name));
+            buttonList.add(new GuiButton(i, x * xOffset-75, yOffset + 5,100,20, name + " last name"));
             }
 
             }
