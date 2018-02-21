@@ -5,6 +5,7 @@ import com.resimulators.simukraft.common.entity.entitysim.SimToHire;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraftforge.fml.client.GuiScrollingList;
 
@@ -16,9 +17,10 @@ public class GuiMiner extends GuiScreen {
     String hiredSim = "";
 
     private int buttonWidth = 200;
+    private int screen_width = width;
     private int xOffset = 80;
     private int yOffset = 0;
-    private int x = 0;
+    private int x = -1;
     private String status = "";
     private GuiButton button1;
     private GuiButton button2;
@@ -49,20 +51,13 @@ public class GuiMiner extends GuiScreen {
         if (status.equals("hiring")){
         for (int i = 0; i < sims.size(); i++){
             x++;
+            if (x*xOffset+45 > screen_width){
+                yOffset += 30;
+                x = 0;
+                System.out.println(width + "," + x*xOffset+45);
+            }
             String name = sims.get(i).getName();
             buttonList.add(new GuiButton(i, x * xOffset-30, yOffset + 10,75,20, name));
-            if (i == 5) {
-                yOffset = 30;
-                x = 0;
-            }if (i == 10){
-                yOffset = 60;
-                x = 0;
-            if (i == 15) {
-                yOffset = 90;
-                x = 0;
-            }
-            }
-
             }
 
             }
