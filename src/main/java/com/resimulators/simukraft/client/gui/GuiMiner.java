@@ -48,6 +48,7 @@ public class GuiMiner extends GuiScreen {
 
         sims = SimToHire.sims;
         buttonList.clear();
+        buttonList.add(button2 = new GuiButton(1, width / 2 - buttonWidth / 2, height - 50, "Cancel"));
         if (status.equals("hiring")) {
 
             buttonList.add(button4 = new GuiButton(3, width-50,30,40,20, "UP"));
@@ -55,7 +56,7 @@ public class GuiMiner extends GuiScreen {
         } else {
             buttonList.add(button1 = new GuiButton(0, width / 2 - buttonWidth / 2, height - 80, "Hire"));
         }
-        buttonList.add(button2 = new GuiButton(1, width / 2 - buttonWidth / 2, height - 50, "Cancel"));
+
 
         button1.enabled = !hiredSim;
         //System.out.println("status equals " +status);
@@ -108,7 +109,7 @@ public class GuiMiner extends GuiScreen {
                 updateButtons(button.id);
                 break;
             case 3:
-                yOffset -= 25;
+                yOffset += -25;
                 updateButtons(button.id);
                 break;
             default:
