@@ -39,4 +39,4 @@ public class BlockTownhall extends BlockBase {
         }
     }
 }
-}
+

@@ -27,7 +27,7 @@ public class ModBlocks {
     public static final Block CONTROL_BOX = new BlockControlBox("control_box", SimUTab.SUTab, Material.IRON, MapColor.IRON);
     public static final Block FARM_BOX = new BlockFarmBox("farm_box",SimUTab.SUTab, Material.ROCK, MapColor.DIRT);
     public static final Block MINE_BOX = new BlockMineBox("mine_box",SimUTab.SUTab, Material.ROCK, MapColor.WOOD);
-    public static final Block TOWNHALL_BOX = new BlockTownhall(("Town Hall",SimUTab.SUTab,Material.ROCK,MapColor.WOOD));
+    public static final Block TOWNHALL_BOX = new BlockTownhall(("Town Hall"),SimUTab.SUTab,Material.ROCK,MapColor.WOOD);
     //Sim-u Kraft Deco Blocks
     public static final Block LIGHT = new BlockLightColored("light",SimUTab.SUTab, Material.WOOD);
     public static final Block RAINBOW_LIGHT = new BlockLight("rainbow_light",SimUTab.SUTab,Material.WOOD,MapColor.SILVER);
