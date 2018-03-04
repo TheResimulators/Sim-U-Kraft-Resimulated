@@ -5,10 +5,8 @@ import com.resimulators.simukraft.common.entity.entitysim.SimToHire;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraftforge.fml.client.GuiScrollingList;
-import org.lwjgl.opengl.Display;
 
 import java.awt.*;
 import java.io.IOException;

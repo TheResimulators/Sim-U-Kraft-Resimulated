@@ -3,6 +3,7 @@ package com.resimulators.simukraft;
 import com.resimulators.simukraft.client.gui.GuiFarm;
 import com.resimulators.simukraft.client.gui.GuiMiner;
 import com.resimulators.simukraft.client.gui.GuiSim;
+import com.resimulators.simukraft.client.gui.GuiStart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
@@ -18,6 +19,7 @@ public class GuiHandler implements IGuiHandler {
     public static final int GUI_SIM = 0;
     public static final int GUI_FARM = 1;
     public static final int GUI_MINER = 2;
+    public static final int GUI_START = 3;
 
     @Nullable
     @Override
@@ -35,6 +37,8 @@ public class GuiHandler implements IGuiHandler {
             return new GuiFarm();
         if (ID == GUI_MINER)
             return new GuiMiner();
+        if (ID == GUI_START)
+            return new GuiStart();
         return null;
     }
 
