@@ -13,17 +13,17 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class PlayerFirstJoin {
-    private boolean isLoaded = false;
-    @SubscribeEvent
-    @SideOnly(Side.CLIENT)
-    public void OnTick(PlayerEvent.PlayerLoggedInEvent event) {
-        World world = event.
-        if (!world.isRemote && !isLoaded) {
-            isLoaded = true;
-            if (!world.isRemote) {
-                Minecraft.getMinecraft().player.openGui(SimUKraft.instance, GuiHandler.GUI_START, world, 1, 1, 1);
-            }
-        }
+    //private boolean isLoaded = false;
+    //@SubscribeEvent
+  //  @SideOnly(Side.CLIENT)
+   // public void OnTick(PlayerEvent.PlayerLoggedInEvent event) {
+     //   World world = event.
+       // if (!world.isRemote && !isLoaded) {
+         //   isLoaded = true;
+           // if (!world.isRemote) {
+             //   Minecraft.getMinecraft().player.openGui(SimUKraft.instance, GuiHandler.GUI_START, world, 1, 1, 1);
+            //}
+       // }
 
-    }
+    //}
 }
