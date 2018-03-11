@@ -3,11 +3,9 @@ package com.resimulators.simukraft.client.render;
 import com.resimulators.simukraft.Reference;
 import com.resimulators.simukraft.client.model.ModelSim;
 import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLiving;
-import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.layers.*;
 import net.minecraft.item.EnumAction;
@@ -15,12 +13,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHandSide;
 import net.minecraft.util.ResourceLocation;
 
-import java.awt.*;
-
 /**
  * Created by fabbe on 19/01/2018 - 9:04 PM.
  */
-public class RenderSim extends RenderLivingBase<EntitySim> {
+public class RenderSim extends RenderLiving<EntitySim> {
     public RenderSim(RenderManager renderManager) {
         super(renderManager, new ModelSim(0.0F), 0.5F);
         this.addLayer(new LayerHeldItem(this));
@@ -28,13 +24,16 @@ public class RenderSim extends RenderLivingBase<EntitySim> {
         this.addLayer(new LayerCustomHead(this.getMainModel().bipedHead));
     }
 
+    @Override
     public ModelSim getMainModel() {
         return (ModelSim)super.getMainModel();
     }
 
+    @Override
     public void doRender(EntitySim entitySim, double x, double y, double z, float entityYaw, float partialTicks) {
         double d0 = y;
         this.bindEntityTexture(entitySim);
+        this.getMainModel().setSmallArms(entitySim.getFemale());
 
         if (entitySim.isSneaking()) {
             d0 = y - 0.125D;
@@ -45,7 +44,7 @@ public class RenderSim extends RenderLivingBase<EntitySim> {
     }
 
     private void setModelVisibilities(EntitySim entitySim) {
-        ModelSim model = this.getMainModel();
+        ModelSim model = getMainModel();
         ItemStack itemstack = entitySim.getHeldItemMainhand();
         ItemStack itemstack1 = entitySim.getHeldItemOffhand();
         model.setVisible(true);
@@ -91,6 +90,7 @@ public class RenderSim extends RenderLivingBase<EntitySim> {
 
     }
 
+    @Override
     public ResourceLocation getEntityTexture(EntitySim entitySim) {
         //TODO: this system is all temporary
         if (entitySim.getFemale())
@@ -101,18 +101,22 @@ public class RenderSim extends RenderLivingBase<EntitySim> {
             return new ResourceLocation("textures/entity/steve.png");
     }
 
+    @Override
     public void transformHeldFull3DItemLayer() {
         GlStateManager.translate(0.0F, 0.1875F, 0.0F);
     }
 
+    @Override
     protected void preRenderCallback(EntitySim entitySim, float partialTickTime) {
         GlStateManager.scale(0.9375F, 0.9375F, 0.9375F);
     }
 
+    @Override
     protected void renderLivingAt(EntitySim entitySim, double x, double y, double z) {
         super.renderLivingAt(entitySim, x, y, z);
     }
 
+    @Override
     protected void applyRotations(EntitySim entitySim, float rotationPitch, float rotationYaw, float partialTicks) {
         super.applyRotations(entitySim, rotationPitch, rotationYaw, partialTicks);
     }
