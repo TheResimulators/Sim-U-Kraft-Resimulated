@@ -19,19 +19,37 @@ public class GuiStart extends GuiScreen{
         drawDefaultBackground();
         drawString(fontRenderer,"Welcome to Sim-u-Kraft",width/2- button_width/2,height/3 - 50, Color.WHITE.getRGB());
         drawCenteredString(fontRenderer,"Please choose a mode to play in:",width/2,height/3-30,Color.WHITE.getRGB());
-        int button1x = button1.x;
-        int button1y = button1.y;
-        System.out.println(button1x+","+ button1y+","+(button1x+button_width)+","+(button1y-button_height)+","+mouseX+","+mouseY);
-        if (button1x <= mouseX && mouseX <= (button1x + button_width)){
+        super.drawScreen(mouseX, mouseY, partialTicks);
+        int buttonx = button1.x;
+        int buttony = button1.y;
+        String desc;
+        desc = "Have to supply most resources."+" Money needed to build and hire sims etc.";
+        //System.out.println(buttonx+","+ buttony+","+(buttonx+button_width)+","+(buttony-button_height)+","+mouseX+","+mouseY);
+        if (buttonx <= mouseX && mouseX <= (buttonx + button_width)){
 
-            if (button1y<=mouseY && mouseY <=(button1y + button_height)){
-                System.out.println("its working, should be");
-                drawHoveringText("Have to supply most resources."+"\n"+"Money needed to build and hire sims etc.",button1x+300,button1y-20);
+            if (buttony<=mouseY && mouseY <=(buttony + button_height)){
+                drawHoveringText(desc,buttonx-fontRenderer.getStringWidth(desc)/3,buttony-10);
+            }
+        }
+        buttony = button2.y;
+        buttonx = button2.x;
+        desc = "Have to supply all resources."+" Money needed to build and hire sims etc.";
+        if (buttonx <= mouseX && mouseX <= (buttonx + button_width)){
+            if (buttony<=mouseY && mouseY <=(buttony + button_height)){
+
+                drawHoveringText(desc,buttonx-fontRenderer.getStringWidth(desc)/3,buttony-10);
+            }
+        }
+        buttonx = button3.x;
+        buttony = button3.y;
+        desc = "Have to supply no resources."+" Everything is Free. Let your imagination run wild";
+        if (buttonx <= mouseX && mouseX <= (buttonx + button_width)){
+
+            if (buttony<=mouseY && mouseY <=(buttony + button_height)){
+                drawHoveringText(desc,buttonx-fontRenderer.getStringWidth(desc)/4,buttony-10);
             }
         }
 
-
-        super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
     @Override
