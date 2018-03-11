@@ -18,6 +18,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import org.lwjgl.input.Keyboard;
 
 import javax.annotation.Nullable;
 import java.io.File;
@@ -137,11 +138,21 @@ public class ItemBlueprint extends ItemBase {
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-        if (getStructureName(stack).length() > 0)
-            tooltip.add("Structure: " + ChatFormatting.DARK_PURPLE + Utilities.upperCaseFirstLetterInEveryWord(getStructureName(stack).split("_")));
-        else
-            tooltip.add("Structure: " + ChatFormatting.DARK_PURPLE + "No structure set");
-        BlockPos pos = getStartPos(stack);
-        tooltip.add("Build Position: " + Utilities.formatBlockPos(pos));
+        if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+            tooltip.add("While holding the item in your hand, ");
+            tooltip.add("run the '" + ChatFormatting.GOLD + "/structure load [name]" + ChatFormatting.GRAY + "' command.");
+            tooltip.add("Right click the ground where you want");
+            tooltip.add("the sim to build it. Then right click a");
+            tooltip.add("builder sim with the blueprint.");
+        } else {
+            tooltip.add(ChatFormatting.DARK_AQUA + "Used to make sims build structures!");
+            if (getStructureName(stack).length() > 0)
+                tooltip.add("Structure: " + ChatFormatting.DARK_PURPLE + Utilities.upperCaseFirstLetterInEveryWord(getStructureName(stack).split("_")));
+            else
+                tooltip.add("Structure: " + ChatFormatting.DARK_RED + "No structure set");
+            BlockPos pos = getStartPos(stack);
+            tooltip.add("Build Position: " + Utilities.formatBlockPos(pos));
+            tooltip.add(ChatFormatting.DARK_AQUA + "Hold '" + ChatFormatting.GOLD + "left shift" + ChatFormatting.DARK_AQUA + "' for more information.");
+        }
     }
 }
