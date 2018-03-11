@@ -320,10 +320,14 @@ public class EntitySim extends EntityAgeable implements INpc {
         this.setFemale(randomizeBoolean());
         this.setProfession(rand.nextInt(2)); //TODO: add more professions.
         if (this.getFemale()) {
-            this.setCustomNameTag(NameStorage.femalenames.get(new Random().nextInt(NameStorage.femalenames.size())));
+            if (NameStorage.femalenames.size() != 0) {
+                this.setCustomNameTag(NameStorage.femalenames.get(new Random().nextInt(NameStorage.femalenames.size())));
+            }
             this.setVariation(rand.nextInt(10));
         } else {
-            this.setCustomNameTag(NameStorage.malenames.get(new Random().nextInt(NameStorage.malenames.size())));
+            if (NameStorage.malenames.size() != 0) {
+                this.setCustomNameTag(NameStorage.malenames.get(new Random().nextInt(NameStorage.malenames.size())));
+            }
             this.setVariation(rand.nextInt(5));
         }
 
