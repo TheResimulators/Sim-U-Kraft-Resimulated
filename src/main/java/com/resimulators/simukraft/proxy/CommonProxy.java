@@ -1,5 +1,6 @@
 package com.resimulators.simukraft.proxy;
 
+import com.resimulators.simukraft.ConfigHandler;
 import com.resimulators.simukraft.GuiHandler;
 import com.resimulators.simukraft.SimUKraft;
 import com.resimulators.simukraft.common.command.CommandStructure;
@@ -16,6 +17,7 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
  */
 public class CommonProxy {
     public void preInit(FMLPreInitializationEvent event) {
+        ConfigHandler.load(event);
         NameStorage.init();
         ModFluids.init();
         ModBlocks.init();
