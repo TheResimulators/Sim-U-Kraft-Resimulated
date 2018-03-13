@@ -6,6 +6,11 @@
     "color=purple": { "model": "simukraft:light_purple" },
     "color=red": { "model": "simukraft:light_red" },
     "color=white": { "model": "simukraft:light_white" },
-    "color=yellow": { "model": "simukraft:light_yellow" }
+    "color=yellow": { "model": "simukraft:light_yellow" },
+    "color=silver": { "model": "simukraft:light_silver" },
+    "color=magenta": { "model": "simukraft:light_magenta" },
+    "color=cyan": { "model": "simukraft:light_cyan" },
+    "color=light_blue": { "model": "simukraft:light_light_blue" },
+    "color=pink": { "model": "simukraft:light_pink" }
   }
 }
