@@ -21,6 +21,7 @@ public class ClientProxy extends CommonProxy {
 
     @Override
     public void init(FMLInitializationEvent event) {
+        MinecraftForge.EVENT_BUS.register(new HudGui());
         super.init(event);
     }
 
