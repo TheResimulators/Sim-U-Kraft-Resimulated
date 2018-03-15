@@ -36,8 +36,10 @@ public class NameStorage {
 
     //Work in progress
     private static List<String> loadFemaleNames() throws IOException {
-        if (!new File(Loader.instance().getConfigDir() + "/" + Reference.MOD_ID, "femalenames.txt").exists())
+        if (!new File(Loader.instance().getConfigDir() + "/" + Reference.MOD_ID, "femalenames.txt").exists()) {
             new File(Loader.instance().getConfigDir() + "/" + Reference.MOD_ID).mkdir();
+            new File(Loader.instance().getConfigDir() + "/" + Reference.MOD_ID + "femalenames.txt").createNewFile();
+        }
         File femalenames = new File(Loader.instance().getConfigDir() + "/" + Reference.MOD_ID, "femalenames.txt");
         BufferedReader reader = new BufferedReader(new FileReader(femalenames));
         return reader.lines().collect(Collectors.toList());
@@ -45,8 +47,10 @@ public class NameStorage {
 
     //Work in progress
     private static List<String> loadMaleNames() throws IOException {
-        if (!new File(Loader.instance().getConfigDir() + "/" + Reference.MOD_ID, "malenames.txt").exists())
+        if (!new File(Loader.instance().getConfigDir() + "/" + Reference.MOD_ID, "malenames.txt").exists()) {
             new File(Loader.instance().getConfigDir() + "/" + Reference.MOD_ID).mkdir();
+            new File(Loader.instance().getConfigDir() + "/" + Reference.MOD_ID + "malenames.txt").createNewFile();
+        }
         File malenames = new File(Loader.instance().getConfigDir() + "/" + Reference.MOD_ID, "malenames.txt");
         BufferedReader reader = new BufferedReader(new FileReader(malenames));
         return reader.lines().collect(Collectors.toList());

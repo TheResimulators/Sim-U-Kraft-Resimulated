@@ -16,6 +16,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
+import org.lwjgl.input.Keyboard;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;
@@ -74,17 +75,27 @@ public class ItemPlanningSheet extends ItemBase {
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         NBTTagCompound compound = stack.getTagCompound();
-        if (compound != null) {
-            if (compound.hasKey("pos1"))
-                tooltip.add("Position 1: " + ChatFormatting.DARK_PURPLE + Utilities.formatBlockPos(getBlockPos1(stack)));
-            else
-                tooltip.add("Position 1: " + ChatFormatting.DARK_PURPLE + "Not set");
-            if (compound.hasKey("pos2"))
-                tooltip.add("Position 2: " + ChatFormatting.DARK_PURPLE + Utilities.formatBlockPos(getBlockPos2(stack)));
-            else
-                tooltip.add("Position 2: " + ChatFormatting.DARK_PURPLE + "Not set");
+        if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+            tooltip.add("To use this, right click the item on " + ChatFormatting.DARK_PURPLE + "first" + ChatFormatting.GRAY + " corner");
+            tooltip.add("of the structure, then right click the " + ChatFormatting.DARK_PURPLE + "second");
+            tooltip.add("corner of the structure. After that, run ");
+            tooltip.add("the '" + ChatFormatting.GOLD + "/structure save [name]" + ChatFormatting.GRAY + "' command.");
         } else {
-            tooltip.add("No positions added!");
+            tooltip.add(ChatFormatting.DARK_AQUA + "Used to save structures!");
+            if (compound != null) {
+                if (compound.hasKey("pos1"))
+                    tooltip.add("Position 1: " + ChatFormatting.DARK_PURPLE + Utilities.formatBlockPos(getBlockPos1(stack)));
+                else
+                    tooltip.add("Position 1: " + ChatFormatting.DARK_RED + "Not set");
+                if (compound.hasKey("pos2"))
+                    tooltip.add("Position 2: " + ChatFormatting.DARK_PURPLE + Utilities.formatBlockPos(getBlockPos2(stack)));
+                else
+                    tooltip.add("Position 2: " + ChatFormatting.DARK_RED + "Not set");
+            } else {
+                tooltip.add("Position 1: " + ChatFormatting.DARK_RED + "Not set");
+                tooltip.add("Position 2: " + ChatFormatting.DARK_RED + "Not set");
+            }
+            tooltip.add(ChatFormatting.DARK_AQUA + "Hold '" + ChatFormatting.GOLD + "left shift" + ChatFormatting.DARK_AQUA + "' for more information.");
         }
     }
 
