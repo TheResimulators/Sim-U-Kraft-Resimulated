@@ -40,7 +40,7 @@ public class EntitySim extends EntityAgeable implements INpc {
 
     private boolean isPlaying;
     private EntityPlayer commander;
-
+    public boolean inlist = false;
     //Builder profession related
     private Structure structure;
     private boolean isAllowedToBuild;
