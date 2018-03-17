@@ -22,7 +22,7 @@ public class HudGui  extends Gui {
     public void Renderstats(RenderGameOverlayEvent event) {
         if (event.getType() == RenderGameOverlayEvent.ElementType.TEXT){
             Minecraft mc = Minecraft.getMinecraft();
-            sim = SimToHire.sims;
+            sim = SimToHire.totalsims;
             if (sim == null){
                 population = 0;
             }else {
