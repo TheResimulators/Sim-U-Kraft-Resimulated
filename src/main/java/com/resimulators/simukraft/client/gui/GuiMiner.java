@@ -44,7 +44,7 @@ public class GuiMiner extends GuiScreen {
     public void initGui() {
         x = 0;
 
-        sims = SimToHire.sims;
+        sims = SimToHire.unemployedsims;
         buttonList.clear();
         buttonList.add(button2 = new GuiButton(1, width / 2 - buttonWidth / 2, height - 50, "Cancel"));
         if (status.equals("hiring")) {
