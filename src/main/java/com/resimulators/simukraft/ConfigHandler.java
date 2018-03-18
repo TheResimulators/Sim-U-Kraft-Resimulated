@@ -46,6 +46,10 @@ public class ConfigHandler {
             List<String> propOrder = Lists.newArrayList();
             general = configFile.getCategory(cat);
 
+            prop = configFile.get(cat, "Special Sim Spawn Chance", ConfigValues.specialSimSpawnChance);
+            prop.setComment("Decides from 1 out of X what chance special sims spawn with.");
+            ConfigValues.specialSimSpawnChance = prop.getInt();
+            propOrder.add(prop.getName());
         }
 
         if(configFile.hasChanged()) {
