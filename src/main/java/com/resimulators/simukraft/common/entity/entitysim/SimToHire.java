@@ -1,13 +1,10 @@
 package com.resimulators.simukraft.common.entity.entitysim;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import net.minecraftforge.event.entity.EntityEvent;
-import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
@@ -28,7 +25,7 @@ public class SimToHire {
         if (!(event.getEntity() instanceof EntitySim)) {
             return;
         } else {
-            if (world.isRemote){
+            if (!world.isRemote){
             if (!((EntitySim) event.getEntity()).inlist) {
                 System.out.println("adding sim");
                 name = event.getEntity();
@@ -41,4 +38,11 @@ public class SimToHire {
             }
         }
     }
-}
+    @Override
+    public void saveNBTData(NBTTagCompound compound){
+            NBTTagCompound nbt = new NBTTagCompound();
+            nbt.setInteger("unemployed sims", unemployedsims.size());
+        }
+
+
+    }
