@@ -13,7 +13,7 @@ import java.util.List;
 import static net.minecraftforge.fml.relauncher.Side.CLIENT;
 
 public class SimToHire {
-    private World world = Minecraft.getMinecraft().world;
+
     public static List<EntitySim> unemployedsims = new ArrayList<>();
     public static List<EntitySim> totalsims = new ArrayList<>();
 
@@ -21,11 +21,12 @@ public class SimToHire {
 
     @SubscribeEvent
     @SideOnly(CLIENT)
-    public void availableSims(LivingSpawnEvent.CheckSpawn event) {
+    public void availableSims(EntityJoinWorldEvent event) {
+        World world = Minecraft.getMinecraft().world;
         if (!(event.getEntity() instanceof EntitySim)) {
             return;
         } else {
-            if (!world.isRemote){
+            if (world.isRemote){
             if (!((EntitySim) event.getEntity()).inlist) {
                 System.out.println("adding sim");
                 name = event.getEntity();
