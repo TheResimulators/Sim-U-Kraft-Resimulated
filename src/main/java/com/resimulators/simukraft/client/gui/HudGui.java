@@ -19,7 +19,7 @@ public class HudGui  extends Gui {
 
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
-    public void Renderstats(RenderGameOverlayEvent event) {
+    public void Renderstats(RenderGameOverlayEvent.Post event) {
         if (event.getType() == RenderGameOverlayEvent.ElementType.TEXT){
             Minecraft mc = Minecraft.getMinecraft();
             sim = SimToHire.totalsims;
