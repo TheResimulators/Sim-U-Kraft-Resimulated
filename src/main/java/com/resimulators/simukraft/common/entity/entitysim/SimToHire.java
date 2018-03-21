@@ -26,24 +26,18 @@ public class SimToHire {
         if (!(event.getEntity() instanceof EntitySim)) {
             return;
         } else {
-            if (world.isRemote){
-            if (!((EntitySim) event.getEntity()).inlist) {
-                System.out.println("adding sim");
-                name = event.getEntity();
-                unemployedsims.add((EntitySim) name);
-                totalsims.add((EntitySim) name);
-                System.out.println("added" + name);
-                ((EntitySim) event.getEntity()).inlist = true;
-                return;
+            if (world.isRemote) {
+                if (!((EntitySim) event.getEntity()).inlist) {
+                    System.out.println("adding sim");
+                    name = event.getEntity();
+                    unemployedsims.add((EntitySim) name);
+                    totalsims.add((EntitySim) name);
+                    System.out.println("added" + name);
+                    ((EntitySim) event.getEntity()).inlist = true;
+                    return;
                 }
             }
         }
     }
-    @Override
-    public void saveNBTData(NBTTagCompound compound){
-            NBTTagCompound nbt = new NBTTagCompound();
-            nbt.setInteger("unemployed sims", unemployedsims.size());
-        }
+}
 
-
-    }
