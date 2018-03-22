@@ -141,6 +141,7 @@ public class EntitySim extends EntityAgeable implements INpc {
         compound.setInteger("Profession", this.getProfession());
         compound.setBoolean("Female", this.getFemale());
         compound.setInteger("Riches", this.wealth);
+        compound.setBoolean("In list", this.inlist);
         if (this.getFarmPos1() != null)
             compound.setIntArray("FarmPos1", new int[]{this.getFarmPos1().getX(), this.getFarmPos1().getY(), this.getFarmPos1().getZ()});
         if (this.getFarmPos2() != null)
@@ -171,6 +172,8 @@ public class EntitySim extends EntityAgeable implements INpc {
             this.setFemale(compound.getBoolean("Female"));
         if (compound.hasKey("Riches"))
             this.wealth = compound.getInteger("Riches");
+        if(compound.hasKey("In list"))
+            this.inlist = compound.getBoolean("In list");
         if (compound.hasKey("FarmPos1"))
             this.setFarmPos1(new BlockPos(compound.getIntArray("FarmPos1")[0], compound.getIntArray("FarmPos1")[1], compound.getIntArray("FarmPos1")[2]));
         if (compound.hasKey("FarmPos2"))
