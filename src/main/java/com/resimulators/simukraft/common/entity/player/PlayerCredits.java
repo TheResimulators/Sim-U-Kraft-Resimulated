@@ -10,12 +10,13 @@ import java.util.List;
 
 public class PlayerCredits implements INBTSerializable<NBTTagCompound>{
     public static float credits = 10;
-    List<EntitySim> total_sim =  SimToHire.totalsims;
+    List<String> total_sim =  SimToHire.totalsims;
     NBTTagList taglist = new NBTTagList();
+    public NBTTagCompound nbt = new NBTTagCompound();
+    public NBTTagCompound sims = new NBTTagCompound();
     @Override
     public NBTTagCompound serializeNBT() {
-        NBTTagCompound nbt = new NBTTagCompound();
-        NBTTagCompound sims = new NBTTagCompound();
+
 
         for(int i = 0; 1 < total_sim.size(); i++){
             String total_sims = String.valueOf(total_sim.get(i));

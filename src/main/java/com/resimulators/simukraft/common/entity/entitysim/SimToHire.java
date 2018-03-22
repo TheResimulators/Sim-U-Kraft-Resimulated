@@ -15,7 +15,7 @@ import static net.minecraftforge.fml.relauncher.Side.CLIENT;
 public class SimToHire {
 
     public static List<EntitySim> unemployedsims = new ArrayList<>();
-    public static List<EntitySim> totalsims = new ArrayList<>();
+    public static List<String> totalsims = new ArrayList<>();
 
     Entity name;
 
@@ -31,7 +31,7 @@ public class SimToHire {
                     System.out.println("adding sim");
                     name = event.getEntity();
                     unemployedsims.add((EntitySim) name);
-                    totalsims.add((EntitySim) name);
+                    totalsims.add(("ID"+ event.getEntity().getEntityId()));
                     System.out.println("added" + name);
                     ((EntitySim) event.getEntity()).inlist = true;
                     return;

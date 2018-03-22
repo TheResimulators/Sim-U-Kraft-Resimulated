@@ -2,11 +2,14 @@ package com.resimulators.simukraft.client.gui;
 
 import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
 import com.resimulators.simukraft.common.entity.entitysim.SimToHire;
+import com.resimulators.simukraft.common.entity.player.PlayerCredits;
+import com.resimulators.simukraft.network.Credits_packets;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraftforge.fml.client.GuiScrollingList;
+import com.resimulators.simukraft.network.PacketHandler;
 
 import java.awt.*;
 import java.io.IOException;
@@ -107,7 +110,8 @@ public class GuiMiner extends GuiScreen {
                 updateButtons(button.id);
                 break;
             case 3:
-                yOffset += -25;
+                PlayerCredits.credits -= .5;
+                PacketHandler.INSTANCE.sendToServer(new Credits_packets());
                 updateButtons(button.id);
                 break;
             default:
