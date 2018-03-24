@@ -1,7 +1,7 @@
 package com.resimulators.simukraft.client.gui;
 
+import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
 import com.resimulators.simukraft.common.entity.entitysim.SimToHire;
-import com.resimulators.simukraft.common.entity.player.PlayerCredits;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.entity.Entity;
@@ -14,9 +14,9 @@ import java.awt.*;
 import java.util.List;
 
 public class HudGui  extends Gui {
-    private List<Entity> sim;
+    private List<EntitySim> sim;
     private int population = 1;
-    private static float credits = PlayerCredits.credits;
+    private static float credits = SimToHire.credits;
 
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
