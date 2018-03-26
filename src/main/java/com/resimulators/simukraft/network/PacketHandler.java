@@ -11,8 +11,9 @@ import net.minecraftforge.fml.relauncher.Side;
 public class PacketHandler {
     public static final SimpleNetworkWrapper INSTANCE = NetworkRegistry.INSTANCE.newSimpleChannel(Reference.MOD_ID);
     public static void init() {
-        INSTANCE.registerMessage(Credits_packet_handler.class,Credits_packets.class,0, Side.CLIENT);
-        INSTANCE.registerMessage(Credits_packet_handler.class,Credits_packets.class,1,Side.SERVER);
+        INSTANCE.registerMessage(Credits_Handler.class,Credits_packets.class,0,Side.SERVER);
 
     }
+
 }
+

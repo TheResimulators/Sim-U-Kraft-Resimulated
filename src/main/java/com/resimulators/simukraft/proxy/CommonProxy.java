@@ -7,6 +7,7 @@ import com.resimulators.simukraft.common.entity.entitysim.NameStorage;
 import com.resimulators.simukraft.common.entity.entitysim.SimToHire;
 import com.resimulators.simukraft.common.entity.player.PlayerFirstJoin;
 import com.resimulators.simukraft.init.*;
+import com.resimulators.simukraft.network.PacketHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
@@ -22,6 +23,7 @@ public class CommonProxy {
         ModItems.init();
         ModTileEntities.init();
         ModEntities.init();
+        PacketHandler.init();
     }
 
     public void init(FMLInitializationEvent event) {

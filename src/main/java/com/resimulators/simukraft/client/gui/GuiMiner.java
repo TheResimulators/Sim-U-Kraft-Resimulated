@@ -45,7 +45,6 @@ public class GuiMiner extends GuiScreen {
     @Override
     public void initGui() {
         x = 0;
-
         sims = SimToHire.unemployedsims;
         buttonList.clear();
         buttonList.add(button2 = new GuiButton(1, width / 2 - buttonWidth / 2, height - 50, "Cancel"));
@@ -109,7 +108,9 @@ public class GuiMiner extends GuiScreen {
                 updateButtons(button.id);
                 break;
             case 3:
-                SimToHire.credits -= .5;
+                System.out.println("credits before:" + SimToHire.credits);
+                SimToHire.credits = SimToHire.credits - .5f;
+                System.out.println("sending value: " + SimToHire.credits);
                 PacketHandler.INSTANCE.sendToServer(new Credits_packets());
                 updateButtons(button.id);
                 break;

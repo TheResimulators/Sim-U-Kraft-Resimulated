@@ -19,7 +19,7 @@ public class SimToHire {
 
     public static List<EntitySim> unemployedsims = new ArrayList<>();
     public static List<EntitySim> totalsims = new ArrayList<>();
-    public static float  credits = 10;
+    public static float credits = 10;
     Entity name;
 
     @SubscribeEvent
