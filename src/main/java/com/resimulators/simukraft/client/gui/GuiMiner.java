@@ -16,7 +16,7 @@ import java.util.List;
 
 public class GuiMiner extends GuiScreen {
     boolean hiredSim = false;
-    
+    float credit;
     private int buttonWidth = 200;
     private int xOffset = 105;
     private int yOffset = 10;
@@ -108,9 +108,10 @@ public class GuiMiner extends GuiScreen {
                 updateButtons(button.id);
                 break;
             case 3:
-                System.out.println("credits before:" + SimToHire.credits);
-                SimToHire.credits = SimToHire.credits - .5f;
-                System.out.println("sending value: " + SimToHire.credits);
+                System.out.println("credits before:" + SimToHire.getCredits());
+                credit = SimToHire.getCredits() - .5f;
+                SimToHire.setCredits(credit);
+                System.out.println("sending value: " + SimToHire.getCredits());
                 PacketHandler.INSTANCE.sendToServer(new Credits_packets());
                 updateButtons(button.id);
                 break;

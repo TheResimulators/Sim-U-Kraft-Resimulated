@@ -19,7 +19,21 @@ public class SimToHire {
 
     public static List<EntitySim> unemployedsims = new ArrayList<>();
     public static List<EntitySim> totalsims = new ArrayList<>();
-    public static float credits = 10;
+
+    public static float getCredits() {
+        System.out.println(" getting credits that is equal to: " + credits);
+        return credits;
+    }
+    public static float setCredits(float credit){
+        credits = credit;
+        System.out.println(" set credits to" + credits);
+        return credits;
+    }
+    public static UUID getSimID(){
+        return sim;
+    }
+    static UUID sim;
+    static float credits = 10;
     Entity name;
 
     @SubscribeEvent
@@ -30,26 +44,19 @@ public class SimToHire {
             return;
         } else {
             if (!world.isRemote) {
-                if (!((EntitySim) event.getEntity()).inlist) {
+                if (!totalsims.contains(event.getEntity().getPersistentID())) {
                     System.out.println("adding sim");
                     name = event.getEntity();
                     unemployedsims.add((EntitySim) name);
                     totalsims.add((EntitySim) name);
                     System.out.println("added" + name);
                     ((EntitySim) event.getEntity()).inlist = true;
+                    sim = (event.getEntity().getPersistentID());
                     return;
                 }
             }
-
-            NBTTagList nbttaglist = new NBTTagList();
-             for (int i = 0;i < totalsims.size(); i++){
-                 UUID sim_id = totalsims.get(i).getUniqueID();
-                 NBTTagCompound sim = new NBTTagCompound();
-                 sim.setUniqueId("sim" + i,sim_id);
              }
             
         }
     }
-
-}
 

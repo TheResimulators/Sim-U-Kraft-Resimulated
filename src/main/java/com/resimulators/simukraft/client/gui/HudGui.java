@@ -16,11 +16,13 @@ import java.util.List;
 public class HudGui  extends Gui {
     private List<EntitySim> sim;
     private int population = 1;
-    private static float credits = SimToHire.credits;
+    private static float credits;
+
 
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
     public void Renderstats(RenderGameOverlayEvent.Post event) {
+        credits = SimToHire.getCredits();
         if (event.getType() == RenderGameOverlayEvent.ElementType.TEXT){
             Minecraft mc = Minecraft.getMinecraft();
             sim = SimToHire.totalsims;

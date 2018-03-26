@@ -12,14 +12,16 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class Credits_packets implements IMessage {
     public NBTTagCompound nbt;
-
-    public Credits_packets(){}
-
-
     float credit;
-    public Credits_packets(float credit){
-        this.credit = SimToHire.credits;
-    }
+
+
+    public Credits_packets(){this.credit = SimToHire.getCredits();
+    System.out.println("packet value equals" + this.credit);}
+
+
+
+
+
 
     @Override
     public void toBytes(ByteBuf byteBuf) {

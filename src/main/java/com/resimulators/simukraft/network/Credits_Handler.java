@@ -14,11 +14,12 @@ public class Credits_Handler implements IMessageHandler<Credits_packets, IMessag
         mainThread.addScheduledTask(new Runnable() {
             @Override
             public void run() {
-                SimToHire.credits = message.credit;
+                SimToHire.setCredits(message.credit);
             }
 
         });
-        System.out.println("Credits equal: " + SimToHire.credits);
+        System.out.println("incoming value =:" + message.credit);
+        System.out.println("Credits equal: " + SimToHire.getCredits());
         return null;
 
     }
