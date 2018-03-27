@@ -14,24 +14,25 @@ import static java.nio.charset.Charset.defaultCharset;
 
 public class Siminfo_packet implements IMessage {
     public NBTTagCompound nbt;
-    private UUID sim;
 
-    public  Siminfo_packet(){
+
+    public  Siminfo_packet(UUID id){
+        this.sims = id;
+
+    }
+    public Siminfo_packet(){
 
     }
     UUID sims;
-    public void setsim(){
-        sims = SimToHire.getSimID();
-    }
-
     @Override
     public void toBytes(ByteBuf bytebuf){
-        bytebuf.writeCharSequence(sims.toString(), defaultCharset());
+        ByteBufUtils.writeUTF8String(bytebuf, sims.toString());
+
     }
 
     @Override
     public void fromBytes(ByteBuf bytebuf){
-        UUID sims = UUID.fromString(bytebuf.readCharSequence(bytebuf.readableBytes(), Charset.defaultCharset()).toString());
+        this.sims = UUID.fromString(ByteBufUtils.readUTF8String(bytebuf));
 
     }
 }

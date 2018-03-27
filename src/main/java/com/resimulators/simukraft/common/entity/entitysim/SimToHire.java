@@ -27,12 +27,12 @@ public class SimToHire {
     public static List<EntitySim> totalsims = new ArrayList<>();
 
     public static float getCredits() {
-        System.out.println(" getting credits that is equal to: " + credits);
+        //System.out.println(" getting credits that is equal to: " + credits);
         return credits;
     }
     public static float setCredits(float credit){
         credits = credit;
-        System.out.println(" set credits to" + credits);
+        //System.out.println(" set credits to" + credits);
         return credits;
     }
     public static UUID getSimID(){
@@ -41,16 +41,16 @@ public class SimToHire {
     static UUID sim;
     static float credits = 10;
     Entity name;
-    World world = Minecraft.getMinecraft().world;
-    @SubscribeEvent
-    @SideOnly(CLIENT)
-    public void availableSims(LivingSpawnEvent event) {
 
+    @SubscribeEvent
+    public void availableSims(EntityJoinWorldEvent event) {
+        World world = event.getEntity().world;
         if (!(event.getEntity() instanceof EntitySim)) {
             return;
         } else {
-
+            System.out.println("Entity is a sim" + " world is " + world);
             if (!world.isRemote) {
+                System.out.println("world is not remote");
                 if (!totalsims.contains(event.getEntity().getPersistentID())) {
                     System.out.println("adding sim");
                     name = event.getEntity();
@@ -59,8 +59,7 @@ public class SimToHire {
                     System.out.println("added" + name);
                     ((EntitySim) event.getEntity()).inlist = true;
                     sim = (event.getEntity().getPersistentID());
-                    PacketHandler.INSTANCE.sendToAll(new Siminfo_packet());
-                    return;
+                    PacketHandler.INSTANCE.sendToAll(new Siminfo_packet(sim));
                 }
             }
              }

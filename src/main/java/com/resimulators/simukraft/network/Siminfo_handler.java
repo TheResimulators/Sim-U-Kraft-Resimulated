@@ -13,13 +13,14 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import java.util.UUID;
 
 public class Siminfo_handler implements IMessageHandler<Siminfo_packet, IMessage> {
+
         @Override public IMessage onMessage(Siminfo_packet message, MessageContext ctx) {
             IThreadListener mainThread = (WorldServer) ctx.getServerHandler().player.getServerWorld();
             mainThread.addScheduledTask(new Runnable() {
                 @Override
                 public void run() {
                     UUID Id = message.sims;
-                    System.out.println("sim " +Id);
+                    System.out.println("sim " + Id);
                     EntitySim e = (EntitySim) ctx.getServerHandler().player.getServerWorld().getEntityFromUuid(Id);
                     SimToHire.totalsims.add(e);
                 }
