@@ -17,19 +17,21 @@ public class Siminfo_packet implements IMessage {
     private UUID sim;
 
     public  Siminfo_packet(){
+
     }
+    UUID sims;
     public void setsim(){
-        sim = SimToHire.getSimID();
+        sims = SimToHire.getSimID();
     }
 
     @Override
     public void toBytes(ByteBuf bytebuf){
-        bytebuf.writeCharSequence(sim.toString(), defaultCharset());
+        bytebuf.writeCharSequence(sims.toString(), defaultCharset());
     }
 
     @Override
     public void fromBytes(ByteBuf bytebuf){
-        UUID sim = UUID.fromString(bytebuf.readCharSequence(bytebuf.readableBytes(), Charset.defaultCharset()));
+        UUID sims = UUID.fromString(bytebuf.readCharSequence(bytebuf.readableBytes(), Charset.defaultCharset()).toString());
 
     }
 }

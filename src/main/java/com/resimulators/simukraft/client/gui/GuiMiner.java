@@ -108,10 +108,10 @@ public class GuiMiner extends GuiScreen {
                 updateButtons(button.id);
                 break;
             case 3:
-                System.out.println("credits before:" + SimToHire.getCredits());
+                //System.out.println("credits before:" + SimToHire.getCredits());
                 credit = SimToHire.getCredits() - .5f;
                 SimToHire.setCredits(credit);
-                System.out.println("sending value: " + SimToHire.getCredits());
+                //System.out.println("sending value: " + SimToHire.getCredits());
                 PacketHandler.INSTANCE.sendToServer(new Credits_packets());
                 updateButtons(button.id);
                 break;

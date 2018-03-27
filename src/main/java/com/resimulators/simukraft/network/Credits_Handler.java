@@ -18,8 +18,8 @@ public class Credits_Handler implements IMessageHandler<Credits_packets, IMessag
             }
 
         });
-        System.out.println("incoming value =:" + message.credit);
-        System.out.println("Credits equal: " + SimToHire.getCredits());
+        //System.out.println("incoming value =:" + message.credit);
+        //System.out.println("Credits equal: " + SimToHire.getCredits());
         return null;
 
     }
