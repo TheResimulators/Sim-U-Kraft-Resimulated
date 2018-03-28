@@ -48,15 +48,15 @@ public class SimToHire {
         if (!(event.getEntity() instanceof EntitySim)) {
             return;
         } else {
-            System.out.println("Entity is a sim" + " world is " + world);
+            //System.out.println("Entity is a sim" + " world is " + world);
             if (!world.isRemote) {
-                System.out.println("world is not remote");
-                if (!totalsims.contains(event.getEntity().getPersistentID())) {
-                    System.out.println("adding sim");
+                //System.out.println("world is not remote");
+                if (!totalsims.contains(event.getEntity())) {
+              //      System.out.println("adding sim");
                     name = event.getEntity();
                     unemployedsims.add((EntitySim) name);
                     totalsims.add((EntitySim) name);
-                    System.out.println("added" + name);
+                    System.out.println("added" + name + " " + event.getEntity().getPersistentID());
                     ((EntitySim) event.getEntity()).inlist = true;
                     sim = (event.getEntity().getPersistentID());
                     PacketHandler.INSTANCE.sendToAll(new Siminfo_packet(sim));

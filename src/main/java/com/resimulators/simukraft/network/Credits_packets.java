@@ -16,7 +16,7 @@ public class Credits_packets implements IMessage {
 
 
     public Credits_packets(){this.credit = SimToHire.getCredits();
-    System.out.println("packet value equals" + this.credit);}
+    System.out.println("packet value equals " + this.credit);}
 
 
 

@@ -13,7 +13,6 @@ import java.util.UUID;
 import static java.nio.charset.Charset.defaultCharset;
 
 public class Siminfo_packet implements IMessage {
-    public NBTTagCompound nbt;
 
 
     public  Siminfo_packet(UUID id){
