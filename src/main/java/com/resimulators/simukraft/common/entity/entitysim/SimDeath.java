@@ -9,12 +9,14 @@ import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.UUID;
 
 public class SimDeath {
     UUID id;
-
+    @SideOnly(Side.SERVER)
     @SubscribeEvent
     public void SimKilled(LivingDeathEvent event){
         World world = event.getEntity().world;
@@ -22,16 +24,17 @@ public class SimDeath {
             return;
         } else {
             if (!world.isRemote) {
-                System.out.println("world is not remote removing sim: " + event.getEntity());
+
                 //This should always be true unless it has already been removed
                 if (SimToHire.totalsims.contains(event.getEntity())) {
+                    System.out.println("world is not remote removing sim: " + event.getEntity());
                     SimToHire.totalsims.remove(event.getEntity());
                     //checks to see if the sim was unemployed
                 if (SimToHire.unemployedsims.contains(event.getEntity()));{
                     SimToHire.unemployedsims.remove(event.getEntity());
 
                 }
-                    id = event.getEntity().getPersistentID();
+
                     System.out.println("sending dead sim to client with id:" + id);
                     PacketHandler.INSTANCE.sendToAll(new SimDeath_packet(id));}
             }
