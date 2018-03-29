@@ -3,6 +3,8 @@ package com.resimulators.simukraft.client.gui;
 import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
 import com.resimulators.simukraft.common.entity.entitysim.SimToHire;
 import com.resimulators.simukraft.network.Credits_packets;
+import com.resimulators.simukraft.network.Hiring_packet;
+import com.sun.xml.internal.bind.v2.runtime.reflect.Lister;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -13,6 +15,7 @@ import com.resimulators.simukraft.network.PacketHandler;
 import java.awt.*;
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 public class GuiMiner extends GuiScreen {
     boolean hiredSim = false;
@@ -30,7 +33,7 @@ public class GuiMiner extends GuiScreen {
     private int mouseX;
     private int mouseY;
     private int buttoni;
-
+    boolean sim_button;
     @Override
     public void drawScreen(int mouseX, int mouseY,float partialTicks) {
         drawDefaultBackground();
@@ -62,7 +65,6 @@ public class GuiMiner extends GuiScreen {
         if (status.equals("hiring")){
             System.out.println(sims.size());
         for (int i = 1; i < sims.size(); i++){
-
             buttoni = i;
             x++;
             if (((x * xOffset) + 30) > width){
@@ -74,6 +76,7 @@ public class GuiMiner extends GuiScreen {
             //System.out.println("creating button " + i);
             buttonList.add(new GuiButton(i, x * xOffset-75, yOffset + 5,100,20, name + " last name"));
             //System.out.println("added button " + i );
+             boolean sim_button = true;
             if (yOffset + 10 >= height-70 || yOffset + 5 <= 0){
                 buttonList.get(buttoni).enabled = false;
                 buttonList.get(buttoni).visible = false;
@@ -98,27 +101,22 @@ public class GuiMiner extends GuiScreen {
             case 0:
                 status = "hiring";
                 System.out.println("status updated");
-                updateButtons(button.id);
+                updateButtons(button.id,false);
                 break;
             case 1:
                 this.mc.displayGuiScreen(null);
                 break;
             case 2:
                 yOffset += 25;
-                updateButtons(button.id);
                 break;
             case 3:
-                //System.out.println("credits before:" + SimToHire.getCredits());
                 credit = SimToHire.getCredits() - .5f;
                 SimToHire.setCredits(credit);
-                //System.out.println("sending value: " + SimToHire.getCredits());
                 PacketHandler.INSTANCE.sendToServer(new Credits_packets());
-                updateButtons(button.id);
                 break;
             default:
                     disableButton(button.id);
-                    hiredSim = true;
-                    updateButtons(button.id);
+                    updateButtons(button.id,sim_button);
 
 
 
@@ -126,15 +124,17 @@ public class GuiMiner extends GuiScreen {
         super.actionPerformed(button);
     }
 
-    private void updateButtons(int id){
+    private void updateButtons(int id,boolean sim_buttons){
         if (status.equals("hiring")){
             button1.visible = false;
             button1.enabled = false;
-        if (id == buttoni){
+        if (sim_buttons){
             hiredSim = true;
+            EntitySim sim = sims.get(id);
+            UUID sim_id = sim.getPersistentID();
+            System.out.println("sim id = " + sim_id);
+            PacketHandler.INSTANCE.sendToServer(new Hiring_packet(sim_id));
             }
-
-
             initGui();
         }
     }

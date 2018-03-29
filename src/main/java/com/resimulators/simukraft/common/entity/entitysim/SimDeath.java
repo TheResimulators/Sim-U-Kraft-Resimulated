@@ -16,15 +16,15 @@ import java.util.UUID;
 
 public class SimDeath {
     UUID id;
-    @SideOnly(Side.SERVER)
     @SubscribeEvent
     public void SimKilled(LivingDeathEvent event){
         World world = event.getEntity().world;
         if (!(event.getEntity() instanceof EntitySim)) {
             return;
         } else {
+            System.out.println("is world Remote?");
             if (!world.isRemote) {
-
+                System.out.println("checking if sim is contained in lists");
                 //This should always be true unless it has already been removed
                 if (SimToHire.totalsims.contains(event.getEntity())) {
                     System.out.println("world is not remote removing sim: " + event.getEntity());
@@ -34,7 +34,7 @@ public class SimDeath {
                     SimToHire.unemployedsims.remove(event.getEntity());
 
                 }
-
+                    id = event.getEntity().getPersistentID();
                     System.out.println("sending dead sim to client with id:" + id);
                     PacketHandler.INSTANCE.sendToAll(new SimDeath_packet(id));}
             }
