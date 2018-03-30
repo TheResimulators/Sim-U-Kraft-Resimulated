@@ -19,6 +19,7 @@ public class Hiring_handler  implements IMessageHandler<Hiring_packet, IMessage>
                 System.out.println(" removing sim " + Id);
                 EntitySim e = (EntitySim) ctx.getServerHandler().player.getServerWorld().getEntityFromUuid(Id);
                 SimToHire.unemployedsims.remove(e);
+                e.setProfession(message.job);
         }); return null;
     }
 }
