@@ -12,8 +12,10 @@ import com.resimulators.simukraft.init.*;
 import com.resimulators.simukraft.network.PacketHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
+import scala.collection.parallel.ParIterableLike;
 
 /**
  * Created by fabbe on 06/01/2018 - 2:43 AM.
@@ -36,6 +38,7 @@ public class CommonProxy {
     }
 
     public void postInit(FMLPostInitializationEvent event) {
+        MinecraftForge.EVENT_BUS.register(new Rent_collection());
 
     }
 
