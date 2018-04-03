@@ -38,8 +38,6 @@ public class CommonProxy {
     }
 
     public void postInit(FMLPostInitializationEvent event) {
-        MinecraftForge.EVENT_BUS.register(new Rent_collection());
-
     }
 
     public void onServerStarting(FMLServerStartingEvent event) {
