@@ -12,6 +12,7 @@ import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.BabyEntitySpawnEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -70,12 +71,16 @@ public class SimToHire {
 
     }
     @SubscribeEvent
-    public void world_save(WorldEvent.Save event){
+    public void world_save(net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent event){
         System.out.println("save ");
+        compound.setInteger("total_sims",totalsims.size());
+        compound.setInteger("unemployed_sims",unemployedsims.size());
         for(int i = 0;i< totalsims.size();i++){
             UUID id = totalsims.get(i).getPersistentID();
-            compound.setUniqueId("sim " + i,id);
-        }
+                compound.setUniqueId("sim " + i,id);
+                System.out.println("added sim " + id + " to nbt");
+
+            }
         for(int i = 0;i< totalsims.size();i++){
             UUID id = totalsims.get(i).getPersistentID();
             compound.setUniqueId("sims " + i,id);
@@ -83,22 +88,28 @@ public class SimToHire {
 
         }
     @SubscribeEvent
-    public void world_load(WorldEvent.Load event){
-        MinecraftServer server = event.getWorld().getMinecraftServer();
-        int size = compound.getSize();
-        for (int i = 0;i<size;i++){
+    public void world_load(net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent event){
+        System.out.println("loading sims");
+        MinecraftServer server = event.player.getEntityWorld().getMinecraftServer();
+        int total_sims = compound.getInteger("total_sims");
+        int unemployed_sims = compound.getInteger("unemployed_sims");
+        for (int i = 0;i<unemployed_sims;i++){
             if (compound.hasKey("sim " + i)){
                 UUID sim = compound.getUniqueId("sim " + i);
                 EntitySim e = (EntitySim) server.getEntityFromUuid(sim);
+                if (!unemployedsims.contains(e)){
                  unemployedsims.add(e);
-            }
+            }}
         }
-        for (int i = 0;i<size;i++){
+        for (int i = unemployed_sims;i<total_sims+unemployed_sims;i++){
             if (compound.hasKey("sims " + i)){
                 UUID sim = compound.getUniqueId("sims " + i);
+                System.out.println("sim " + sim);
+                System.out.println("sim id =" + sim + "with persistent id of " + totalsims.get(i).getPersistentID());
                 EntitySim e = (EntitySim) server.getEntityFromUuid(sim);
+                if (!totalsims.contains(e)){
                 totalsims.add(e);
             }
         }
     }
-}
+}}
