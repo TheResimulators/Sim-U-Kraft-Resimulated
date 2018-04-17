@@ -82,15 +82,19 @@ public class SimToHire {
         for (int i = 0;i< unemployes_sims.tagCount(); i++){
             String uuid = unemployes_sims.getStringTagAt(i);
             UUID sim = UUID.fromString(uuid);
+            System.out.println("Loading sim " + sim);
             EntitySim e =(EntitySim) server.getEntityFromUuid(sim);
             if (!unemployedsims.contains(e)){
+                System.out.println("sim loaded");
             unemployedsims.add(e);
         }}
             for (int i = 0;i< total_sims.tagCount(); i++){
                 String uuid = unemployes_sims.getStringTagAt(i);
                 UUID sim = UUID.fromString(uuid);
+                System.out.println("Loading sim " + sim);
                 EntitySim e =(EntitySim) server.getEntityFromUuid(sim);
                 if (!totalsims.contains(e)){
+                    System.out.println("sim loaded");
                    totalsims.add(e);
                 }}
         }
