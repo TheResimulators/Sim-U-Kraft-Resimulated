@@ -25,7 +25,7 @@ public class HudGui  extends Gui {
         credits = SimToHire.getCredits();
         if (event.getType() == RenderGameOverlayEvent.ElementType.TEXT){
             Minecraft mc = Minecraft.getMinecraft();
-            sim = SimToHire.totalsims;
+            sim = SimToHire.totalsim;
             if (sim == null){
                 population = 0;
             }else {

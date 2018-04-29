@@ -21,9 +21,10 @@ public class Siminfo_handler implements IMessageHandler<Siminfo_packet, IMessage
                 public void run() {
                     UUID Id = message.sims;
                     System.out.println("sim " + Id);
-                    EntitySim e = (EntitySim) ctx.getServerHandler().player.getServerWorld().getEntityFromUuid(Id);
-                    SimToHire.totalsims.add(e);
-                    SimToHire.unemployedsims.add(e);
+                    if(!SimToHire.totalsims.contains(Id)){
+                    SimToHire.totalsims.add(Id);}
+                    if (!SimToHire.unemployedsims.contains(Id)){
+                    SimToHire.unemployedsims.add(Id);}
                 }
 
             }); return null;

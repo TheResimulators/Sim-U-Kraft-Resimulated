@@ -6,15 +6,19 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.fml.client.GuiScrollingList;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
 import java.awt.*;
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 public class GuiFarm extends GuiScreen {
     boolean hiredSim = false;
-
+    MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
+    List<EntitySim> sims;
     private int buttonWidth = 200;
     private int xOffset = 105;
     private int yOffset = 10;
@@ -24,7 +28,6 @@ public class GuiFarm extends GuiScreen {
     private GuiButton button2;
     private GuiButton button3;
     private GuiButton button4;
-    private List<EntitySim> sims;
     private int mouseX;
     private int mouseY;
     private int buttoni;
@@ -43,8 +46,12 @@ public class GuiFarm extends GuiScreen {
     @Override
     public void initGui() {
         x = 0;
+        for(int i = 0;i<SimToHire.unemployedsims.size();i++){
+            UUID id = SimToHire.unemployedsims.get(i);
+            EntitySim sim = (EntitySim) server.getEntityFromUuid(id);
+            sims.add(sim);
 
-        sims = SimToHire.unemployedsims;
+        }
         buttonList.clear();
         buttonList.add(button2 = new GuiButton(1, width / 2 - buttonWidth / 2, height - 50, "Cancel"));
         if (status.equals("hiring")) {

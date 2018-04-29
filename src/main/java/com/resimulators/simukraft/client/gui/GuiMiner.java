@@ -9,8 +9,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.fml.client.GuiScrollingList;
 import com.resimulators.simukraft.network.PacketHandler;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
 import java.awt.*;
 import java.io.IOException;
@@ -19,6 +21,8 @@ import java.util.UUID;
 
 public class GuiMiner extends GuiScreen {
    boolean hiredSim = false;
+    MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
+    List<EntitySim> sims;
     float credit;
     private int buttonWidth = 200;
     private int xOffset = 105;
@@ -27,7 +31,6 @@ public class GuiMiner extends GuiScreen {
     private String status = "";
     private GuiButton button1;
     private GuiButton button2;
-    private List<EntitySim> sims;
     private int mouseX;
     private int mouseY;
     private int buttoni;
@@ -45,7 +48,12 @@ public class GuiMiner extends GuiScreen {
     @Override
     public void initGui() {
         x = 0;
-        sims = SimToHire.unemployedsims;
+        for(int i = 0;i<SimToHire.unemployedsims.size();i++){
+            UUID id = SimToHire.unemployedsims.get(i);
+            EntitySim sim = (EntitySim) server.getEntityFromUuid(id);
+            sims.add(sim);
+
+        }
         buttonList.clear();
 
         buttonList.add(button2 = new GuiButton(-2, width / 2 - buttonWidth / 2, height - 50, "Cancel"));
