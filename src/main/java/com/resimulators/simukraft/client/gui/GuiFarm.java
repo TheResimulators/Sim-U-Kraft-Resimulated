@@ -1,7 +1,7 @@
 package com.resimulators.simukraft.client.gui;
 
 import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
-import com.resimulators.simukraft.common.entity.entitysim.SimToHire;
+import com.resimulators.simukraft.common.entity.entitysim.SimEventHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -46,13 +46,11 @@ public class GuiFarm extends GuiScreen {
     @Override
     public void initGui() {
         x = 0;
-        for(int i = 0;i<SimToHire.unemployedsims.size();i++){
-            UUID id = SimToHire.unemployedsims.get(i);
+        for(UUID id : SimEventHandler.getUnemployedSims())
+        {
             EntitySim sim = (EntitySim) server.getEntityFromUuid(id);
             sims.add(sim);
-
         }
-        buttonList.clear();
         buttonList.add(button2 = new GuiButton(1, width / 2 - buttonWidth / 2, height - 50, "Cancel"));
         if (status.equals("hiring")) {
 

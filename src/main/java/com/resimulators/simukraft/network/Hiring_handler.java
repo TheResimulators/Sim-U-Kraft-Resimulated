@@ -1,7 +1,7 @@
 package com.resimulators.simukraft.network;
 
 import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
-import com.resimulators.simukraft.common.entity.entitysim.SimToHire;
+import com.resimulators.simukraft.common.entity.entitysim.SimEventHandler;
 import net.minecraft.util.IThreadListener;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -18,7 +18,7 @@ public class Hiring_handler  implements IMessageHandler<Hiring_packet, IMessage>
                 UUID Id = message.sims;
                 System.out.println(" removing sim " + Id);
                 EntitySim e = (EntitySim) ctx.getServerHandler().player.getServerWorld().getEntityFromUuid(Id);
-                SimToHire.unemployedsims.remove(e);
+                SimEventHandler.hireSims(Id);
                 e.setProfession(message.job);
         }); return null;
     }

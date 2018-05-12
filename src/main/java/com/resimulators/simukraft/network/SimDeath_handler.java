@@ -1,7 +1,7 @@
 package com.resimulators.simukraft.network;
 
 import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
-import com.resimulators.simukraft.common.entity.entitysim.SimToHire;
+import com.resimulators.simukraft.common.entity.entitysim.SimEventHandler;
 import net.minecraft.util.IThreadListener;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -15,11 +15,11 @@ public class SimDeath_handler implements IMessageHandler<SimDeath_packet, IMessa
     @Override public IMessage onMessage(SimDeath_packet message, MessageContext ctx) {
         IThreadListener mainThread = (WorldServer) ctx.getServerHandler().player.world;
         mainThread.addScheduledTask(() -> {
-            UUID Id = message.sims;
-            System.out.println(" removing sim " + Id);
-            EntitySim e = (EntitySim) ctx.getServerHandler().player.getServerWorld().getEntityFromUuid(Id);
-            SimToHire.totalsims.remove(e);
-            SimToHire.unemployedsims.remove(e);
+            SimEventHandler SimEventHandler = new SimEventHandler();
+            UUID id = message.sims;
+            System.out.println(" removing sim " + id);
+            EntitySim e = (EntitySim) ctx.getServerHandler().player.getServerWorld().getEntityFromUuid(id);
+            SimEventHandler.simDied(id);
         }); return null;
     }
 }

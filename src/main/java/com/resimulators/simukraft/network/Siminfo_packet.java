@@ -1,16 +1,10 @@
 package com.resimulators.simukraft.network;
 
-import com.resimulators.simukraft.common.entity.entitysim.SimToHire;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
-import java.nio.charset.Charset;
 import java.util.UUID;
-
-import static java.nio.charset.Charset.defaultCharset;
 
 public class Siminfo_packet implements IMessage {
 

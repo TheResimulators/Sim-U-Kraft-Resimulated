@@ -1,6 +1,6 @@
 package com.resimulators.simukraft.common.world;
 
-import com.resimulators.simukraft.common.entity.entitysim.SimToHire;
+import com.resimulators.simukraft.common.entity.entitysim.SimEventHandler;
 import com.resimulators.simukraft.network.Credits_packets;
 import com.resimulators.simukraft.network.PacketHandler;
 import net.minecraft.world.World;
@@ -15,11 +15,11 @@ public class Rent_collection{
         World world = event.world;
         float rent = 4;
         if (!world.isRemote) {
-            credits = SimToHire.getCredits();
+            credits = SimEventHandler.getCredits();
             long time = world.getWorldTime();
             if (time == 0 && !rent_paid) {
                 credits = credits + rent;
-                SimToHire.setCredits(credits);
+                SimEventHandler.setCredits(credits);
                 System.out.println("Wakey wakey you just gained rent of " + rent + "to have a total of " + credits + " credits " + rent_paid);
                 PacketHandler.INSTANCE.sendToAll(new Credits_packets());
                 rent_paid = true;

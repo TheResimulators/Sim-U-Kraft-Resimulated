@@ -1,9 +1,6 @@
 package com.resimulators.simukraft.network;
 
-import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
-import com.resimulators.simukraft.common.entity.entitysim.SimToHire;
-import net.minecraft.entity.Entity;
-import net.minecraft.server.MinecraftServer;
+import com.resimulators.simukraft.common.entity.entitysim.SimEventHandler;
 import net.minecraft.util.IThreadListener;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -21,10 +18,11 @@ public class Siminfo_handler implements IMessageHandler<Siminfo_packet, IMessage
                 public void run() {
                     UUID Id = message.sims;
                     System.out.println("sim " + Id);
-                    if(!SimToHire.totalsims.contains(Id)){
-                    SimToHire.totalsims.add(Id);}
-                    if (!SimToHire.unemployedsims.contains(Id)){
-                    SimToHire.unemployedsims.add(Id);}
+                    if (!(SimEventHandler.getTotal_sims().contains(Id)))
+                    {
+                        SimEventHandler.addTotalSim(Id);
+                        SimEventHandler.addUnemployedSim(Id);
+                    }
                 }
 
             }); return null;

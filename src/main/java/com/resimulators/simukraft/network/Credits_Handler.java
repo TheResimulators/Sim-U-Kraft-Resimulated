@@ -1,6 +1,6 @@
 package com.resimulators.simukraft.network;
 
-import com.resimulators.simukraft.common.entity.entitysim.SimToHire;
+import com.resimulators.simukraft.common.entity.entitysim.SimEventHandler;
 import net.minecraft.util.IThreadListener;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -14,7 +14,7 @@ public class Credits_Handler implements IMessageHandler<Credits_packets, IMessag
         mainThread.addScheduledTask(new Runnable() {
             @Override
             public void run() {
-                SimToHire.setCredits(message.credit);
+                SimEventHandler.setCredits(message.credit);
             }
 
         });
