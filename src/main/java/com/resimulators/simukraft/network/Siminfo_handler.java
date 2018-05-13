@@ -16,12 +16,12 @@ public class Siminfo_handler implements IMessageHandler<Siminfo_packet, IMessage
             mainThread.addScheduledTask(new Runnable() {
                 @Override
                 public void run() {
-                    UUID Id = message.sims;
-                    System.out.println("sim " + Id);
-                    if (!(SimEventHandler.getTotal_sims().contains(Id)))
+                    UUID id = message.sims;
+                    System.out.println("sim " + id);
+                    if (!(SimEventHandler.getTotal_sims().contains(id)))
                     {
-                        SimEventHandler.addTotalSim(Id);
-                        SimEventHandler.addUnemployedSim(Id);
+                        SimEventHandler.addTotalSim(id);
+                        SimEventHandler.addUnemployedSim(id);
                     }
                 }
 

@@ -2,17 +2,13 @@ package com.resimulators.simukraft.common.entity.player;
 
 import com.resimulators.simukraft.Reference;
 import com.resimulators.simukraft.common.entity.entitysim.SimEventHandler;
-import io.netty.util.Constant;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.MapStorage;
 import net.minecraft.world.storage.WorldSavedData;
 import net.minecraftforge.common.util.Constants;
-
-import java.awt.*;
 import java.util.*;
-import java.util.List;
 
 public class SaveSimData extends WorldSavedData {
     private static final String DATA_NAME = Reference.MOD_ID +"_SimData";
@@ -37,6 +33,7 @@ public class SaveSimData extends WorldSavedData {
     {
         Total_sims.add(id);
         Unemployed_sims.add(id);
+        markDirty();
     }
 
     public void simDied(UUID id)
@@ -59,34 +56,38 @@ public class SaveSimData extends WorldSavedData {
 
     @Override
     public void readFromNBT(NBTTagCompound nbt) {
+        System.out.println("Reading from nbt");
         NBTTagList Ttaglist = nbt.getTagList("TSims", Constants.NBT.TAG_COMPOUND);
         NBTTagList Utaglist = nbt.getTagList("USims", Constants.NBT.TAG_COMPOUND);
+        System.out.println("Total tags : "+ Ttaglist.tagCount());
         for (int i = 0;i < Ttaglist.tagCount(); i++)
         {
             NBTTagCompound tag = Ttaglist.getCompoundTagAt(i);
-            UUID id = tag.getUniqueId("Tsim");
-            Total_sims.add(id);
-            SimEventHandler.addTotalSim(id,SimEventHandler.getWorldSimData());
+            System.out.println("tag:" + tag);
+            UUID id = tag.getUniqueId("TSim");
+            System.out.println("Reading sim with id:" + id);
+            SimEventHandler.addTotalSim(id);
         }
         for (int i = 0; i < Utaglist.tagCount(); i++)
         {
             NBTTagCompound tag = Utaglist.getCompoundTagAt(i);
-            UUID id = tag.getUniqueId("Usim");
-            Unemployed_sims.add(id);
-            SimEventHandler.addUnemployedSim(id,SimEventHandler.getWorldSimData());
+            UUID id = tag.getUniqueId("USim");
+            SimEventHandler.addUnemployedSim(id);
         }
 
     }
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+        System.out.println("Writing to nbt");
         NBTTagList Ttaglist = new NBTTagList();
         NBTTagList Utaglist = new NBTTagList();
 
         for (UUID id: Total_sims)
         {
             NBTTagCompound sims = new NBTTagCompound();
-            sims.setUniqueId("TSim ",id);
+            sims.setUniqueId("TSim",id);
+            System.out.println("adding sim with id:" + id);
             Ttaglist.appendTag(sims);
         }
         nbt.setTag("TSims",Ttaglist);
@@ -98,12 +99,14 @@ public class SaveSimData extends WorldSavedData {
             Utaglist.appendTag(sims);
         }
         nbt.setTag("USims",Utaglist);
+        System.out.println("Returning " + nbt);
         return nbt;
     }
 
     public static SaveSimData get(World world)
     {
         MapStorage storage = world.getMapStorage();
+        System.out.println("Storage: " + storage);
         if(storage == null) return null;
         SaveSimData instance = (SaveSimData) storage.getOrLoadData(SaveSimData.class, DATA_NAME);
         if(instance == null)
@@ -114,7 +117,5 @@ public class SaveSimData extends WorldSavedData {
         return instance;
 
     }
-
-
 
 }
