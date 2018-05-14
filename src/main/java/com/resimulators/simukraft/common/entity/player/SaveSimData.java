@@ -56,16 +56,12 @@ public class SaveSimData extends WorldSavedData {
 
     @Override
     public void readFromNBT(NBTTagCompound nbt) {
-        System.out.println("Reading from nbt");
         NBTTagList Ttaglist = nbt.getTagList("TSims", Constants.NBT.TAG_COMPOUND);
         NBTTagList Utaglist = nbt.getTagList("USims", Constants.NBT.TAG_COMPOUND);
-        System.out.println("Total tags : "+ Ttaglist.tagCount());
         for (int i = 0;i < Ttaglist.tagCount(); i++)
         {
             NBTTagCompound tag = Ttaglist.getCompoundTagAt(i);
-            System.out.println("tag:" + tag);
             UUID id = tag.getUniqueId("TSim");
-            System.out.println("Reading sim with id:" + id);
             SimEventHandler.addTotalSim(id);
         }
         for (int i = 0; i < Utaglist.tagCount(); i++)
@@ -79,7 +75,6 @@ public class SaveSimData extends WorldSavedData {
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
-        System.out.println("Writing to nbt");
         NBTTagList Ttaglist = new NBTTagList();
         NBTTagList Utaglist = new NBTTagList();
 
@@ -87,7 +82,6 @@ public class SaveSimData extends WorldSavedData {
         {
             NBTTagCompound sims = new NBTTagCompound();
             sims.setUniqueId("TSim",id);
-            System.out.println("adding sim with id:" + id);
             Ttaglist.appendTag(sims);
         }
         nbt.setTag("TSims",Ttaglist);
@@ -99,14 +93,12 @@ public class SaveSimData extends WorldSavedData {
             Utaglist.appendTag(sims);
         }
         nbt.setTag("USims",Utaglist);
-        System.out.println("Returning " + nbt);
         return nbt;
     }
 
     public static SaveSimData get(World world)
     {
         MapStorage storage = world.getMapStorage();
-        System.out.println("Storage: " + storage);
         if(storage == null) return null;
         SaveSimData instance = (SaveSimData) storage.getOrLoadData(SaveSimData.class, DATA_NAME);
         if(instance == null)
