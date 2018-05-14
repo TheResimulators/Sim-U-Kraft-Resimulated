@@ -46,15 +46,8 @@ public class GuiFarm extends GuiScreen {
     @Override
     public void initGui() {
         x = 0;
-        for(UUID id : SimEventHandler.getUnemployedSims())
-        {
-            EntitySim sim = (EntitySim) server.getEntityFromUuid(id);
-            sims.add(sim);
-        }
         buttonList.add(button1 = new GuiButton(0,width/2-buttonWidth/2,height-90,"Hire"));
         buttonList.add(button2 = new GuiButton(1, width / 2 - buttonWidth / 2, height - 50, "Cancel"));
-
-
         super.initGui();
     }
 
@@ -66,8 +59,8 @@ public class GuiFarm extends GuiScreen {
                 System.out.println("status updated");
                 updateButtons(button.id);
                 break;
-
-
+            case 1:
+                this.mc.displayGuiScreen(null);
         }
         super.actionPerformed(button);
     }
@@ -76,12 +69,8 @@ public class GuiFarm extends GuiScreen {
         if (status.equals("hiring")){
             button1.visible = false;
             button1.enabled = false;
-            if (id == buttoni){
-                hiredSim = true;
-            }
-
-
             initGui();
+
         }
     }
 
