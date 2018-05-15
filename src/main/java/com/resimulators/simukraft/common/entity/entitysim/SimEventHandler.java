@@ -95,6 +95,7 @@ public class SimEventHandler {
                 UUID id = event.getEntity().getPersistentID();
                 System.out.println("Total sims:" + getTotal_sims().size());
                 simSpawned(id);
+
                 PacketHandler.INSTANCE.sendToAll(new Siminfo_packet(id));
             }
         }
