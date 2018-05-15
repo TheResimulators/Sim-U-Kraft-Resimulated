@@ -17,16 +17,15 @@ public class update_sim_handler implements IMessageHandler<update_sim_packet, IM
         mainThread.addScheduledTask(new Runnable() {
             @Override
             public void run() {
-                SimEventHandler SimEventHandler = new SimEventHandler();
                 UUID e = message.sims;
                 String list = message.List;
                 System.out.println("sim " + e);
-                if (list == "unemployed"){
+                if (list.equals("unemployed")){
 
                     SimEventHandler.addUnemployedSim(e);
                     System.out.println("adding SIMS");
                 }
-                if (list == "total"){
+                if (list.equals("total")){
 
                     SimEventHandler.addTotalSim(e);
                     System.out.println("adding SIMS");

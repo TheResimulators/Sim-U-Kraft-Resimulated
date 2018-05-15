@@ -15,6 +15,7 @@ public class PacketHandler {
         INSTANCE.registerMessage(Siminfo_handler.class,Siminfo_packet.class,1,Side.SERVER);
         INSTANCE.registerMessage(SimDeath_handler.class,SimDeath_packet.class,2,Side.SERVER);
         INSTANCE.registerMessage(update_sim_handler.class,update_sim_packet.class,3,Side.SERVER);
+        INSTANCE.registerMessage(Hiring_handler.class,Hiring_packet.class,4,Side.SERVER);
 
     }
 

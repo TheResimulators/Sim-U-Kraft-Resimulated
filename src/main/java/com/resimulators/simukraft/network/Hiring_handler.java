@@ -13,17 +13,16 @@ import java.util.UUID;
 public class Hiring_handler  implements IMessageHandler<Hiring_packet, IMessage> {
 
     @Override public IMessage onMessage(Hiring_packet message, MessageContext ctx){
-        IThreadListener mainThread = (WorldServer) ctx.getServerHandler().player.getServerWorld();
+        IThreadListener mainThread = ctx.getServerHandler().player.getServerWorld();
         mainThread.addScheduledTask(() -> {
-                UUID Id = message.sims;
-                System.out.println(" removing sim " + Id);
-                EntitySim e = (EntitySim) ctx.getServerHandler().player.getServerWorld().getEntityFromUuid(Id);
-                SimEventHandler.hireSims(Id);
-                e.setProfession(message.job);
-        }); return null;
+            UUID Id = message.sims;
+            System.out.println(" removing sim " + Id);
+            EntitySim e = (EntitySim) ctx.getServerHandler().player.getServerWorld().getEntityFromUuid(Id);
+            SimEventHandler.hireSims(Id);
+            e.setProfession(message.job);
+
+
+            });return null;
     }
 }
-        //System.out.println("incoming value =:" + message.credit);
-        //System.out.println("Credits equal: " + SimToHire.getCredits());
-
 

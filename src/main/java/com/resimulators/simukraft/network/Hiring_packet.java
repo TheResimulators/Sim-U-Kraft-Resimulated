@@ -9,6 +9,7 @@ import java.util.UUID;
 public class Hiring_packet implements IMessage {
 
     public Hiring_packet(UUID id,int job_int){
+        System.out.println("Sending hire packet");
         this.job = job_int;
         this.sims = id;
     }

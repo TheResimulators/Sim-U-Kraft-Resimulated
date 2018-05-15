@@ -21,7 +21,7 @@ public class Rent_collection{
                 credits = credits + rent;
                 SimEventHandler.setCredits(credits);
                 System.out.println("Wakey wakey you just gained rent of " + rent + "to have a total of " + credits + " credits " + rent_paid);
-                PacketHandler.INSTANCE.sendToAll(new Credits_packets());
+                //PacketHandler.INSTANCE.sendToAll(new Credits_packets());
                 rent_paid = true;
             }
             if (time != 0) {
