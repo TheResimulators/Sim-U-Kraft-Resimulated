@@ -22,6 +22,19 @@ public class SaveSimData extends WorldSavedData {
         super(s);
     }
 
+    public Set<UUID> getTotalSims()
+    {
+        return Total_sims;
+    }
+    public void setUnemployed_sims(UUID id)
+    {
+        Unemployed_sims.add(id);
+    }
+
+    public Set<UUID> getUnemployed_sims()
+    {
+        return Unemployed_sims;
+    }
 
     public void addSim(UUID id)
     {
@@ -62,13 +75,13 @@ public class SaveSimData extends WorldSavedData {
         {
             NBTTagCompound tag = Ttaglist.getCompoundTagAt(i);
             UUID id = tag.getUniqueId("TSim");
-            SimEventHandler.addTotalSim(id);
+            addSim(id);
         }
         for (int i = 0; i < Utaglist.tagCount(); i++)
         {
             NBTTagCompound tag = Utaglist.getCompoundTagAt(i);
             UUID id = tag.getUniqueId("USim");
-            SimEventHandler.addUnemployedSim(id);
+            setUnemployed_sims(id);
         }
 
     }

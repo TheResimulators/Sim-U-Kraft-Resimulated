@@ -26,14 +26,16 @@ public class HudGui  extends Gui {
         credits = SimEventHandler.getCredits();
         if (event.getType() == RenderGameOverlayEvent.ElementType.TEXT){
             Minecraft mc = Minecraft.getMinecraft();
-            sim = SimEventHandler.getTotal_sims();
+            if (SimEventHandler.getWorldSimData() != null) {
+                sim = SimEventHandler.getWorldSimData().getTotalSims();
+            }
             if (sim == null){
                 population = 0;
             }else {
                 population = sim.size();
             }
 
-                drawString(mc.fontRenderer, "Population: " + population, 1, 1, Color.WHITE.getRGB());
+                drawString(mc.fontRenderer, "Population " + population, 1, 1, Color.WHITE.getRGB());
                 drawString(mc.fontRenderer,"Credits: " + credits, 1, 11, Color.WHITE.getRGB());
         }
     }

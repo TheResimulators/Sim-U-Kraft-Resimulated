@@ -44,7 +44,7 @@ public class GuiMiner extends GuiScreen {
     @Override
     public void initGui() {
         x = 0;
-        for(UUID id : SimEventHandler.getUnemployedSims())
+        for(UUID id : SimEventHandler.getWorldSimData().getUnemployed_sims())
         {
             EntitySim sim = (EntitySim) server.getEntityFromUuid(id);
             sims.add(sim);

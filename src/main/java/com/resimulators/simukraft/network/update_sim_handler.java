@@ -22,12 +22,12 @@ public class update_sim_handler implements IMessageHandler<update_sim_packet, IM
                 System.out.println("sim " + e);
                 if (list.equals("unemployed")){
 
-                    SimEventHandler.addUnemployedSim(e);
+                    SimEventHandler.getWorldSimData().setUnemployed_sims(e);
                     System.out.println("adding SIMS");
                 }
                 if (list.equals("total")){
 
-                    SimEventHandler.addTotalSim(e);
+                    SimEventHandler.getWorldSimData().addSim(e);
                     System.out.println("adding SIMS");
                 }
             }

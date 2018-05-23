@@ -4,11 +4,9 @@ import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
 import com.resimulators.simukraft.common.entity.entitysim.SimEventHandler;
 import com.resimulators.simukraft.network.Hiring_packet;
 import com.resimulators.simukraft.network.PacketHandler;
-import com.sun.javafx.scene.control.skin.PaginationSkin;
 import net.minecraft.client.gui.*;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.fml.common.FMLCommonHandler;
-import scala.Int;
 
 import java.awt.*;
 import java.io.IOException;
@@ -72,7 +70,7 @@ public class GuiFarm extends GuiScreen {
         int increment = 0;
         int i = 2;
         int button;
-        Set<UUID> unemployed_sims = SimEventHandler.getUnemployedSims();
+        Set<UUID> unemployed_sims = SimEventHandler.getWorldSimData().getUnemployed_sims();
         for (UUID sims : unemployed_sims)
         {
             EntitySim sim = (EntitySim) server.getEntityFromUuid(sims);
@@ -126,9 +124,15 @@ public class GuiFarm extends GuiScreen {
         GuiButton button = buttonList.get(id);
         button.visible = false;
         button.enabled = false;
+        System.out.println(button);
+        System.out.println(button.visible);
+        System.out.println(button.enabled);
         if (buttons.containsValue(button)){
+            System.out.println("True");
         EntitySim sim = (EntitySim) getKeyFromValue(buttons,button);
         UUID sim_id = sim.getPersistentID();
+        sim.setProfession(2);
+        SimEventHandler.getWorldSimData().hiredsim(sim_id);
         PacketHandler.INSTANCE.sendToServer(new Hiring_packet(sim_id,2));
         }
 

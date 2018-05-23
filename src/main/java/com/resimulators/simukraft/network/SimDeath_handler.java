@@ -15,11 +15,10 @@ public class SimDeath_handler implements IMessageHandler<SimDeath_packet, IMessa
     @Override public IMessage onMessage(SimDeath_packet message, MessageContext ctx) {
         IThreadListener mainThread = (WorldServer) ctx.getServerHandler().player.world;
         mainThread.addScheduledTask(() -> {
-            SimEventHandler SimEventHandler = new SimEventHandler();
             UUID id = message.sims;
             System.out.println(" removing sim " + id);
             EntitySim e = (EntitySim) ctx.getServerHandler().player.getServerWorld().getEntityFromUuid(id);
-            SimEventHandler.simDied(id);
+            SimEventHandler.getWorldSimData().hiredsim(id);
         }); return null;
     }
 }

@@ -18,10 +18,10 @@ public class Siminfo_handler implements IMessageHandler<Siminfo_packet, IMessage
                 public void run() {
                     UUID id = message.sims;
                     System.out.println("sim " + id);
-                    if (!(SimEventHandler.getTotal_sims().contains(id)))
+                    if (!(SimEventHandler.getWorldSimData().getTotalSims().contains(id)))
                     {
-                        SimEventHandler.addTotalSim(id);
-                        SimEventHandler.addUnemployedSim(id);
+                        SimEventHandler.getWorldSimData().addSim(id);
+                        SimEventHandler.getWorldSimData().setUnemployed_sims(id);
                     }
                 }
 
