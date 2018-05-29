@@ -1,10 +1,10 @@
 package com.resimulators.simukraft;
 
-import com.resimulators.simukraft.client.gui.GuiFarm;
-import com.resimulators.simukraft.client.gui.GuiMiner;
-import com.resimulators.simukraft.client.gui.GuiSim;
-import com.resimulators.simukraft.client.gui.GuiStart;
+import com.resimulators.simukraft.client.gui.*;
+import com.resimulators.simukraft.common.tileentity.TileFarm;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.relauncher.Side;
@@ -20,6 +20,7 @@ public class GuiHandler implements IGuiHandler {
     public static final int GUI_FARM = 1;
     public static final int GUI_MINER = 2;
     public static final int GUI_START = 3;
+    public static final int GUI_HIRED = 4;
 
     @Nullable
     @Override
@@ -31,6 +32,7 @@ public class GuiHandler implements IGuiHandler {
     @Nullable
     @Override
     public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+        TileEntity tileEntity = world.getTileEntity(new BlockPos(x,y,z));
         if (ID == GUI_SIM)
             return new GuiSim(player);
         if (ID == GUI_FARM)
@@ -39,6 +41,8 @@ public class GuiHandler implements IGuiHandler {
             return new GuiMiner();
         if (ID == GUI_START)
             return new GuiStart();
+        if (ID == GUI_HIRED)
+            return new GuiHire((TileFarm) tileEntity);
         return null;
     }
 

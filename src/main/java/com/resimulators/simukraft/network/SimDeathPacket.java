@@ -6,27 +6,23 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 import java.util.UUID;
 
-public class Hiring_packet implements IMessage {
+public class SimDeathPacket implements IMessage {
 
-    public Hiring_packet(UUID id,int job_int){
-        System.out.println("Sending hire packet");
-        this.job = job_int;
+
+    public SimDeathPacket(UUID id){
         this.sims = id;
-    }
 
-    public Hiring_packet(){}
-    int job;
+    }
+    public SimDeathPacket(){}
     UUID sims;
     @Override
     public void fromBytes(ByteBuf byteBuf) {
         this.sims = UUID.fromString(ByteBufUtils.readUTF8String(byteBuf));
-        this.job = byteBuf.getInt(job);
+
     }
 
     @Override
     public void toBytes(ByteBuf byteBuf) {
         ByteBufUtils.writeUTF8String(byteBuf, sims.toString());
-        byteBuf.writeInt(job);
     }
-
-    }
+}

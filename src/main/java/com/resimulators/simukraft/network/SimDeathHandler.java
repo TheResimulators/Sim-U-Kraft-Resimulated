@@ -10,21 +10,15 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 import java.util.UUID;
 
-public class Hiring_handler  implements IMessageHandler<Hiring_packet, IMessage> {
+public class SimDeathHandler implements IMessageHandler<SimDeathPacket, IMessage> {
 
-    @Override public IMessage onMessage(Hiring_packet message, MessageContext ctx){
-        IThreadListener mainThread = ctx.getServerHandler().player.getServerWorld();
+    @Override public IMessage onMessage(SimDeathPacket message, MessageContext ctx) {
+        IThreadListener mainThread = (WorldServer) ctx.getServerHandler().player.world;
         mainThread.addScheduledTask(() -> {
             UUID id = message.sims;
             System.out.println(" removing sim " + id);
             EntitySim e = (EntitySim) ctx.getServerHandler().player.getServerWorld().getEntityFromUuid(id);
             SimEventHandler.getWorldSimData().hiredsim(id);
-            if (e != null) {
-                e.setProfession(2);
-            }
-
-
-        });return null;
+        }); return null;
     }
 }
-

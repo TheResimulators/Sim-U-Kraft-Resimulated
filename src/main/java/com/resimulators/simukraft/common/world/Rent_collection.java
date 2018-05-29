@@ -1,7 +1,7 @@
 package com.resimulators.simukraft.common.world;
 
 import com.resimulators.simukraft.common.entity.entitysim.SimEventHandler;
-import com.resimulators.simukraft.network.Credits_packets;
+import com.resimulators.simukraft.network.CreditsPacket;
 import com.resimulators.simukraft.network.PacketHandler;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -21,7 +21,7 @@ public class Rent_collection{
                 credits = credits + rent;
                 SimEventHandler.setCredits(credits);
                 System.out.println("Wakey wakey you just gained rent of " + rent + "to have a total of " + credits + " credits " + rent_paid);
-                //PacketHandler.INSTANCE.sendToAll(new Credits_packets());
+                PacketHandler.INSTANCE.sendToAll(new CreditsPacket());
                 rent_paid = true;
             }
             if (time != 0) {

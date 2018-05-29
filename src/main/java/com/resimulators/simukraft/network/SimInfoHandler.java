@@ -9,9 +9,9 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 import java.util.UUID;
 
-public class Siminfo_handler implements IMessageHandler<Siminfo_packet, IMessage> {
+public class SimInfoHandler implements IMessageHandler<SimInfoPacket, IMessage> {
 
-        @Override public IMessage onMessage(Siminfo_packet message, MessageContext ctx) {
+        @Override public IMessage onMessage(SimInfoPacket message, MessageContext ctx) {
             IThreadListener mainThread = (WorldServer) ctx.getServerHandler().player.getServerWorld();
             mainThread.addScheduledTask(new Runnable() {
                 @Override

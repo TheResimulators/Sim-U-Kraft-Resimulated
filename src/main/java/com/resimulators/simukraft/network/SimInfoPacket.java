@@ -6,14 +6,14 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 import java.util.UUID;
 
-public class Siminfo_packet implements IMessage {
+public class SimInfoPacket implements IMessage {
 
 
-    public  Siminfo_packet(UUID id){
+    public SimInfoPacket(UUID id){
         this.sims = id;
 
     }
-    public Siminfo_packet(){
+    public SimInfoPacket(){
 
     }
     UUID sims;
