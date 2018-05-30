@@ -24,6 +24,10 @@ public class SimEventHandler {
         return credits;
     }
     private static float credits = 10;
+    public static void setWorldSimData(SaveSimData datas) {
+
+        data = datas;
+    }
 
 
     public static SaveSimData getWorldSimData() {

@@ -6,6 +6,8 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 
 import java.awt.*;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 public class GuiFarm extends GuiScreen {
     boolean hiredSim = false;
@@ -17,15 +19,14 @@ public class GuiFarm extends GuiScreen {
     private String status = "";
     private GuiButton button1;
     private GuiButton button2;
+    private String seed = "wheat";
+    private Set<String> seeds = new HashSet<>();
     private int mouseX;
     private int mouseY;
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         drawDefaultBackground();
-        if (!status.equals("hiring")) {
-            drawString(mc.fontRenderer, "Farmer", (width / 2) - (buttonWidth / 3), height / 4 - 10, Color.WHITE.getRGB());
-        }
         this.mouseX = mouseX;
         this.mouseY = mouseY;
         super.drawScreen(mouseX, mouseY, partialTicks);
@@ -34,23 +35,12 @@ public class GuiFarm extends GuiScreen {
 
     @Override
     public void initGui() {
-        buttonList.add(button1 = new GuiButton(0, width / 2 - buttonWidth / 2, height - 90, "Hire"));
-        buttonList.add(button2 = new GuiButton(1, width / 2 - buttonWidth / 2, height - 50, "Cancel"));
-
         super.initGui();
     }
 
     @Override
     protected void actionPerformed(GuiButton button) throws IOException {
         super.actionPerformed(button);
-    }
-
-    private void updateButtons() {
-        if (status.equals("hiring")) {
-            button1.visible = false;
-            button1.enabled = false;
-        }
-
     }
 
     @Override

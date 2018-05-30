@@ -28,7 +28,6 @@ public class HudGui  extends Gui {
             Minecraft mc = Minecraft.getMinecraft();
             if (SimEventHandler.getWorldSimData() != null) {
                 sim = SimEventHandler.getWorldSimData().getTotalSims();
-            }
             if (sim == null){
                 population = 0;
             }else {
@@ -38,5 +37,5 @@ public class HudGui  extends Gui {
                 drawString(mc.fontRenderer, "Population " + population + " ,Unemployed sims: " + SimEventHandler.getWorldSimData().getUnemployed_sims().size() , 1, 1, Color.WHITE.getRGB());
                 drawString(mc.fontRenderer,"Credits: " + credits, 1, 11, Color.WHITE.getRGB());
         }
-    }
+    }}
 }
