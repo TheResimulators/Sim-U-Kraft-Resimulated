@@ -19,6 +19,7 @@ public class PacketHandler {
         INSTANCE.registerMessage(TriggerRefreshHandler.class,TriggerRefreshPacket.class,5,Side.SERVER);
         INSTANCE.registerMessage(RefreshHandler.class,RefreshPacket.class,6,Side.CLIENT);
         INSTANCE.registerMessage(PlayerUpdateHandler.class,PlayerUpdatePacket.class ,7,Side.CLIENT);
+        INSTANCE.registerMessage(PlayerUpdateHandler.class,PlayerUpdatePacket.class ,8,Side.SERVER);
 
     }
 
