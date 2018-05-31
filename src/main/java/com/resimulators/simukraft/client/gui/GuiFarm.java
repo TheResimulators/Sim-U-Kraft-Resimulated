@@ -1,5 +1,6 @@
 package com.resimulators.simukraft.client.gui;
 
+import com.resimulators.simukraft.common.tileentity.TileFarm;
 import net.minecraft.client.gui.*;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -17,13 +18,17 @@ public class GuiFarm extends GuiScreen {
     private int yOffset = 10;
     private int x = 0;
     private String status = "";
-    private GuiButton button1;
-    private GuiButton button2;
+    private GuiButton firebutton;
+    private GuiButton changeseed;
     private String seed = "wheat";
     private Set<String> seeds = new HashSet<>();
+    private TileFarm tilefarm;
     private int mouseX;
     private int mouseY;
-
+    public GuiFarm(TileFarm tileFarm)
+    {
+        this.tilefarm = tileFarm;
+    }
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         drawDefaultBackground();
@@ -35,6 +40,7 @@ public class GuiFarm extends GuiScreen {
 
     @Override
     public void initGui() {
+
         super.initGui();
     }
 

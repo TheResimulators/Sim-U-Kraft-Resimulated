@@ -36,7 +36,7 @@ public class GuiHandler implements IGuiHandler {
         if (ID == GUI_SIM)
             return new GuiSim(player);
         if (ID == GUI_FARM)
-            return new GuiFarm();
+            return new GuiFarm((TileFarm)tileEntity);
         if (ID == GUI_MINER)
             return new GuiMiner();
         if (ID == GUI_START)

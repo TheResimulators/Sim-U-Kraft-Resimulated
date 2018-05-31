@@ -22,25 +22,24 @@ public class PlayerUpdatePacket implements IMessage {
     int unemployedsize;
     float credits;
     SaveSimData data;
-    public PlayerUpdatePacket(Set<UUID> totalsims, Set<UUID> unemployedsims, float credits)
-    {
+
+    public PlayerUpdatePacket(Set<UUID> totalsims, Set<UUID> unemployedsims, float credits) {
         this.totalsim = totalsims;
         this.unemployedsim = unemployedsims;
         this.credits = credits;
         this.totalsimsize = totalsim.size();
         this.unemployedsize = unemployedsim.size();
     }
+
     @Override
     public void fromBytes(ByteBuf bytebuf) {
         this.totalsimsize = bytebuf.readInt();
-        for (int i = 0;i< this.totalsimsize;i++)
-        {
+        for (int i = 0; i < this.totalsimsize; i++) {
             totalsim.add(UUID.fromString(ByteBufUtils.readUTF8String(bytebuf)));
 
         }
         this.unemployedsize = bytebuf.readInt();
-        for (int i = 0;i<this.unemployedsize;i++)
-        {
+        for (int i = 0; i < this.unemployedsize; i++) {
             unemployedsim.add(UUID.fromString(ByteBufUtils.readUTF8String(bytebuf)));
         }
         this.credits = bytebuf.readFloat();
@@ -49,37 +48,14 @@ public class PlayerUpdatePacket implements IMessage {
     @Override
     public void toBytes(ByteBuf bytebuf) {
         bytebuf.writeInt(totalsimsize);
-        for (UUID sim: totalsim) {
+        for (UUID sim : totalsim) {
             ByteBufUtils.writeUTF8String(bytebuf, sim.toString());
         }
         bytebuf.writeInt(unemployedsize);
-        for (UUID sim: unemployedsim)
-        {
+        for (UUID sim : unemployedsim) {
             ByteBufUtils.writeUTF8String(bytebuf, sim.toString());
         }
         bytebuf.writeFloat(credits);
     }
-
-
-    class PlayerupdateHandler implements IMessageHandler<PlayerUpdatePacket, IMessage>
-
-    {
-
-        @Override public IMessage onMessage(PlayerUpdatePacket message, MessageContext ctx){
-        IThreadListener mainThread = ctx.getServerHandler().player.getServerWorld();
-        mainThread.addScheduledTask(() -> {
-            if(SimEventHandler.getWorldSimData() == null)
-            {
-                SimEventHandler.setWorldSimData(SaveSimData.get(ctx.getServerHandler().player.world));
-            }
-            for (UUID id: message.totalsim) {
-                SimEventHandler.getWorldSimData().addSim(id);
-            }
-            for (UUID id: message.totalsim) {
-                SimEventHandler.getWorldSimData().setUnemployed_sims(id);
-            }
-            SimEventHandler.setCredits(credits);
-        });return null;
-    }
-    }
 }
+
