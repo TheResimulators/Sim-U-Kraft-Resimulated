@@ -4,8 +4,6 @@ import com.resimulators.simukraft.common.tileentity.TileFarm;
 import net.minecraft.client.gui.*;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.fml.common.FMLCommonHandler;
-
-import java.awt.*;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;

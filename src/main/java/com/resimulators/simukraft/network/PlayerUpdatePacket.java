@@ -1,24 +1,16 @@
 package com.resimulators.simukraft.network;
 
-import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
-import com.resimulators.simukraft.common.entity.entitysim.SimEventHandler;
 import com.resimulators.simukraft.common.entity.player.SaveSimData;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.util.IThreadListener;
-import net.minecraft.world.storage.WorldSavedData;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-
-import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
 public class PlayerUpdatePacket implements IMessage {
-    Set<UUID> totalsim = new HashSet<>();
+    Set<UUID> totalsim;
     int totalsimsize;
-    Set<UUID> unemployedsim = new HashSet<>();
+    Set<UUID> unemployedsim;
     int unemployedsize;
     float credits;
     SaveSimData data;
