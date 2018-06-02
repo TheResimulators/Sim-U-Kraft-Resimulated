@@ -2,10 +2,10 @@ package com.resimulators.simukraft.common.tileentity;
 
 import com.resimulators.simukraft.GuiHandler;
 import com.resimulators.simukraft.SimUKraft;
-import net.minecraft.client.renderer.texture.ITickable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -33,9 +33,6 @@ public class TileFarm extends TileEntity implements ITickable {
     {
         return this.hired;
     }
-    @Override
-    public void tick() {}
-
     @Override
     public void readFromNBT(NBTTagCompound nbt)
     {

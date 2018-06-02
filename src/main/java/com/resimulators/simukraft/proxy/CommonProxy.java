@@ -53,6 +53,6 @@ public class CommonProxy {
         MinecraftForge.EVENT_BUS.register(new PlayerFirstJoin());
         MinecraftForge.EVENT_BUS.register(new Rent_collection());
         MinecraftForge.EVENT_BUS.register(new SpawnSimEntity());
-        MinecraftForge.EVENT_BUS.register(new PlayerJoinDataEvent());
+       /// MinecraftForge.EVENT_BUS.register(new PlayerJoinDataEvent());
     }
 }

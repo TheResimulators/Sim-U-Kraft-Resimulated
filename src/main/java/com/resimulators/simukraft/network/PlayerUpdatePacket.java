@@ -4,6 +4,8 @@ import com.resimulators.simukraft.common.entity.player.SaveSimData;
 import io.netty.buffer.ByteBuf;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -13,7 +15,6 @@ public class PlayerUpdatePacket implements IMessage {
     Set<UUID> unemployedsim;
     int unemployedsize;
     float credits;
-    SaveSimData data;
 
     public PlayerUpdatePacket(Set<UUID> totalsims, Set<UUID> unemployedsims, float credits) {
         this.totalsim = totalsims;
@@ -22,15 +23,20 @@ public class PlayerUpdatePacket implements IMessage {
         this.totalsimsize = totalsim.size();
         this.unemployedsize = unemployedsim.size();
     }
+    public PlayerUpdatePacket(){}
 
     @Override
     public void fromBytes(ByteBuf bytebuf) {
         this.totalsimsize = bytebuf.readInt();
+        totalsim = new HashSet<>(totalsimsize);
         for (int i = 0; i < this.totalsimsize; i++) {
-            totalsim.add(UUID.fromString(ByteBufUtils.readUTF8String(bytebuf)));
+            UUID sim = UUID.fromString(ByteBufUtils.readUTF8String(bytebuf));
+            System.out.println("Reading sim " + sim);
+            totalsim.add(sim);
 
         }
         this.unemployedsize = bytebuf.readInt();
+        unemployedsim = new HashSet<>(unemployedsize);
         for (int i = 0; i < this.unemployedsize; i++) {
             unemployedsim.add(UUID.fromString(ByteBufUtils.readUTF8String(bytebuf)));
         }
@@ -41,6 +47,7 @@ public class PlayerUpdatePacket implements IMessage {
     public void toBytes(ByteBuf bytebuf) {
         bytebuf.writeInt(totalsimsize);
         for (UUID sim : totalsim) {
+            System.out.println("writing uuid " + sim);
             ByteBufUtils.writeUTF8String(bytebuf, sim.toString());
         }
         bytebuf.writeInt(unemployedsize);

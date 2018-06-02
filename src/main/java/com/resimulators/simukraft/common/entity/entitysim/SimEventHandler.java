@@ -1,9 +1,8 @@
 package com.resimulators.simukraft.common.entity.entitysim;
-import com.jcraft.jogg.Packet;
 import com.resimulators.simukraft.common.entity.player.SaveSimData;
 import com.resimulators.simukraft.network.PacketHandler;
 import com.resimulators.simukraft.network.SimDeathPacket;
-import com.resimulators.simukraft.network.SimInfoPacket;
+import com.resimulators.simukraft.network.SimSpawnPacket;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
@@ -51,7 +50,7 @@ public class SimEventHandler {
                 UUID id = event.getEntity().getPersistentID();
                 data.spawnedSim(id);
 
-                PacketHandler.INSTANCE.sendToAll(new SimInfoPacket(id));
+                PacketHandler.INSTANCE.sendToAll(new SimSpawnPacket(id));
             }
         }
     }

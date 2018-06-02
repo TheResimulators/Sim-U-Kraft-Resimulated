@@ -5,9 +5,12 @@ import com.resimulators.simukraft.common.entity.entitysim.SimEventHandler;
 import com.resimulators.simukraft.common.tileentity.TileFarm;
 import com.resimulators.simukraft.network.HiringPacket;
 import com.resimulators.simukraft.network.PacketHandler;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.entity.Entity;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.client.config.GuiButtonExt;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import java.awt.*;
@@ -17,7 +20,7 @@ import java.util.Set;
 import java.util.UUID;
 
 public class GuiHire extends GuiScreen {
-    MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
+    WorldServer server = ;
     TileFarm tileEntity;
     private int mouseX;
     private int mouseY;
@@ -98,8 +101,7 @@ public class GuiHire extends GuiScreen {
                 ypos += 25;
 
             }
-
-            EntitySim sim =(EntitySim) server.getEntityFromUuid(id);
+            EntitySim sim = getEntity(id);
             sims.add(id);
             String name = sim.getCustomNameTag();
             buttonList.add(button = new SimButton(i,xpos,ypos,name,id));
@@ -160,4 +162,9 @@ public class GuiHire extends GuiScreen {
             simid = sim_id;
         }
     }
-}
+
+    private EntitySim getEntity(UUID id)
+    {for (Entity e :(server.world.getLoadedEntityList())){
+        if (e instanceof EntitySim){
+        if (e.getPersistentID() == id) return (EntitySim) e;}
+}return null;}}
