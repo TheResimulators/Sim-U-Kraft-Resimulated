@@ -10,7 +10,8 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 public class TriggerRefreshHandler implements IMessageHandler<TriggerRefreshPacket,RefreshPacket> {
 
     @Override public RefreshPacket onMessage(TriggerRefreshPacket message, MessageContext ctx){
-        return new RefreshPacket();
+        PacketHandler.INSTANCE.sendToAll(new RefreshPacket());
+        return null;
 
     }
 

@@ -1,18 +1,14 @@
 package com.resimulators.simukraft.client.gui;
 
 import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
-import com.resimulators.simukraft.common.entity.entitysim.SimEventHandler;
 import com.resimulators.simukraft.common.tileentity.TileFarm;
 import com.resimulators.simukraft.network.HiringPacket;
 import com.resimulators.simukraft.network.PacketHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.entity.Entity;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.WorldServer;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.client.config.GuiButtonExt;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import java.awt.*;
 import java.io.IOException;
 import java.util.HashSet;
@@ -20,8 +16,10 @@ import java.util.Set;
 import java.util.UUID;
 
 public class GuiHire extends GuiScreen {
-    WorldServer server = ;
-    TileFarm tileEntity;
+    private String name;
+    private Set<Integer> sim_id = new HashSet<>();
+    private World world;
+    private TileFarm tileEntity;
     private int mouseX;
     private int mouseY;
     private int buttonWidth = 140;
@@ -31,11 +29,15 @@ public class GuiHire extends GuiScreen {
     private GuiButton cancel_button;
     private Set<UUID> sims = new HashSet<>();
     private String profession = "";
+
     public GuiHire(TileFarm tileEntity){
         this.tileEntity = tileEntity;
         this.profession = tileEntity.profession;
     }
-
+    public void add_sim(int id)
+    {
+        sim_id.add(id);
+    }
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         drawDefaultBackground();
@@ -90,7 +92,9 @@ public class GuiHire extends GuiScreen {
         int i = 0;
         int pos = 0;
         sims.clear();
-        for (UUID id: SimEventHandler.getWorldSimData().getUnemployed_sims())
+        world = Minecraft.getMinecraft().world;
+        System.out.println(sim_id);
+        for (int id: sim_id)
         {
             int xpos = pos*100+20+pos*5;
 
@@ -101,10 +105,14 @@ public class GuiHire extends GuiScreen {
                 ypos += 25;
 
             }
-            EntitySim sim = getEntity(id);
-            sims.add(id);
-            String name = sim.getCustomNameTag();
+            EntitySim sim =(EntitySim) world.getEntityByID(id);
+            sim_id.add(id);
+            System.out.println(sim);
+            if (sim != null) {
+                name = sim.getName();
+            }else{name = "Error";}
             buttonList.add(button = new SimButton(i,xpos,ypos,name,id));
+            System.out.println(buttonList);
             if (!status.equals("hiring"))
             {
                 button.visible = false;
@@ -131,7 +139,6 @@ public class GuiHire extends GuiScreen {
                 button.visible = false;
                 button.enabled = false;
             case 1:
-                mc.displayGuiScreen(null);
 
         }
         if (button instanceof SimButton)
@@ -157,14 +164,17 @@ public class GuiHire extends GuiScreen {
     private class SimButton extends GuiButtonExt {
         boolean clicked = false;
         UUID simid;
-        private SimButton(int id, int x, int y, String string, UUID sim_id ){
+        private SimButton(int id, int x, int y, String string, int sim_id ){
             super(id, x, y, 100, 20, string);
-            simid = sim_id;
+            EntitySim sim = (EntitySim) world.getEntityByID(sim_id);
+            System.out.println(world);
+            if (sim != null)
+                {
+                    simid = sim.getUniqueID();
+                }
+
+
         }
     }
 
-    private EntitySim getEntity(UUID id)
-    {for (Entity e :(server.world.getLoadedEntityList())){
-        if (e instanceof EntitySim){
-        if (e.getPersistentID() == id) return (EntitySim) e;}
-}return null;}}
+}

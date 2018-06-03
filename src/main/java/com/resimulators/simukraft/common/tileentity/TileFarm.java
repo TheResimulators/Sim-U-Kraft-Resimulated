@@ -2,6 +2,8 @@ package com.resimulators.simukraft.common.tileentity;
 
 import com.resimulators.simukraft.GuiHandler;
 import com.resimulators.simukraft.SimUKraft;
+import com.resimulators.simukraft.network.GetSimIdPacket;
+import com.resimulators.simukraft.network.PacketHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -52,6 +54,7 @@ public class TileFarm extends TileEntity implements ITickable {
             playerIn.openGui(SimUKraft.instance, GuiHandler.GUI_FARM, worldIn, pos.getX(), pos.getY(), pos.getZ());
         } else
             {
+                PacketHandler.INSTANCE.sendToServer(new GetSimIdPacket());
                 playerIn.openGui(SimUKraft.instance, GuiHandler.GUI_HIRED, worldIn, pos.getX(), pos.getY(), pos.getZ());
             }
     }
