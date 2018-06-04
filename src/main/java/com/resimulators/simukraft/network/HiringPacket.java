@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public class HiringPacket implements IMessage {
 
-    public HiringPacket(UUID id, int job_int){
+    public HiringPacket(int id, int job_int){
         System.out.println("Sending hire packet");
         this.job = job_int;
         this.sims = id;
@@ -16,16 +16,16 @@ public class HiringPacket implements IMessage {
 
     public HiringPacket(){}
     int job;
-    UUID sims;
+    int sims;
     @Override
-    public void fromBytes(ByteBuf byteBuf) {
-        this.sims = UUID.fromString(ByteBufUtils.readUTF8String(byteBuf));
-        this.job = byteBuf.getInt(job);
+    public void fromBytes(ByteBuf bytebuf) {
+        this.sims = bytebuf.readInt();
+        this.job = bytebuf.readInt();
     }
 
     @Override
     public void toBytes(ByteBuf byteBuf) {
-        ByteBufUtils.writeUTF8String(byteBuf, sims.toString());
+        byteBuf.writeInt(sims);
         byteBuf.writeInt(job);
     }
 

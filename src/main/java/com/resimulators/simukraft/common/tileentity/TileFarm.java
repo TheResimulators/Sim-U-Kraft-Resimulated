@@ -35,6 +35,8 @@ public class TileFarm extends TileEntity implements ITickable {
     {
         return this.hired;
     }
+
+    public String getProfession(){return profession;}
     @Override
     public void readFromNBT(NBTTagCompound nbt)
     {
@@ -54,8 +56,14 @@ public class TileFarm extends TileEntity implements ITickable {
             playerIn.openGui(SimUKraft.instance, GuiHandler.GUI_FARM, worldIn, pos.getX(), pos.getY(), pos.getZ());
         } else
             {
-                PacketHandler.INSTANCE.sendToServer(new GetSimIdPacket());
-                playerIn.openGui(SimUKraft.instance, GuiHandler.GUI_HIRED, worldIn, pos.getX(), pos.getY(), pos.getZ());
+                System.out.println("Sending data");
+                System.out.println(pos.getX()+ " " + pos.getY() + " " +pos.getZ());
+                PacketHandler.INSTANCE.sendToServer(new GetSimIdPacket(pos.getX(),pos.getY(),pos.getZ()));
+                System.out.println("Data sent");
             }
+    }
+
+    public void employedSimDied(){
+        hired = false;
     }
 }

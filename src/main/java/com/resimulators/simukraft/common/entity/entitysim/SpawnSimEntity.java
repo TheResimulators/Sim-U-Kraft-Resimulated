@@ -26,7 +26,7 @@ public class SpawnSimEntity {
             List<EntityPlayer> players = world.playerEntities;
             if (players.size() > 0) {
                 EntityPlayer player = players.get(0);
-                if (ticks/20 == 5) {
+                if (ticks/20 == 20) {
 
                     ticks = 0;
                     if (SimEventHandler.getWorldSimData().getUnemployed_sims().size() < 5) {

@@ -32,7 +32,7 @@ public class GuiHire extends GuiScreen {
 
     public GuiHire(TileFarm tileEntity){
         this.tileEntity = tileEntity;
-        this.profession = tileEntity.profession;
+        this.profession = tileEntity.getProfession();
     }
     public void add_sim(int id)
     {
@@ -93,7 +93,6 @@ public class GuiHire extends GuiScreen {
         int pos = 0;
         sims.clear();
         world = Minecraft.getMinecraft().world;
-        System.out.println(sim_id);
         for (int id: sim_id)
         {
             int xpos = pos*100+20+pos*5;
@@ -107,12 +106,10 @@ public class GuiHire extends GuiScreen {
             }
             EntitySim sim =(EntitySim) world.getEntityByID(id);
             sim_id.add(id);
-            System.out.println(sim);
             if (sim != null) {
                 name = sim.getName();
             }else{name = "Error";}
             buttonList.add(button = new SimButton(i,xpos,ypos,name,id));
-            System.out.println(buttonList);
             if (!status.equals("hiring"))
             {
                 button.visible = false;
@@ -163,17 +160,12 @@ public class GuiHire extends GuiScreen {
 
     private class SimButton extends GuiButtonExt {
         boolean clicked = false;
-        UUID simid;
+        int simid;
         private SimButton(int id, int x, int y, String string, int sim_id ){
             super(id, x, y, 100, 20, string);
+            simid = sim_id;
             EntitySim sim = (EntitySim) world.getEntityByID(sim_id);
-            System.out.println(world);
-            if (sim != null)
-                {
-                    simid = sim.getUniqueID();
-                }
-
-
+            sim.setTileEntitiy(tileEntity.getPos());
         }
     }
 

@@ -45,9 +45,9 @@ public class SimEventHandler {
             if (!world.isRemote)
             {
 
-            if (!data.getTotalSims().contains(event.getEntity().getPersistentID()))
+            if (!data.getTotalSims().contains(event.getEntity().getUniqueID()))
             {
-                UUID id = event.getEntity().getPersistentID();
+                UUID id = event.getEntity().getUniqueID();
                 data.spawnedSim(id);
 
                 PacketHandler.INSTANCE.sendToAll(new SimSpawnPacket(id));
@@ -58,16 +58,17 @@ public class SimEventHandler {
 
     @SubscribeEvent
     public void Sim_Death(LivingDeathEvent event){
-
-
+        System.out.println("Something died");
         if (event.getEntity() instanceof EntitySim){
             EntitySim sim = (EntitySim) event.getEntity();
             World world = sim.world;
             if (!world.isRemote)
             {
                 UUID id = event.getEntity().getPersistentID();
+                int ids = event.getEntity().getEntityId();
                 data.simDied(id);
-                PacketHandler.INSTANCE.sendToAll(new SimDeathPacket(id));
+                System.out.println("Sim data packet sent");
+                PacketHandler.INSTANCE.sendToAll(new SimDeathPacket(ids));
             }
 
         }

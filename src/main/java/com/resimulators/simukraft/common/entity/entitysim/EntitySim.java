@@ -4,8 +4,10 @@ import com.resimulators.simukraft.GuiHandler;
 import com.resimulators.simukraft.SimUKraft;
 import com.resimulators.simukraft.common.entity.ai.AISimBuild;
 import com.resimulators.simukraft.common.entity.ai.AISimChildPlay;
+import com.resimulators.simukraft.common.tileentity.TileFarm;
 import com.resimulators.simukraft.common.tileentity.structure.Structure;
 import com.resimulators.simukraft.init.ModItems;
+import net.minecraft.block.Block;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.item.EntityItem;
@@ -21,6 +23,7 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNavigateGround;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.DifficultyInstance;
@@ -50,6 +53,8 @@ public class EntitySim extends EntityAgeable implements INpc {
     private BlockPos farmPos2;
     private StructureBoundingBox bounds;
 
+    //Profession block related
+    TileEntity professionblock;
 
     private boolean areAdditionalTasksSet;
     private int wealth;
@@ -376,4 +381,14 @@ public class EntitySim extends EntityAgeable implements INpc {
     public float getSwingProgress(float partialTickTime) {
         return super.getSwingProgress(partialTickTime);
     }
+
+    public void setTileEntitiy(BlockPos pos)
+    {
+        professionblock = world.getTileEntity(pos);
+    }
+
+    public TileEntity getTileEntitiy(){
+        return professionblock;
+    }
 }
+

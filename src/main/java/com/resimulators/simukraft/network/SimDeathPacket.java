@@ -9,20 +9,21 @@ import java.util.UUID;
 public class SimDeathPacket implements IMessage {
 
 
-    public SimDeathPacket(UUID id){
+    public SimDeathPacket(int id){
         this.sims = id;
 
     }
     public SimDeathPacket(){}
-    UUID sims;
+    int sims;
     @Override
     public void fromBytes(ByteBuf byteBuf) {
-        this.sims = UUID.fromString(ByteBufUtils.readUTF8String(byteBuf));
+        this.sims = byteBuf.readInt();
+        System.out.println("Reading sim death id");
 
     }
 
     @Override
     public void toBytes(ByteBuf byteBuf) {
-        ByteBufUtils.writeUTF8String(byteBuf, sims.toString());
+        byteBuf.writeInt(sims);
     }
 }

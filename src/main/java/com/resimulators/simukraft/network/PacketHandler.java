@@ -12,8 +12,8 @@ public class PacketHandler {
     public static final SimpleNetworkWrapper INSTANCE = NetworkRegistry.INSTANCE.newSimpleChannel(Reference.MOD_ID);
     public static void init() {
         INSTANCE.registerMessage(CreditsHandler.class,CreditsPacket.class,0,Side.SERVER);
-        INSTANCE.registerMessage(SimSpawnHandler.class,SimSpawnPacket.class,1,Side.SERVER);
-        INSTANCE.registerMessage(SimDeathHandler.class,SimDeathPacket.class,2,Side.SERVER);
+        INSTANCE.registerMessage(SimSpawnHandler.class,SimSpawnPacket.class,1,Side.CLIENT);
+        INSTANCE.registerMessage(SimDeathHandler.class,SimDeathPacket.class,2,Side.CLIENT);
         INSTANCE.registerMessage(HiringHandler.class,HiringPacket.class,3,Side.SERVER);
         INSTANCE.registerMessage(HiringHandler.class,HiringPacket.class,4,Side.CLIENT);
         INSTANCE.registerMessage(TriggerRefreshHandler.class,TriggerRefreshPacket.class,5,Side.SERVER);

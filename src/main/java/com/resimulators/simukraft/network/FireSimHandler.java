@@ -15,7 +15,7 @@ public class FireSimHandler implements IMessageHandler<FireSimPacket, IMessage> 
 
     @Override public IMessage onMessage(FireSimPacket message, MessageContext ctx) {
         Side side = FMLCommonHandler.instance().getSide();
-        IThreadListener mainThread = (WorldServer) ctx.getServerHandler().player.getServerWorld();
+        IThreadListener mainThread = ctx.getServerHandler().player.getServerWorld();
         mainThread.addScheduledTask(new Runnable() {
             @Override
             public void run() {

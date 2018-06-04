@@ -63,6 +63,7 @@ public class SaveSimData extends WorldSavedData {
     }
 
     public void hiredsim(UUID id){
+        System.out.println("This has been called");
         Unemployed_sims.remove(id);
         markDirty();
     }
