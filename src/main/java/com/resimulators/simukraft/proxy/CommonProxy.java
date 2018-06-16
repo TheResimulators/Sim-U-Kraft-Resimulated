@@ -9,10 +9,12 @@ import com.resimulators.simukraft.common.entity.entitysim.SimEventHandler;
 import com.resimulators.simukraft.common.entity.entitysim.SpawnSimEntity;
 import com.resimulators.simukraft.common.entity.player.PlayerFirstJoin;
 import com.resimulators.simukraft.common.entity.player.PlayerJoinDataEvent;
+import com.resimulators.simukraft.common.tileentity.Events.TileEntityCreate;
 import com.resimulators.simukraft.common.tileentity.TileFarm;
 import com.resimulators.simukraft.common.world.Rent_collection;
 import com.resimulators.simukraft.init.*;
 import com.resimulators.simukraft.network.PacketHandler;
+import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
@@ -53,6 +55,7 @@ public class CommonProxy {
         MinecraftForge.EVENT_BUS.register(new PlayerFirstJoin());
         MinecraftForge.EVENT_BUS.register(new Rent_collection());
         MinecraftForge.EVENT_BUS.register(new SpawnSimEntity());
-       /// MinecraftForge.EVENT_BUS.register(new PlayerJoinDataEvent());
+        MinecraftForge.EVENT_BUS.register(new TileFarm());
+        MinecraftForge.EVENT_BUS.register(new TileEntityCreate());
     }
 }

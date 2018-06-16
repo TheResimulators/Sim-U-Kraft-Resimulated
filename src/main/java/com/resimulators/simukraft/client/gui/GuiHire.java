@@ -4,6 +4,7 @@ import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
 import com.resimulators.simukraft.common.tileentity.TileFarm;
 import com.resimulators.simukraft.network.HiringPacket;
 import com.resimulators.simukraft.network.PacketHandler;
+import com.resimulators.simukraft.network.UpdateJobIdPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -12,6 +13,7 @@ import net.minecraftforge.fml.client.config.GuiButtonExt;
 import java.awt.*;
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -93,7 +95,9 @@ public class GuiHire extends GuiScreen {
         int pos = 0;
         sims.clear();
         world = Minecraft.getMinecraft().world;
-        for (int id: sim_id)
+        int num = 0;
+        List<String> names = tileEntity.getnames();
+        for (int id: tileEntity.getSims())
         {
             int xpos = pos*100+20+pos*5;
 
@@ -104,11 +108,14 @@ public class GuiHire extends GuiScreen {
                 ypos += 25;
 
             }
+            System.out.print(id);
             EntitySim sim =(EntitySim) world.getEntityByID(id);
             sim_id.add(id);
-            if (sim != null) {
-                name = sim.getName();
-            }else{name = "Error";}
+                System.out.println(names);
+                System.out.println(names.get(num));
+                name = names.get(num);
+                if (name == null){
+                    name = "Error";}
             buttonList.add(button = new SimButton(i,xpos,ypos,name,id));
             if (!status.equals("hiring"))
             {
@@ -123,6 +130,7 @@ public class GuiHire extends GuiScreen {
             }
             i++;
             pos++;
+            num++;
         }
 
         super.initGui();
@@ -142,7 +150,9 @@ public class GuiHire extends GuiScreen {
         {
             ((SimButton) button).clicked = true;
             tileEntity.setHired(true);
-            PacketHandler.INSTANCE.sendToServer(new HiringPacket(((SimButton) button).simid,2));
+            PacketHandler.INSTANCE.sendToServer(new HiringPacket(((SimButton) button).simid,tileEntity.getProfessionint()));
+            System.out.println("Sending id packet");
+            PacketHandler.INSTANCE.sendToServer(new UpdateJobIdPacket(((SimButton) button).simid,tileEntity.getPos().getX(),tileEntity.getPos().getY(),tileEntity.getPos().getZ()));
             mc.displayGuiScreen(null);
         }
 
@@ -161,11 +171,13 @@ public class GuiHire extends GuiScreen {
     private class SimButton extends GuiButtonExt {
         boolean clicked = false;
         int simid;
+        EntitySim sim;
         private SimButton(int id, int x, int y, String string, int sim_id ){
             super(id, x, y, 100, 20, string);
             simid = sim_id;
-            EntitySim sim = (EntitySim) world.getEntityByID(sim_id);
-            sim.setTileEntitiy(tileEntity.getPos());
+            sim = (EntitySim) world.getEntityByID(sim_id);
+
+
         }
     }
 

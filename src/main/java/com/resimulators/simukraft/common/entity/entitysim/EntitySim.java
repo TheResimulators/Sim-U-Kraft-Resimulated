@@ -7,6 +7,7 @@ import com.resimulators.simukraft.common.entity.ai.AISimChildPlay;
 import com.resimulators.simukraft.common.tileentity.TileFarm;
 import com.resimulators.simukraft.common.tileentity.structure.Structure;
 import com.resimulators.simukraft.init.ModItems;
+import javafx.scene.Parent;
 import net.minecraft.block.Block;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
@@ -382,13 +383,5 @@ public class EntitySim extends EntityAgeable implements INpc {
         return super.getSwingProgress(partialTickTime);
     }
 
-    public void setTileEntitiy(BlockPos pos)
-    {
-        professionblock = world.getTileEntity(pos);
-    }
-
-    public TileEntity getTileEntitiy(){
-        return professionblock;
-    }
 }
 

@@ -25,8 +25,7 @@ public class SimDeathHandler implements IMessageHandler<SimDeathPacket, IMessage
             EntitySim e = (EntitySim) Minecraft.getMinecraft().world.getEntityByID(id);
             SimEventHandler.getWorldSimData().simDied(e.getUniqueID());
             System.out.println("Sim unique id: " + e.getUniqueID());
-            TileFarm tile = (TileFarm) e.getTileEntitiy();
-            tile.employedSimDied();
+           
 
         }); return null;
     }

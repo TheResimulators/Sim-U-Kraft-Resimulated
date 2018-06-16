@@ -6,11 +6,10 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 public class ReturnSimIdPacket implements IMessage {
     int x;
@@ -19,6 +18,7 @@ public class ReturnSimIdPacket implements IMessage {
     int amount;
     WorldServer world;
     Set<Integer> sim_ids;
+    List<String> sim_names = new ArrayList<>();
     public ReturnSimIdPacket() {}
 
     public ReturnSimIdPacket(WorldServer world,int x, int y, int z, int amount)
@@ -35,8 +35,13 @@ public class ReturnSimIdPacket implements IMessage {
         this.amount = bytebuf.readInt();
         sim_ids = new HashSet<>();
         for (int i = 0;i<amount;i++)
-        {
+    {
         sim_ids.add(bytebuf.readInt());
+        String name = ByteBufUtils.readUTF8String(bytebuf);
+        System.out.println(sim_names);
+        System.out.println("Name: " + name);
+        sim_names.add(name);
+
         }
         this.x = bytebuf.readInt();
         this.y = bytebuf.readInt();
@@ -46,13 +51,21 @@ public class ReturnSimIdPacket implements IMessage {
     @Override
     public void toBytes(ByteBuf bytebuf)
     {
+        int num = 0;
         bytebuf.writeInt(amount);
         for (UUID sim: SimEventHandler.getWorldSimData().getUnemployed_sims())
         {
-            EntitySim entitySim = (EntitySim) world.getEntityFromUuid(sim);;
+            EntitySim entitySim = (EntitySim) world.getEntityFromUuid(sim);
             int id = entitySim.getEntityId();
             bytebuf.writeInt(id);
+            num++;
+            System.out.println(entitySim.getName());
+            ByteBufUtils.writeUTF8String(bytebuf,entitySim.getName());
         }
+        System.out.println(num);
+        System.out.println(amount );
+
+
         bytebuf.writeInt(x);
         bytebuf.writeInt(y);
         bytebuf.writeInt(z);
