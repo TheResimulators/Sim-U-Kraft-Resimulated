@@ -16,7 +16,7 @@ public class Rent_collection{
         float rent = 4;
         if (!world.isRemote) {
             credits = SimEventHandler.getCredits();
-            long time = world.getWorldTime();
+            long time = world.getWorldTime() % 24000;
             if (time == 0 && !rent_paid) {
                 credits = credits + rent;
                 SimEventHandler.setCredits(credits);
