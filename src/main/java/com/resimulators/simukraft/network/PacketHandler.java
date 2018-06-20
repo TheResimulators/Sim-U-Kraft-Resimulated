@@ -25,6 +25,7 @@ public class PacketHandler {
         INSTANCE.registerMessage(UpdateJobIdHandler.class,UpdateJobIdPacket.class,11,Side.SERVER);
         INSTANCE.registerMessage(ReturnUpdateSimIdHandler.class,ReturnUpdateSimIdPacket.class,12,Side.CLIENT);
         INSTANCE.registerMessage(ClientHireHandler.class,ClientHirePacket.class,13,Side.CLIENT);
+        INSTANCE.registerMessage(FireSimHandler.class,FireSimPacket.class,14,Side.CLIENT);
 
     }
 
