@@ -18,7 +18,12 @@ public class PlayerJoinDataEvent {
 
         System.out.println("Player joined");
         if (!event.player.world.isRemote) {
-            PacketHandler.INSTANCE.sendTo(new PlayerUpdatePacket(SimEventHandler.getWorldSimData().getTotalSims(), SimEventHandler.getWorldSimData().getUnemployed_sims(), SimEventHandler.getCredits()), (EntityPlayerMP) event.player);
+            System.out.println(SaveSimData.get(event.player.world));
+            System.out.println(SaveSimData.get(event.player.world).getTotalSims());
+            System.out.println(SaveSimData.get(event.player.world).getUnemployed_sims());
+            System.out.println(SimEventHandler.getCredits());
+
+            PacketHandler.INSTANCE.sendTo(new PlayerUpdatePacket(SaveSimData.get(event.player.world).getTotalSims(), SaveSimData.get(event.player.world).getUnemployed_sims(), SimEventHandler.getCredits()), (EntityPlayerMP) event.player);
             System.out.println("Data sent");
         }}
     }

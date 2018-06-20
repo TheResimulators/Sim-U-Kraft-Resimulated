@@ -42,13 +42,13 @@ public class GuiHire extends GuiScreen {
     }
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        drawDefaultBackground();
-        if (!status.equals("hiring")) {
-            drawString(mc.fontRenderer, profession, (width / 2)-fontRenderer.getStringWidth(profession)/2, height / 4 - 10, Color.WHITE.getRGB());
-        }
-        this.mouseX = mouseX;
-        this.mouseY = mouseY;
-        super.drawScreen(mouseX, mouseY, partialTicks);
+            drawDefaultBackground();
+            if (!status.equals("hiring")) {
+                drawString(mc.fontRenderer, profession, (width / 2)-fontRenderer.getStringWidth(profession)/2, height / 4 - 10, Color.WHITE.getRGB());
+            }
+            this.mouseX = mouseX;
+            this.mouseY = mouseY;
+            super.drawScreen(mouseX, mouseY, partialTicks);
 
     }
     @Override
@@ -80,7 +80,6 @@ public class GuiHire extends GuiScreen {
 
     @Override
     public void initGui() {
-        buttonList.clear();
         buttonList.add(hire_button = new GuiButton(0,width/2 - buttonWidth/2,height-60,buttonWidth,20,"Hire"));
         buttonList.add(cancel_button = new GuiButton(1,width/2 - buttonWidth/2,height-30,buttonWidth,20,"Cancel"));
         if(status.equals("hiring"))
@@ -138,14 +137,11 @@ public class GuiHire extends GuiScreen {
 
     @Override
     protected void actionPerformed(GuiButton button) throws IOException {
-        switch (button.id){
-            case 0:
+       if (button.id == 0){
                 status = "hiring";
                 button.visible = false;
                 button.enabled = false;
-            case 1:
-
-        }
+       }
         if (button instanceof SimButton)
         {
             ((SimButton) button).clicked = true;

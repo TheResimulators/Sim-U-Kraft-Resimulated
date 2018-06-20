@@ -55,6 +55,7 @@ public class GuiFarm extends GuiScreen {
         seeds.add("Wheat");
         seeds.add("Carrot");
         seeds.add("Potato");
+        seed = tilefarm.getSeed();
         buttonList.add(changeseed = new GuiButton(0,width/2 - 100,height/2+30, seeds.get(seed)));
 
 
@@ -79,6 +80,12 @@ public class GuiFarm extends GuiScreen {
     }
 
     @Override
+    public void onGuiClosed()
+    {
+tilefarm.setSeed(seed);
+    }
+
+    @Override
     public boolean doesGuiPauseGame() {
         return false;
     }
@@ -88,6 +95,7 @@ public class GuiFarm extends GuiScreen {
             super(id, x, y, 100, 30, string);
 
         }
+
     }
 }
 

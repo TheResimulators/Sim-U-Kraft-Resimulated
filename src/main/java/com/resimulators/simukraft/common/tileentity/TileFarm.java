@@ -29,7 +29,7 @@ public class TileFarm extends TileEntity implements ITickable,iSimJob {
     private Boolean hired = false;
     private Set<Integer> sims = new HashSet<>();
     private List<String> sims_name = new ArrayList<>();
-
+    private int  seed;
     public void CreateFarm() {}
 
     public void update() {
@@ -102,6 +102,7 @@ public class TileFarm extends TileEntity implements ITickable,iSimJob {
     {
         setHired(nbt.getBoolean("hired"));
         professionint = nbt.getInteger("profession");
+        seed = nbt.getInteger("seed");
         if (nbt.hasKey("id")){
         id = nbt.getUniqueId("id");}
         super.readFromNBT(nbt);
@@ -111,6 +112,7 @@ public class TileFarm extends TileEntity implements ITickable,iSimJob {
     public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
         nbt.setBoolean("hired",getHired());
         nbt.setInteger("profession" , professionint);
+        nbt.setInteger("seed",seed);
         if (id != null){
         nbt.setUniqueId("id",id);}
         return super.writeToNBT(nbt);
@@ -125,4 +127,13 @@ public class TileFarm extends TileEntity implements ITickable,iSimJob {
                 PacketHandler.INSTANCE.sendToServer(new GetSimIdPacket(pos.getX(),pos.getY(),pos.getZ()));
 
             }
-    }}
+    }
+
+    public int getSeed() {
+        return seed;
+    }
+
+    public void setSeed(int seed) {
+        this.seed = seed;
+    }
+}

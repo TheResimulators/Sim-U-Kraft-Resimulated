@@ -1,4 +1,5 @@
 package com.resimulators.simukraft.common.entity.entitysim;
+import com.resimulators.simukraft.common.entity.player.SaveSimData;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.player.EntityPlayer;
@@ -29,7 +30,7 @@ public class SpawnSimEntity {
                 if (ticks/20 == 20) {
 
                     ticks = 0;
-                    if (SimEventHandler.getWorldSimData().getUnemployed_sims().size() < 5) {
+                    if (SaveSimData.get(event.player.world).getUnemployed_sims().size() < 5) {
                         EntitySim entity = new EntitySim(world);
 
                         double entityx = player.posX + rand.nextInt(11)-5;
