@@ -11,7 +11,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class TileEntityCreate {
     @SubscribeEvent
     public void checkBlock(BlockEvent.PlaceEvent event)
-    {   
+    {
         if (event.getPlacedBlock().getBlock().hasTileEntity(event.getPlacedBlock()));
             {
                 BlockPos pos = new BlockPos(event.getPos());

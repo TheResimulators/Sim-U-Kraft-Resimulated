@@ -1,6 +1,8 @@
 package com.resimulators.simukraft.client.gui;
 
 import com.resimulators.simukraft.common.tileentity.TileFarm;
+import com.resimulators.simukraft.network.FireSimTriggerPacket;
+import com.resimulators.simukraft.network.PacketHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
 import net.minecraft.server.MinecraftServer;
@@ -56,8 +58,8 @@ public class GuiFarm extends GuiScreen {
         seeds.add("Carrot");
         seeds.add("Potato");
         seed = tilefarm.getSeed();
-        buttonList.add(changeseed = new GuiButton(0,width/2 - 100,height/2+30, seeds.get(seed)));
-
+        buttonList.add(changeseed = new GuiButton(0,width/2 - 100,height/2, seeds.get(seed)));
+        buttonList.add(firebutton = new GuiButton(1,width/2-100,(height/4) * 3,"Fire Sim"));
 
         super.initGui();
     }
@@ -74,6 +76,8 @@ public class GuiFarm extends GuiScreen {
                     {
                         seed ++;
                     }
+            case 1:
+                PacketHandler.INSTANCE.sendToServer(new FireSimTriggerPacket(tilefarm.getId(),tilefarm.getPos().getX(),tilefarm.getPos().getY(),tilefarm.getPos().getZ()));
                 changeseed.displayString = seeds.get(seed);
         }
 

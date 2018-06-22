@@ -26,7 +26,7 @@ public class PacketHandler {
         INSTANCE.registerMessage(ReturnUpdateSimIdHandler.class,ReturnUpdateSimIdPacket.class,12,Side.CLIENT);
         INSTANCE.registerMessage(ClientHireHandler.class,ClientHirePacket.class,13,Side.CLIENT);
         INSTANCE.registerMessage(FireSimHandler.class,FireSimPacket.class,14,Side.CLIENT);
-
+        INSTANCE.registerMessage(FireSimTriggerPacketHandler.class,FireSimTriggerPacket.class,15,Side.SERVER);
     }
 
 }
