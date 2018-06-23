@@ -19,11 +19,9 @@ public class ReturnSimIdHandler implements IMessageHandler<ReturnSimIdPacket,IMe
     public IMessage onMessage(ReturnSimIdPacket message, MessageContext ctx) {
         Minecraft mc = Minecraft.getMinecraft();
         TileEntity entity = mc.world.getTileEntity(new BlockPos(message.x,message.y,message.z));
-        System.out.println(mc.currentScreen);
-        for(int i = 0;i<((iSimJob)entity).getnames().size();i++)
-        {
-            ((iSimJob)entity).getnames().remove(i);
-        }
+            ((iSimJob)entity).getnames().clear();
+        ((iSimJob)entity).getSims().clear();
+        System.out.println(((iSimJob)entity).getnames());
         for(int sim: message.sim_ids)
         {
                 ((iSimJob)entity).addSim(sim);

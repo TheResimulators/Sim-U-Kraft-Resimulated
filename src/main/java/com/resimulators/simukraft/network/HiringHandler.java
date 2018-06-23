@@ -16,20 +16,9 @@ import java.util.UUID;
 
 public class HiringHandler implements IMessageHandler<HiringPacket, IMessage> {
 
-    private boolean reply;
     @Override public IMessage onMessage(HiringPacket message, MessageContext ctx){
         IThreadListener mainThread;
-        if (FMLCommonHandler.instance().getSide() == Side.SERVER){
         mainThread = ctx.getServerHandler().player.getServerWorld();
-        reply = true;
-
-        }
-        else
-            {
-                mainThread = Minecraft.getMinecraft();
-                reply = false;
-                System.out.println("receiving on client side");
-            }
         mainThread.addScheduledTask(() -> {
                 EntitySim sim = (EntitySim) ctx.getServerHandler().player.world.getEntityByID(message.sims);
 

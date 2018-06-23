@@ -77,7 +77,10 @@ public class GuiFarm extends GuiScreen {
                         seed ++;
                     }
             case 1:
-                PacketHandler.INSTANCE.sendToServer(new FireSimTriggerPacket(tilefarm.getId(),tilefarm.getPos().getX(),tilefarm.getPos().getY(),tilefarm.getPos().getZ()));
+                tilefarm.setHired(false);
+                tilefarm.setId(null);
+                PacketHandler.INSTANCE.sendToServer(new FireSimTriggerPacket(tilefarm.getPos().getX(),tilefarm.getPos().getY(),tilefarm.getPos().getZ()));
+                mc.displayGuiScreen(null);
                 changeseed.displayString = seeds.get(seed);
         }
 
