@@ -25,11 +25,16 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nullable;
 import java.util.Random;
@@ -37,7 +42,7 @@ import java.util.Random;
 /**
  * Created by fabbe on 19/01/2018 - 11:36 AM.
  */
-public class EntitySim extends EntityAgeable implements INpc {
+public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvider {
     private static final DataParameter<Integer> VARIATION = EntityDataManager.createKey(EntitySim.class, DataSerializers.VARINT);
     private static final DataParameter<Integer> PROFESSION = EntityDataManager.createKey(EntitySim.class, DataSerializers.VARINT);
     private static final DataParameter<Boolean> FEMALE = EntityDataManager.createKey(EntitySim.class, DataSerializers.BOOLEAN);
@@ -48,6 +53,8 @@ public class EntitySim extends EntityAgeable implements INpc {
     private Structure structure;
     private boolean isAllowedToBuild;
     private BlockPos startPos;
+    //Inventory
+    private ItemStackHandler handler;
 
     //Farmer profession related
     private BlockPos farmPos1;
@@ -70,6 +77,7 @@ public class EntitySim extends EntityAgeable implements INpc {
         this.setCanPickUpLoot(true);
         this.setCustomNameTag("Sim (WIP)");
         this.setAlwaysRenderNameTag(false);
+        this.handler = new ItemStackHandler(27);
     }
 
     @Override
@@ -160,7 +168,9 @@ public class EntitySim extends EntityAgeable implements INpc {
                 nbtTagList.appendTag(itemStack.writeToNBT(new NBTTagCompound()));
             }
         }
-
+        if (handler != null){
+            compound.setTag("SimInventory", handler.serializeNBT());
+    }
         compound.setTag("Inventory", nbtTagList);
     }
 
@@ -191,7 +201,9 @@ public class EntitySim extends EntityAgeable implements INpc {
                 this.inventory.addItem(itemStack);
             }
         }
-
+        if (compound.hasKey("SimInventory")){
+        this.handler.deserializeNBT(compound.getCompoundTag("SimInventory"));
+        }
         this.setCanPickUpLoot(true);
         this.setAdditionalAITasks();
     }
@@ -381,6 +393,24 @@ public class EntitySim extends EntityAgeable implements INpc {
     @Override
     public float getSwingProgress(float partialTickTime) {
         return super.getSwingProgress(partialTickTime);
+    }
+
+    @Override
+    public boolean hasCapability(Capability<?> capability, EnumFacing facing)
+    {
+        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+            return true;
+        return super.hasCapability(capability,facing);
+    }
+    @Override
+    public<T> T getCapability(Capability<T> capability,EnumFacing facing)
+    {
+        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        {
+            return (T) this.handler;
+        }
+        return super.getCapability(capability,facing);
+
     }
 
 }

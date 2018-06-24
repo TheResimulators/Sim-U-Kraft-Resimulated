@@ -5,11 +5,15 @@ import com.resimulators.simukraft.network.HiredSimDeathPacket;
 import com.resimulators.simukraft.network.PacketHandler;
 import com.resimulators.simukraft.network.SimDeathPacket;
 import com.resimulators.simukraft.network.SimSpawnPacket;
+import net.minecraft.inventory.InventoryHelper;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
 import java.util.*;
 
@@ -82,8 +86,16 @@ public class SimEventHandler {
 
                             PacketHandler.INSTANCE.sendToAll(new HiredSimDeathPacket(entity.getPos().getX(),entity.getPos().getY(),entity.getPos().getZ(),ids));
                             return;
+
                         }
                     }
+                    //dropping items
+                IItemHandler handler = event.getEntity().getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,null);
+                for(int slot = 0;slot< handler.getSlots()-1;slot++)
+                {
+                    ItemStack stack = handler.getStackInSlot(slot);
+                    InventoryHelper.spawnItemStack(event.getEntity().world,event.getEntity().posX,event.getEntity().posY,event.getEntity().posZ,stack);
+                }
                 }
 
         }
