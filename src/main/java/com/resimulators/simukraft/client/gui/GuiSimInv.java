@@ -1,7 +1,7 @@
 package com.resimulators.simukraft.client.gui;
 
 import com.resimulators.simukraft.Reference;
-import com.resimulators.simukraft.common.containers.SimContainer;
+import com.resimulators.simukraft.common.Containers.SimContainer;
 import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;

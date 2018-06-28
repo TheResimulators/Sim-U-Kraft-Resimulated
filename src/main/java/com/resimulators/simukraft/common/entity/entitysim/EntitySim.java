@@ -421,35 +421,43 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
     }
 
     public void Checkfood() {
-        int heal = -1;
+        int heal = 0;
         System.out.println("Checkfood called");
-                int finalheal = -1;
+                int finalheal = 0;
+                ItemStack final_stack = null;
 
                 for (int i = 0; i < handler.getSlots(); i++) {
                     ItemStack stack = handler.getStackInSlot(i);
-                    System.out.println("stack: " + stack);
+                    System.out.println("item: " + stack.getItem());
+
                     if (stack.getItem() instanceof ItemFood) {
                         heal = (((ItemFood) stack.getItem()).getHealAmount(stack));
-
+                        System.out.println(String.format("heal amount for item {} {} ",stack.getItem(),heal));
                         if (finalheal <= 0) finalheal = heal;
-                        if (this.getFoodLevel() + finalheal > 20)
+                        else if (this.getFoodLevel() + finalheal > 20)
                         {
                             if (heal < finalheal)
                             {
                                 finalheal = heal;
+                                final_stack = handler.getStackInSlot(i);
                             }
                         }else
                             {
                                 finalheal = heal;
+                                final_stack = handler.getStackInSlot(i);
                             }
                     }
                 }
-                System.out.println("hunger after: "+ (hunger+heal));
-        if (hunger + heal > maxhunger)
+                System.out.println("healing for: " + finalheal);
+                System.out.println("hunger after: "+ (hunger+finalheal));
+        if (finalheal != 0 && final_stack != null){
+        if (hunger + finalheal > maxhunger)
         {
             hunger = 20;
+            final_stack.shrink(1);
         }else{
-            hunger += heal;
+            hunger += finalheal;
+            final_stack.shrink(1);
         }
 
             if (hunger < 5)
@@ -457,13 +465,15 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
                 if (finalheal + hunger > 20)
                 {
                     hunger = 20;
+                    final_stack.shrink(1);
                 }
                 else {hunger += finalheal;}
             } else if (finalheal + hunger <= 20)
             {
                 hunger += finalheal;
+                final_stack.shrink(1);
             }
-            }
+            }}
     public int getFoodLevel(){
         return hunger;
     }

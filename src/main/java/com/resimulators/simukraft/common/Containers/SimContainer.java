@@ -1,4 +1,4 @@
-package com.resimulators.simukraft.common.containers;
+package com.resimulators.simukraft.common.Containers;
 
 
 import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
@@ -45,15 +45,6 @@ public class SimContainer extends Container {
         this.addSlotToContainer(new SlotItemHandler(handler,24,116,54));
         this.addSlotToContainer(new SlotItemHandler(handler,25,134,54));
         this.addSlotToContainer(new SlotItemHandler(handler,26,152,54));
-
-        for (Slot slots:this.inventorySlots)
-        {
-            slots.onSlotChanged();
-            {
-                detectAndSendChanges();
-            }
-        }
-
         int xPos = 8;
         int yPos = 84;
 
@@ -103,5 +94,10 @@ public class SimContainer extends Container {
             slot.onTake(playerIn, current);
         }
         return previous;
+    }
+
+    @Override
+    public void detectAndSendChanges() {
+        super.detectAndSendChanges();
     }
 }

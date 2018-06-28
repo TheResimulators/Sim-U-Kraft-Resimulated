@@ -30,7 +30,7 @@ public class SpawnSimEntity {
                 if (ticks/20 == 20) {
 
                     ticks = 0;
-                    if (SaveSimData.get(event.player.world).getUnemployed_sims().size() < 5) {
+                    if (SaveSimData.get(event.player.world).getUnemployed_sims().size() < 1) {
                         EntitySim entity = new EntitySim(world);
 
                         double entityx = player.posX + rand.nextInt(11)-5;
