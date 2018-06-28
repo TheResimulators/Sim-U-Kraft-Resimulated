@@ -1,6 +1,11 @@
 package com.resimulators.simukraft.client.gui;
 
+import com.resimulators.simukraft.GuiHandler;
+import com.resimulators.simukraft.SimUKraft;
 import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
+import com.resimulators.simukraft.network.PacketHandler;
+import com.resimulators.simukraft.network.SimInvPacket;
+import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
@@ -8,6 +13,7 @@ import net.minecraft.entity.player.EntityPlayer;
 
 
 import java.awt.*;
+import java.io.IOException;
 
 /**
  * Created by fabbe on 21/01/2018 - 12:26 AM.
@@ -15,7 +21,7 @@ import java.awt.*;
 public class GuiSim extends GuiScreen {
     private EntitySim entitySim;
     private String simName;
-
+    private GuiButton inv;
     public GuiSim(EntityPlayer player) {
         try {
             int ID = 0;
@@ -47,6 +53,8 @@ public class GuiSim extends GuiScreen {
             drawString(mc.fontRenderer, "Variation: " + entitySim.getVariation(), (width / 2 - 125 + 8), (height / 2 - 100 + 44), Color.WHITE.getRGB());
             drawString(mc.fontRenderer, "Profession: " + entitySim.getLabeledProfession(), (width / 2 - 125 + 8), (height / 2 - 100 + 56), Color.WHITE.getRGB());
             drawString(mc.fontRenderer, "Building: " + entitySim.isAllowedToBuild(), (width / 2 - 125 + 8), (height / 2 - 100 + 80), Color.WHITE.getRGB());
+            drawString(mc.fontRenderer,"Hunger: " + entitySim.getFoodLevel(),(width/2) - 40,(height/4)*3 +30,Color.WHITE.getRGB());
+            drawString(mc.fontRenderer,"Health: " + entitySim.getHealth(),(width/2) - 40,(height/4)*3 -30,Color.WHITE.getRGB());
             GlStateManager.enableLighting();
         }
         GlStateManager.popMatrix();
@@ -65,6 +73,15 @@ public class GuiSim extends GuiScreen {
 
     @Override
     public void initGui() {
+        buttonList.add(inv = new GuiButton(0,width/2-100,(height/4)*3,"Inventory"));
         super.initGui();
+    }
+    @Override
+    protected void actionPerformed(GuiButton button) throws IOException
+    {
+        if (button.id == 0)
+        {
+           PacketHandler.INSTANCE.sendToServer(new SimInvPacket(entitySim.getEntityId()));
+        }
     }
 }
