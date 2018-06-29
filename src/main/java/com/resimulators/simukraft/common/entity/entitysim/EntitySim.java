@@ -181,6 +181,7 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
             compound.setTag("SimInventory", handler.serializeNBT());
         }
         compound.setTag("Inventory", nbtTagList);
+        compound.setInteger("hunger", this.hunger);
     }
 
     @Override
@@ -213,6 +214,8 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
         if (compound.hasKey("SimInventory")) {
             this.handler.deserializeNBT(compound.getCompoundTag("SimInventory"));
         }
+
+        this.hunger = compound.getInteger("hunger");
         this.setCanPickUpLoot(true);
         this.setAdditionalAITasks();
     }
@@ -421,9 +424,11 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
     }
 
     public void Checkfood() {
+        if (this.world.isRemote){
         int heal = 0;
+        int finalheal = 0;
         System.out.println("Checkfood called");
-                int finalheal = 0;
+
                 ItemStack final_stack = null;
 
                 for (int i = 0; i < handler.getSlots(); i++) {
@@ -449,9 +454,9 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
                     }
                 }
                 System.out.println("healing for: " + finalheal);
-                System.out.println("hunger after: "+ (hunger+finalheal));
+                System.out.println("hunger after before setting: "+ this.getFoodLevel());
         if (finalheal != 0 && final_stack != null){
-        if (hunger + finalheal > maxhunger)
+        if (this.hunger + finalheal > maxhunger)
         {
             hunger = 20;
             final_stack.shrink(1);
@@ -473,7 +478,8 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
                 hunger += finalheal;
                 final_stack.shrink(1);
             }
-            }}
+            }
+    System.out.println("hunger after setting it: " + hunger);}}
     public int getFoodLevel(){
         return hunger;
     }
