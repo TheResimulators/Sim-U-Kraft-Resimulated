@@ -8,6 +8,8 @@ import com.resimulators.simukraft.common.entity.ai.AISimEat;
 import com.resimulators.simukraft.common.tileentity.TileFarm;
 import com.resimulators.simukraft.common.tileentity.structure.Structure;
 import com.resimulators.simukraft.init.ModItems;
+import com.resimulators.simukraft.network.HungerPacket;
+import com.resimulators.simukraft.network.PacketHandler;
 import javafx.scene.Parent;
 import net.minecraft.block.Block;
 import net.minecraft.entity.*;
@@ -424,20 +426,15 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
     }
 
     public void Checkfood() {
-        if (this.world.isRemote){
+        if (!this.world.isRemote){
         int heal = 0;
         int finalheal = 0;
         System.out.println("Checkfood called");
-
                 ItemStack final_stack = null;
-
                 for (int i = 0; i < handler.getSlots(); i++) {
                     ItemStack stack = handler.getStackInSlot(i);
-                    System.out.println("item: " + stack.getItem());
-
                     if (stack.getItem() instanceof ItemFood) {
                         heal = (((ItemFood) stack.getItem()).getHealAmount(stack));
-                        System.out.println(String.format("heal amount for item {} {} ",stack.getItem(),heal));
                         if (finalheal <= 0) finalheal = heal;
                         else if (this.getFoodLevel() + finalheal > 20)
                         {
@@ -453,9 +450,10 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
                             }
                     }
                 }
-                System.out.println("healing for: " + finalheal);
-                System.out.println("hunger after before setting: "+ this.getFoodLevel());
+
         if (finalheal != 0 && final_stack != null){
+            System.out.println("healing for: " + finalheal);
+            System.out.println("hunger after before setting: "+ this.getFoodLevel());
         if (this.hunger + finalheal > maxhunger)
         {
             hunger = 20;
@@ -478,8 +476,9 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
                 hunger += finalheal;
                 final_stack.shrink(1);
             }
+            PacketHandler.INSTANCE.sendToAll(new HungerPacket(this.getFoodLevel(),this.getEntityId()));}
             }
-    System.out.println("hunger after setting it: " + hunger);}}
+    System.out.println("hunger after setting it: " + hunger);}
     public int getFoodLevel(){
         return hunger;
     }
@@ -490,7 +489,7 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
     public void onUpdate()
     {
         super.onUpdate();
-       if (heal_counter/20 > 2)
+       if (heal_counter/20 > 4)
        {
            if (hunger > 15 && getHealth() < 20)
            {
@@ -507,14 +506,20 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
                hunger = 0;
            }else {
                if (hunger > 0){
-               hunger -= 1;}
+               hunger -= 1;
+                   PacketHandler.INSTANCE.sendToAll(new HungerPacket(this.getFoodLevel(),this.getEntityId()));}
 
                counter = 0;
             }
+            System.out.println("Hunger: " + this.getFoodLevel());
        }
         heal_counter++;
         counter++;
 
+    }
+
+    public void setHunger(int hunger) {
+        this.hunger = hunger;
     }
 }
 

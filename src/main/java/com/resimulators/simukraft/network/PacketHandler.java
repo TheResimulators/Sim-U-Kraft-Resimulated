@@ -28,6 +28,7 @@ public class PacketHandler {
         INSTANCE.registerMessage(FireSimHandler.class,FireSimPacket.class,14,Side.CLIENT);
         INSTANCE.registerMessage(FireSimTriggerPacketHandler.class,FireSimTriggerPacket.class,15,Side.SERVER);
         INSTANCE.registerMessage(SimInvHandler.class,SimInvPacket.class,16,Side.SERVER);
+        INSTANCE.registerMessage(HungerHandler.class,HungerPacket.class,17,Side.CLIENT);
     }
 
 }
