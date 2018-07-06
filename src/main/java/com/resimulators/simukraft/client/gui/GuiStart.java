@@ -2,90 +2,85 @@ package com.resimulators.simukraft.client.gui;
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
-import org.lwjgl.input.Mouse;
 
 import java.awt.*;
 import java.io.IOException;
 
-public class GuiStart extends GuiScreen{
+public class GuiStart extends GuiScreen {
     private GuiButton button1;
     private GuiButton button2;
     private GuiButton button3;
-    public int Gamemode = -1;
+    private int gamemode = -1;
     private int button_width = 100;
     private int button_height = 20;
+
     @Override
-    public void drawScreen(int mouseX, int mouseY,float partialTicks) {
+    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         drawDefaultBackground();
-        drawString(fontRenderer,"Welcome to Sim-u-Kraft",width/2- button_width/2,height/3 - 50, Color.WHITE.getRGB());
-        drawCenteredString(fontRenderer,"Please choose a mode to play in:",width/2,height/3-30,Color.WHITE.getRGB());
+        drawString(fontRenderer, "Welcome to Sim-u-Kraft", width / 2 - button_width / 2, height / 3 - 50, Color.WHITE.getRGB());
+        drawCenteredString(fontRenderer, "Please choose a mode to play in:", width / 2, height / 3 - 30, Color.WHITE.getRGB());
         super.drawScreen(mouseX, mouseY, partialTicks);
         int buttonx = button1.x;
         int buttony = button1.y;
         String desc;
-        desc = "Have to supply most resources."+" Money needed to build and hire sims etc.";
+        desc = "Have to supply most resources. " + "Money needed to build and hire sims etc.";
         //System.out.println(buttonx+","+ buttony+","+(buttonx+button_width)+","+(buttony-button_height)+","+mouseX+","+mouseY);
-        if (buttonx <= mouseX && mouseX <= (buttonx + button_width)){
-
-            if (buttony<=mouseY && mouseY <=(buttony + button_height)){
-                drawHoveringText(desc,buttonx-fontRenderer.getStringWidth(desc)/3,buttony-10);
+        if (buttonx <= mouseX && mouseX <= (buttonx + button_width)) {
+            if (buttony <= mouseY && mouseY <= (buttony + button_height)) {
+                drawHoveringText(desc, buttonx - fontRenderer.getStringWidth(desc) / 3, buttony - 10);
             }
         }
         buttony = button2.y;
         buttonx = button2.x;
-        desc = "Have to supply all resources."+" Money needed to build and hire sims etc.";
-        if (buttonx <= mouseX && mouseX <= (buttonx + button_width)){
-            if (buttony<=mouseY && mouseY <=(buttony + button_height)){
-
-                drawHoveringText(desc,buttonx-fontRenderer.getStringWidth(desc)/3,buttony-10);
+        desc = "Have to supply all resources. " + "Money needed to build and hire sims etc.";
+        if (buttonx <= mouseX && mouseX <= (buttonx + button_width)) {
+            if (buttony <= mouseY && mouseY <= (buttony + button_height)) {
+                drawHoveringText(desc, buttonx - fontRenderer.getStringWidth(desc) / 3, buttony - 10);
             }
         }
         buttonx = button3.x;
         buttony = button3.y;
-        desc = "Have to supply no resources."+" Everything is Free. Let your imagination run wild";
-        if (buttonx <= mouseX && mouseX <= (buttonx + button_width)){
-
-            if (buttony<=mouseY && mouseY <=(buttony + button_height)){
-                drawHoveringText(desc,buttonx-fontRenderer.getStringWidth(desc)/4,buttony-10);
+        desc = "Have to supply no resources. " + "Everything is Free. Let your imagination run wild";
+        if (buttonx <= mouseX && mouseX <= (buttonx + button_width)) {
+            if (buttony <= mouseY && mouseY <= (buttony + button_height)) {
+                drawHoveringText(desc, buttonx - fontRenderer.getStringWidth(desc) / 4, buttony - 10);
             }
         }
-
     }
 
     @Override
     public void initGui() {
         buttonList.clear();
-        buttonList.add(button1 = new GuiButton(1,width/2 - button_width/2,height/3 - 10,button_width,button_height,"Survival"));
-        buttonList.add(button2 = new GuiButton(2,width/2 - button_width/2,height/3 + 40,button_width,button_height,"Hardcore"));
-        buttonList.add(button3 = new GuiButton(3,width/2 - button_width/2,height/3 + 90,button_width,button_height,"Creative"));
+        buttonList.add(button1 = new GuiButton(1, width / 2 - button_width / 2, height / 3 - 10, button_width, button_height, "Survival"));
+        buttonList.add(button2 = new GuiButton(2, width / 2 - button_width / 2, height / 3 + 40, button_width, button_height, "Hardcore"));
+        buttonList.add(button3 = new GuiButton(3, width / 2 - button_width / 2, height / 3 + 90, button_width, button_height, "Creative"));
         super.initGui();
     }
 
     @Override
     protected void actionPerformed(GuiButton button) throws IOException {
         switch (button.id) {
-            case 1:{
-                Gamemode = 1;
-                updatebuttons(Gamemode);
+            case 1: {
+                gamemode = 1;
+                updateButtons(gamemode);
             }
-            case 2:{
-                Gamemode = 2;
-                updatebuttons(Gamemode);
+            case 2: {
+                gamemode = 2;
+                updateButtons(gamemode);
             }
             case 3: {
-                Gamemode = 3;
-                updatebuttons(Gamemode);
+                gamemode = 3;
+                updateButtons(gamemode);
             }
         }
 
         super.actionPerformed(button);
     }
 
-    private void updatebuttons(int gamemode){
+    private void updateButtons(int gamemode) {
         if (gamemode != -1) {
             this.mc.displayGuiScreen(null);
         }
-
     }
 
     @Override

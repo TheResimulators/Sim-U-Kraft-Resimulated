@@ -6,8 +6,14 @@ import com.resimulators.simukraft.GuiHandler;
 import com.resimulators.simukraft.SimUKraft;
 import com.resimulators.simukraft.common.entity.ai.AISimBuild;
 import com.resimulators.simukraft.common.entity.ai.AISimChildPlay;
+import com.resimulators.simukraft.common.entity.ai.AISimEat;
+import com.resimulators.simukraft.common.tileentity.TileFarm;
 import com.resimulators.simukraft.common.tileentity.structure.Structure;
 import com.resimulators.simukraft.init.ModItems;
+import com.resimulators.simukraft.network.HungerPacket;
+import com.resimulators.simukraft.network.PacketHandler;
+import javafx.scene.Parent;
+import net.minecraft.block.Block;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.item.EntityItem;
@@ -16,6 +22,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -24,11 +31,21 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNavigateGround;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.FoodStats;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nullable;
 import java.util.Random;
@@ -36,7 +53,7 @@ import java.util.Random;
 /**
  * Created by fabbe on 19/01/2018 - 11:36 AM.
  */
-public class EntitySim extends EntityAgeable implements INpc {
+public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvider {
     private static final DataParameter<Integer> VARIATION = EntityDataManager.createKey(EntitySim.class, DataSerializers.VARINT);
     private static final DataParameter<Integer> PROFESSION = EntityDataManager.createKey(EntitySim.class, DataSerializers.VARINT);
     private static final DataParameter<Boolean> FEMALE = EntityDataManager.createKey(EntitySim.class, DataSerializers.BOOLEAN);
@@ -45,17 +62,21 @@ public class EntitySim extends EntityAgeable implements INpc {
     private boolean isPlaying;
     private EntityPlayer commander;
     private GameProfile playerProfile;
-
     //Builder profession related
     private Structure structure;
     private boolean isAllowedToBuild;
     private BlockPos startPos;
-
+    //Inventory
+    private ItemStackHandler handler;
+    //Food related
+    private int hunger = 20;
+    private int maxhunger = 20;
+    private int counter;
+    private int heal_counter = 0;
     //Farmer profession related
     private BlockPos farmPos1;
     private BlockPos farmPos2;
     private StructureBoundingBox bounds;
-
 
     private boolean areAdditionalTasksSet;
     private int wealth;
@@ -66,23 +87,26 @@ public class EntitySim extends EntityAgeable implements INpc {
         super(worldIn);
         this.inventory = new InventoryBasic("Items", false, 8);
         this.setSize(0.6f, 1.95f);
-        ((PathNavigateGround)this.getNavigator()).setBreakDoors(true);
+        ((PathNavigateGround) this.getNavigator()).setBreakDoors(true);
         this.setCanPickUpLoot(true);
         this.setCustomNameTag("Sim (WIP)");
         this.setAlwaysRenderNameTag(false);
+        this.handler = new ItemStackHandler(27);
     }
 
     @Override
     protected void initEntityAI() {
+        this.tasks.addTask(0, new AISimEat(this));
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIAvoidEntity<>(this, EntityZombie.class, 8.0f, 0.6d, 0.6d));
         this.setProfessionAIs();
-        this.tasks.addTask(3, new EntityAIMoveIndoors(this));
-        this.tasks.addTask(4, new EntityAIRestrictOpenDoor(this));
-        this.tasks.addTask(5, new EntityAIOpenDoor(this, true));
-        this.tasks.addTask(6, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0f, 1.0f));
+        this.tasks.addTask(2, new EntityAIMoveIndoors(this));
+        this.tasks.addTask(3, new EntityAIRestrictOpenDoor(this));
+        this.tasks.addTask(4, new EntityAIOpenDoor(this, true));
+        this.tasks.addTask(5, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0f, 1.0f));
         this.tasks.addTask(6, new EntityAIWanderAvoidWater(this, 0.6d));
         this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityLiving.class, 8.0f));
+
     }
 
     private void setProfessionAIs() {
@@ -167,8 +191,11 @@ public class EntitySim extends EntityAgeable implements INpc {
                 nbtTagList.appendTag(itemStack.writeToNBT(new NBTTagCompound()));
             }
         }
-
+        if (handler != null) {
+            compound.setTag("SimInventory", handler.serializeNBT());
+        }
         compound.setTag("Inventory", nbtTagList);
+        compound.setInteger("hunger", this.hunger);
     }
 
     @Override
@@ -202,7 +229,11 @@ public class EntitySim extends EntityAgeable implements INpc {
                 this.inventory.addItem(itemStack);
             }
         }
+        if (compound.hasKey("SimInventory")) {
+            this.handler.deserializeNBT(compound.getCompoundTag("SimInventory"));
+        }
 
+        this.hunger = compound.getInteger("hunger");
         this.setCanPickUpLoot(true);
         this.setAdditionalAITasks();
     }
@@ -422,4 +453,105 @@ public class EntitySim extends EntityAgeable implements INpc {
     public float getSwingProgress(float partialTickTime) {
         return super.getSwingProgress(partialTickTime);
     }
+
+    @Override
+    public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+            return true;
+        return super.hasCapability(capability, facing);
+    }
+
+    @Override
+    public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+            return (T) this.handler;
+        }
+        return super.getCapability(capability, facing);
+
+    }
+
+    public void Checkfood() {
+        if (!this.world.isRemote) {
+            int heal = 0;
+            int finalheal = 0;
+            ItemStack final_stack = null;
+            for (int i = 0; i < handler.getSlots(); i++) {
+                ItemStack stack = handler.getStackInSlot(i);
+                if (stack.getItem() instanceof ItemFood) {
+                    heal = (((ItemFood) stack.getItem()).getHealAmount(stack));
+                    if (finalheal <= 0) finalheal = heal;
+                    else if (this.getFoodLevel() + finalheal > 20) {
+                        if (heal < finalheal) {
+                            finalheal = heal;
+                            final_stack = handler.getStackInSlot(i);
+                        }
+                    } else {
+                        finalheal = heal;
+                        final_stack = handler.getStackInSlot(i);
+                    }
+                }
+            }
+
+            if (finalheal != 0 && final_stack != null) {
+                if (this.hunger + finalheal > maxhunger) {
+                    hunger = 20;
+                    final_stack.shrink(1);
+                } else {
+                    hunger += finalheal;
+                    final_stack.shrink(1);
+                }
+
+                if (hunger < 5) {
+                    if (finalheal + hunger > 20) {
+                        hunger = 20;
+                        final_stack.shrink(1);
+                    } else {
+                        hunger += finalheal;
+                    }
+                } else if (finalheal + hunger <= 20) {
+                    hunger += finalheal;
+                    final_stack.shrink(1);
+                }
+                PacketHandler.INSTANCE.sendToAll(new HungerPacket(this.getFoodLevel(), this.getEntityId()));
+            }
+        }
+    }
+
+    public int getFoodLevel() {
+        return hunger;
+    }
+
+    @Override
+    public void onUpdate() {
+        super.onUpdate();
+        if (heal_counter / 20 > 4) {
+            if (hunger > 15 && getHealth() < 20) {
+                heal(1.0f);
+                heal_counter = 0;
+            }
+        }
+        if (counter / 20 > 5) {
+            if (hunger <= 0) {
+                this.attackEntityFrom(DamageSource.STARVE, 1.0f);
+                counter = 0;
+                hunger = 0;
+            } else {
+                if (hunger > 0) {
+                    hunger -= 1;
+                    PacketHandler.INSTANCE.sendToAll(new HungerPacket(this.getFoodLevel(), this.getEntityId()));
+                }
+
+                counter = 0;
+            }
+        }
+        heal_counter++;
+        counter++;
+
+    }
+
+    public void setHunger(int hunger) {
+        this.hunger = hunger;
+    }
 }
+
+

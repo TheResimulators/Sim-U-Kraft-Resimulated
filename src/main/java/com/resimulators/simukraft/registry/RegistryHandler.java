@@ -61,7 +61,7 @@ public class RegistryHandler {
         @SideOnly(Side.CLIENT)
         @SubscribeEvent
         public static void registerModels(ModelRegistryEvent event) {
-            for (Map.Entry<Block, Fluid> entry: fluids.entrySet())
+            for (Map.Entry<Block, Fluid> entry : fluids.entrySet())
                 ModelLoader.setCustomStateMapper(entry.getKey(), new FluidStateMapper(entry.getValue()));
         }
     }
@@ -115,7 +115,6 @@ public class RegistryHandler {
     }
 
     private static class ItemBlockMulti extends ItemBlock {
-
         private final String[] names;
 
         private ItemBlockMulti(Block block, String... names) {
@@ -136,7 +135,5 @@ public class RegistryHandler {
         public int getMetadata(int p_getMetadata_1_) {
             return p_getMetadata_1_ < names.length ? p_getMetadata_1_ : 0;
         }
-
     }
-
 }

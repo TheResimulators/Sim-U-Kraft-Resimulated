@@ -1,10 +1,12 @@
 package com.resimulators.simukraft;
 
-import com.resimulators.simukraft.client.gui.GuiFarm;
-import com.resimulators.simukraft.client.gui.GuiMiner;
-import com.resimulators.simukraft.client.gui.GuiSim;
-import com.resimulators.simukraft.client.gui.GuiStart;
+import com.resimulators.simukraft.client.gui.*;
+import com.resimulators.simukraft.common.Containers.SimContainer;
+import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
+import com.resimulators.simukraft.common.tileentity.TileFarm;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.relauncher.Side;
@@ -20,10 +22,17 @@ public class GuiHandler implements IGuiHandler {
     public static final int GUI_FARM = 1;
     public static final int GUI_MINER = 2;
     public static final int GUI_START = 3;
+    public static final int GUI_HIRED = 4;
+    public static final int GUI_SIMINV = 5;
 
     @Nullable
     @Override
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+        if (ID == GUI_SIMINV)
+        {
+            return new SimContainer(player.inventory,(EntitySim) world.getEntityByID(x));
+        }
+
         return null;
     }
 
@@ -31,15 +40,19 @@ public class GuiHandler implements IGuiHandler {
     @Nullable
     @Override
     public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+        TileEntity tileEntity = world.getTileEntity(new BlockPos(x,y,z));
         if (ID == GUI_SIM)
             return new GuiSim(player);
         if (ID == GUI_FARM)
-            return new GuiFarm();
+            return new GuiFarm((TileFarm)tileEntity);
         if (ID == GUI_MINER)
             return new GuiMiner();
         if (ID == GUI_START)
             return new GuiStart();
+        if (ID == GUI_HIRED)
+            return new GuiHire((TileFarm) tileEntity);
+        if (ID == GUI_SIMINV)
+            return new GuiSimInv(player.inventory,(EntitySim) world.getEntityByID(x));
         return null;
     }
-
 }

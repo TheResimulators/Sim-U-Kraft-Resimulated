@@ -1,20 +1,25 @@
 package com.resimulators.simukraft.client.gui;
 
 import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
-import com.resimulators.simukraft.common.entity.entitysim.SimToHire;
+import com.resimulators.simukraft.common.entity.entitysim.SimEventHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.fml.client.GuiScrollingList;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
 import java.awt.*;
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 public class GuiMiner extends GuiScreen {
     boolean hiredSim = false;
-    
+    MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
+    List<EntitySim> sims;
+    float credit;
     private int buttonWidth = 200;
     private int xOffset = 105;
     private int yOffset = 10;
@@ -22,15 +27,12 @@ public class GuiMiner extends GuiScreen {
     private String status = "";
     private GuiButton button1;
     private GuiButton button2;
-    private GuiButton button3;
-    private GuiButton button4;
-    private List<EntitySim> sims;
     private int mouseX;
     private int mouseY;
     private int buttoni;
 
     @Override
-    public void drawScreen(int mouseX, int mouseY,float partialTicks) {
+    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         drawDefaultBackground();
         if (status != "hiring") {
             drawString(mc.fontRenderer, "Miner", (width / 2) - (buttonWidth / 3), height / 4 - 10, Color.WHITE.getRGB());
@@ -43,94 +45,79 @@ public class GuiMiner extends GuiScreen {
     @Override
     public void initGui() {
         x = 0;
-
-        sims = SimToHire.sims;
-        buttonList.clear();
-        buttonList.add(button2 = new GuiButton(1, width / 2 - buttonWidth / 2, height - 50, "Cancel"));
-        if (status.equals("hiring")) {
-
-            buttonList.add(button4 = new GuiButton(3, width-50,30,40,20, "UP"));
-            buttonList.add(button3 = new GuiButton(2, width - 50,height - 20,40,20,"Down"));
-        } else {
-            buttonList.add(button1 = new GuiButton(0, width / 2 - buttonWidth / 2, height - 80, "Hire"));
+        for (UUID id : SimEventHandler.getWorldSimData().getUnemployed_sims()) {
+            EntitySim sim = (EntitySim) server.getEntityFromUuid(id);
+            sims.add(sim);
         }
 
+        buttonList.clear();
 
-        button1.enabled = !hiredSim;
-        //System.out.println("status equals " +status);
-        if (status.equals("hiring")){
+        buttonList.add(button2 = new GuiButton(-2, width / 2 - buttonWidth / 2, height - 50, "Cancel"));
+        if (!status.equals("hiring")) {
+            buttonList.add(button1 = new GuiButton(-1, width / 2 - buttonWidth / 2, height - 80, "Hire " + hiredSim));
+            if (!hiredSim) {
+                button1.enabled = true;
+            }
+        }
+        if (status.equals("hiring")) {
             System.out.println(sims.size());
-        for (int i = 1; i < sims.size(); i++){
-
-            buttoni = i;
-            x++;
-            if (((x * xOffset) + 30) > width){
-                yOffset += 25;
-                x = 1;
+            for (int i = 1; i < sims.size(); i++) {
+                buttoni = i;
+                x++;
+                if (((x * xOffset) + 30) > width) {
+                    yOffset += 25;
+                    x = 1;
+                }
+                //System.out.println(height-70 + "," + yOffset + 10);
+                String name = sims.get(i).getName();
+                //System.out.println("creating button " + i);
+                buttonList.add(new GuiButton(i, x * xOffset - 75, yOffset + 5, 100, 20, name + " last name"));
+                //System.out.println("added button " + i );
+                if (yOffset + 10 >= height - 70 || yOffset + 5 <= 0) {
+                    buttonList.get(buttoni).enabled = false;
+                    buttonList.get(buttoni).visible = false;
+                    System.out.println("disabling button " + buttoni);
+                } else {
+                    buttonList.get(buttoni).enabled = true;
+                    buttonList.get(buttoni).visible = true;
+                }
             }
-            //System.out.println(height-70 + "," + yOffset + 10);
-            String name = sims.get(i).getName();
-            //System.out.println("creating button " + i);
-            buttonList.add(new GuiButton(i, x * xOffset-75, yOffset + 5,100,20, name + " last name"));
-            //System.out.println("added button " + i );
-            if (yOffset + 10 >= height-70 || yOffset + 5 <= 0){
-                buttonList.get(buttoni).enabled = false;
-                buttonList.get(buttoni).visible = false;
-                button3.enabled = true;
-                button3.visible = true;
-                System.out.println("disabling button " + buttoni);
-            } else {
-                buttonList.get(buttoni).enabled = true;
-                buttonList.get(buttoni).visible = true;
-            }
-            }
-
-            }
-
-
+        }
         super.initGui();
     }
 
     @Override
     protected void actionPerformed(GuiButton button) throws IOException {
         switch (button.id) {
-            case 0:
+            //negative numbers here to make it able to check if a sims button has been pressed
+            case -1:
                 status = "hiring";
                 System.out.println("status updated");
-                updateButtons(button.id);
+                updateButtons(-1);
                 break;
-            case 1:
+            case -2:
                 this.mc.displayGuiScreen(null);
                 break;
-            case 2:
-                yOffset += 25;
-                updateButtons(button.id);
-                break;
-            case 3:
-                yOffset += -25;
-                updateButtons(button.id);
-                break;
             default:
-                    disableButton(button.id);
-                    hiredSim = true;
-                    updateButtons(button.id);
-
-
-
+                updateButtons(button.id);
+                disableButton(button.id);
         }
         super.actionPerformed(button);
     }
 
-    private void updateButtons(int id){
-        if (status.equals("hiring")){
+    private void updateButtons(int id) {
+        if (status.equals("hiring")) {
             button1.visible = false;
             button1.enabled = false;
-        if (id == buttoni){
-            hiredSim = true;
-            }
-
-
+            System.out.println("hired sim is " + hiredSim);
             initGui();
+            if (id > 0) {
+                EntitySim hired_sim = sims.get(id);
+                hired_sim.setProfession(1);
+                hiredSim = true;
+                System.out.println("sim is hired " + hiredSim);
+                this.mc.displayGuiScreen(null);
+            }
         }
     }
 
@@ -176,8 +163,3 @@ public class GuiMiner extends GuiScreen {
         }
     }
 }
-
-
-
-
-

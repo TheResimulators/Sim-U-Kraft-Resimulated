@@ -13,7 +13,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  */
 @SideOnly(Side.CLIENT)
 public class FluidStateMapper extends StateMapperBase {
-
 	private final ModelResourceLocation location;
 
 	public FluidStateMapper(Fluid fluid) {
@@ -24,5 +23,4 @@ public class FluidStateMapper extends StateMapperBase {
 	protected ModelResourceLocation getModelResourceLocation(IBlockState iBlockState) {
 		return location;
 	}
-
 }
