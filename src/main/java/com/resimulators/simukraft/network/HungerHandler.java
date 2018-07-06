@@ -14,7 +14,9 @@ public class HungerHandler implements IMessageHandler<HungerPacket,IMessage> {
 
         mainthread.addScheduledTask(() -> {
             EntitySim sim = (EntitySim) Minecraft.getMinecraft().world.getEntityByID(message.id);
-            sim.setHunger(message.hunger);
+            if (sim != null) {
+                sim.setHunger(message.hunger);
+            }
         });
         return null;
     }

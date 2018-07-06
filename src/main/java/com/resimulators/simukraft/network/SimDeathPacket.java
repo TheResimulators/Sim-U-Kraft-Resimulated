@@ -7,19 +7,16 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import java.util.UUID;
 
 public class SimDeathPacket implements IMessage {
-
-
-    public SimDeathPacket(int id){
-        this.sims = id;
-
-    }
-    public SimDeathPacket(){}
     int sims;
+
+    public SimDeathPacket(int id) {
+        this.sims = id;
+    }
+
     @Override
     public void fromBytes(ByteBuf byteBuf) {
         this.sims = byteBuf.readInt();
         System.out.println("Reading sim death id");
-
     }
 
     @Override

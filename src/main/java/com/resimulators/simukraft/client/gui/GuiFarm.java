@@ -5,16 +5,12 @@ import com.resimulators.simukraft.network.FireSimTriggerPacket;
 import com.resimulators.simukraft.network.PacketHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 
 import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class GuiFarm extends GuiScreen {
     private World world = Minecraft.getMinecraft().world;
@@ -30,25 +26,24 @@ public class GuiFarm extends GuiScreen {
     private TileFarm tilefarm;
     private int mouseX;
     private int mouseY;
-    public GuiFarm(TileFarm tileFarm)
-    {
+
+    public GuiFarm(TileFarm tileFarm) {
         this.tilefarm = tileFarm;
     }
+
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         drawDefaultBackground();
-        fontRenderer.drawString("Selected seed",width/2-fontRenderer.getStringWidth("Selected seed")/2,height/2, Color.white.getRGB());
+        fontRenderer.drawString("Selected seed", width / 2 - fontRenderer.getStringWidth("Selected seed") / 2, height / 2, Color.white.getRGB());
         this.mouseX = mouseX;
         this.mouseY = mouseY;
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
     @Override
-    public void updateScreen()
-    {
+    public void updateScreen() {
 
     }
-
 
     @Override
     public void initGui() {
@@ -58,8 +53,8 @@ public class GuiFarm extends GuiScreen {
         seeds.add("Carrot");
         seeds.add("Potato");
         seed = tilefarm.getSeed();
-        buttonList.add(changeseed = new GuiButton(0,width/2 - 100,height/2, seeds.get(seed)));
-        buttonList.add(firebutton = new GuiButton(1,width/2-100,(height/4) * 3,"Fire Sim"));
+        buttonList.add(changeseed = new GuiButton(0, width / 2 - 100, height / 2, seeds.get(seed)));
+        buttonList.add(firebutton = new GuiButton(1, width / 2 - 100, (height / 4) * 3, "Fire Sim"));
 
         super.initGui();
     }
@@ -67,19 +62,17 @@ public class GuiFarm extends GuiScreen {
     @Override
     protected void actionPerformed(GuiButton button) throws IOException {
         super.actionPerformed(button);
-        switch (button.id)
-        {
+        switch (button.id) {
             case 0:
-                if (seed + 1 > seeds.size()-1) {
+                if (seed + 1 > seeds.size() - 1) {
                     seed = 0;
-                }else
-                    {
-                        seed ++;
-                    }
+                } else {
+                    seed++;
+                }
             case 1:
                 tilefarm.setHired(false);
                 tilefarm.setId(null);
-                PacketHandler.INSTANCE.sendToServer(new FireSimTriggerPacket(tilefarm.getPos().getX(),tilefarm.getPos().getY(),tilefarm.getPos().getZ()));
+                PacketHandler.INSTANCE.sendToServer(new FireSimTriggerPacket(tilefarm.getPos().getX(), tilefarm.getPos().getY(), tilefarm.getPos().getZ()));
                 mc.displayGuiScreen(null);
                 changeseed.displayString = seeds.get(seed);
         }
@@ -87,9 +80,8 @@ public class GuiFarm extends GuiScreen {
     }
 
     @Override
-    public void onGuiClosed()
-    {
-tilefarm.setSeed(seed);
+    public void onGuiClosed() {
+        tilefarm.setSeed(seed);
     }
 
     @Override
@@ -100,9 +92,7 @@ tilefarm.setSeed(seed);
     private class Sim_Button extends GuiButton {
         private Sim_Button(int id, int x, int y, String string) {
             super(id, x, y, 100, 30, string);
-
         }
-
     }
 }
 

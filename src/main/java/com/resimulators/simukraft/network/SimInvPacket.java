@@ -5,11 +5,11 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 public class SimInvPacket implements IMessage {
     int id;
-    public SimInvPacket(){}
-    public SimInvPacket(int id)
-    {
+
+    public SimInvPacket(int id) {
         this.id = id;
     }
+
     @Override
     public void fromBytes(ByteBuf bytebuf) {
         this.id = bytebuf.readInt();

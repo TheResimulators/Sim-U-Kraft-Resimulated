@@ -32,58 +32,54 @@ public class GuiHire extends GuiScreen {
     private Set<UUID> sims = new HashSet<>();
     private String profession = "";
 
-    public GuiHire(TileFarm tileEntity){
+    public GuiHire(TileFarm tileEntity) {
         this.tileEntity = tileEntity;
         this.profession = tileEntity.getProfession();
     }
-    public void add_sim(int id)
-    {
+
+    public void add_sim(int id) {
         sim_id.add(id);
     }
+
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-            drawDefaultBackground();
-            if (!status.equals("hiring")) {
-                drawString(mc.fontRenderer, profession, (width / 2)-fontRenderer.getStringWidth(profession)/2, height / 4 - 10, Color.WHITE.getRGB());
-            }
-            this.mouseX = mouseX;
-            this.mouseY = mouseY;
-            super.drawScreen(mouseX, mouseY, partialTicks);
+        drawDefaultBackground();
+        if (!status.equals("hiring")) {
+            drawString(mc.fontRenderer, profession, (width / 2) - fontRenderer.getStringWidth(profession) / 2, height / 4 - 10, Color.WHITE.getRGB());
+        }
+        this.mouseX = mouseX;
+        this.mouseY = mouseY;
+        super.drawScreen(mouseX, mouseY, partialTicks);
 
     }
+
     @Override
-    public void updateScreen()
-    {
-        for (GuiButton button: buttonList)
-        {
-            if (button instanceof SimButton )
-            {
-                if (!status.equals("hiring"))
-                {
+    public void updateScreen() {
+        for (GuiButton button : buttonList) {
+            if (button instanceof SimButton) {
+                if (!status.equals("hiring")) {
                     button.visible = false;
                     button.enabled = false;
-                }else
-                    {
-                        button.visible = true;
-                        button.enabled = true;
-                if (((SimButton) button).clicked)
-                {
-                    button.visible = false;
-                    button.enabled = false;
-                }else
-                {
+                } else {
                     button.visible = true;
                     button.enabled = true;
+                    if (((SimButton) button).clicked) {
+                        button.visible = false;
+                        button.enabled = false;
+                    } else {
+                        button.visible = true;
+                        button.enabled = true;
+                    }
                 }
             }
-        }}}
+        }
+    }
 
     @Override
     public void initGui() {
-        buttonList.add(hire_button = new GuiButton(0,width/2 - buttonWidth/2,height-60,buttonWidth,20,"Hire"));
-        buttonList.add(cancel_button = new GuiButton(1,width/2 - buttonWidth/2,height-30,buttonWidth,20,"Cancel"));
-        if(status.equals("hiring"))
-        {
+        buttonList.add(hire_button = new GuiButton(0, width / 2 - buttonWidth / 2, height - 60, buttonWidth, 20, "Hire"));
+        buttonList.add(cancel_button = new GuiButton(1, width / 2 - buttonWidth / 2, height - 30, buttonWidth, 20, "Cancel"));
+        if (status.equals("hiring")) {
             hire_button.enabled = false;
             hire_button.visible = false;
             cancel_button.enabled = false;
@@ -96,36 +92,33 @@ public class GuiHire extends GuiScreen {
         world = Minecraft.getMinecraft().world;
         int num = 0;
         List<String> names = tileEntity.getnames();
-        for (int id: tileEntity.getSims())
-        {
-            int xpos = pos*100+20+pos*5;
+        for (int id : tileEntity.getSims()) {
+            int xpos = pos * 100 + 20 + pos * 5;
 
-            if (xpos > width - 60)
-            {
+            if (xpos > width - 60) {
                 pos = 0;
-                xpos = pos*100+20;
+                xpos = pos * 100 + 20;
                 ypos += 25;
 
             }
             System.out.print(id);
-            EntitySim sim =(EntitySim) world.getEntityByID(id);
+            EntitySim sim = (EntitySim) world.getEntityByID(id);
             sim_id.add(id);
-                System.out.println(names);
-                System.out.println(names.get(num));
-                name = names.get(num);
-                if (name == null){
-                    name = "Error";}
-            buttonList.add(button = new SimButton(i,xpos,ypos,name,id));
-            if (!status.equals("hiring"))
-            {
+            System.out.println(names);
+            System.out.println(names.get(num));
+            name = names.get(num);
+            if (name == null) {
+                name = "Error";
+            }
+            buttonList.add(button = new SimButton(i, xpos, ypos, name, id));
+            if (!status.equals("hiring")) {
                 button.visible = false;
                 button.enabled = false;
             }
-           if(ypos > height-40)
-            {
-             button.enabled = false;
-             button.visible = false;
-             button.clicked = true;
+            if (ypos > height - 40) {
+                button.enabled = false;
+                button.visible = false;
+                button.clicked = true;
             }
             i++;
             pos++;
@@ -137,27 +130,22 @@ public class GuiHire extends GuiScreen {
 
     @Override
     protected void actionPerformed(GuiButton button) throws IOException {
-       if (button.id == 0){
-                status = "hiring";
-                button.visible = false;
-                button.enabled = false;
-       }
-        if (button instanceof SimButton)
-        {
+        if (button.id == 0) {
+            status = "hiring";
+            button.visible = false;
+            button.enabled = false;
+        }
+        if (button instanceof SimButton) {
             ((SimButton) button).clicked = true;
             tileEntity.setHired(true);
-            PacketHandler.INSTANCE.sendToServer(new HiringPacket(((SimButton) button).simid,tileEntity.getProfessionint()));
+            PacketHandler.INSTANCE.sendToServer(new HiringPacket(((SimButton) button).simid, tileEntity.getProfessionint()));
             System.out.println("Sending id packet");
-            PacketHandler.INSTANCE.sendToServer(new UpdateJobIdPacket(((SimButton) button).simid,tileEntity.getPos().getX(),tileEntity.getPos().getY(),tileEntity.getPos().getZ()));
+            PacketHandler.INSTANCE.sendToServer(new UpdateJobIdPacket(((SimButton) button).simid, tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ()));
             mc.displayGuiScreen(null);
         }
 
-
         super.actionPerformed(button);
-
-
     }
-
 
     @Override
     public boolean doesGuiPauseGame() {
@@ -168,13 +156,11 @@ public class GuiHire extends GuiScreen {
         boolean clicked = false;
         int simid;
         EntitySim sim;
-        private SimButton(int id, int x, int y, String string, int sim_id ){
+
+        private SimButton(int id, int x, int y, String string, int sim_id) {
             super(id, x, y, 100, 20, string);
             simid = sim_id;
             sim = (EntitySim) world.getEntityByID(sim_id);
-
-
         }
     }
-
 }

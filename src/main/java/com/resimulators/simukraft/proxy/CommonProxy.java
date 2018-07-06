@@ -51,7 +51,6 @@ public class CommonProxy {
     }
 
     public void onServerStarted(FMLServerStartedEvent event) {
-
         MinecraftForge.EVENT_BUS.register(new SimEventHandler());
         MinecraftForge.EVENT_BUS.register(new PlayerFirstJoin());
         MinecraftForge.EVENT_BUS.register(new Rent_collection());

@@ -30,8 +30,9 @@ public class GuiMiner extends GuiScreen {
     private int mouseX;
     private int mouseY;
     private int buttoni;
+
     @Override
-    public void drawScreen(int mouseX, int mouseY,float partialTicks) {
+    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         drawDefaultBackground();
         if (status != "hiring") {
             drawString(mc.fontRenderer, "Miner", (width / 2) - (buttonWidth / 3), height / 4 - 10, Color.WHITE.getRGB());
@@ -44,35 +45,35 @@ public class GuiMiner extends GuiScreen {
     @Override
     public void initGui() {
         x = 0;
-        for(UUID id : SimEventHandler.getWorldSimData().getUnemployed_sims())
-        {
+        for (UUID id : SimEventHandler.getWorldSimData().getUnemployed_sims()) {
             EntitySim sim = (EntitySim) server.getEntityFromUuid(id);
             sims.add(sim);
         }
 
-
         buttonList.clear();
 
         buttonList.add(button2 = new GuiButton(-2, width / 2 - buttonWidth / 2, height - 50, "Cancel"));
-        if (!status.equals("hiring")){
-        buttonList.add(button1 = new GuiButton(-1, width / 2 - buttonWidth / 2, height - 80, "Hire " + hiredSim));
-        if (!hiredSim){button1.enabled = true;}}
-        if (status.equals("hiring")){
+        if (!status.equals("hiring")) {
+            buttonList.add(button1 = new GuiButton(-1, width / 2 - buttonWidth / 2, height - 80, "Hire " + hiredSim));
+            if (!hiredSim) {
+                button1.enabled = true;
+            }
+        }
+        if (status.equals("hiring")) {
             System.out.println(sims.size());
-            for (int i = 1; i < sims.size(); i++){
-
+            for (int i = 1; i < sims.size(); i++) {
                 buttoni = i;
                 x++;
-                if (((x * xOffset) + 30) > width){
+                if (((x * xOffset) + 30) > width) {
                     yOffset += 25;
                     x = 1;
                 }
                 //System.out.println(height-70 + "," + yOffset + 10);
                 String name = sims.get(i).getName();
                 //System.out.println("creating button " + i);
-                buttonList.add(new GuiButton(i, x * xOffset-75, yOffset + 5,100,20, name + " last name"));
+                buttonList.add(new GuiButton(i, x * xOffset - 75, yOffset + 5, 100, 20, name + " last name"));
                 //System.out.println("added button " + i );
-                if (yOffset + 10 >= height-70 || yOffset + 5 <= 0){
+                if (yOffset + 10 >= height - 70 || yOffset + 5 <= 0) {
                     buttonList.get(buttoni).enabled = false;
                     buttonList.get(buttoni).visible = false;
                     System.out.println("disabling button " + buttoni);
@@ -81,7 +82,6 @@ public class GuiMiner extends GuiScreen {
                     buttonList.get(buttoni).visible = true;
                 }
             }
-
         }
         super.initGui();
     }
@@ -101,29 +101,23 @@ public class GuiMiner extends GuiScreen {
             default:
                 updateButtons(button.id);
                 disableButton(button.id);
-
-
-
         }
         super.actionPerformed(button);
     }
 
-    private void updateButtons(int id){
-        if (status.equals("hiring")){
+    private void updateButtons(int id) {
+        if (status.equals("hiring")) {
             button1.visible = false;
             button1.enabled = false;
             System.out.println("hired sim is " + hiredSim);
             initGui();
-        if (id > 0){
-            EntitySim hired_sim = sims.get(id);
-            hired_sim.setProfession(1);
-            hiredSim = true;
-            System.out.println("sim is hired " + hiredSim);
-            this.mc.displayGuiScreen(null);
-        }
-
-
-
+            if (id > 0) {
+                EntitySim hired_sim = sims.get(id);
+                hired_sim.setProfession(1);
+                hiredSim = true;
+                System.out.println("sim is hired " + hiredSim);
+                this.mc.displayGuiScreen(null);
+            }
         }
     }
 
@@ -169,8 +163,3 @@ public class GuiMiner extends GuiScreen {
         }
     }
 }
-
-
-
-
-

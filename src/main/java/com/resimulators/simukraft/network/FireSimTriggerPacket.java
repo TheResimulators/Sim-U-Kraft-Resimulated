@@ -11,20 +11,17 @@ public class FireSimTriggerPacket implements IMessage {
     int y;
     int z;
 
-    public FireSimTriggerPacket(){}
-
-    public FireSimTriggerPacket(int x, int y, int z)
-    {
+    public FireSimTriggerPacket(int x, int y, int z) {
         this.x = x;
         this.y = y;
         this.z = z;
     }
+
     @Override
     public void fromBytes(ByteBuf buf) {
         this.x = buf.readInt();
         this.y = buf.readInt();
         this.z = buf.readInt();
-
     }
 
     @Override
@@ -32,6 +29,5 @@ public class FireSimTriggerPacket implements IMessage {
         buf.writeInt(x);
         buf.writeInt(y);
         buf.writeInt(z);
-
     }
 }

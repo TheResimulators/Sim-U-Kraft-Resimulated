@@ -1,7 +1,6 @@
 package com.resimulators.simukraft.network;
 
-import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
-import com.resimulators.simukraft.common.interfaces.iSimJob;
+import com.resimulators.simukraft.common.interfaces.ISimJob;
 import net.minecraft.client.Minecraft;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IThreadListener;
@@ -15,15 +14,12 @@ public class ReturnUpdateSimIdHandler implements IMessageHandler<ReturnUpdateSim
     public IMessage onMessage(ReturnUpdateSimIdPacket message, MessageContext ctx) {
         IThreadListener mainthread = Minecraft.getMinecraft();
         mainthread.addScheduledTask(() -> {
-        BlockPos pos = new BlockPos(message.x,message.y,message.z);
-        TileEntity tile = Minecraft.getMinecraft().world.getTileEntity(pos);
-
-        if (tile instanceof iSimJob)
-        {
-            ((iSimJob)tile).setId(message.uuid);
-        }
+            BlockPos pos = new BlockPos(message.x, message.y, message.z);
+            TileEntity tile = Minecraft.getMinecraft().world.getTileEntity(pos);
+            if (tile instanceof ISimJob) {
+                ((ISimJob) tile).setId(message.uuid);
+            }
         });
-
         return null;
     }
 }

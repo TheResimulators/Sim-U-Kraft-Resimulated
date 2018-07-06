@@ -426,88 +426,79 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
     }
 
     public void Checkfood() {
-        if (!this.world.isRemote){
-        int heal = 0;
-        int finalheal = 0;
-                ItemStack final_stack = null;
-                for (int i = 0; i < handler.getSlots(); i++) {
-                    ItemStack stack = handler.getStackInSlot(i);
-                    if (stack.getItem() instanceof ItemFood) {
-                        heal = (((ItemFood) stack.getItem()).getHealAmount(stack));
-                        if (finalheal <= 0) finalheal = heal;
-                        else if (this.getFoodLevel() + finalheal > 20)
-                        {
-                            if (heal < finalheal)
-                            {
-                                finalheal = heal;
-                                final_stack = handler.getStackInSlot(i);
-                            }
-                        }else
-                            {
-                                finalheal = heal;
-                                final_stack = handler.getStackInSlot(i);
-                            }
+        if (!this.world.isRemote) {
+            int heal = 0;
+            int finalheal = 0;
+            ItemStack final_stack = null;
+            for (int i = 0; i < handler.getSlots(); i++) {
+                ItemStack stack = handler.getStackInSlot(i);
+                if (stack.getItem() instanceof ItemFood) {
+                    heal = (((ItemFood) stack.getItem()).getHealAmount(stack));
+                    if (finalheal <= 0) finalheal = heal;
+                    else if (this.getFoodLevel() + finalheal > 20) {
+                        if (heal < finalheal) {
+                            finalheal = heal;
+                            final_stack = handler.getStackInSlot(i);
+                        }
+                    } else {
+                        finalheal = heal;
+                        final_stack = handler.getStackInSlot(i);
                     }
                 }
+            }
 
-        if (finalheal != 0 && final_stack != null){
-        if (this.hunger + finalheal > maxhunger)
-        {
-            hunger = 20;
-            final_stack.shrink(1);
-        }else{
-            hunger += finalheal;
-            final_stack.shrink(1);
-        }
-
-            if (hunger < 5)
-            {
-                if (finalheal + hunger > 20)
-                {
+            if (finalheal != 0 && final_stack != null) {
+                if (this.hunger + finalheal > maxhunger) {
                     hunger = 20;
                     final_stack.shrink(1);
+                } else {
+                    hunger += finalheal;
+                    final_stack.shrink(1);
                 }
-                else {hunger += finalheal;}
-            } else if (finalheal + hunger <= 20)
-            {
-                hunger += finalheal;
-                final_stack.shrink(1);
+
+                if (hunger < 5) {
+                    if (finalheal + hunger > 20) {
+                        hunger = 20;
+                        final_stack.shrink(1);
+                    } else {
+                        hunger += finalheal;
+                    }
+                } else if (finalheal + hunger <= 20) {
+                    hunger += finalheal;
+                    final_stack.shrink(1);
+                }
+                PacketHandler.INSTANCE.sendToAll(new HungerPacket(this.getFoodLevel(), this.getEntityId()));
             }
-            PacketHandler.INSTANCE.sendToAll(new HungerPacket(this.getFoodLevel(),this.getEntityId()));}
-            } }
-    public int getFoodLevel(){
+        }
+    }
+
+    public int getFoodLevel() {
         return hunger;
     }
 
-
-
     @Override
-    public void onUpdate()
-    {
+    public void onUpdate() {
         super.onUpdate();
-       if (heal_counter/20 > 4)
-       {
-           if (hunger > 15 && getHealth() < 20)
-           {
-               heal(1.0f);
-               heal_counter = 0;
-           }
-       }
-       if (counter/20 > 5)
-       {
-           if (hunger <= 0)
-           {
-               this.attackEntityFrom(DamageSource.STARVE,1.0f);
-               counter = 0;
-               hunger = 0;
-           }else {
-               if (hunger > 0){
-               hunger -= 1;
-                   PacketHandler.INSTANCE.sendToAll(new HungerPacket(this.getFoodLevel(),this.getEntityId()));}
-
-               counter = 0;
+        if (heal_counter / 20 > 4) {
+            if (hunger > 15 && getHealth() < 20) {
+                heal(1.0f);
+                heal_counter = 0;
             }
-       }
+        }
+        if (counter / 20 > 5) {
+            if (hunger <= 0) {
+                this.attackEntityFrom(DamageSource.STARVE, 1.0f);
+                counter = 0;
+                hunger = 0;
+            } else {
+                if (hunger > 0) {
+                    hunger -= 1;
+                    PacketHandler.INSTANCE.sendToAll(new HungerPacket(this.getFoodLevel(), this.getEntityId()));
+                }
+
+                counter = 0;
+            }
+        }
         heal_counter++;
         counter++;
 

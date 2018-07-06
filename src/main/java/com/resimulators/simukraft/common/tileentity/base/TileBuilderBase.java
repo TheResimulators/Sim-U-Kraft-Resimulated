@@ -33,5 +33,4 @@ public class TileBuilderBase extends TileEntity {
 	protected boolean isFinished() {
 		return progress >= structure.getWidth() * structure.getHeight() * structure.getDepth();
 	}
-
 }

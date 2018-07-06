@@ -1,6 +1,6 @@
 package com.resimulators.simukraft.network;
 
-import com.resimulators.simukraft.common.interfaces.iSimJob;
+import com.resimulators.simukraft.common.interfaces.ISimJob;
 import com.resimulators.simukraft.common.tileentity.Events.TileEntityDestroyed;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IThreadListener;
@@ -15,15 +15,12 @@ public class FireSimTriggerPacketHandler implements IMessageHandler<FireSimTrigg
         IThreadListener mainThread = ctx.getServerHandler().player.getServerWorld();
 
         mainThread.addScheduledTask(() -> {
-            TileEntity tile = ctx.getServerHandler().player.world.getTileEntity(new BlockPos(message.x,message.y,message.z));
-            if (tile instanceof iSimJob)
-            {
-                ((iSimJob)tile).setHired(false);
+            TileEntity tile = ctx.getServerHandler().player.world.getTileEntity(new BlockPos(message.x, message.y, message.z));
+            if (tile instanceof ISimJob) {
+                ((ISimJob) tile).setHired(false);
             }
-            TileEntityDestroyed.TileDestroy(new BlockPos(message.x,message.y,message.z),ctx.getServerHandler().player.getServerWorld());
-
-
-
-        });return null;
+            TileEntityDestroyed.TileDestroy(new BlockPos(message.x, message.y, message.z), ctx.getServerHandler().player.getServerWorld());
+        });
+        return null;
     }
 }

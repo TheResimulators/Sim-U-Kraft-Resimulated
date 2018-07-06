@@ -12,9 +12,7 @@ public class ReturnUpdateSimIdPacket implements IMessage {
     int y;
     int z;
 
-    public void ReturnSimIdPacket(){}
-
-    public void ReturnSimIdPacket(UUID uuid,int x, int y,int z){
+    public void ReturnSimIdPacket(UUID uuid, int x, int y, int z) {
         this.uuid = uuid;
         this.x = x;
         this.y = y;
@@ -31,11 +29,9 @@ public class ReturnUpdateSimIdPacket implements IMessage {
 
     @Override
     public void toBytes(ByteBuf buf) {
-        ByteBufUtils.writeUTF8String(buf,uuid.toString());
+        ByteBufUtils.writeUTF8String(buf, uuid.toString());
         buf.writeInt(x);
         buf.writeInt(y);
         buf.writeInt(z);
-
-
     }
 }

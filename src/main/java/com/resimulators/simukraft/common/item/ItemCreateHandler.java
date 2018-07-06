@@ -21,49 +21,46 @@ public class ItemCreateHandler {
     private static World world;
     private static EntityPlayer player;
 
-    public static void setItemCrafted(boolean crafted)
-    {
+    public static void setItemCrafted(boolean crafted) {
         itemCrafted = crafted;
     }
+
     @SubscribeEvent
     public static void ItemCrafted(PlayerEvent.ItemCraftedEvent event) {
-            System.out.println(event.crafting.getItem().getRegistryName().getResourceDomain());
-            if (event.crafting.getItem().getRegistryName().getResourceDomain().equals(Reference.MOD_ID)){
-                setItemCrafted(true);
-                System.out.println(itemCrafted);
-                player = event.player;
-                world = event.player.world;
+        System.out.println(event.crafting.getItem().getRegistryName().getResourceDomain());
+        if (event.crafting.getItem().getRegistryName().getResourceDomain().equals(Reference.MOD_ID)) {
+            setItemCrafted(true);
+            System.out.println(itemCrafted);
+            player = event.player;
+            world = event.player.world;
 
         }
     }
 
 
     @SubscribeEvent
-    public static void OpenGui(GuiScreenEvent.InitGuiEvent event)
-    {
+    public static void OpenGui(GuiScreenEvent.InitGuiEvent event) {
+        if (event.getGui() instanceof GuiCrafting) {
+            if (itemCrafted) {
+                if (!event.getButtonList().contains(sim)) {
+                    int xpos = ((GuiCrafting) event.getGui()).getGuiLeft() + ((GuiCrafting) event.getGui()).getXSize() / 2 - 30;
+                    int ypos = ((GuiCrafting) event.getGui()).getGuiTop() - 20;
+                    event.getButtonList().add(sim = new GuiButton(event.getButtonList().size(), xpos, ypos, 60, 20, "Sim_U_Kraft"));
 
-        if (event.getGui() instanceof GuiCrafting)
-        {
-            if (itemCrafted){
-            if (!event.getButtonList().contains(sim)){
-                int xpos = ((GuiCrafting) event.getGui()).getGuiLeft() + ((GuiCrafting) event.getGui()).getXSize()/2-30;
-                int ypos = ((GuiCrafting) event.getGui()).getGuiTop()-20;
-                event.getButtonList().add(sim = new GuiButton(event.getButtonList().size(),xpos,ypos,60,20,"Sim_U_Kraft"));
-
-            System.out.println("Added button");}
-        }}
-    }
-
-@SubscribeEvent
-    public static void Buttonpressed(GuiScreenEvent.ActionPerformedEvent event)
-    {
-        if (event.getButton() == sim)
-            System.out.println("Button pressed");
-            System.out.println(itemCrafted);
-            if (itemCrafted)
-            {
-                Minecraft.getMinecraft().displayGuiScreen(null);
-                player.openGui(SimUKraft.instance,GuiHandler.GUI_START,world,0,0,0);
+                    System.out.println("Added button");
+                }
             }
         }
     }
+
+    @SubscribeEvent
+    public static void Buttonpressed(GuiScreenEvent.ActionPerformedEvent event) {
+        if (event.getButton() == sim)
+            System.out.println("Button pressed");
+        System.out.println(itemCrafted);
+        if (itemCrafted) {
+            Minecraft.getMinecraft().displayGuiScreen(null);
+            player.openGui(SimUKraft.instance, GuiHandler.GUI_START, world, 0, 0, 0);
+        }
+    }
+}

@@ -4,20 +4,18 @@ import io.netty.buffer.ByteBuf;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 public class UpdateJobIdPacket implements IMessage {
-
-    public UpdateJobIdPacket(){}
-
-    public UpdateJobIdPacket(int id, int x, int y, int z)
-    {
-      this.id = id;
-      this.x = x;
-      this.y = y;
-      this.z = z;
-    }
     int id;
     int x;
     int y;
     int z;
+
+    public UpdateJobIdPacket(int id, int x, int y, int z) {
+        this.id = id;
+        this.x = x;
+        this.y = y;
+        this.z = z;
+    }
+
     @Override
     public void fromBytes(ByteBuf byteBuf) {
         System.out.println("Reading info");
@@ -33,6 +31,5 @@ public class UpdateJobIdPacket implements IMessage {
         byteBuf.writeInt(x);
         byteBuf.writeInt(y);
         byteBuf.writeInt(z);
-
     }
 }

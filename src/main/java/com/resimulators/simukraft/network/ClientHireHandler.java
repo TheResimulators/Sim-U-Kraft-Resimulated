@@ -12,9 +12,7 @@ public class ClientHireHandler implements IMessageHandler<ClientHirePacket,IMess
     public IMessage onMessage(ClientHirePacket message, MessageContext messageContext) {
         IThreadListener mainthread = Minecraft.getMinecraft();
 
-        mainthread.addScheduledTask(() -> {
-            SimEventHandler.getWorldSimData().hiredsim(message.uuid);
-        });
+        mainthread.addScheduledTask(() -> SimEventHandler.getWorldSimData().hiredsim(message.uuid));
         return null;
     }
 }

@@ -12,6 +12,5 @@ public class ModTileEntities {
         TileEntity.register("constructor", TileConstructor.class);
         TileEntity.register("farm", TileFarm.class);
     }
-
-    }
+}
 

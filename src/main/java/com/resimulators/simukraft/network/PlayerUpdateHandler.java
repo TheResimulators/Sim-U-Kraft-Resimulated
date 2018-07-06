@@ -12,25 +12,24 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.UUID;
 
-public class PlayerUpdateHandler implements IMessageHandler<PlayerUpdatePacket, IMessage>
-
-{
+public class PlayerUpdateHandler implements IMessageHandler<PlayerUpdatePacket, IMessage> {
     @SideOnly(Side.CLIENT)
-    @Override public IMessage onMessage(PlayerUpdatePacket message, MessageContext ctx){
+    @Override
+    public IMessage onMessage(PlayerUpdatePacket message, MessageContext ctx) {
         IThreadListener mainThread = Minecraft.getMinecraft();
         mainThread.addScheduledTask(() -> {
             System.out.println(message.totalsim);
-            if(SimEventHandler.getWorldSimData() == null)
-            {
+            if (SimEventHandler.getWorldSimData() == null) {
                 SimEventHandler.setWorldSimData(SaveSimData.get(Minecraft.getMinecraft().world));
             }
-            for (UUID id: message.totalsim) {
+            for (UUID id : message.totalsim) {
                 SimEventHandler.getWorldSimData().addSim(id);
             }
-            for (UUID id: message.unemployedsim) {
+            for (UUID id : message.unemployedsim) {
                 SimEventHandler.getWorldSimData().setUnemployed_sims(id);
             }
             SimEventHandler.setCredits(message.credits);
-        });return null;
+        });
+        return null;
     }
 }

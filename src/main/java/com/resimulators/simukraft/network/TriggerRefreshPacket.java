@@ -8,8 +8,8 @@ public class TriggerRefreshPacket implements IMessage {
     public NBTTagCompound nbt;
     float credit;
 
-
-    public TriggerRefreshPacket(){}
+    public TriggerRefreshPacket() {
+    }
 
     @Override
     public void fromBytes(ByteBuf byteBuf) {

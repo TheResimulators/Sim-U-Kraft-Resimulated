@@ -11,6 +11,7 @@ import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 public class SpawnSimEntity {
@@ -30,7 +31,7 @@ public class SpawnSimEntity {
                 if (ticks/20 == 20) {
 
                     ticks = 0;
-                    if (SaveSimData.get(event.player.world).getUnemployed_sims().size() < 1) {
+                    if (Objects.requireNonNull(SaveSimData.get(event.player.world)).getUnemployed_sims().size() < 1) {
                         EntitySim entity = new EntitySim(world);
 
                         double entityx = player.posX + rand.nextInt(11)-5;

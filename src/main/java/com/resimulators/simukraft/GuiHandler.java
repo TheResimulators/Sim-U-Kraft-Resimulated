@@ -55,6 +55,4 @@ public class GuiHandler implements IGuiHandler {
             return new GuiSimInv(player.inventory,(EntitySim) world.getEntityByID(x));
         return null;
     }
-
-
 }

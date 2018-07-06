@@ -7,11 +7,12 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
-public class Rent_collection{
+public class Rent_collection {
     boolean rent_paid = true;
     float credits;
+
     @SubscribeEvent
-    protected void Collect_Rent(TickEvent.WorldTickEvent event){
+    protected void Collect_Rent(TickEvent.WorldTickEvent event) {
         World world = event.world;
         float rent = 4;
         if (!world.isRemote) {
@@ -27,7 +28,6 @@ public class Rent_collection{
             if (time != 0) {
                 rent_paid = false;
             }
-
         }
     }
 }

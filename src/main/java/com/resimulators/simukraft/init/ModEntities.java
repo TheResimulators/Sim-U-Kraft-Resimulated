@@ -12,7 +12,6 @@ import net.minecraft.util.ResourceLocation;
 public class ModEntities {
     public static void init() {
         createEntity(new ResourceLocation(Reference.MOD_ID + ":sim"), EntitySim.class, "sim", SimUKraft.instance, 0, 64, 1, true, 0x000000, 0x000000);
-
     }
 
     private static void createEntity(ResourceLocation location, Class<? extends Entity> clazz, String name, Object modInstance, int id, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates, int eggPrimary, int eggSecondary) {

@@ -1,6 +1,5 @@
 package com.resimulators.simukraft.network;
 
-import com.resimulators.simukraft.common.entity.player.SaveSimData;
 import io.netty.buffer.ByteBuf;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -23,7 +22,6 @@ public class PlayerUpdatePacket implements IMessage {
         this.totalsimsize = totalsim.size();
         this.unemployedsize = unemployedsim.size();
     }
-    public PlayerUpdatePacket(){}
 
     @Override
     public void fromBytes(ByteBuf bytebuf) {
@@ -33,7 +31,6 @@ public class PlayerUpdatePacket implements IMessage {
             UUID sim = UUID.fromString(ByteBufUtils.readUTF8String(bytebuf));
             System.out.println("Reading sim " + sim);
             totalsim.add(sim);
-
         }
         this.unemployedsize = bytebuf.readInt();
         unemployedsim = new HashSet<>(unemployedsize);

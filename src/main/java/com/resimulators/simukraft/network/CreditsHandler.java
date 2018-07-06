@@ -8,12 +8,10 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class CreditsHandler implements IMessageHandler<CreditsPacket, IMessage> {
-
-    @Override public IMessage onMessage(CreditsPacket message, MessageContext ctx){
+    @Override
+    public IMessage onMessage(CreditsPacket message, MessageContext ctx) {
         IThreadListener mainThread = Minecraft.getMinecraft();
         mainThread.addScheduledTask(() -> SimEventHandler.setCredits(message.credit));
         return null;
-
     }
-
 }

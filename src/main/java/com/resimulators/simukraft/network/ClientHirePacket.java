@@ -8,12 +8,14 @@ import java.util.UUID;
 
 public class ClientHirePacket implements IMessage {
     UUID uuid;
-    public ClientHirePacket(){}
 
-    public ClientHirePacket(UUID uuid)
-    {
+    public ClientHirePacket() {
+    }
+
+    public ClientHirePacket(UUID uuid) {
         this.uuid = uuid;
     }
+
     @Override
     public void fromBytes(ByteBuf byteBuf) {
         uuid = UUID.fromString(ByteBufUtils.readUTF8String(byteBuf));
@@ -21,6 +23,6 @@ public class ClientHirePacket implements IMessage {
 
     @Override
     public void toBytes(ByteBuf byteBuf) {
-        ByteBufUtils.writeUTF8String(byteBuf,uuid.toString());
+        ByteBufUtils.writeUTF8String(byteBuf, uuid.toString());
     }
 }

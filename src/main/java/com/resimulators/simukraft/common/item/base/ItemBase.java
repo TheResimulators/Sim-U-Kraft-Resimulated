@@ -22,5 +22,4 @@ public class ItemBase extends Item {
         this.setRegistryName(Reference.MOD_ID, name);
         this.setUnlocalizedName(this.getRegistryName().toString());
     }
-
-    }
+}
