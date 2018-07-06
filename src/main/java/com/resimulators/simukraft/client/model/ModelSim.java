@@ -1,5 +1,6 @@
 package com.resimulators.simukraft.client.model;
 
+import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -15,27 +16,29 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class ModelSim extends ModelBiped {
     private boolean smallArms;
 
+    ModelRenderer femaleArmLeft;
+    ModelRenderer femaleArmRight;
+    ModelRenderer maleArmLeft;
+
     public ModelSim(float modelSize) {
         super(modelSize, 0.0F, 64, 64);
+        this.smallArms = false;
 
-        if (this.smallArms) {
-            this.bipedLeftArm = new ModelRenderer(this, 32, 48);
-            this.bipedLeftArm.addBox(-1.0F, -2.0F, -2.0F, 3, 12, 4, modelSize);
-            this.bipedLeftArm.setRotationPoint(5.0F, 2.5F, 0.0F);
-            this.bipedRightArm = new ModelRenderer(this, 40, 16);
-            this.bipedRightArm.addBox(-2.0F, -2.0F, -2.0F, 3, 12, 4, modelSize);
-            this.bipedRightArm.setRotationPoint(-5.0F, 2.5F, 0.0F);
-        } else {
-            this.bipedLeftArm = new ModelRenderer(this, 32, 48);
-            this.bipedLeftArm.addBox(-1.0F, -2.0F, -2.0F, 4, 12, 4, modelSize);
-            this.bipedLeftArm.setRotationPoint(5.0F, 2.0F, 0.0F);
-        }
+        this.femaleArmLeft = new ModelRenderer(this, 32, 48);
+        this.femaleArmLeft.addBox(-1.0F, -2.0F, -2.0F, 3, 12, 4, modelSize);
+        this.femaleArmLeft.setRotationPoint(5.0F, 2.5F, 0.0F);
+        this.femaleArmRight = new ModelRenderer(this, 40, 16);
+        this.femaleArmRight.addBox(-2.0F, -2.0F, -2.0F, 3, 12, 4, modelSize);
+        this.femaleArmRight.setRotationPoint(-5.0F, 2.5F, 0.0F);
+        this.maleArmLeft = new ModelRenderer(this, 32, 48);
+        this.maleArmLeft.addBox(-1.0F, -2.0F, -2.0F, 4, 12, 4, modelSize);
+        this.maleArmLeft.setRotationPoint(5.0F, 2.0F, 0.0F);
         this.bipedLeftLeg = new ModelRenderer(this, 16, 48);
         this.bipedLeftLeg.addBox(-2.0F, 0.0F, -2.0F, 4, 12, 4, modelSize);
         this.bipedLeftLeg.setRotationPoint(1.9F, 12.0F, 0.0F);
     }
 
-    public void render(Entity entitySim, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+    public void render(EntitySim entitySim, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
         super.render(entitySim, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
         GlStateManager.pushMatrix();
 
@@ -51,8 +54,15 @@ public class ModelSim extends ModelBiped {
         GlStateManager.popMatrix();
     }
 
-    public void setVisible(boolean visible) {
-        super.setVisible(visible);
+    public void setVisible(boolean visible, boolean female) {
+        setVisible(visible);
+        if (female) {
+            this.bipedLeftArm.showModel = !visible;
+            this.bipedRightArm.showModel = !visible;
+            this.femaleArmLeft.showModel = visible;
+            this.femaleArmRight.showModel = visible;
+            this.smallArms = true;
+        }
     }
 
     public void postRenderArm(float scale, EnumHandSide side) {
@@ -65,9 +75,5 @@ public class ModelSim extends ModelBiped {
         } else {
             modelrenderer.postRender(scale);
         }
-    }
-
-    public void setSmallArms(boolean smallArms) {
-        this.smallArms = smallArms;
     }
 }

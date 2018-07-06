@@ -1,5 +1,7 @@
 package com.resimulators.simukraft.common.entity.entitysim;
 
+import com.mojang.authlib.GameProfile;
+import com.resimulators.simukraft.ConfigValues;
 import com.resimulators.simukraft.GuiHandler;
 import com.resimulators.simukraft.SimUKraft;
 import com.resimulators.simukraft.common.entity.ai.AISimBuild;
@@ -24,6 +26,7 @@ import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTUtil;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -54,9 +57,11 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
     private static final DataParameter<Integer> VARIATION = EntityDataManager.createKey(EntitySim.class, DataSerializers.VARINT);
     private static final DataParameter<Integer> PROFESSION = EntityDataManager.createKey(EntitySim.class, DataSerializers.VARINT);
     private static final DataParameter<Boolean> FEMALE = EntityDataManager.createKey(EntitySim.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> STAFF = EntityDataManager.createKey(EntitySim.class, DataSerializers.BOOLEAN);
 
     private boolean isPlaying;
     private EntityPlayer commander;
+    private GameProfile playerProfile;
     //Builder profession related
     private Structure structure;
     private boolean isAllowedToBuild;
@@ -156,6 +161,7 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
         this.dataManager.register(VARIATION, 0);
         this.dataManager.register(PROFESSION, 0);
         this.dataManager.register(FEMALE, false);
+        this.dataManager.register(STAFF, false);
     }
 
     @Override
@@ -164,7 +170,13 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
         compound.setInteger("Variation", this.getVariation());
         compound.setInteger("Profession", this.getProfession());
         compound.setBoolean("Female", this.getFemale());
+        compound.setBoolean("Staff", this.getStaff());
         compound.setInteger("Riches", this.wealth);
+        if (this.playerProfile != null) {
+            NBTTagCompound nbttagcompound = new NBTTagCompound();
+            NBTUtil.writeGameProfile(nbttagcompound, this.playerProfile);
+            compound.setTag("CustomSkinOwner", nbttagcompound);
+        }
         if (this.getFarmPos1() != null)
             compound.setIntArray("FarmPos1", new int[]{this.getFarmPos1().getX(), this.getFarmPos1().getY(), this.getFarmPos1().getZ()});
         if (this.getFarmPos2() != null)
@@ -196,8 +208,12 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
             this.setProfession(compound.getInteger("Profession"));
         if (compound.hasKey("Female"))
             this.setFemale(compound.getBoolean("Female"));
+        if (compound.hasKey("Staff"))
+            this.setStaff(compound.getBoolean("Staff"));
         if (compound.hasKey("Riches"))
             this.wealth = compound.getInteger("Riches");
+        if (compound.hasKey("CustomSkinOwner", 10))
+            this.playerProfile = NBTUtil.readGameProfileFromNBT(compound.getCompoundTag("CustomSkinOwner"));
         if (compound.hasKey("FarmPos1"))
             this.setFarmPos1(new BlockPos(compound.getIntArray("FarmPos1")[0], compound.getIntArray("FarmPos1")[1], compound.getIntArray("FarmPos1")[2]));
         if (compound.hasKey("FarmPos2"))
@@ -313,6 +329,22 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
         return isAllowedToBuild;
     }
 
+    public void setStaff(boolean staff) {
+        this.dataManager.set(STAFF, staff);
+    }
+
+    public boolean getStaff() {
+        return this.dataManager.get(STAFF);
+    }
+
+    public void setPlayerProfile(GameProfile playerProfile) {
+        this.playerProfile = playerProfile;
+    }
+
+    public GameProfile getPlayerProfile() {
+        return playerProfile;
+    }
+
     public void setFemale(boolean female) {
         this.dataManager.set(FEMALE, female);
     }
@@ -348,18 +380,26 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
     @Override
     public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata) {
         IEntityLivingData livingData = super.onInitialSpawn(difficulty, livingdata);
-        this.setFemale(randomizeBoolean());
+        this.setStaff(randomizeBooleanWithChance(ConfigValues.specialSimSpawnChance));
         this.setProfession(rand.nextInt(2)); //TODO: add more professions.
-        if (this.getFemale()) {
-            if (NameStorage.femalenames.size() != 0) {
-                this.setCustomNameTag(NameStorage.femalenames.get(new Random().nextInt(NameStorage.femalenames.size())));
-            }
-            this.setVariation(rand.nextInt(10));
+
+        if (this.getStaff()) {
+            String name = SpecialNameStorage.specialNames.get(rand.nextInt(SpecialNameStorage.specialNames.size()));
+            this.setCustomNameTag(name);
+            this.setFemale(SpecialNameStorage.femaleIndex.contains(name));
         } else {
-            if (NameStorage.malenames.size() != 0) {
-                this.setCustomNameTag(NameStorage.malenames.get(new Random().nextInt(NameStorage.malenames.size())));
+            this.setFemale(randomizeBoolean());
+            if (this.getFemale()) {
+                if (NameStorage.femalenames.size() != 0) {
+                    this.setCustomNameTag(NameStorage.femalenames.get(new Random().nextInt(NameStorage.femalenames.size())));
+                }
+                this.setVariation(rand.nextInt(10));
+            } else {
+                if (NameStorage.malenames.size() != 0) {
+                    this.setCustomNameTag(NameStorage.malenames.get(new Random().nextInt(NameStorage.malenames.size())));
+                }
+                this.setVariation(rand.nextInt(5));
             }
-            this.setVariation(rand.nextInt(5));
         }
 
         this.setAdditionalAITasks();
@@ -402,6 +442,11 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
     private boolean randomizeBoolean() {
         int dice = rand.nextInt(2);
         return dice != 0 && dice == 1;
+    }
+
+    private boolean randomizeBooleanWithChance(int i) {
+        int dice = rand.nextInt(i);
+        return dice == 0;
     }
 
     @Override
