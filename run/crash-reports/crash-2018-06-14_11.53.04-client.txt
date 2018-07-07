@@ -1,0 +1,120 @@
+---- Minecraft Crash Report ----
+// I'm sorry, Dave.
+
+Time: 6/14/18 11:53 AM
+Description: Rendering screen
+
+java.lang.NullPointerException: Rendering screen
+	at net.minecraft.client.gui.GuiScreen.drawWorldBackground(GuiScreen.java:580)
+	at net.minecraft.client.gui.GuiScreen.drawDefaultBackground(GuiScreen.java:574)
+	at com.resimulators.simukraft.client.gui.GuiHire.drawScreen(GuiHire.java:45)
+	at net.minecraftforge.client.ForgeHooksClient.drawScreen(ForgeHooksClient.java:353)
+	at net.minecraft.client.renderer.EntityRenderer.updateCameraAndRender(EntityRenderer.java:1124)
+	at net.minecraft.client.Minecraft.runGameLoop(Minecraft.java:1117)
+	at net.minecraft.client.Minecraft.run(Minecraft.java:397)
+	at net.minecraft.client.main.Main.main(SourceFile:123)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at net.minecraft.launchwrapper.Launch.launch(Launch.java:135)
+	at net.minecraft.launchwrapper.Launch.main(Launch.java:28)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at net.minecraftforge.gradle.GradleStartCommon.launch(GradleStartCommon.java:97)
+	at GradleStart.main(GradleStart.java:26)
+
+
+A detailed walkthrough of the error, its code path and all known details is as follows:
+---------------------------------------------------------------------------------------
+
+-- Head --
+Thread: Client thread
+Stacktrace:
+	at net.minecraft.client.gui.GuiScreen.drawWorldBackground(GuiScreen.java:580)
+	at net.minecraft.client.gui.GuiScreen.drawDefaultBackground(GuiScreen.java:574)
+	at com.resimulators.simukraft.client.gui.GuiHire.drawScreen(GuiHire.java:45)
+	at net.minecraftforge.client.ForgeHooksClient.drawScreen(ForgeHooksClient.java:353)
+
+-- Screen render details --
+Details:
+	Screen name: com.resimulators.simukraft.client.gui.GuiHire
+	Mouse location: Scaled: (184, 85). Absolute: (427, 240)
+	Screen size: Scaled: (427, 240). Absolute: (854, 480). Scale factor of 2
+
+-- Affected level --
+Details:
+	Level name: MpServer
+	All players: 1 total; [EntityPlayerSP['DevPlayer'/40, l='MpServer', x=-42.10, y=4.00, z=-539.70]]
+	Chunk stats: MultiplayerChunkCache: 49, 49
+	Level seed: 0
+	Level generator: ID 01 - flat, ver 0. Features enabled: false
+	Level generator options: 
+	Level spawn location: World: (-21,4,-521), Chunk: (at 11,0,7 in -2,-33; contains blocks -32,0,-528 to -17,255,-513), Region: (-1,-2; contains chunks -32,-64 to -1,-33, blocks -512,0,-1024 to -1,255,-513)
+	Level time: 40714 game time, 40714 day time
+	Level dimension: 0
+	Level storage version: 0x00000 - Unknown?
+	Level weather: Rain time: 0 (now: false), thunder time: 0 (now: false)
+	Level game mode: Game mode: creative (ID 1). Hardcore: false. Cheats: false
+	Forced entities: 3 total; [EntitySpider['Spider'/44674, l='MpServer', x=-42.92, y=4.00, z=-553.73], EntityPlayerSP['DevPlayer'/40, l='MpServer', x=-42.10, y=4.00, z=-539.70], EntityZombie['Zombie'/37979, l='MpServer', x=-46.46, y=4.00, z=-541.75]]
+	Retry entities: 0 total; []
+	Server brand: fml,forge
+	Server type: Integrated singleplayer server
+Stacktrace:
+	at net.minecraft.client.multiplayer.WorldClient.addWorldInfoToCrashReport(WorldClient.java:420)
+	at net.minecraft.client.Minecraft.addGraphicsAndWorldToCrashReport(Minecraft.java:2748)
+	at net.minecraft.client.Minecraft.run(Minecraft.java:418)
+	at net.minecraft.client.main.Main.main(SourceFile:123)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at net.minecraft.launchwrapper.Launch.launch(Launch.java:135)
+	at net.minecraft.launchwrapper.Launch.main(Launch.java:28)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at net.minecraftforge.gradle.GradleStartCommon.launch(GradleStartCommon.java:97)
+	at GradleStart.main(GradleStart.java:26)
+
+-- System Details --
+Details:
+	Minecraft Version: 1.12.2
+	Operating System: Windows 10 (amd64) version 10.0
+	Java Version: 1.8.0_162, Oracle Corporation
+	Java VM Version: Java HotSpot(TM) 64-Bit Server VM (mixed mode), Oracle Corporation
+	Memory: 278105200 bytes (265 MB) / 519569408 bytes (495 MB) up to 827850752 bytes (789 MB)
+	JVM Flags: 0 total; 
+	IntCache: cache: 0, tcache: 0, allocated: 0, tallocated: 0
+	FML: MCP 9.42 Powered by Forge 14.23.1.2555 5 mods loaded, 5 mods active
+	States: 'U' = Unloaded 'L' = Loaded 'C' = Constructed 'H' = Pre-initialized 'I' = Initialized 'J' = Post-initialized 'A' = Available 'D' = Disabled 'E' = Errored
+
+	| State     | ID        | Version           | Source                           | Signature |
+	|:--------- |:--------- |:----------------- |:-------------------------------- |:--------- |
+	| UCHIJAAAA | minecraft | 1.12.2            | minecraft.jar                    | None      |
+	| UCHIJAAAA | mcp       | 9.42              | minecraft.jar                    | None      |
+	| UCHIJAAAA | FML       | 8.0.99.99         | forgeBin-1.12.2-14.23.1.2555.jar | None      |
+	| UCHIJAAAA | forge     | 14.23.1.2555      | forgeBin-1.12.2-14.23.1.2555.jar | None      |
+	| UCHIJAAAA | simukraft | @VERSION@-@BUILD@ | Sim-U-Kraft-Resimulated_main     | None      |
+
+	Loaded coremods (and transformers): 
+	GL info: ' Vendor: 'ATI Technologies Inc.' Version: '4.5.13418 Compatibility Profile Context 15.301.2301.1002' Renderer: 'AMD Radeon(TM) R4 Graphics'
+	Launched Version: 1.12.2
+	LWJGL: 2.9.4
+	OpenGL: AMD Radeon(TM) R4 Graphics GL version 4.5.13418 Compatibility Profile Context 15.301.2301.1002, ATI Technologies Inc.
+	GL Caps: Using GL 1.3 multitexturing.
+Using GL 1.3 texture combiners.
+Using framebuffer objects because OpenGL 3.0 is supported and separate blending is supported.
+Shaders are available because OpenGL 2.1 is supported.
+VBOs are available because OpenGL 1.5 is supported.
+
+	Using VBOs: No
+	Is Modded: Definitely; Client brand changed to 'fml,forge'
+	Type: Client (map_client.txt)
+	Resource Packs: 
+	Current Language: ~~ERROR~~ NullPointerException: null
+	Profiler Position: N/A (disabled)
+	CPU: 4x AMD A6-7310 APU with AMD Radeon R4 Graphics 

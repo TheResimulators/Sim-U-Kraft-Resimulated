@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":[
+    "CCC",
+    "WHW",
+    "WWW"
+  ],
+  "key":{
+    "C":{
+      "item": "minecraft:cobblestone"
+    },
+    "W": {
+      "type": "forge:ore_dict",
+      "ore": "plankWood"
+    },
+    "H": {
+      "item": "minecraft:stone_hoe"
+    }
+  },
+  "result": {
+    "item": "simukraft:farm_box",
+    "count": 1
+  }
+}

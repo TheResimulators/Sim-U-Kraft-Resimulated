@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "normal": { "model": "simukraft:control_box" },
+    "inventory": { "model": "simukraft:control_box" }
+  }
+}

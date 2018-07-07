@@ -1,0 +1,883 @@
+[20:47:09] [main/INFO]: username: DevPlayer
+[20:47:09] [main/INFO]: Extra: []
+[20:47:10] [main/INFO]: Running with arguments: [--userProperties, {}, --assetsDir, C:/Users/aiden/.gradle/caches/minecraft/assets, --assetIndex, 1.12, --accessToken{REDACTED}, --version, 1.12.2, --username, DevPlayer, --tweakClass, net.minecraftforge.fml.common.launcher.FMLTweaker, --tweakClass, net.minecraftforge.gradle.tweakers.CoremodTweaker]
+[20:47:10] [main/INFO]: Loading tweak class name net.minecraftforge.fml.common.launcher.FMLTweaker
+[20:47:10] [main/INFO]: Using primary tweak class name net.minecraftforge.fml.common.launcher.FMLTweaker
+[20:47:10] [main/INFO]: Loading tweak class name net.minecraftforge.gradle.tweakers.CoremodTweaker
+[20:47:10] [main/INFO]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLTweaker
+[20:47:10] [main/INFO]: Forge Mod Loader version 14.23.1.2555 for Minecraft 1.12.2 loading
+[20:47:10] [main/INFO]: Java is Java HotSpot(TM) 64-Bit Server VM, version 1.8.0_162, running on Windows 10:amd64:10.0, installed at C:\Program Files\Java\jdk1.8.0_162\jre
+[20:47:10] [main/INFO]: Managed to load a deobfuscated Minecraft name- we are in a deobfuscated environment. Skipping runtime deobfuscation
+[20:47:10] [main/INFO]: Ignoring missing certificate for coremod FMLCorePlugin (net.minecraftforge.fml.relauncher.FMLCorePlugin), we are in deobf and it's a forge core plugin
+[20:47:10] [main/INFO]: Ignoring missing certificate for coremod FMLForgePlugin (net.minecraftforge.classloading.FMLForgePlugin), we are in deobf and it's a forge core plugin
+[20:47:10] [main/INFO]: Calling tweak class net.minecraftforge.gradle.tweakers.CoremodTweaker
+[20:47:10] [main/INFO]: Injecting location in coremod net.minecraftforge.fml.relauncher.FMLCorePlugin
+[20:47:10] [main/INFO]: Injecting location in coremod net.minecraftforge.classloading.FMLForgePlugin
+[20:47:10] [main/INFO]: Loading tweak class name net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweaker
+[20:47:10] [main/INFO]: Loading tweak class name net.minecraftforge.fml.common.launcher.FMLDeobfTweaker
+[20:47:10] [main/INFO]: Loading tweak class name net.minecraftforge.gradle.tweakers.AccessTransformerTweaker
+[20:47:10] [main/INFO]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweaker
+[20:47:10] [main/INFO]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweaker
+[20:47:10] [main/INFO]: Calling tweak class net.minecraftforge.fml.relauncher.CoreModManager$FMLPluginWrapper
+[20:47:18] [main/ERROR]: FML appears to be missing any signature data. This is not a good thing
+[20:47:18] [main/INFO]: Calling tweak class net.minecraftforge.fml.relauncher.CoreModManager$FMLPluginWrapper
+[20:47:18] [main/INFO]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLDeobfTweaker
+[20:47:20] [main/INFO]: Calling tweak class net.minecraftforge.gradle.tweakers.AccessTransformerTweaker
+[20:47:20] [main/INFO]: Loading tweak class name net.minecraftforge.fml.common.launcher.TerminalTweaker
+[20:47:20] [main/INFO]: Calling tweak class net.minecraftforge.fml.common.launcher.TerminalTweaker
+[20:47:20] [main/INFO]: Launching wrapped minecraft {net.minecraft.client.main.Main}
+[20:47:24] [main/INFO]: Setting user: DevPlayer
+[20:47:38] [main/WARN]: Skipping bad option: lastServer:
+[20:47:38] [main/INFO]: LWJGL Version: 2.9.4
+[20:47:43] [main/INFO]: -- System Details --
+Details:
+	Minecraft Version: 1.12.2
+	Operating System: Windows 10 (amd64) version 10.0
+	Java Version: 1.8.0_162, Oracle Corporation
+	Java VM Version: Java HotSpot(TM) 64-Bit Server VM (mixed mode), Oracle Corporation
+	Memory: 116918952 bytes (111 MB) / 340787200 bytes (325 MB) up to 827850752 bytes (789 MB)
+	JVM Flags: 0 total; 
+	IntCache: cache: 0, tcache: 0, allocated: 0, tallocated: 0
+	FML: 
+	Loaded coremods (and transformers): 
+	GL info: ' Vendor: 'ATI Technologies Inc.' Version: '4.5.13418 Compatibility Profile Context 15.301.2301.1002' Renderer: 'AMD Radeon(TM) R4 Graphics'
+[20:47:43] [main/INFO]: MinecraftForge v14.23.1.2555 Initialized
+[20:47:43] [main/INFO]: Starts to replace vanilla recipe ingredients with ore ingredients.
+[20:47:43] [main/INFO]: Replaced 1036 ore ingredients
+[20:47:45] [main/INFO]: Found 0 mods from the command line. Injecting into mod discoverer
+[20:47:45] [main/INFO]: Searching C:\Users\aiden\Desktop\Sim-U-Kraft-Resimulated\run\mods for mods
+[20:47:46] [Thread-3/INFO]: Using alternative sync timing : 200 frames of Display.update took 1190541735 nanos
+[20:47:49] [main/INFO]: Forge Mod Loader has identified 5 mods to load
+[20:47:50] [main/INFO]: Attempting connection with missing mods [minecraft, mcp, FML, forge, simukraft] at CLIENT
+[20:47:50] [main/INFO]: Attempting connection with missing mods [minecraft, mcp, FML, forge, simukraft] at SERVER
+[20:47:54] [main/INFO]: Reloading ResourceManager: Default, FMLFileResourcePack:Forge Mod Loader, FMLFileResourcePack:Minecraft Forge, FMLFileResourcePack:Sim-U-Kraft: Resimulated
+[20:47:54] [main/INFO]: Processing ObjectHolder annotations
+[20:47:54] [main/INFO]: Found 1168 ObjectHolder annotations
+[20:47:54] [main/INFO]: Identifying ItemStackHolder annotations
+[20:47:54] [main/INFO]: Found 0 ItemStackHolder annotations
+[20:47:55] [main/INFO]: Configured a dormant chunk cache size of 0
+[20:47:55] [Forge Version Check/INFO]: [forge] Starting version check at http://files.minecraftforge.net/maven/net/minecraftforge/forge/promotions_slim.json
+[20:47:55] [Forge Version Check/INFO]: [forge] Found status: OUTDATED Target: 14.23.3.2655
+[20:47:55] [main/INFO]: Successfully added block: composite_brick to the game.
+[20:47:55] [main/INFO]: Successfully added block: control_box to the game.
+[20:47:55] [main/INFO]: Successfully added block: light to the game.
+[20:47:55] [main/INFO]: Successfully added block: rainbow_light to the game.
+[20:47:55] [main/INFO]: Successfully added block: constructor_box to the game.
+[20:47:56] [main/INFO]: Successfully added block: milk_block to the game.
+[20:47:56] [main/INFO]: Successfully added block: farm_box to the game.
+[20:47:56] [main/INFO]: Successfully added block: city_box to the game.
+[20:47:56] [main/INFO]: Successfully added block: mine_box to the game.
+[20:47:56] [main/INFO]: Successfully added block: town hall to the game.
+[20:47:56] [main/INFO]: Successfully added block: cheese_block to the game.
+[20:47:56] [main/INFO]: Applying holder lookups
+[20:47:56] [main/INFO]: Holder lookups applied
+[20:47:56] [main/INFO]: Successfully added item: rainbow_light to the game.
+[20:47:56] [main/INFO]: Successfully added item: cheese to the game.
+[20:47:56] [main/INFO]: Successfully added item: constructor_box to the game.
+[20:47:56] [main/INFO]: Successfully added item: planning_sheet to the game.
+[20:47:56] [main/INFO]: Successfully added item: mine_box to the game.
+[20:47:56] [main/INFO]: Successfully added item: city_box to the game.
+[20:47:56] [main/INFO]: Successfully added item: control_box to the game.
+[20:47:56] [main/INFO]: Successfully added item: farm_box to the game.
+[20:47:56] [main/INFO]: Successfully added item: burger to the game.
+[20:47:56] [main/INFO]: Successfully added item: cheese_block to the game.
+[20:47:56] [main/INFO]: Successfully added item: composite_brick to the game.
+[20:47:56] [main/INFO]: Successfully added item: debug to the game.
+[20:47:56] [main/INFO]: Successfully added item: blueprint to the game.
+[20:47:56] [main/INFO]: Successfully added item: town hall to the game.
+[20:47:56] [main/INFO]: Successfully added item: granules to the game.
+[20:47:56] [main/INFO]: Successfully added item: light to the game.
+[20:47:56] [main/INFO]: Successfully added item: cheeseburger to the game.
+[20:47:56] [main/INFO]: Successfully added item: fries to the game.
+[20:47:56] [main/INFO]: Applying holder lookups
+[20:47:56] [main/INFO]: Holder lookups applied
+[20:47:56] [main/INFO]: Applying holder lookups
+[20:47:56] [main/INFO]: Holder lookups applied
+[20:47:56] [main/INFO]: Applying holder lookups
+[20:47:56] [main/INFO]: Holder lookups applied
+[20:47:56] [main/INFO]: Injecting itemstacks
+[20:47:56] [main/INFO]: Itemstack injection complete
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:ambient.cave
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.anvil.break
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.anvil.destroy
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.anvil.fall
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.anvil.hit
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.anvil.land
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.anvil.place
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.anvil.step
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.anvil.use
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.brewing_stand.brew
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.chest.close
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.chest.locked
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.chest.open
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.chorus_flower.death
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.chorus_flower.grow
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.cloth.break
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.cloth.fall
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.cloth.hit
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.cloth.place
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.cloth.step
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.comparator.click
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.dispenser.dispense
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.dispenser.fail
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.dispenser.launch
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.enchantment_table.use
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.end_gateway.spawn
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.end_portal.spawn
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.end_portal_frame.fill
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.enderchest.close
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.enderchest.open
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.fence_gate.close
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.fence_gate.open
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.fire.ambient
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.fire.extinguish
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.furnace.fire_crackle
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.glass.break
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.glass.fall
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.glass.hit
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.glass.place
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.glass.step
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.grass.break
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.grass.fall
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.grass.hit
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.grass.place
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.grass.step
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.gravel.break
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.gravel.fall
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.gravel.hit
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.gravel.place
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.gravel.step
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.iron_door.close
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.iron_door.open
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.iron_trapdoor.close
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.iron_trapdoor.open
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.ladder.break
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.ladder.fall
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.ladder.hit
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.ladder.place
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.ladder.step
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.lava.ambient
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.lava.extinguish
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.lava.pop
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.lever.click
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.metal.break
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.metal.fall
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.metal.hit
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.metal.place
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.metal.step
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.metal_pressureplate.click_off
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.metal_pressureplate.click_on
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.note.basedrum
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.note.bass
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.note.bell
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.note.chime
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.note.flute
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.note.guitar
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.note.harp
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.note.hat
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.note.pling
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.note.snare
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.note.xylophone
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.piston.contract
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.piston.extend
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.portal.ambient
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.portal.travel
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.portal.trigger
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.redstone_torch.burnout
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.sand.break
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.sand.fall
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.sand.hit
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.sand.place
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.sand.step
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.shulker_box.close
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.shulker_box.open
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.slime.break
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.slime.fall
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.slime.hit
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.slime.place
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.slime.step
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.snow.break
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.snow.fall
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.snow.hit
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.snow.place
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.snow.step
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.stone.break
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.stone.fall
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.stone.hit
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.stone.place
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.stone.step
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.stone_button.click_off
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.stone_button.click_on
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.stone_pressureplate.click_off
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.stone_pressureplate.click_on
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.tripwire.attach
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.tripwire.click_off
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.tripwire.click_on
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.tripwire.detach
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.water.ambient
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.waterlily.place
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.wood.break
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.wood.fall
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.wood.hit
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.wood.place
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.wood.step
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.wood_button.click_off
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.wood_button.click_on
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.wood_pressureplate.click_off
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.wood_pressureplate.click_on
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.wooden_door.close
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.wooden_door.open
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.wooden_trapdoor.close
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:block.wooden_trapdoor.open
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:enchant.thorns.hit
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.armorstand.break
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.armorstand.fall
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.armorstand.hit
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.armorstand.place
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.arrow.hit
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.arrow.hit_player
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.arrow.shoot
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.bat.ambient
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.bat.death
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.bat.hurt
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.bat.loop
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.bat.takeoff
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.blaze.ambient
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.blaze.burn
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.blaze.death
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.blaze.hurt
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.blaze.shoot
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.boat.paddle_land
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.boat.paddle_water
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.bobber.retrieve
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.bobber.splash
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.bobber.throw
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.cat.ambient
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.cat.death
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.cat.hiss
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.cat.hurt
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.cat.purr
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.cat.purreow
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.chicken.ambient
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.chicken.death
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.chicken.egg
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.chicken.hurt
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.chicken.step
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.cow.ambient
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.cow.death
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.cow.hurt
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.cow.milk
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.cow.step
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.creeper.death
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.creeper.hurt
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.creeper.primed
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.donkey.ambient
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.donkey.angry
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.donkey.chest
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.donkey.death
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.donkey.hurt
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.egg.throw
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.elder_guardian.ambient
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.elder_guardian.ambient_land
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.elder_guardian.curse
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.elder_guardian.death
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.elder_guardian.death_land
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.elder_guardian.flop
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.elder_guardian.hurt
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.elder_guardian.hurt_land
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.enderdragon.ambient
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.enderdragon.death
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.enderdragon.flap
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.enderdragon.growl
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.enderdragon.hurt
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.enderdragon.shoot
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.enderdragon_fireball.explode
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.endereye.death
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.endereye.launch
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.endermen.ambient
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.endermen.death
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.endermen.hurt
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.endermen.scream
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.endermen.stare
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.endermen.teleport
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.endermite.ambient
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.endermite.death
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.endermite.hurt
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.endermite.step
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.enderpearl.throw
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.evocation_fangs.attack
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.evocation_illager.ambient
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.evocation_illager.cast_spell
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.evocation_illager.death
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.evocation_illager.hurt
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.evocation_illager.prepare_attack
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.evocation_illager.prepare_summon
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.evocation_illager.prepare_wololo
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.experience_bottle.throw
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.experience_orb.pickup
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.firework.blast
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.firework.blast_far
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.firework.large_blast
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.firework.large_blast_far
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.firework.launch
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.firework.shoot
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.firework.twinkle
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.firework.twinkle_far
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.generic.big_fall
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.generic.burn
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.generic.death
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.generic.drink
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.generic.eat
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.generic.explode
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.generic.extinguish_fire
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.generic.hurt
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.generic.small_fall
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.generic.splash
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.generic.swim
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.ghast.ambient
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.ghast.death
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.ghast.hurt
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.ghast.scream
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.ghast.shoot
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.ghast.warn
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.guardian.ambient
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.guardian.ambient_land
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.guardian.attack
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.guardian.death
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.guardian.death_land
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.guardian.flop
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.guardian.hurt
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.guardian.hurt_land
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.horse.ambient
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.horse.angry
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.horse.armor
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.horse.breathe
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.horse.death
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.horse.eat
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.horse.gallop
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.horse.hurt
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.horse.jump
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.horse.land
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.horse.saddle
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.horse.step
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.horse.step_wood
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.hostile.big_fall
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.hostile.death
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.hostile.hurt
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.hostile.small_fall
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.hostile.splash
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.hostile.swim
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.husk.ambient
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.husk.death
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.husk.hurt
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.husk.step
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.illusion_illager.ambient
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.illusion_illager.cast_spell
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.illusion_illager.death
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.illusion_illager.hurt
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.illusion_illager.mirror_move
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.illusion_illager.prepare_blindness
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.illusion_illager.prepare_mirror
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.irongolem.attack
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.irongolem.death
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.irongolem.hurt
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.irongolem.step
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.item.break
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.item.pickup
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.itemframe.add_item
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.itemframe.break
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.itemframe.place
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.itemframe.remove_item
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.itemframe.rotate_item
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.leashknot.break
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.leashknot.place
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.lightning.impact
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.lightning.thunder
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.lingeringpotion.throw
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.llama.ambient
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.llama.angry
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.llama.chest
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.llama.death
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.llama.eat
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.llama.hurt
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.llama.spit
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.llama.step
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.llama.swag
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.magmacube.death
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.magmacube.hurt
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.magmacube.jump
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.magmacube.squish
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.minecart.inside
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.minecart.riding
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.mooshroom.shear
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.mule.ambient
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.mule.chest
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.mule.death
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.mule.hurt
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.painting.break
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.painting.place
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.parrot.ambient
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.parrot.death
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.parrot.eat
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.parrot.fly
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.parrot.hurt
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.parrot.imitate.blaze
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.parrot.imitate.creeper
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.parrot.imitate.elder_guardian
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.parrot.imitate.enderdragon
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.parrot.imitate.enderman
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.parrot.imitate.endermite
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.parrot.imitate.evocation_illager
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.parrot.imitate.ghast
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.parrot.imitate.husk
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.parrot.imitate.illusion_illager
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.parrot.imitate.magmacube
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.parrot.imitate.polar_bear
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.parrot.imitate.shulker
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.parrot.imitate.silverfish
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.parrot.imitate.skeleton
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.parrot.imitate.slime
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.parrot.imitate.spider
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.parrot.imitate.stray
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.parrot.imitate.vex
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.parrot.imitate.vindication_illager
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.parrot.imitate.witch
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.parrot.imitate.wither
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.parrot.imitate.wither_skeleton
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.parrot.imitate.wolf
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.parrot.imitate.zombie
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.parrot.imitate.zombie_pigman
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.parrot.imitate.zombie_villager
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.parrot.step
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.pig.ambient
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.pig.death
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.pig.hurt
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.pig.saddle
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.pig.step
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.player.attack.crit
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.player.attack.knockback
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.player.attack.nodamage
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.player.attack.strong
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.player.attack.sweep
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.player.attack.weak
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.player.big_fall
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.player.breath
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.player.burp
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.player.death
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.player.hurt
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.player.hurt_drown
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.player.hurt_on_fire
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.player.levelup
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.player.small_fall
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.player.splash
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.player.swim
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.polar_bear.ambient
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.polar_bear.baby_ambient
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.polar_bear.death
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.polar_bear.hurt
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.polar_bear.step
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.polar_bear.warning
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.rabbit.ambient
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.rabbit.attack
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.rabbit.death
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.rabbit.hurt
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.rabbit.jump
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.sheep.ambient
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.sheep.death
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.sheep.hurt
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.sheep.shear
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.sheep.step
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.shulker.ambient
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.shulker.close
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.shulker.death
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.shulker.hurt
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.shulker.hurt_closed
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.shulker.open
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.shulker.shoot
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.shulker.teleport
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.shulker_bullet.hit
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.shulker_bullet.hurt
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.silverfish.ambient
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.silverfish.death
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.silverfish.hurt
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.silverfish.step
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.skeleton.ambient
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.skeleton.death
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.skeleton.hurt
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.skeleton.shoot
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.skeleton.step
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.skeleton_horse.ambient
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.skeleton_horse.death
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.skeleton_horse.hurt
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.slime.attack
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.slime.death
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.slime.hurt
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.slime.jump
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.slime.squish
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.small_magmacube.death
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.small_magmacube.hurt
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.small_magmacube.squish
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.small_slime.death
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.small_slime.hurt
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.small_slime.jump
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.small_slime.squish
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.snowball.throw
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.snowman.ambient
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.snowman.death
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.snowman.hurt
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.snowman.shoot
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.spider.ambient
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.spider.death
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.spider.hurt
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.spider.step
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.splash_potion.break
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.splash_potion.throw
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.squid.ambient
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.squid.death
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.squid.hurt
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.stray.ambient
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.stray.death
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.stray.hurt
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.stray.step
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.tnt.primed
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.vex.ambient
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.vex.charge
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.vex.death
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.vex.hurt
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.villager.ambient
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.villager.death
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.villager.hurt
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.villager.no
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.villager.trading
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.villager.yes
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.vindication_illager.ambient
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.vindication_illager.death
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.vindication_illager.hurt
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.witch.ambient
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.witch.death
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.witch.drink
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.witch.hurt
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.witch.throw
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.wither.ambient
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.wither.break_block
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.wither.death
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.wither.hurt
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.wither.shoot
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.wither.spawn
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.wither_skeleton.ambient
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.wither_skeleton.death
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.wither_skeleton.hurt
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.wither_skeleton.step
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.wolf.ambient
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.wolf.death
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.wolf.growl
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.wolf.howl
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.wolf.hurt
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.wolf.pant
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.wolf.shake
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.wolf.step
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.wolf.whine
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.zombie.ambient
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.zombie.attack_door_wood
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.zombie.attack_iron_door
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.zombie.break_door_wood
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.zombie.death
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.zombie.hurt
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.zombie.infect
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.zombie.step
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.zombie_horse.ambient
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.zombie_horse.death
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.zombie_horse.hurt
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.zombie_pig.ambient
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.zombie_pig.angry
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.zombie_pig.death
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.zombie_pig.hurt
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.zombie_villager.ambient
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.zombie_villager.converted
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.zombie_villager.cure
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.zombie_villager.death
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.zombie_villager.hurt
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:entity.zombie_villager.step
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:item.armor.equip_chain
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:item.armor.equip_diamond
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:item.armor.equip_elytra
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:item.armor.equip_generic
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:item.armor.equip_gold
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:item.armor.equip_iron
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:item.armor.equip_leather
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:item.bottle.empty
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:item.bottle.fill
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:item.bottle.fill_dragonbreath
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:item.bucket.empty
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:item.bucket.empty_lava
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:item.bucket.fill
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:item.bucket.fill_lava
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:item.chorus_fruit.teleport
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:item.elytra.flying
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:item.firecharge.use
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:item.flintandsteel.use
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:item.hoe.till
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:item.shield.block
+[20:47:56] [main/WARN]: Missing sound for event: minecraft:item.shield.break
+[20:47:57] [main/WARN]: Missing sound for event: minecraft:item.shovel.flatten
+[20:47:57] [main/WARN]: Missing sound for event: minecraft:item.totem.use
+[20:47:57] [main/WARN]: Missing sound for event: minecraft:music.creative
+[20:47:57] [main/WARN]: Missing sound for event: minecraft:music.credits
+[20:47:57] [main/WARN]: Missing sound for event: minecraft:music.dragon
+[20:47:57] [main/WARN]: Missing sound for event: minecraft:music.end
+[20:47:57] [main/WARN]: Missing sound for event: minecraft:music.game
+[20:47:57] [main/WARN]: Missing sound for event: minecraft:music.menu
+[20:47:57] [main/WARN]: Missing sound for event: minecraft:music.nether
+[20:47:57] [main/WARN]: Missing sound for event: minecraft:record.11
+[20:47:57] [main/WARN]: Missing sound for event: minecraft:record.13
+[20:47:57] [main/WARN]: Missing sound for event: minecraft:record.blocks
+[20:47:57] [main/WARN]: Missing sound for event: minecraft:record.cat
+[20:47:57] [main/WARN]: Missing sound for event: minecraft:record.chirp
+[20:47:57] [main/WARN]: Missing sound for event: minecraft:record.far
+[20:47:57] [main/WARN]: Missing sound for event: minecraft:record.mall
+[20:47:57] [main/WARN]: Missing sound for event: minecraft:record.mellohi
+[20:47:57] [main/WARN]: Missing sound for event: minecraft:record.stal
+[20:47:57] [main/WARN]: Missing sound for event: minecraft:record.strad
+[20:47:57] [main/WARN]: Missing sound for event: minecraft:record.wait
+[20:47:57] [main/WARN]: Missing sound for event: minecraft:record.ward
+[20:47:57] [main/WARN]: Missing sound for event: minecraft:ui.button.click
+[20:47:57] [main/WARN]: Missing sound for event: minecraft:ui.toast.in
+[20:47:57] [main/WARN]: Missing sound for event: minecraft:ui.toast.out
+[20:47:57] [main/WARN]: Missing sound for event: minecraft:ui.toast.challenge_complete
+[20:47:57] [main/WARN]: Missing sound for event: minecraft:weather.rain
+[20:47:57] [main/WARN]: Missing sound for event: minecraft:weather.rain.above
+[20:47:57] [Sound Library Loader/INFO]: Starting up SoundSystem...
+[20:47:57] [Thread-5/INFO]: Initializing LWJGL OpenAL
+[20:47:57] [Thread-5/INFO]: (The LWJGL binding of OpenAL.  For more information, see http://www.lwjgl.org)
+[20:47:58] [Thread-5/INFO]: OpenAL initialized.
+[20:47:58] [Sound Library Loader/INFO]: Sound engine started
+[20:48:15] [main/ERROR]: Could not load vanilla model parent 'simukraft:block/light_purple' for 'net.minecraft.client.renderer.block.model.ModelBlock@55150964
+net.minecraftforge.client.model.ModelLoaderRegistry$LoaderException: Exception loading model simukraft:block/light_purple with loader VanillaLoader.INSTANCE, skipping
+	at net.minecraftforge.client.model.ModelLoaderRegistry.getModel(ModelLoaderRegistry.java:153) ~[ModelLoaderRegistry.class:?]
+	at net.minecraftforge.client.model.ModelLoaderRegistry.getModelOrLogError(ModelLoaderRegistry.java:203) [ModelLoaderRegistry.class:?]
+	at net.minecraftforge.client.model.ModelLoader$VanillaModelWrapper.getTextures(ModelLoader.java:388) [ModelLoader$VanillaModelWrapper.class:?]
+	at net.minecraftforge.client.model.ModelLoaderRegistry.getModel(ModelLoaderRegistry.java:163) [ModelLoaderRegistry.class:?]
+	at net.minecraftforge.client.model.ModelLoader.loadItemModels(ModelLoader.java:297) [ModelLoader.class:?]
+	at net.minecraft.client.renderer.block.model.ModelBakery.loadVariantItemModels(ModelBakery.java:175) [ModelBakery.class:?]
+	at net.minecraftforge.client.model.ModelLoader.setupModelRegistry(ModelLoader.java:160) [ModelLoader.class:?]
+	at net.minecraft.client.renderer.block.model.ModelManager.onResourceManagerReload(ModelManager.java:28) [ModelManager.class:?]
+	at net.minecraft.client.resources.SimpleReloadableResourceManager.registerReloadListener(SimpleReloadableResourceManager.java:121) [SimpleReloadableResourceManager.class:?]
+	at net.minecraft.client.Minecraft.init(Minecraft.java:512) [Minecraft.class:?]
+	at net.minecraft.client.Minecraft.run(Minecraft.java:377) [Minecraft.class:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [Main.class:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_162]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[?:1.8.0_162]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:1.8.0_162]
+	at java.lang.reflect.Method.invoke(Method.java:498) ~[?:1.8.0_162]
+	at net.minecraft.launchwrapper.Launch.launch(Launch.java:135) [launchwrapper-1.12.jar:?]
+	at net.minecraft.launchwrapper.Launch.main(Launch.java:28) [launchwrapper-1.12.jar:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_162]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[?:1.8.0_162]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:1.8.0_162]
+	at java.lang.reflect.Method.invoke(Method.java:498) ~[?:1.8.0_162]
+	at net.minecraftforge.gradle.GradleStartCommon.launch(GradleStartCommon.java:97) [start/:?]
+	at GradleStart.main(GradleStart.java:26) [start/:?]
+Caused by: java.io.FileNotFoundException: simukraft:models/block/light_purple.json
+	at net.minecraft.client.resources.FallbackResourceManager.getResource(FallbackResourceManager.java:69) ~[FallbackResourceManager.class:?]
+	at net.minecraft.client.resources.SimpleReloadableResourceManager.getResource(SimpleReloadableResourceManager.java:65) ~[SimpleReloadableResourceManager.class:?]
+	at net.minecraft.client.renderer.block.model.ModelBakery.loadModel(ModelBakery.java:334) ~[ModelBakery.class:?]
+	at net.minecraftforge.client.model.ModelLoader.access$1600(ModelLoader.java:126) ~[ModelLoader.class:?]
+	at net.minecraftforge.client.model.ModelLoader$VanillaLoader.loadModel(ModelLoader.java:860) ~[ModelLoader$VanillaLoader.class:?]
+	at net.minecraftforge.client.model.ModelLoaderRegistry.getModel(ModelLoaderRegistry.java:149) ~[ModelLoaderRegistry.class:?]
+	... 23 more
+[20:48:15] [main/ERROR]: Could not load vanilla model parent 'simukraft:block/light_cyan' for 'net.minecraft.client.renderer.block.model.ModelBlock@4bbd9a1
+net.minecraftforge.client.model.ModelLoaderRegistry$LoaderException: Exception loading model simukraft:block/light_cyan with loader VanillaLoader.INSTANCE, skipping
+	at net.minecraftforge.client.model.ModelLoaderRegistry.getModel(ModelLoaderRegistry.java:153) ~[ModelLoaderRegistry.class:?]
+	at net.minecraftforge.client.model.ModelLoaderRegistry.getModelOrLogError(ModelLoaderRegistry.java:203) [ModelLoaderRegistry.class:?]
+	at net.minecraftforge.client.model.ModelLoader$VanillaModelWrapper.getTextures(ModelLoader.java:388) [ModelLoader$VanillaModelWrapper.class:?]
+	at net.minecraftforge.client.model.ModelLoaderRegistry.getModel(ModelLoaderRegistry.java:163) [ModelLoaderRegistry.class:?]
+	at net.minecraftforge.client.model.ModelLoader.loadItemModels(ModelLoader.java:297) [ModelLoader.class:?]
+	at net.minecraft.client.renderer.block.model.ModelBakery.loadVariantItemModels(ModelBakery.java:175) [ModelBakery.class:?]
+	at net.minecraftforge.client.model.ModelLoader.setupModelRegistry(ModelLoader.java:160) [ModelLoader.class:?]
+	at net.minecraft.client.renderer.block.model.ModelManager.onResourceManagerReload(ModelManager.java:28) [ModelManager.class:?]
+	at net.minecraft.client.resources.SimpleReloadableResourceManager.registerReloadListener(SimpleReloadableResourceManager.java:121) [SimpleReloadableResourceManager.class:?]
+	at net.minecraft.client.Minecraft.init(Minecraft.java:512) [Minecraft.class:?]
+	at net.minecraft.client.Minecraft.run(Minecraft.java:377) [Minecraft.class:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [Main.class:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_162]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[?:1.8.0_162]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:1.8.0_162]
+	at java.lang.reflect.Method.invoke(Method.java:498) ~[?:1.8.0_162]
+	at net.minecraft.launchwrapper.Launch.launch(Launch.java:135) [launchwrapper-1.12.jar:?]
+	at net.minecraft.launchwrapper.Launch.main(Launch.java:28) [launchwrapper-1.12.jar:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_162]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[?:1.8.0_162]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:1.8.0_162]
+	at java.lang.reflect.Method.invoke(Method.java:498) ~[?:1.8.0_162]
+	at net.minecraftforge.gradle.GradleStartCommon.launch(GradleStartCommon.java:97) [start/:?]
+	at GradleStart.main(GradleStart.java:26) [start/:?]
+Caused by: java.io.FileNotFoundException: simukraft:models/block/light_cyan.json
+	at net.minecraft.client.resources.FallbackResourceManager.getResource(FallbackResourceManager.java:69) ~[FallbackResourceManager.class:?]
+	at net.minecraft.client.resources.SimpleReloadableResourceManager.getResource(SimpleReloadableResourceManager.java:65) ~[SimpleReloadableResourceManager.class:?]
+	at net.minecraft.client.renderer.block.model.ModelBakery.loadModel(ModelBakery.java:334) ~[ModelBakery.class:?]
+	at net.minecraftforge.client.model.ModelLoader.access$1600(ModelLoader.java:126) ~[ModelLoader.class:?]
+	at net.minecraftforge.client.model.ModelLoader$VanillaLoader.loadModel(ModelLoader.java:860) ~[ModelLoader$VanillaLoader.class:?]
+	at net.minecraftforge.client.model.ModelLoaderRegistry.getModel(ModelLoaderRegistry.java:149) ~[ModelLoaderRegistry.class:?]
+	... 23 more
+[20:48:15] [main/INFO]: Max texture size: 16384
+[20:48:17] [main/INFO]: Created: 512x512 textures-atlas
+[20:48:21] [main/ERROR]: Exception loading model for variant simukraft:light#color=gray for blockstate "simukraft:light[color=gray]"
+net.minecraftforge.client.model.ModelLoaderRegistry$LoaderException: Exception loading model simukraft:light#color=gray with loader VariantLoader.INSTANCE, skipping
+	at net.minecraftforge.client.model.ModelLoaderRegistry.getModel(ModelLoaderRegistry.java:153) ~[ModelLoaderRegistry.class:?]
+	at net.minecraftforge.client.model.ModelLoader.registerVariant(ModelLoader.java:233) ~[ModelLoader.class:?]
+	at net.minecraft.client.renderer.block.model.ModelBakery.loadBlock(ModelBakery.java:153) ~[ModelBakery.class:?]
+	at net.minecraftforge.client.model.ModelLoader.loadBlocks(ModelLoader.java:221) ~[ModelLoader.class:?]
+	at net.minecraftforge.client.model.ModelLoader.setupModelRegistry(ModelLoader.java:159) ~[ModelLoader.class:?]
+	at net.minecraft.client.renderer.block.model.ModelManager.onResourceManagerReload(ModelManager.java:28) [ModelManager.class:?]
+	at net.minecraft.client.resources.SimpleReloadableResourceManager.registerReloadListener(SimpleReloadableResourceManager.java:121) [SimpleReloadableResourceManager.class:?]
+	at net.minecraft.client.Minecraft.init(Minecraft.java:512) [Minecraft.class:?]
+	at net.minecraft.client.Minecraft.run(Minecraft.java:377) [Minecraft.class:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [Main.class:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_162]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[?:1.8.0_162]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:1.8.0_162]
+	at java.lang.reflect.Method.invoke(Method.java:498) ~[?:1.8.0_162]
+	at net.minecraft.launchwrapper.Launch.launch(Launch.java:135) [launchwrapper-1.12.jar:?]
+	at net.minecraft.launchwrapper.Launch.main(Launch.java:28) [launchwrapper-1.12.jar:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_162]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[?:1.8.0_162]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:1.8.0_162]
+	at java.lang.reflect.Method.invoke(Method.java:498) ~[?:1.8.0_162]
+	at net.minecraftforge.gradle.GradleStartCommon.launch(GradleStartCommon.java:97) [start/:?]
+	at GradleStart.main(GradleStart.java:26) [start/:?]
+Caused by: net.minecraft.client.renderer.block.model.ModelBlockDefinition$MissingVariantException
+	at net.minecraft.client.renderer.block.model.ModelBlockDefinition.getVariant(ModelBlockDefinition.java:83) ~[ModelBlockDefinition.class:?]
+	at net.minecraftforge.client.model.ModelLoader$VariantLoader.loadModel(ModelLoader.java:1169) ~[ModelLoader$VariantLoader.class:?]
+	at net.minecraftforge.client.model.ModelLoaderRegistry.getModel(ModelLoaderRegistry.java:149) ~[ModelLoaderRegistry.class:?]
+	... 21 more
+[20:48:21] [main/ERROR]: Exception loading model for variant simukraft:light_cyan#inventory for item "simukraft:light", normal location exception: 
+java.lang.IllegalStateException: vanilla model 'net.minecraft.client.renderer.block.model.ModelBlock@4bbd9a1' can't have non-vanilla parent
+	at net.minecraftforge.client.model.ModelLoader$VanillaModelWrapper.getTextures(ModelLoader.java:395) ~[ModelLoader$VanillaModelWrapper.class:?]
+	at net.minecraftforge.client.model.ModelLoaderRegistry.getModel(ModelLoaderRegistry.java:163) ~[ModelLoaderRegistry.class:?]
+	at net.minecraftforge.client.model.ModelLoader.loadItemModels(ModelLoader.java:297) ~[ModelLoader.class:?]
+	at net.minecraft.client.renderer.block.model.ModelBakery.loadVariantItemModels(ModelBakery.java:175) ~[ModelBakery.class:?]
+	at net.minecraftforge.client.model.ModelLoader.setupModelRegistry(ModelLoader.java:160) ~[ModelLoader.class:?]
+	at net.minecraft.client.renderer.block.model.ModelManager.onResourceManagerReload(ModelManager.java:28) [ModelManager.class:?]
+	at net.minecraft.client.resources.SimpleReloadableResourceManager.registerReloadListener(SimpleReloadableResourceManager.java:121) [SimpleReloadableResourceManager.class:?]
+	at net.minecraft.client.Minecraft.init(Minecraft.java:512) [Minecraft.class:?]
+	at net.minecraft.client.Minecraft.run(Minecraft.java:377) [Minecraft.class:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [Main.class:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_162]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[?:1.8.0_162]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:1.8.0_162]
+	at java.lang.reflect.Method.invoke(Method.java:498) ~[?:1.8.0_162]
+	at net.minecraft.launchwrapper.Launch.launch(Launch.java:135) [launchwrapper-1.12.jar:?]
+	at net.minecraft.launchwrapper.Launch.main(Launch.java:28) [launchwrapper-1.12.jar:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_162]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[?:1.8.0_162]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:1.8.0_162]
+	at java.lang.reflect.Method.invoke(Method.java:498) ~[?:1.8.0_162]
+	at net.minecraftforge.gradle.GradleStartCommon.launch(GradleStartCommon.java:97) [start/:?]
+	at GradleStart.main(GradleStart.java:26) [start/:?]
+[20:48:21] [main/ERROR]: Exception loading model for variant simukraft:light_cyan#inventory for item "simukraft:light", blockstate location exception: 
+net.minecraftforge.client.model.ModelLoaderRegistry$LoaderException: Exception loading model simukraft:light_cyan#inventory with loader VariantLoader.INSTANCE, skipping
+	at net.minecraftforge.client.model.ModelLoaderRegistry.getModel(ModelLoaderRegistry.java:153) ~[ModelLoaderRegistry.class:?]
+	at net.minecraftforge.client.model.ModelLoader.loadItemModels(ModelLoader.java:305) ~[ModelLoader.class:?]
+	at net.minecraft.client.renderer.block.model.ModelBakery.loadVariantItemModels(ModelBakery.java:175) ~[ModelBakery.class:?]
+	at net.minecraftforge.client.model.ModelLoader.setupModelRegistry(ModelLoader.java:160) ~[ModelLoader.class:?]
+	at net.minecraft.client.renderer.block.model.ModelManager.onResourceManagerReload(ModelManager.java:28) [ModelManager.class:?]
+	at net.minecraft.client.resources.SimpleReloadableResourceManager.registerReloadListener(SimpleReloadableResourceManager.java:121) [SimpleReloadableResourceManager.class:?]
+	at net.minecraft.client.Minecraft.init(Minecraft.java:512) [Minecraft.class:?]
+	at net.minecraft.client.Minecraft.run(Minecraft.java:377) [Minecraft.class:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [Main.class:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_162]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[?:1.8.0_162]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:1.8.0_162]
+	at java.lang.reflect.Method.invoke(Method.java:498) ~[?:1.8.0_162]
+	at net.minecraft.launchwrapper.Launch.launch(Launch.java:135) [launchwrapper-1.12.jar:?]
+	at net.minecraft.launchwrapper.Launch.main(Launch.java:28) [launchwrapper-1.12.jar:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_162]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[?:1.8.0_162]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:1.8.0_162]
+	at java.lang.reflect.Method.invoke(Method.java:498) ~[?:1.8.0_162]
+	at net.minecraftforge.gradle.GradleStartCommon.launch(GradleStartCommon.java:97) [start/:?]
+	at GradleStart.main(GradleStart.java:26) [start/:?]
+Caused by: net.minecraft.client.renderer.block.model.ModelBlockDefinition$MissingVariantException
+	at net.minecraft.client.renderer.block.model.ModelBlockDefinition.getVariant(ModelBlockDefinition.java:83) ~[ModelBlockDefinition.class:?]
+	at net.minecraftforge.client.model.ModelLoader$VariantLoader.loadModel(ModelLoader.java:1169) ~[ModelLoader$VariantLoader.class:?]
+	at net.minecraftforge.client.model.ModelLoaderRegistry.getModel(ModelLoaderRegistry.java:149) ~[ModelLoaderRegistry.class:?]
+	... 20 more
+[20:48:21] [main/ERROR]: Exception loading model for variant simukraft:light#color=magenta for blockstate "simukraft:light[color=magenta]"
+net.minecraftforge.client.model.ModelLoaderRegistry$LoaderException: Exception loading model simukraft:light#color=magenta with loader VariantLoader.INSTANCE, skipping
+	at net.minecraftforge.client.model.ModelLoaderRegistry.getModel(ModelLoaderRegistry.java:153) ~[ModelLoaderRegistry.class:?]
+	at net.minecraftforge.client.model.ModelLoader.registerVariant(ModelLoader.java:233) ~[ModelLoader.class:?]
+	at net.minecraft.client.renderer.block.model.ModelBakery.loadBlock(ModelBakery.java:153) ~[ModelBakery.class:?]
+	at net.minecraftforge.client.model.ModelLoader.loadBlocks(ModelLoader.java:221) ~[ModelLoader.class:?]
+	at net.minecraftforge.client.model.ModelLoader.setupModelRegistry(ModelLoader.java:159) ~[ModelLoader.class:?]
+	at net.minecraft.client.renderer.block.model.ModelManager.onResourceManagerReload(ModelManager.java:28) [ModelManager.class:?]
+	at net.minecraft.client.resources.SimpleReloadableResourceManager.registerReloadListener(SimpleReloadableResourceManager.java:121) [SimpleReloadableResourceManager.class:?]
+	at net.minecraft.client.Minecraft.init(Minecraft.java:512) [Minecraft.class:?]
+	at net.minecraft.client.Minecraft.run(Minecraft.java:377) [Minecraft.class:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [Main.class:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_162]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[?:1.8.0_162]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:1.8.0_162]
+	at java.lang.reflect.Method.invoke(Method.java:498) ~[?:1.8.0_162]
+	at net.minecraft.launchwrapper.Launch.launch(Launch.java:135) [launchwrapper-1.12.jar:?]
+	at net.minecraft.launchwrapper.Launch.main(Launch.java:28) [launchwrapper-1.12.jar:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_162]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[?:1.8.0_162]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:1.8.0_162]
+	at java.lang.reflect.Method.invoke(Method.java:498) ~[?:1.8.0_162]
+	at net.minecraftforge.gradle.GradleStartCommon.launch(GradleStartCommon.java:97) [start/:?]
+	at GradleStart.main(GradleStart.java:26) [start/:?]
+Caused by: net.minecraftforge.client.model.ModelLoaderRegistry$LoaderException: Exception loading model simukraft:block/light_magenta with loader VanillaLoader.INSTANCE, skipping
+	at net.minecraftforge.client.model.ModelLoaderRegistry.getModel(ModelLoaderRegistry.java:153) ~[ModelLoaderRegistry.class:?]
+	at net.minecraftforge.client.model.ModelLoader$WeightedRandomModel.<init>(ModelLoader.java:660) ~[ModelLoader$WeightedRandomModel.class:?]
+	at net.minecraftforge.client.model.ModelLoader$VariantLoader.loadModel(ModelLoader.java:1170) ~[ModelLoader$VariantLoader.class:?]
+	at net.minecraftforge.client.model.ModelLoaderRegistry.getModel(ModelLoaderRegistry.java:149) ~[ModelLoaderRegistry.class:?]
+	... 21 more
+Caused by: java.io.FileNotFoundException: simukraft:models/block/light_magenta.json
+	at net.minecraft.client.resources.FallbackResourceManager.getResource(FallbackResourceManager.java:69) ~[FallbackResourceManager.class:?]
+	at net.minecraft.client.resources.SimpleReloadableResourceManager.getResource(SimpleReloadableResourceManager.java:65) ~[SimpleReloadableResourceManager.class:?]
+	at net.minecraft.client.renderer.block.model.ModelBakery.loadModel(ModelBakery.java:334) ~[ModelBakery.class:?]
+	at net.minecraftforge.client.model.ModelLoader.access$1600(ModelLoader.java:126) ~[ModelLoader.class:?]
+	at net.minecraftforge.client.model.ModelLoader$VanillaLoader.loadModel(ModelLoader.java:860) ~[ModelLoader$VanillaLoader.class:?]
+	at net.minecraftforge.client.model.ModelLoaderRegistry.getModel(ModelLoaderRegistry.java:149) ~[ModelLoaderRegistry.class:?]
+	at net.minecraftforge.client.model.ModelLoader$WeightedRandomModel.<init>(ModelLoader.java:660) ~[ModelLoader$WeightedRandomModel.class:?]
+	at net.minecraftforge.client.model.ModelLoader$VariantLoader.loadModel(ModelLoader.java:1170) ~[ModelLoader$VariantLoader.class:?]
+	at net.minecraftforge.client.model.ModelLoaderRegistry.getModel(ModelLoaderRegistry.java:149) ~[ModelLoaderRegistry.class:?]
+	... 21 more
+[20:48:21] [main/ERROR]: Exception loading model for variant simukraft:light#color=brown for blockstate "simukraft:light[color=brown]"
+net.minecraftforge.client.model.ModelLoaderRegistry$LoaderException: Exception loading model simukraft:light#color=brown with loader VariantLoader.INSTANCE, skipping
+	at net.minecraftforge.client.model.ModelLoaderRegistry.getModel(ModelLoaderRegistry.java:153) ~[ModelLoaderRegistry.class:?]
+	at net.minecraftforge.client.model.ModelLoader.registerVariant(ModelLoader.java:233) ~[ModelLoader.class:?]
+	at net.minecraft.client.renderer.block.model.ModelBakery.loadBlock(ModelBakery.java:153) ~[ModelBakery.class:?]
+	at net.minecraftforge.client.model.ModelLoader.loadBlocks(ModelLoader.java:221) ~[ModelLoader.class:?]
+	at net.minecraftforge.client.model.ModelLoader.setupModelRegistry(ModelLoader.java:159) ~[ModelLoader.class:?]
+	at net.minecraft.client.renderer.block.model.ModelManager.onResourceManagerReload(ModelManager.java:28) [ModelManager.class:?]
+	at net.minecraft.client.resources.SimpleReloadableResourceManager.registerReloadListener(SimpleReloadableResourceManager.java:121) [SimpleReloadableResourceManager.class:?]
+	at net.minecraft.client.Minecraft.init(Minecraft.java:512) [Minecraft.class:?]
+	at net.minecraft.client.Minecraft.run(Minecraft.java:377) [Minecraft.class:?]
+	at net.minecraft.client.main.Main.main(SourceFile:123) [Main.class:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_162]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[?:1.8.0_162]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:1.8.0_162]
+	at java.lang.reflect.Method.invoke(Method.java:498) ~[?:1.8.0_162]
+	at net.minecraft.launchwrapper.Launch.launch(Launch.java:135) [launchwrapper-1.12.jar:?]
+	at net.minecraft.launchwrapper.Launch.main(Launch.java:28) [launchwrapper-1.12.jar:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_162]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[?:1.8.0_162]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:1.8.0_162]
+	at java.lang.reflect.Method.invoke(Method.java:498) ~[?:1.8.0_162]
+	at net.minecraftforge.gradle.GradleStartCommon.launch(GradleStartCommon.java:97) [start/:?]
+	at GradleStart.main(GradleStart.java:26) [start/:?]
+Caused by: net.minecraft.client.renderer.block.model.ModelBlockDefinition$MissingVariantException
+	at net.minecraft.client.renderer.block.model.ModelBlockDefinition.getVariant(ModelBlockDefinition.java:83) ~[ModelBlockDefinition.class:?]
+	at net.minecraftforge.client.model.ModelLoader$VariantLoader.loadModel(ModelLoader.java:1169) ~[ModelLoader$VariantLoader.class:?]
+	at net.minecraftforge.client.model.ModelLoaderRegistry.getModel(ModelLoaderRegistry.java:149) ~[ModelLoaderRegistry.class:?]
+	... 21 more
+[20:48:21] [main/FATAL]: Suppressed additional 11 model loading errors for domain simukraft
+[20:48:25] [main/INFO]: Applying holder lookups
+[20:48:25] [main/INFO]: Holder lookups applied
+[20:48:25] [main/INFO]: Injecting itemstacks
+[20:48:25] [main/INFO]: Itemstack injection complete
+[20:48:26] [main/INFO]: Forge Mod Loader has successfully loaded 5 mods
+[20:48:26] [main/WARN]: Skipping bad option: lastServer:
+[20:48:26] [main/INFO]: Narrator library for x64 successfully loaded
+[20:48:31] [Realms Notification Availability checker #1/INFO]: Could not authorize you against Realms server: Invalid session id

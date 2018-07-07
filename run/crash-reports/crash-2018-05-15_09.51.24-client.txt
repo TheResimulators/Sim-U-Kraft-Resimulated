@@ -1,0 +1,124 @@
+---- Minecraft Crash Report ----
+// My bad.
+
+Time: 5/15/18 9:51 AM
+Description: Updating screen events
+
+java.lang.ArrayIndexOutOfBoundsException: -1
+	at java.util.ArrayList.elementData(ArrayList.java:422)
+	at java.util.ArrayList.get(ArrayList.java:435)
+	at com.resimulators.simukraft.client.gui.GuiFarm.updateButtons(GuiFarm.java:84)
+	at com.resimulators.simukraft.client.gui.GuiFarm.actionPerformed(GuiFarm.java:71)
+	at net.minecraft.client.gui.GuiScreen.mouseClicked(GuiScreen.java:443)
+	at net.minecraft.client.gui.GuiScreen.handleMouseInput(GuiScreen.java:533)
+	at net.minecraft.client.gui.GuiScreen.handleInput(GuiScreen.java:501)
+	at net.minecraft.client.Minecraft.runTick(Minecraft.java:1757)
+	at net.minecraft.client.Minecraft.runGameLoop(Minecraft.java:1096)
+	at net.minecraft.client.Minecraft.run(Minecraft.java:397)
+	at net.minecraft.client.main.Main.main(SourceFile:123)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at net.minecraft.launchwrapper.Launch.launch(Launch.java:135)
+	at net.minecraft.launchwrapper.Launch.main(Launch.java:28)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at net.minecraftforge.gradle.GradleStartCommon.launch(GradleStartCommon.java:97)
+	at GradleStart.main(GradleStart.java:26)
+
+
+A detailed walkthrough of the error, its code path and all known details is as follows:
+---------------------------------------------------------------------------------------
+
+-- Head --
+Thread: Client thread
+Stacktrace:
+	at java.util.ArrayList.elementData(ArrayList.java:422)
+	at java.util.ArrayList.get(ArrayList.java:435)
+	at com.resimulators.simukraft.client.gui.GuiFarm.updateButtons(GuiFarm.java:84)
+	at com.resimulators.simukraft.client.gui.GuiFarm.actionPerformed(GuiFarm.java:71)
+	at net.minecraft.client.gui.GuiScreen.mouseClicked(GuiScreen.java:443)
+	at net.minecraft.client.gui.GuiScreen.handleMouseInput(GuiScreen.java:533)
+	at net.minecraft.client.gui.GuiScreen.handleInput(GuiScreen.java:501)
+
+-- Affected screen --
+Details:
+	Screen name: com.resimulators.simukraft.client.gui.GuiFarm
+
+-- Affected level --
+Details:
+	Level name: MpServer
+	All players: 1 total; [EntityPlayerSP['DevPlayer'/372, l='MpServer', x=-180.60, y=69.00, z=254.35]]
+	Chunk stats: MultiplayerChunkCache: 49, 49
+	Level seed: 0
+	Level generator: ID 00 - default, ver 1. Features enabled: false
+	Level generator options: 
+	Level spawn location: World: (-184,64,256), Chunk: (at 8,4,0 in -12,16; contains blocks -192,0,256 to -177,255,271), Region: (-1,0; contains chunks -32,0 to -1,31, blocks -512,0,0 to -1,255,511)
+	Level time: 42056 game time, 42056 day time
+	Level dimension: 0
+	Level storage version: 0x00000 - Unknown?
+	Level weather: Rain time: 0 (now: false), thunder time: 0 (now: false)
+	Level game mode: Game mode: creative (ID 1). Hardcore: false. Cheats: false
+	Forced entities: 27 total; [EntityCreeper['Creeper'/905, l='MpServer', x=-192.93, y=42.00, z=262.62], EntityCreeper['Creeper'/907, l='MpServer', x=-189.36, y=41.00, z=261.50], EntityCreeper['Creeper'/909, l='MpServer', x=-196.22, y=43.00, z=266.48], EntityBat['Bat'/273, l='MpServer', x=-172.27, y=44.10, z=247.41], EntityBat['Bat'/274, l='MpServer', x=-171.75, y=46.10, z=246.51], EntityBat['Bat'/275, l='MpServer', x=-167.67, y=45.10, z=253.40], EntityZombie['Zombie'/1107, l='MpServer', x=-181.48, y=69.00, z=249.71], EntityCreeper['Creeper'/276, l='MpServer', x=-181.00, y=42.00, z=246.31], EntityCreeper['Creeper'/277, l='MpServer', x=-181.03, y=42.00, z=245.65], EntityZombie['Zombie'/278, l='MpServer', x=-179.25, y=42.97, z=246.49], EntityCreeper['Creeper'/279, l='MpServer', x=-167.52, y=44.00, z=257.79], EntityCreeper['Creeper'/280, l='MpServer', x=-177.25, y=43.00, z=244.30], EntitySkeleton['Skeleton'/281, l='MpServer', x=-170.32, y=44.00, z=262.40], EntitySkeleton['Skeleton'/282, l='MpServer', x=-186.25, y=39.97, z=250.63], EntitySkeleton['Skeleton'/284, l='MpServer', x=-169.50, y=45.00, z=264.29], EntityCreeper['Creeper'/227, l='MpServer', x=-169.54, y=44.00, z=262.89], EntityZombie['Zombie'/228, l='MpServer', x=-170.50, y=45.00, z=267.19], EntityCreeper['Creeper'/229, l='MpServer', x=-176.46, y=43.00, z=246.07], EntityCreeper['Creeper'/230, l='MpServer', x=-175.59, y=44.00, z=243.75], EntityBat['Bat'/232, l='MpServer', x=-187.25, y=67.10, z=252.49], EntityBat['Bat'/233, l='MpServer', x=-187.25, y=67.10, z=253.59], EntityCreeper['Creeper'/236, l='MpServer', x=-196.49, y=75.08, z=266.74], EntityBat['Bat'/179, l='MpServer', x=-193.27, y=50.10, z=251.52], EntityPlayerSP['DevPlayer'/372, l='MpServer', x=-180.60, y=69.00, z=254.35], EntitySpider['Spider'/1397, l='MpServer', x=-191.50, y=42.00, z=262.50], EntityCreeper['Creeper'/182, l='MpServer', x=-193.65, y=42.00, z=261.72], EntityZombie['Zombie'/953, l='MpServer', x=-191.75, y=50.00, z=251.46]]
+	Retry entities: 0 total; []
+	Server brand: fml,forge
+	Server type: Integrated singleplayer server
+Stacktrace:
+	at net.minecraft.client.multiplayer.WorldClient.addWorldInfoToCrashReport(WorldClient.java:420)
+	at net.minecraft.client.Minecraft.addGraphicsAndWorldToCrashReport(Minecraft.java:2748)
+	at net.minecraft.client.Minecraft.run(Minecraft.java:418)
+	at net.minecraft.client.main.Main.main(SourceFile:123)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at net.minecraft.launchwrapper.Launch.launch(Launch.java:135)
+	at net.minecraft.launchwrapper.Launch.main(Launch.java:28)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at net.minecraftforge.gradle.GradleStartCommon.launch(GradleStartCommon.java:97)
+	at GradleStart.main(GradleStart.java:26)
+
+-- System Details --
+Details:
+	Minecraft Version: 1.12.2
+	Operating System: Windows 10 (amd64) version 10.0
+	Java Version: 1.8.0_162, Oracle Corporation
+	Java VM Version: Java HotSpot(TM) 64-Bit Server VM (mixed mode), Oracle Corporation
+	Memory: 92495144 bytes (88 MB) / 344457216 bytes (328 MB) up to 827850752 bytes (789 MB)
+	JVM Flags: 0 total; 
+	IntCache: cache: 0, tcache: 0, allocated: 13, tallocated: 95
+	FML: MCP 9.42 Powered by Forge 14.23.1.2555 5 mods loaded, 5 mods active
+	States: 'U' = Unloaded 'L' = Loaded 'C' = Constructed 'H' = Pre-initialized 'I' = Initialized 'J' = Post-initialized 'A' = Available 'D' = Disabled 'E' = Errored
+
+	| State     | ID        | Version           | Source                           | Signature |
+	|:--------- |:--------- |:----------------- |:-------------------------------- |:--------- |
+	| UCHIJAAAA | minecraft | 1.12.2            | minecraft.jar                    | None      |
+	| UCHIJAAAA | mcp       | 9.42              | minecraft.jar                    | None      |
+	| UCHIJAAAA | FML       | 8.0.99.99         | forgeBin-1.12.2-14.23.1.2555.jar | None      |
+	| UCHIJAAAA | forge     | 14.23.1.2555      | forgeBin-1.12.2-14.23.1.2555.jar | None      |
+	| UCHIJAAAA | simukraft | @VERSION@-@BUILD@ | Sim-U-Kraft-Resimulated_main     | None      |
+
+	Loaded coremods (and transformers): 
+	GL info: ' Vendor: 'ATI Technologies Inc.' Version: '4.5.13418 Compatibility Profile Context 15.301.2301.1002' Renderer: 'AMD Radeon(TM) R4 Graphics'
+	Launched Version: 1.12.2
+	LWJGL: 2.9.4
+	OpenGL: AMD Radeon(TM) R4 Graphics GL version 4.5.13418 Compatibility Profile Context 15.301.2301.1002, ATI Technologies Inc.
+	GL Caps: Using GL 1.3 multitexturing.
+Using GL 1.3 texture combiners.
+Using framebuffer objects because OpenGL 3.0 is supported and separate blending is supported.
+Shaders are available because OpenGL 2.1 is supported.
+VBOs are available because OpenGL 1.5 is supported.
+
+	Using VBOs: No
+	Is Modded: Definitely; Client brand changed to 'fml,forge'
+	Type: Client (map_client.txt)
+	Resource Packs: 
+	Current Language: ~~ERROR~~ NullPointerException: null
+	Profiler Position: N/A (disabled)
+	CPU: 4x AMD A6-7310 APU with AMD Radeon R4 Graphics 

@@ -1,0 +1,26 @@
+{
+  "minecraft:adventure/root": {
+    "criteria": {
+      "killed_something": "2018-06-12 07:13:53 +1200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/redstone/repeater": {
+    "criteria": {
+      "has_redstone_torch": "2018-06-18 15:16:17 +1200"
+    },
+    "done": true
+  },
+  "minecraft:recipes/food/cake": {
+    "criteria": {
+      "has_egg": "2018-06-18 14:53:28 +1200"
+    },
+    "done": true
+  },
+  "minecraft:adventure/adventuring_time": {
+    "criteria": {
+      "plains": "2018-06-12 07:13:03 +1200"
+    },
+    "done": false
+  }
+}

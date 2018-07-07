@@ -1,0 +1,16 @@
+[
+{
+  "modid": "simukraft",
+  "name": "Sim-U-Kraft: Resimulated",
+  "description": "A full rewrite of Sim-U-Kraft",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["aidie8", "Astavie", "fabbe50", "General5001", "SomeRandomNerd", "sulrwin"],
+  "credits": "AshJack for Sim-U-Kraft: Reloaded and Scott Hather for the original Sim-U-Kraft",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]

@@ -1,0 +1,101 @@
+---- Minecraft Crash Report ----
+// Who set us up the TNT?
+
+Time: 5/21/18 2:02 PM
+Description: Ticking player
+
+java.lang.IllegalArgumentException: Duplicate id value for 6!
+	at net.minecraft.network.datasync.EntityDataManager.register(SourceFile:79)
+	at net.minecraft.entity.EntityLivingBase.entityInit(EntityLivingBase.java:177)
+	at net.minecraft.entity.EntityLiving.entityInit(EntityLiving.java:187)
+	at net.minecraft.entity.EntityAgeable.entityInit(EntityAgeable.java:89)
+	at com.resimulators.simukraft.common.entity.entitysim.EntitySim.entityInit(EntitySim.java:131)
+	at com.resimulators.simukraft.common.entity.entitysim.SpawnSimEntity.Tick(SpawnSimEntity.java:37)
+	at net.minecraftforge.fml.common.eventhandler.ASMEventHandler_18_SpawnSimEntity_Tick_PlayerTickEvent.invoke(.dynamic)
+	at net.minecraftforge.fml.common.eventhandler.ASMEventHandler.invoke(ASMEventHandler.java:90)
+	at net.minecraftforge.fml.common.eventhandler.EventBus.post(EventBus.java:179)
+	at net.minecraftforge.fml.common.FMLCommonHandler.onPlayerPreTick(FMLCommonHandler.java:363)
+	at net.minecraft.entity.player.EntityPlayer.onUpdate(EntityPlayer.java:190)
+	at net.minecraft.entity.player.EntityPlayerMP.onUpdateEntity(EntityPlayerMP.java:382)
+	at net.minecraft.network.NetHandlerPlayServer.update(NetHandlerPlayServer.java:173)
+	at net.minecraftforge.fml.common.network.handshake.NetworkDispatcher$1.update(NetworkDispatcher.java:209)
+	at net.minecraft.network.NetworkManager.processReceivedPackets(NetworkManager.java:285)
+	at net.minecraft.network.NetworkSystem.networkTick(NetworkSystem.java:179)
+	at net.minecraft.server.MinecraftServer.updateTimeLightAndEntities(MinecraftServer.java:788)
+	at net.minecraft.server.MinecraftServer.tick(MinecraftServer.java:666)
+	at net.minecraft.server.integrated.IntegratedServer.tick(IntegratedServer.java:185)
+	at net.minecraft.server.MinecraftServer.run(MinecraftServer.java:524)
+	at java.lang.Thread.run(Thread.java:748)
+
+
+A detailed walkthrough of the error, its code path and all known details is as follows:
+---------------------------------------------------------------------------------------
+
+-- Head --
+Thread: Server thread
+Stacktrace:
+	at net.minecraft.network.datasync.EntityDataManager.register(SourceFile:79)
+	at net.minecraft.entity.EntityLivingBase.entityInit(EntityLivingBase.java:177)
+	at net.minecraft.entity.EntityLiving.entityInit(EntityLiving.java:187)
+	at net.minecraft.entity.EntityAgeable.entityInit(EntityAgeable.java:89)
+	at com.resimulators.simukraft.common.entity.entitysim.EntitySim.entityInit(EntitySim.java:131)
+	at com.resimulators.simukraft.common.entity.entitysim.SpawnSimEntity.Tick(SpawnSimEntity.java:37)
+	at net.minecraftforge.fml.common.eventhandler.ASMEventHandler_18_SpawnSimEntity_Tick_PlayerTickEvent.invoke(.dynamic)
+	at net.minecraftforge.fml.common.eventhandler.ASMEventHandler.invoke(ASMEventHandler.java:90)
+	at net.minecraftforge.fml.common.eventhandler.EventBus.post(EventBus.java:179)
+	at net.minecraftforge.fml.common.FMLCommonHandler.onPlayerPreTick(FMLCommonHandler.java:363)
+	at net.minecraft.entity.player.EntityPlayer.onUpdate(EntityPlayer.java:190)
+
+-- Player being ticked --
+Details:
+	Entity Type: null (net.minecraft.entity.player.EntityPlayerMP)
+	Entity ID: 394
+	Entity Name: DevPlayer
+	Entity's Exact location: 7.93, 71.00, 277.80
+	Entity's Block location: World: (7,71,277), Chunk: (at 7,4,5 in 0,17; contains blocks 0,0,272 to 15,255,287), Region: (0,0; contains chunks 0,0 to 31,31, blocks 0,0,0 to 511,255,511)
+	Entity's Momentum: 0.00, -0.08, 0.00
+	Entity's Passengers: []
+	Entity's Vehicle: ~~ERROR~~ NullPointerException: null
+Stacktrace:
+	at net.minecraft.entity.player.EntityPlayerMP.onUpdateEntity(EntityPlayerMP.java:382)
+	at net.minecraft.network.NetHandlerPlayServer.update(NetHandlerPlayServer.java:173)
+	at net.minecraftforge.fml.common.network.handshake.NetworkDispatcher$1.update(NetworkDispatcher.java:209)
+	at net.minecraft.network.NetworkManager.processReceivedPackets(NetworkManager.java:285)
+
+-- Ticking connection --
+Details:
+	Connection: net.minecraft.network.NetworkManager@70356fb3
+Stacktrace:
+	at net.minecraft.network.NetworkSystem.networkTick(NetworkSystem.java:179)
+	at net.minecraft.server.MinecraftServer.updateTimeLightAndEntities(MinecraftServer.java:788)
+	at net.minecraft.server.MinecraftServer.tick(MinecraftServer.java:666)
+	at net.minecraft.server.integrated.IntegratedServer.tick(IntegratedServer.java:185)
+	at net.minecraft.server.MinecraftServer.run(MinecraftServer.java:524)
+	at java.lang.Thread.run(Thread.java:748)
+
+-- System Details --
+Details:
+	Minecraft Version: 1.12.2
+	Operating System: Windows 10 (amd64) version 10.0
+	Java Version: 1.8.0_162, Oracle Corporation
+	Java VM Version: Java HotSpot(TM) 64-Bit Server VM (mixed mode), Oracle Corporation
+	Memory: 166267520 bytes (158 MB) / 512229376 bytes (488 MB) up to 827850752 bytes (789 MB)
+	JVM Flags: 0 total; 
+	IntCache: cache: 0, tcache: 0, allocated: 13, tallocated: 95
+	FML: MCP 9.42 Powered by Forge 14.23.1.2555 5 mods loaded, 5 mods active
+	States: 'U' = Unloaded 'L' = Loaded 'C' = Constructed 'H' = Pre-initialized 'I' = Initialized 'J' = Post-initialized 'A' = Available 'D' = Disabled 'E' = Errored
+
+	| State     | ID        | Version           | Source                           | Signature |
+	|:--------- |:--------- |:----------------- |:-------------------------------- |:--------- |
+	| UCHIJAAAA | minecraft | 1.12.2            | minecraft.jar                    | None      |
+	| UCHIJAAAA | mcp       | 9.42              | minecraft.jar                    | None      |
+	| UCHIJAAAA | FML       | 8.0.99.99         | forgeBin-1.12.2-14.23.1.2555.jar | None      |
+	| UCHIJAAAA | forge     | 14.23.1.2555      | forgeBin-1.12.2-14.23.1.2555.jar | None      |
+	| UCHIJAAAA | simukraft | @VERSION@-@BUILD@ | Sim-U-Kraft-Resimulated_main     | None      |
+
+	Loaded coremods (and transformers): 
+	GL info: ~~ERROR~~ RuntimeException: No OpenGL context found in the current thread.
+	Profiler Position: N/A (disabled)
+	Player Count: 1 / 8; [EntityPlayerMP['DevPlayer'/394, l='New Worldsafklnfas', x=7.93, y=71.00, z=277.80]]
+	Type: Integrated Server (map_client.txt)
+	Is Modded: Definitely; Client brand changed to 'fml,forge'

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "simukraft:light",
+      "data": 0
+    },
+    {
+      "item": "minecraft:dye",
+      "data": 4
+    }
+    ],
+
+  "result": {
+    "item": "simukraft:light",
+    "data": 11,
+    "count": 1
+  }
+}

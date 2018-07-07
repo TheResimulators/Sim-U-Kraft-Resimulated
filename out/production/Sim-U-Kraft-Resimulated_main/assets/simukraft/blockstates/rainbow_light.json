@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "normal": { "model": "simukraft:rainbow_light" },
+    "inventory": { "model": "simukraft:rainbow_light" }
+  }
+}

@@ -1,0 +1,140 @@
+---- Minecraft Crash Report ----
+// Oh - I know what I did wrong!
+
+Time: 7/4/18 7:00 AM
+Description: Updating screen events
+
+java.lang.NullPointerException: Updating screen events
+	at com.resimulators.simukraft.common.item.ItemCreateHandler.ItemCrafted(ItemCreateHandler.java:24)
+	at net.minecraftforge.fml.common.eventhandler.ASMEventHandler_8_ItemCreateHandler_ItemCrafted_ItemCraftedEvent.invoke(.dynamic)
+	at net.minecraftforge.fml.common.eventhandler.ASMEventHandler.invoke(ASMEventHandler.java:90)
+	at net.minecraftforge.fml.common.eventhandler.EventBus.post(EventBus.java:179)
+	at net.minecraftforge.fml.common.FMLCommonHandler.firePlayerCraftingEvent(FMLCommonHandler.java:593)
+	at net.minecraft.inventory.SlotCrafting.onCrafting(SlotCrafting.java:54)
+	at net.minecraft.inventory.SlotCrafting.onTake(SlotCrafting.java:70)
+	at net.minecraft.inventory.Container.slotClick(Container.java:303)
+	at net.minecraft.client.multiplayer.PlayerControllerMP.windowClick(PlayerControllerMP.java:566)
+	at net.minecraft.client.gui.inventory.GuiContainer.handleMouseClick(GuiContainer.java:638)
+	at net.minecraft.client.gui.inventory.GuiCrafting.handleMouseClick(SourceFile:131)
+	at net.minecraft.client.gui.inventory.GuiContainer.mouseClicked(GuiContainer.java:392)
+	at net.minecraft.client.gui.inventory.GuiCrafting.mouseClicked(SourceFile:101)
+	at net.minecraft.client.gui.GuiScreen.handleMouseInput(GuiScreen.java:533)
+	at net.minecraft.client.gui.GuiScreen.handleInput(GuiScreen.java:501)
+	at net.minecraft.client.Minecraft.runTick(Minecraft.java:1757)
+	at net.minecraft.client.Minecraft.runGameLoop(Minecraft.java:1096)
+	at net.minecraft.client.Minecraft.run(Minecraft.java:397)
+	at net.minecraft.client.main.Main.main(SourceFile:123)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at net.minecraft.launchwrapper.Launch.launch(Launch.java:135)
+	at net.minecraft.launchwrapper.Launch.main(Launch.java:28)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at net.minecraftforge.gradle.GradleStartCommon.launch(GradleStartCommon.java:97)
+	at GradleStart.main(GradleStart.java:26)
+
+
+A detailed walkthrough of the error, its code path and all known details is as follows:
+---------------------------------------------------------------------------------------
+
+-- Head --
+Thread: Client thread
+Stacktrace:
+	at com.resimulators.simukraft.common.item.ItemCreateHandler.ItemCrafted(ItemCreateHandler.java:24)
+	at net.minecraftforge.fml.common.eventhandler.ASMEventHandler_8_ItemCreateHandler_ItemCrafted_ItemCraftedEvent.invoke(.dynamic)
+	at net.minecraftforge.fml.common.eventhandler.ASMEventHandler.invoke(ASMEventHandler.java:90)
+	at net.minecraftforge.fml.common.eventhandler.EventBus.post(EventBus.java:179)
+	at net.minecraftforge.fml.common.FMLCommonHandler.firePlayerCraftingEvent(FMLCommonHandler.java:593)
+	at net.minecraft.inventory.SlotCrafting.onCrafting(SlotCrafting.java:54)
+	at net.minecraft.inventory.SlotCrafting.onTake(SlotCrafting.java:70)
+	at net.minecraft.inventory.Container.slotClick(Container.java:303)
+	at net.minecraft.client.multiplayer.PlayerControllerMP.windowClick(PlayerControllerMP.java:566)
+	at net.minecraft.client.gui.inventory.GuiContainer.handleMouseClick(GuiContainer.java:638)
+	at net.minecraft.client.gui.inventory.GuiCrafting.handleMouseClick(SourceFile:131)
+	at net.minecraft.client.gui.inventory.GuiContainer.mouseClicked(GuiContainer.java:392)
+	at net.minecraft.client.gui.inventory.GuiCrafting.mouseClicked(SourceFile:101)
+	at net.minecraft.client.gui.GuiScreen.handleMouseInput(GuiScreen.java:533)
+	at net.minecraft.client.gui.GuiScreen.handleInput(GuiScreen.java:501)
+
+-- Affected screen --
+Details:
+	Screen name: ~~ERROR~~ NullPointerException: null
+
+-- Affected level --
+Details:
+	Level name: MpServer
+	All players: 1 total; [EntityPlayerSP['DevPlayer'/305, l='MpServer', x=-166.67, y=84.79, z=262.70]]
+	Chunk stats: MultiplayerChunkCache: 49, 49
+	Level seed: 0
+	Level generator: ID 00 - default, ver 1. Features enabled: false
+	Level generator options: 
+	Level spawn location: World: (-172,64,250), Chunk: (at 4,4,10 in -11,15; contains blocks -176,0,240 to -161,255,255), Region: (-1,0; contains chunks -32,0 to -1,31, blocks -512,0,0 to -1,255,511)
+	Level time: 112192 game time, 112192 day time
+	Level dimension: 0
+	Level storage version: 0x00000 - Unknown?
+	Level weather: Rain time: 0 (now: false), thunder time: 0 (now: false)
+	Level game mode: Game mode: creative (ID 1). Hardcore: false. Cheats: false
+	Forced entities: 21 total; [EntitySkeleton['Skeleton'/160, l='MpServer', x=-178.50, y=72.00, z=262.71], EntityZombie['Zombie'/162, l='MpServer', x=-173.89, y=71.00, z=268.37], EntityCreeper['Creeper'/196, l='MpServer', x=-150.70, y=71.00, z=265.70], EntityPlayerSP['DevPlayer'/305, l='MpServer', x=-166.67, y=84.79, z=262.70], EntitySkeleton['Skeleton'/203, l='MpServer', x=-157.74, y=70.00, z=275.49], EntitySkeleton['Skeleton'/172, l='MpServer', x=-173.50, y=13.00, z=254.50], EntityCreeper['Creeper'/173, l='MpServer', x=-170.50, y=13.00, z=260.85], EntityBat['Bat'/174, l='MpServer', x=-170.45, y=15.45, z=265.18], EntityItem['item.tile.simukraft:constructor_box'/175, l='MpServer', x=-161.22, y=68.00, z=259.45], EntityItem['item.tile.simukraft:light.white'/176, l='MpServer', x=-161.12, y=68.00, z=259.11], EntityItem['item.item.chickenCooked'/177, l='MpServer', x=-161.27, y=68.00, z=259.34], EntityItem['item.tile.simukraft:farm_box'/178, l='MpServer', x=-161.39, y=68.00, z=259.37], EntityCreeper['Creeper'/179, l='MpServer', x=-163.20, y=71.00, z=266.53], EntityItem['item.tile.simukraft:constructor_box'/180, l='MpServer', x=-168.31, y=84.00, z=263.69], EntitySim['Kevin'/181, l='MpServer', x=-176.95, y=73.00, z=258.70], EntitySkeleton['Skeleton'/182, l='MpServer', x=-158.82, y=69.00, z=275.18], EntitySkeleton['Skeleton'/185, l='MpServer', x=-161.49, y=69.00, z=274.25], EntityZombie['Zombie'/154, l='MpServer', x=-177.70, y=69.00, z=254.30], EntityZombie['Zombie'/186, l='MpServer', x=-166.76, y=70.00, z=269.50], EntityWitch['Witch'/155, l='MpServer', x=-177.77, y=70.00, z=270.50], EntitySpider['Spider'/157, l='MpServer', x=-181.21, y=72.00, z=260.62]]
+	Retry entities: 0 total; []
+	Server brand: fml,forge
+	Server type: Integrated singleplayer server
+Stacktrace:
+	at net.minecraft.client.multiplayer.WorldClient.addWorldInfoToCrashReport(WorldClient.java:420)
+	at net.minecraft.client.Minecraft.addGraphicsAndWorldToCrashReport(Minecraft.java:2748)
+	at net.minecraft.client.Minecraft.run(Minecraft.java:418)
+	at net.minecraft.client.main.Main.main(SourceFile:123)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at net.minecraft.launchwrapper.Launch.launch(Launch.java:135)
+	at net.minecraft.launchwrapper.Launch.main(Launch.java:28)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at net.minecraftforge.gradle.GradleStartCommon.launch(GradleStartCommon.java:97)
+	at GradleStart.main(GradleStart.java:26)
+
+-- System Details --
+Details:
+	Minecraft Version: 1.12.2
+	Operating System: Windows 10 (amd64) version 10.0
+	Java Version: 1.8.0_162, Oracle Corporation
+	Java VM Version: Java HotSpot(TM) 64-Bit Server VM (mixed mode), Oracle Corporation
+	Memory: 76533624 bytes (72 MB) / 430440448 bytes (410 MB) up to 827850752 bytes (789 MB)
+	JVM Flags: 0 total; 
+	IntCache: cache: 0, tcache: 0, allocated: 13, tallocated: 95
+	FML: MCP 9.42 Powered by Forge 14.23.1.2555 5 mods loaded, 5 mods active
+	States: 'U' = Unloaded 'L' = Loaded 'C' = Constructed 'H' = Pre-initialized 'I' = Initialized 'J' = Post-initialized 'A' = Available 'D' = Disabled 'E' = Errored
+
+	| State     | ID        | Version           | Source                           | Signature |
+	|:--------- |:--------- |:----------------- |:-------------------------------- |:--------- |
+	| UCHIJAAAA | minecraft | 1.12.2            | minecraft.jar                    | None      |
+	| UCHIJAAAA | mcp       | 9.42              | minecraft.jar                    | None      |
+	| UCHIJAAAA | FML       | 8.0.99.99         | forgeBin-1.12.2-14.23.1.2555.jar | None      |
+	| UCHIJAAAA | forge     | 14.23.1.2555      | forgeBin-1.12.2-14.23.1.2555.jar | None      |
+	| UCHIJAAAA | simukraft | @VERSION@-@BUILD@ | Sim-U-Kraft-Resimulated_main     | None      |
+
+	Loaded coremods (and transformers): 
+	GL info: ' Vendor: 'ATI Technologies Inc.' Version: '4.5.13418 Compatibility Profile Context 15.301.2301.1002' Renderer: 'AMD Radeon(TM) R4 Graphics'
+	Launched Version: 1.12.2
+	LWJGL: 2.9.4
+	OpenGL: AMD Radeon(TM) R4 Graphics GL version 4.5.13418 Compatibility Profile Context 15.301.2301.1002, ATI Technologies Inc.
+	GL Caps: Using GL 1.3 multitexturing.
+Using GL 1.3 texture combiners.
+Using framebuffer objects because OpenGL 3.0 is supported and separate blending is supported.
+Shaders are available because OpenGL 2.1 is supported.
+VBOs are available because OpenGL 1.5 is supported.
+
+	Using VBOs: No
+	Is Modded: Definitely; Client brand changed to 'fml,forge'
+	Type: Client (map_client.txt)
+	Resource Packs: 
+	Current Language: ~~ERROR~~ NullPointerException: null
+	Profiler Position: N/A (disabled)
+	CPU: 4x AMD A6-7310 APU with AMD Radeon R4 Graphics 

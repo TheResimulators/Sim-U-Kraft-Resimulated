@@ -1,0 +1,7 @@
+{
+  "parent": "block/cube_column",
+  "textures": {
+    "end": "simukraft:blocks/farm_box_top",
+    "side": "simukraft:blocks/farm_box_side"
+  }
+}
