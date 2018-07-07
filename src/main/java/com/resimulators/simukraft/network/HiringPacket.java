@@ -6,7 +6,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 public class HiringPacket implements IMessage {
     int job;
     int sims;
-
+    public HiringPacket(){}
     public HiringPacket(int id, int job_int) {
         System.out.println("Sending hire packet");
         this.job = job_int;

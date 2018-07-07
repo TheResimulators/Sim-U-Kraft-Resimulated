@@ -13,7 +13,7 @@ public class GuiStart extends GuiScreen {
     private GuiButton button1;
     private GuiButton button2;
     private GuiButton button3;
-    private int gamemode = -1;
+    private int Gamemode = -1;
     private int button_width = 100;
     private int button_height = 20;
 

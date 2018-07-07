@@ -17,7 +17,7 @@ public class ReturnSimIdPacket implements IMessage {
     WorldServer world;
     Set<Integer> sim_ids;
     List<String> sim_names = new ArrayList<>();
-
+    public ReturnSimIdPacket(){}
     public ReturnSimIdPacket(WorldServer world, int x, int y, int z, int amount) {
         this.world = world;
         this.x = x;

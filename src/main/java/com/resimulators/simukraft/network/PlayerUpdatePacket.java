@@ -15,6 +15,7 @@ public class PlayerUpdatePacket implements IMessage {
     int unemployedsize;
     float credits;
 
+    public PlayerUpdatePacket(){}
     public PlayerUpdatePacket(Set<UUID> totalsims, Set<UUID> unemployedsims, float credits) {
         this.totalsim = totalsims;
         this.unemployedsim = unemployedsims;

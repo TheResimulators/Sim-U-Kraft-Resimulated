@@ -7,6 +7,7 @@ import com.resimulators.simukraft.common.tileentity.base.TileBuilderBase;
 import com.resimulators.simukraft.network.GetSimIdPacket;
 import com.resimulators.simukraft.network.PacketHandler;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -18,7 +19,7 @@ import java.util.*;
  */
 public class TileConstructor extends TileBuilderBase implements ITickable,ISimJob {
 	public boolean building;
-	private String profession = "Farmer";
+	private String profession = "Builder";
 	private UUID id;
 	private int professionint = 1;
 	private Boolean hired = false;
@@ -50,7 +51,7 @@ public class TileConstructor extends TileBuilderBase implements ITickable,ISimJo
 
 	@Override
 	public boolean getHired() {
-		return hired;
+		return this.hired;
 	}
 
 	@Override
@@ -94,12 +95,35 @@ public class TileConstructor extends TileBuilderBase implements ITickable,ISimJo
 	}
 
 	public void openGui(World worldIn, BlockPos pos, EntityPlayer playerIn){
-		if (getHired())
-		{
+	    System.out.println("hired: " + getHired());
+		if (getHired()) {
 			playerIn.openGui(SimUKraft.instance, GuiHandler.GUI_BUILDER, worldIn, pos.getX(), pos.getY(), pos.getZ());
-		} else
-		{
+		} else{
 			PacketHandler.INSTANCE.sendToServer(new GetSimIdPacket(pos.getX(),pos.getY(),pos.getZ()));
 
 		}
-	}}
+	}
+
+
+	@Override
+	public void readFromNBT(NBTTagCompound nbt) {
+		setHired(nbt.getBoolean("hired"));
+		System.out.println("reading if hired: " + getHired());
+		professionint = nbt.getInteger("profession");
+		if (nbt.hasKey("id")) {
+			id = nbt.getUniqueId("id");
+		}
+		super.readFromNBT(nbt);
+	}
+
+	@Override
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+	    System.out.println("Writing hire to nbt: " + getHired());
+		nbt.setBoolean("hired", getHired());
+		nbt.setInteger("profession", professionint);
+		if (id != null) {
+			nbt.setUniqueId("id", id);
+		}
+		return super.writeToNBT(nbt);
+	}
+}

@@ -17,6 +17,9 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 
+import javax.swing.text.html.MinimalHTMLWriter;
+import java.time.chrono.MinguoEra;
+
 
 @Mod.EventBusSubscriber
 public class ItemCreateHandler {
@@ -34,10 +37,9 @@ public class ItemCreateHandler {
         System.out.println(event.crafting.getItem().getRegistryName().getResourceDomain());
         if (event.crafting.getItem().getRegistryName().getResourceDomain().equals(Reference.MOD_ID)) {
             setItemCrafted(true);
-            System.out.println(itemCrafted);
             player = event.player;
             world = event.player.world;
-
+                Minecraft.getMinecraft().currentScreen.initGui();
         }
     }
 
@@ -45,29 +47,16 @@ public class ItemCreateHandler {
     @SubscribeEvent
     public static void OpenGui(GuiScreenEvent.InitGuiEvent event) {
         if (event.getGui() instanceof GuiCrafting) {
-            if (itemCrafted) {
+            if (itemCrafted && !SaveSimData.get(world).isEnabled()) {
                 if (!event.getButtonList().contains(sim)) {
                     int xpos = ((GuiCrafting) event.getGui()).getGuiLeft() + ((GuiCrafting) event.getGui()).getXSize() / 2 - 30;
                     int ypos = ((GuiCrafting) event.getGui()).getGuiTop() - 20;
                     event.getButtonList().add(sim = new GuiButton(event.getButtonList().size(), xpos, ypos, 60, 20, "Sim_U_Kraft"));
-
-        if (event.getGui() instanceof GuiCrafting)
-        {
-            if (itemCrafted && !SaveSimData.get(world).isEnabled()){
-            if (!event.getButtonList().contains(sim)){
-                int xpos = ((GuiCrafting) event.getGui()).getGuiLeft() + ((GuiCrafting) event.getGui()).getXSize()/2-30;
-                int ypos = ((GuiCrafting) event.getGui()).getGuiTop()-20;
-                event.getButtonList().add(sim = new GuiButton(event.getButtonList().size(),xpos,ypos,60,20,"Sim_U_Kraft"));
-
-            System.out.println("Added button");}
-        }}
-    }
+    }}}}
 
     @SubscribeEvent
     public static void Buttonpressed(GuiScreenEvent.ActionPerformedEvent event) {
         if (event.getButton() == sim)
-            System.out.println("Button pressed");
-            System.out.println(itemCrafted);
             if (itemCrafted && !SaveSimData.get(world).isEnabled())
             {
                 PacketHandler.INSTANCE.sendToServer(new StartingGuiPacket());
@@ -75,4 +64,3 @@ public class ItemCreateHandler {
             }
         }
     }
-}

@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public class SimDeathPacket implements IMessage {
     int sims;
-
+    public SimDeathPacket(){}
     public SimDeathPacket(int id) {
         this.sims = id;
     }

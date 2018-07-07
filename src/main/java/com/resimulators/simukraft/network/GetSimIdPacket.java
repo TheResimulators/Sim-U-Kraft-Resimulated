@@ -7,7 +7,7 @@ public class GetSimIdPacket implements IMessage {
     int x;
     int y;
     int z;
-
+    public GetSimIdPacket(){}
     public GetSimIdPacket(int x, int y, int z) {
         this.x = x;
         this.y = y;

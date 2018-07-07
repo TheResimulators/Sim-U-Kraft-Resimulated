@@ -8,7 +8,7 @@ public class UpdateJobIdPacket implements IMessage {
     int x;
     int y;
     int z;
-
+    public UpdateJobIdPacket(){}
     public UpdateJobIdPacket(int id, int x, int y, int z) {
         this.id = id;
         this.x = x;

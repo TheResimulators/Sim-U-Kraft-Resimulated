@@ -35,6 +35,7 @@ public class SaveSimData extends WorldSavedData {
 
     public void setUnemployed_sims(UUID id) {
         Unemployed_sims.add(id);
+        markDirty();
     }
 
     public Set<UUID> getUnemployed_sims() {
@@ -78,9 +79,9 @@ public class SaveSimData extends WorldSavedData {
         return enabled;
     }
 
-    public void setEnabled(boolean enable)
-    {
+    public void setEnabled(boolean enable) {
         enabled = enable;
+        markDirty();
     }
 
 
@@ -104,6 +105,7 @@ public class SaveSimData extends WorldSavedData {
     public void setMode(UUID id,int mode)
     {
         this.mode.put(id,mode);
+        markDirty();
     }
     @Override
     public void readFromNBT(NBTTagCompound nbt) {
@@ -132,6 +134,7 @@ public class SaveSimData extends WorldSavedData {
                 addTile(entity);
             }
         }
+        this.enabled = nbt.getBoolean("enabled");
     }
 
     @Override
@@ -172,6 +175,7 @@ public class SaveSimData extends WorldSavedData {
             modeList.appendTag(modes);
         }
         nbt.setTag("Modes",modeList);
+        nbt.setBoolean("enabled",enabled);
         return nbt;
     }
 

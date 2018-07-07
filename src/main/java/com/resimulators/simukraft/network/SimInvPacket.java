@@ -5,7 +5,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 public class SimInvPacket implements IMessage {
     int id;
-
+    public SimInvPacket(){}
     public SimInvPacket(int id) {
         this.id = id;
     }

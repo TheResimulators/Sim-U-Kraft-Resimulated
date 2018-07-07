@@ -9,7 +9,7 @@ import java.util.UUID;
 public class FireSimPacket implements IMessage {
     int ids;
     UUID sims;
-
+    public FireSimPacket(){}
     public FireSimPacket(UUID id, int ids) {
         this.ids = ids;
         this.sims = id;

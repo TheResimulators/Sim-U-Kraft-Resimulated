@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public class SimSpawnPacket implements IMessage {
     UUID sims;
-
+    public SimSpawnPacket(){}
     public SimSpawnPacket(UUID id) {
         this.sims = id;
 

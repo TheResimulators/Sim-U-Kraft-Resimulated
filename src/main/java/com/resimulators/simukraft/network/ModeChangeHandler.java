@@ -13,6 +13,7 @@ public class ModeChangeHandler implements IMessageHandler<ModeChangePacket,IMess
 
         mainthread.addScheduledTask(() -> {
             SaveSimData.get(ctx.getServerHandler().player.world).setMode(message.id,message.mode);
+            System.out.println("Mode set for player");
 
         });
         return null;

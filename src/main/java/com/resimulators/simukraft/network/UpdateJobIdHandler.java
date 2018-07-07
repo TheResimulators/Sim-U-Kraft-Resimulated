@@ -20,6 +20,7 @@ public class UpdateJobIdHandler implements IMessageHandler<UpdateJobIdPacket,IMe
             System.out.println("Sim: " + sim);
             if (tile instanceof ISimJob) {
                 ((ISimJob) tile).setId(sim.getPersistentID());
+                ((ISimJob)tile).setHired(true);
             }
         });
         return null;

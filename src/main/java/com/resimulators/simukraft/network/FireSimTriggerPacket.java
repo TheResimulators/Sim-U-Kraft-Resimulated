@@ -10,7 +10,7 @@ public class FireSimTriggerPacket implements IMessage {
     int x;
     int y;
     int z;
-
+    public FireSimTriggerPacket(){}
     public FireSimTriggerPacket(int x, int y, int z) {
         this.x = x;
         this.y = y;

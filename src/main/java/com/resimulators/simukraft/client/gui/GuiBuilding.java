@@ -13,18 +13,23 @@ public class GuiBuilding extends GuiScreen {
     private categoryButton commercialButton;
     private categoryButton industrialButton;
     private categoryButton residentialButton;
+    private categoryButton customButton;
     @Override
     public void drawScreen(int mouseX, int mouseY,float partialTicks) {
         drawDefaultBackground();
+        super.drawScreen(mouseX,mouseY,partialTicks);
     }
 
 
     @Override
     public void initGui()
     {
-        buttonList.add(residentialButton = new categoryButton(0,100,height/2,"Residential"));
-        buttonList.add(industrialButton = new categoryButton(1,300,height/2,"Industrial"));
-        buttonList.add(commercialButton = new categoryButton(2,500,height/2,"Commercial"));
+        buttonList.add(residentialButton = new categoryButton(0,width/2-105,height/2-10,"Residential"));
+        buttonList.add(industrialButton = new categoryButton(1,width/2+5,height/2-10,"Industrial"));
+        buttonList.add(commercialButton = new categoryButton(2,width/2-105,height/2+10,"Commercial"));
+        buttonList.add(customButton = new categoryButton(3,width/2+5,height/2+10,"Custom"));
+
+        super.initGui();
     }
 
 
@@ -42,7 +47,7 @@ public class GuiBuilding extends GuiScreen {
     {
      private categoryButton(int id, int x, int y, String string)
         {
-            super(id,x,y,string);
+            super(id,x,y,120,20,string);
         }
     }
     {

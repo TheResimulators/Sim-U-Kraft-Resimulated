@@ -8,7 +8,7 @@ public class HiredSimDeathPacket implements IMessage {
     int y;
     int z;
     int id;
-
+    public HiredSimDeathPacket(){}
     public HiredSimDeathPacket(int x, int y, int z, int id) {
         this.x = x;
         this.y = y;

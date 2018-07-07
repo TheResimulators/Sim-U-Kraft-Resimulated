@@ -9,7 +9,7 @@ import java.util.UUID;
 public class UpdateSimPacket implements IMessage {
     UUID sims;
     String List;
-
+    UpdateSimPacket(){}
     public UpdateSimPacket(UUID id, String list) {
         this.sims = id;
         this.List = list;

@@ -6,7 +6,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 public class HungerPacket implements IMessage {
     int hunger;
     int id;
-
+    public HungerPacket(){}
     public HungerPacket(int hunger, int id) {
         this.hunger = hunger;
         this.id = id;
