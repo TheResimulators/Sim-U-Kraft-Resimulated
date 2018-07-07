@@ -1,8 +1,7 @@
 package com.resimulators.simukraft.client.gui;
 
 import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
-import com.resimulators.simukraft.common.interfaces.iSimJob;
-import com.resimulators.simukraft.common.tileentity.TileFarm;
+import com.resimulators.simukraft.common.interfaces.ISimJob;
 import com.resimulators.simukraft.network.HiringPacket;
 import com.resimulators.simukraft.network.PacketHandler;
 import com.resimulators.simukraft.network.UpdateJobIdPacket;
@@ -36,7 +35,7 @@ public class GuiHire extends GuiScreen {
 
     public GuiHire(TileEntity tileEntity){
         this.tileEntity = tileEntity;
-        this.profession = ((iSimJob)tileEntity).getProfession();
+        this.profession = ((ISimJob)tileEntity).getProfession();
     }
 
     public void add_sim(int id) {
@@ -93,8 +92,8 @@ public class GuiHire extends GuiScreen {
         sims.clear();
         world = Minecraft.getMinecraft().world;
         int num = 0;
-        List<String> names = ((iSimJob)tileEntity).getnames();
-        for (int id: ((iSimJob)tileEntity).getSims())
+        List<String> names = ((ISimJob)tileEntity).getnames();
+        for (int id: ((ISimJob)tileEntity).getSims())
         {
             int xpos = pos*100+20+pos*5;
 
@@ -140,8 +139,8 @@ public class GuiHire extends GuiScreen {
         }
         if (button instanceof SimButton) {
             ((SimButton) button).clicked = true;
-            ((iSimJob)tileEntity).setHired(true);
-            PacketHandler.INSTANCE.sendToServer(new HiringPacket(((SimButton) button).simid,((iSimJob)tileEntity).getProfessionint()));
+            ((ISimJob)tileEntity).setHired(true);
+            PacketHandler.INSTANCE.sendToServer(new HiringPacket(((SimButton) button).simid,((ISimJob)tileEntity).getProfessionint()));
             System.out.println("Sending id packet");
             PacketHandler.INSTANCE.sendToServer(new UpdateJobIdPacket(((SimButton) button).simid, tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ()));
             mc.displayGuiScreen(null);

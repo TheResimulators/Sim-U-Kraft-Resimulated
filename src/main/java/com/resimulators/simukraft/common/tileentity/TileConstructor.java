@@ -2,7 +2,7 @@ package com.resimulators.simukraft.common.tileentity;
 
 import com.resimulators.simukraft.GuiHandler;
 import com.resimulators.simukraft.SimUKraft;
-import com.resimulators.simukraft.common.interfaces.iSimJob;
+import com.resimulators.simukraft.common.interfaces.ISimJob;
 import com.resimulators.simukraft.common.tileentity.base.TileBuilderBase;
 import com.resimulators.simukraft.network.GetSimIdPacket;
 import com.resimulators.simukraft.network.PacketHandler;
@@ -16,7 +16,7 @@ import java.util.*;
 /**
  * Created by Astavie on 25/01/2018 - 5:05 PM.
  */
-public class TileConstructor extends TileBuilderBase implements ITickable,iSimJob {
+public class TileConstructor extends TileBuilderBase implements ITickable,ISimJob {
 	public boolean building;
 	private String profession = "Farmer";
 	private UUID id;

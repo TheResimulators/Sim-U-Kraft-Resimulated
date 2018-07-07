@@ -3,7 +3,6 @@ package com.resimulators.simukraft;
 import com.resimulators.simukraft.client.gui.*;
 import com.resimulators.simukraft.common.Containers.SimContainer;
 import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
-import com.resimulators.simukraft.common.interfaces.iSimJob;
 import com.resimulators.simukraft.common.tileentity.TileFarm;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;

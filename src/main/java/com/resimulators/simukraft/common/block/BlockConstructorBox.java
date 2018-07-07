@@ -2,7 +2,6 @@ package com.resimulators.simukraft.common.block;
 
 import com.resimulators.simukraft.Reference;
 import com.resimulators.simukraft.common.block.base.BlockContainerBase;
-import com.resimulators.simukraft.common.interfaces.iSimJob;
 import com.resimulators.simukraft.common.tileentity.TileConstructor;
 import com.resimulators.simukraft.common.tileentity.structure.Structure;
 import net.minecraft.block.material.MapColor;
