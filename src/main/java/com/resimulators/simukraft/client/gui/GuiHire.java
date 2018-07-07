@@ -1,6 +1,7 @@
 package com.resimulators.simukraft.client.gui;
 
 import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
+import com.resimulators.simukraft.common.interfaces.iSimJob;
 import com.resimulators.simukraft.common.tileentity.TileFarm;
 import com.resimulators.simukraft.network.HiringPacket;
 import com.resimulators.simukraft.network.PacketHandler;
@@ -8,6 +9,7 @@ import com.resimulators.simukraft.network.UpdateJobIdPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.config.GuiButtonExt;
 import java.awt.*;
@@ -21,7 +23,7 @@ public class GuiHire extends GuiScreen {
     private String name;
     private Set<Integer> sim_id = new HashSet<>();
     private World world;
-    private TileFarm tileEntity;
+    private TileEntity tileEntity;
     private int mouseX;
     private int mouseY;
     private int buttonWidth = 140;
@@ -32,9 +34,9 @@ public class GuiHire extends GuiScreen {
     private Set<UUID> sims = new HashSet<>();
     private String profession = "";
 
-    public GuiHire(TileFarm tileEntity) {
+    public GuiHire(TileEntity tileEntity){
         this.tileEntity = tileEntity;
-        this.profession = tileEntity.getProfession();
+        this.profession = ((iSimJob)tileEntity).getProfession();
     }
 
     public void add_sim(int id) {
@@ -91,9 +93,10 @@ public class GuiHire extends GuiScreen {
         sims.clear();
         world = Minecraft.getMinecraft().world;
         int num = 0;
-        List<String> names = tileEntity.getnames();
-        for (int id : tileEntity.getSims()) {
-            int xpos = pos * 100 + 20 + pos * 5;
+        List<String> names = ((iSimJob)tileEntity).getnames();
+        for (int id: ((iSimJob)tileEntity).getSims())
+        {
+            int xpos = pos*100+20+pos*5;
 
             if (xpos > width - 60) {
                 pos = 0;
@@ -137,8 +140,8 @@ public class GuiHire extends GuiScreen {
         }
         if (button instanceof SimButton) {
             ((SimButton) button).clicked = true;
-            tileEntity.setHired(true);
-            PacketHandler.INSTANCE.sendToServer(new HiringPacket(((SimButton) button).simid, tileEntity.getProfessionint()));
+            ((iSimJob)tileEntity).setHired(true);
+            PacketHandler.INSTANCE.sendToServer(new HiringPacket(((SimButton) button).simid,((iSimJob)tileEntity).getProfessionint()));
             System.out.println("Sending id packet");
             PacketHandler.INSTANCE.sendToServer(new UpdateJobIdPacket(((SimButton) button).simid, tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ()));
             mc.displayGuiScreen(null);

@@ -1,5 +1,8 @@
 package com.resimulators.simukraft.client.gui;
 
+import com.resimulators.simukraft.network.ModeChangePacket;
+import com.resimulators.simukraft.network.PacketHandler;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 
@@ -60,27 +63,19 @@ public class GuiStart extends GuiScreen {
     @Override
     protected void actionPerformed(GuiButton button) throws IOException {
         switch (button.id) {
-            case 1: {
-                gamemode = 1;
-                updateButtons(gamemode);
+            case 1:{
+                Gamemode = 0;
             }
-            case 2: {
-                gamemode = 2;
-                updateButtons(gamemode);
+            case 2:{
+                Gamemode = 1;
             }
             case 3: {
-                gamemode = 3;
-                updateButtons(gamemode);
+                Gamemode = -1;
             }
         }
-
+        PacketHandler.INSTANCE.sendToServer(new ModeChangePacket(Minecraft.getMinecraft().player.getUniqueID(),Gamemode));
+        Minecraft.getMinecraft().displayGuiScreen(null);
         super.actionPerformed(button);
-    }
-
-    private void updateButtons(int gamemode) {
-        if (gamemode != -1) {
-            this.mc.displayGuiScreen(null);
-        }
     }
 
     @Override

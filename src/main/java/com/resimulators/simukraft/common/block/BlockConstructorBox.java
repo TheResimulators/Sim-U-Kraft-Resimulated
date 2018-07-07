@@ -2,6 +2,7 @@ package com.resimulators.simukraft.common.block;
 
 import com.resimulators.simukraft.Reference;
 import com.resimulators.simukraft.common.block.base.BlockContainerBase;
+import com.resimulators.simukraft.common.interfaces.iSimJob;
 import com.resimulators.simukraft.common.tileentity.TileConstructor;
 import com.resimulators.simukraft.common.tileentity.structure.Structure;
 import net.minecraft.block.material.MapColor;
@@ -38,9 +39,14 @@ public class BlockConstructorBox extends BlockContainerBase {
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         //TODO: implement logic
         TileEntity tile = worldIn.getTileEntity(pos);
-        if (tile instanceof TileConstructor)
-            ((TileConstructor) tile).building = true;
-        return true;
+        if (tile instanceof TileConstructor) {
+            TileConstructor tiles = (TileConstructor) tile;
+            if (worldIn.isRemote) {
+               tiles.openGui(worldIn,pos,playerIn);
+            }
+
+    }
+        return false;
     }
 
     @Override

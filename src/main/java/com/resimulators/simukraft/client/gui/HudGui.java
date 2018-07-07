@@ -1,6 +1,7 @@
 package com.resimulators.simukraft.client.gui;
 
 import com.resimulators.simukraft.common.entity.entitysim.SimEventHandler;
+import com.resimulators.simukraft.common.entity.player.SaveSimData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -20,8 +21,9 @@ public class HudGui extends Gui {
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
     public void Renderstats(RenderGameOverlayEvent.Post event) {
+        if (SimEventHandler.getWorldSimData().isEnabled()){
         credits = SimEventHandler.getCredits();
-        if (event.getType() == RenderGameOverlayEvent.ElementType.TEXT) {
+        if (event.getType() == RenderGameOverlayEvent.ElementType.SUBTITLES){
             Minecraft mc = Minecraft.getMinecraft();
             if (SimEventHandler.getWorldSimData() != null) {
                 sim = SimEventHandler.getWorldSimData().getTotalSims();

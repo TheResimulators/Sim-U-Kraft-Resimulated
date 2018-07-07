@@ -3,6 +3,10 @@ package com.resimulators.simukraft.common.item;
 import com.resimulators.simukraft.GuiHandler;
 import com.resimulators.simukraft.Reference;
 import com.resimulators.simukraft.SimUKraft;
+import com.resimulators.simukraft.client.gui.GuiStart;
+import com.resimulators.simukraft.common.entity.player.SaveSimData;
+import com.resimulators.simukraft.network.PacketHandler;
+import com.resimulators.simukraft.network.StartingGuiPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiCrafting;
@@ -47,20 +51,28 @@ public class ItemCreateHandler {
                     int ypos = ((GuiCrafting) event.getGui()).getGuiTop() - 20;
                     event.getButtonList().add(sim = new GuiButton(event.getButtonList().size(), xpos, ypos, 60, 20, "Sim_U_Kraft"));
 
-                    System.out.println("Added button");
-                }
-            }
-        }
+        if (event.getGui() instanceof GuiCrafting)
+        {
+            if (itemCrafted && !SaveSimData.get(world).isEnabled()){
+            if (!event.getButtonList().contains(sim)){
+                int xpos = ((GuiCrafting) event.getGui()).getGuiLeft() + ((GuiCrafting) event.getGui()).getXSize()/2-30;
+                int ypos = ((GuiCrafting) event.getGui()).getGuiTop()-20;
+                event.getButtonList().add(sim = new GuiButton(event.getButtonList().size(),xpos,ypos,60,20,"Sim_U_Kraft"));
+
+            System.out.println("Added button");}
+        }}
     }
 
     @SubscribeEvent
     public static void Buttonpressed(GuiScreenEvent.ActionPerformedEvent event) {
         if (event.getButton() == sim)
             System.out.println("Button pressed");
-        System.out.println(itemCrafted);
-        if (itemCrafted) {
-            Minecraft.getMinecraft().displayGuiScreen(null);
-            player.openGui(SimUKraft.instance, GuiHandler.GUI_START, world, 0, 0, 0);
+            System.out.println(itemCrafted);
+            if (itemCrafted && !SaveSimData.get(world).isEnabled())
+            {
+                PacketHandler.INSTANCE.sendToServer(new StartingGuiPacket());
+                SaveSimData.get(world).setEnabled(true);
+            }
         }
     }
 }

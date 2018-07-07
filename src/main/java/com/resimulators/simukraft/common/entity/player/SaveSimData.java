@@ -19,7 +19,8 @@ public class SaveSimData extends WorldSavedData {
     private Set<UUID> Total_sims = new HashSet<>();
     private Set<UUID> Unemployed_sims = new HashSet<>();
     private Set<TileEntity> job_tiles = new HashSet<>();
-
+    private Map<UUID,Integer> mode = new HashMap<>();
+    private boolean enabled = false;
     public SaveSimData() {
         super(DATA_NAME);
     }
@@ -73,6 +74,16 @@ public class SaveSimData extends WorldSavedData {
         markDirty();
     }
 
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enable)
+    {
+        enabled = enable;
+    }
+
+
     public Set<TileEntity> getJob_tiles() {
         return job_tiles;
     }
@@ -84,6 +95,16 @@ public class SaveSimData extends WorldSavedData {
         }
     }
 
+
+    public Integer isMode(UUID id)
+    {
+        return mode.get(id);
+    }
+
+    public void setMode(UUID id,int mode)
+    {
+        this.mode.put(id,mode);
+    }
     @Override
     public void readFromNBT(NBTTagCompound nbt) {
         NBTTagList Ttaglist = nbt.getTagList("TSims", Constants.NBT.TAG_COMPOUND);
@@ -118,8 +139,9 @@ public class SaveSimData extends WorldSavedData {
         NBTTagList Ttaglist = new NBTTagList();
         NBTTagList Utaglist = new NBTTagList();
         NBTTagList JobTiles = new NBTTagList();
-
-        for (UUID id : Total_sims) {
+        NBTTagList modeList = new NBTTagList();
+        for (UUID id: Total_sims)
+        {
             NBTTagCompound sims = new NBTTagCompound();
             sims.setUniqueId("TSim", id);
             Ttaglist.appendTag(sims);
@@ -142,7 +164,14 @@ public class SaveSimData extends WorldSavedData {
 
 
         }
-        nbt.setTag("JobTiles", JobTiles);
+        nbt.setTag("JobTiles",JobTiles);
+        for (UUID uuid: mode.keySet())
+        {
+            NBTTagCompound modes = new NBTTagCompound();
+            modes.setInteger(uuid.toString(),mode.get(uuid));
+            modeList.appendTag(modes);
+        }
+        nbt.setTag("Modes",modeList);
         return nbt;
     }
 

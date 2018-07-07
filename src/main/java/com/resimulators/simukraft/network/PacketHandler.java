@@ -29,6 +29,8 @@ public class PacketHandler {
         INSTANCE.registerMessage(FireSimTriggerPacketHandler.class,FireSimTriggerPacket.class,15,Side.SERVER);
         INSTANCE.registerMessage(SimInvHandler.class,SimInvPacket.class,16,Side.SERVER);
         INSTANCE.registerMessage(HungerHandler.class,HungerPacket.class,17,Side.CLIENT);
+        INSTANCE.registerMessage(StartingGuiHandler.class,StartingGuiPacket.class,18,Side.SERVER);
+        INSTANCE.registerMessage(ModeChangeHandler.class,ModeChangePacket.class,19,Side.SERVER);
     }
 
 }
