@@ -1,6 +1,6 @@
 # Sim-U-Kraft-Resimulated
 <p>
-  <img src="https://img.shields.io/badge/Forge-14.23.1.2555-blue.svg">
+  <img src="https://img.shields.io/badge/Forge-14.23.4.2705-blue.svg">
   <img src="https://img.shields.io/badge/Minecraft-1.12.2-blue.svg">
   <img src="https://img.shields.io/badge/Mod Version-1.0 Alpha-blue.svg">
   <img src="https://img.shields.io/badge/Latest-Alpha-red.svg">
