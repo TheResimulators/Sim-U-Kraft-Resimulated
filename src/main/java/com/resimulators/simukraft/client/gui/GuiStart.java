@@ -74,6 +74,7 @@ public class GuiStart extends GuiScreen {
             }
         }
         PacketHandler.INSTANCE.sendToServer(new ModeChangePacket(Minecraft.getMinecraft().player.getUniqueID(),Gamemode));
+
         Minecraft.getMinecraft().displayGuiScreen(null);
         super.actionPerformed(button);
     }

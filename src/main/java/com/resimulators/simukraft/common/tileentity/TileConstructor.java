@@ -36,12 +36,16 @@ public class TileConstructor extends TileBuilderBase implements ITickable,ISimJo
 
 	@Override
 	public void setHired(boolean hired) {
-		this.hired = hired;
+
+	    this.hired = hired;
+	    markDirty();
 	}
 
 	@Override
 	public void setId(UUID id) {
-		this.id = id;
+
+	    this.id = id;
+        markDirty();
 	}
 
 	@Override
@@ -67,6 +71,7 @@ public class TileConstructor extends TileBuilderBase implements ITickable,ISimJo
 	@Override
 	public void addSim(int sim) {
 		sims.add(sim);
+        markDirty();
 	}
 
 	@Override
@@ -77,16 +82,19 @@ public class TileConstructor extends TileBuilderBase implements ITickable,ISimJo
 	@Override
 	public void removeSim(int sim) {
 		sims.remove(sim);
+        markDirty();
 	}
 
 	@Override
 	public void removeSimName(String name) {
 		sims_name.remove(name);
+        markDirty();
 	}
 
 	@Override
 	public void addSimName(String name) {
 		sims_name.add(name);
+        markDirty();
 	}
 
 	@Override
@@ -107,13 +115,14 @@ public class TileConstructor extends TileBuilderBase implements ITickable,ISimJo
 
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
+		super.readFromNBT(nbt);
 		setHired(nbt.getBoolean("hired"));
-		System.out.println("reading if hired: " + getHired());
+		System.out.println("reading if hired: " + nbt.getBoolean("hired"));
 		professionint = nbt.getInteger("profession");
 		if (nbt.hasKey("id")) {
 			id = nbt.getUniqueId("id");
 		}
-		super.readFromNBT(nbt);
+
 	}
 
 	@Override

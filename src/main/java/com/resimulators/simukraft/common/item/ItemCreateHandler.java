@@ -47,7 +47,7 @@ public class ItemCreateHandler {
     @SubscribeEvent
     public static void OpenGui(GuiScreenEvent.InitGuiEvent event) {
         if (event.getGui() instanceof GuiCrafting) {
-            if (itemCrafted && !SaveSimData.get(world).isEnabled()) {
+            if (itemCrafted && !SaveSimData.get(world).isEnabled(Minecraft.getMinecraft().player.getUniqueID())) {
                 if (!event.getButtonList().contains(sim)) {
                     int xpos = ((GuiCrafting) event.getGui()).getGuiLeft() + ((GuiCrafting) event.getGui()).getXSize() / 2 - 30;
                     int ypos = ((GuiCrafting) event.getGui()).getGuiTop() - 20;
@@ -57,10 +57,9 @@ public class ItemCreateHandler {
     @SubscribeEvent
     public static void Buttonpressed(GuiScreenEvent.ActionPerformedEvent event) {
         if (event.getButton() == sim)
-            if (itemCrafted && !SaveSimData.get(world).isEnabled())
+            if (itemCrafted && !SaveSimData.get(world).isEnabled(Minecraft.getMinecraft().player.getUniqueID()))
             {
                 PacketHandler.INSTANCE.sendToServer(new StartingGuiPacket());
-                SaveSimData.get(world).setEnabled(true);
             }
         }
     }

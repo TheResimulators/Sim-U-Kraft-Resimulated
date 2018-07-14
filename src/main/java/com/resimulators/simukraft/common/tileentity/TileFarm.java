@@ -103,24 +103,25 @@ public class TileFarm extends TileEntity implements ITickable,ISimJob {
 
     @Override
     public void readFromNBT(NBTTagCompound nbt) {
+        super.readFromNBT(nbt);
         setHired(nbt.getBoolean("hired"));
         professionint = nbt.getInteger("profession");
         seed = nbt.getInteger("seed");
         if (nbt.hasKey("id")) {
             id = nbt.getUniqueId("id");
         }
-        super.readFromNBT(nbt);
     }
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+        super.writeToNBT(nbt);
         nbt.setBoolean("hired", getHired());
         nbt.setInteger("profession", professionint);
         nbt.setInteger("seed", seed);
         if (id != null) {
             nbt.setUniqueId("id", id);
         }
-        return super.writeToNBT(nbt);
+        return nbt;
     }
 
     public void openGui(World worldIn, BlockPos pos, EntityPlayer playerIn) {

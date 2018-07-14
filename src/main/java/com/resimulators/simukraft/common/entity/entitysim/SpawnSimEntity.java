@@ -20,7 +20,7 @@ public class SpawnSimEntity {
     @SubscribeEvent
     public void Tick(TickEvent.PlayerTickEvent event) {
             World world = event.player.getEntityWorld();
-            if (SaveSimData.get(world).isEnabled()){
+            if (SaveSimData.get(world).isEnabled(event.player.getUniqueID())){
             if (event.phase == TickEvent.Phase.START){
             if (!world.isRemote){
             Random rand = world.rand;
