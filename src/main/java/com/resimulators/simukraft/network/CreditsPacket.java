@@ -9,7 +9,7 @@ public class CreditsPacket implements IMessage {
     float credit;
     public CreditsPacket() {
         this.credit = SimEventHandler.getCredits();
-        System.out.println("packet value equals " + this.credit);
+
     }
 
     @Override

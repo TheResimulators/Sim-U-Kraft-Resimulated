@@ -11,15 +11,8 @@ import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 public class PlayerJoinDataEvent {
     @SubscribeEvent
     public static void Player_Join(PlayerEvent.PlayerLoggedInEvent event) {
-        System.out.println("Player joined");
         if (!event.player.world.isRemote) {
-            System.out.println(SaveSimData.get(event.player.world));
-            System.out.println(SaveSimData.get(event.player.world).getTotalSims());
-            System.out.println(SaveSimData.get(event.player.world).getUnemployed_sims());
-            System.out.println(SimEventHandler.getCredits());
-
             PacketHandler.INSTANCE.sendTo(new PlayerUpdatePacket(SaveSimData.get(event.player.world).getTotalSims(), SaveSimData.get(event.player.world).getUnemployed_sims(), SimEventHandler.getCredits()), (EntityPlayerMP) event.player);
-            System.out.println("Data sent");
         }
     }
 }

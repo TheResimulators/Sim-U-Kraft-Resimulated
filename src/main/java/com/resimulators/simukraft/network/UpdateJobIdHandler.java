@@ -17,7 +17,6 @@ public class UpdateJobIdHandler implements IMessageHandler<UpdateJobIdPacket,IMe
             BlockPos pos = new BlockPos(message.x, message.y, message.z);
             TileEntity tile = ctx.getServerHandler().player.getServerWorld().getTileEntity(pos);
             EntitySim sim = (EntitySim) ctx.getServerHandler().player.getServerWorld().getEntityByID(message.id);
-            System.out.println("Sim: " + sim);
             if (tile instanceof ISimJob) {
                 ((ISimJob) tile).setId(sim.getPersistentID());
                 ((ISimJob)tile).setHired(true);

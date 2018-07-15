@@ -16,19 +16,15 @@ public class GetSimIdPacket implements IMessage {
 
     @Override
     public void fromBytes(ByteBuf bytebuf) {
-        System.out.println("Reading things");
         x = bytebuf.readInt();
         y = bytebuf.readInt();
         z = bytebuf.readInt();
-        System.out.println("Reading " + x + " " + y + " " + z);
     }
 
     @Override
     public void toBytes(ByteBuf bytebuf) {
-        System.out.println("Writing things");
         bytebuf.writeInt(x);
         bytebuf.writeInt(y);
         bytebuf.writeInt(z);
-        System.out.println("Writing " + x + " " + y + " " + z);
     }
 }

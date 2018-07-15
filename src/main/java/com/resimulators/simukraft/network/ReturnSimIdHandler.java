@@ -21,7 +21,6 @@ public class ReturnSimIdHandler implements IMessageHandler<ReturnSimIdPacket,IMe
         assert entity != null;
         ((ISimJob) entity).getnames().clear();
         ((ISimJob) entity).getSims().clear();
-        System.out.println(((ISimJob) entity).getnames());
         for (int sim : message.sim_ids) {
             ((ISimJob) entity).addSim(sim);
         }

@@ -15,7 +15,6 @@ public class SimSpawnHandler implements IMessageHandler<SimSpawnPacket, IMessage
         IThreadListener mainThread = Minecraft.getMinecraft();
         mainThread.addScheduledTask(() -> {
             UUID id = message.sims;
-            System.out.println("client sim spawn  " + id);
             if (!(SimEventHandler.getWorldSimData().getTotalSims().contains(id))) {
                 SimEventHandler.getWorldSimData().addSim(id);
                 SimEventHandler.getWorldSimData().setUnemployed_sims(id);

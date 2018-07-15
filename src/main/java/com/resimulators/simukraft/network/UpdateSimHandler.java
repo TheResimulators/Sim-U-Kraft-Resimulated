@@ -15,14 +15,11 @@ public class UpdateSimHandler implements IMessageHandler<UpdateSimPacket, IMessa
         mainThread.addScheduledTask(() -> {
             UUID e = message.sims;
             String list = message.List;
-            System.out.println("sim " + e);
             if (list.equals("unemployed")) {
                 SimEventHandler.getWorldSimData().setUnemployed_sims(e);
-                System.out.println("adding SIMS");
             }
             if (list.equals("total")) {
                 SimEventHandler.getWorldSimData().addSim(e);
-                System.out.println("adding SIMS");
             }
         });
         return null;

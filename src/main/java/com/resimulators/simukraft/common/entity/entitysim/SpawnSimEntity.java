@@ -40,11 +40,9 @@ public class SpawnSimEntity {
                         int height = world.getHeight((int)entityx,(int)entityz);
                         entity.setPosition(entityx,height,entityz);
                         entity.onInitialSpawn(world.getDifficultyForLocation(new BlockPos(entity)), null);
-                        System.out.println("Sim spawned");
                         world.spawnEntity(entity);
                         entity.setProfession(rand.nextInt(2));
                         MinecraftForge.EVENT_BUS.post(new LivingSpawnEvent(entity,world,(float)entityx,height,(float)entityz));
-                        System.out.println("Entity: X " + entity.posX + " Y " + entity.posY + " Z " + entity.posZ);
                     }
                 }
             }

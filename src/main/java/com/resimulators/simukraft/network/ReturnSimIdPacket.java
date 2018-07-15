@@ -33,8 +33,6 @@ public class ReturnSimIdPacket implements IMessage {
         for (int i = 0; i < amount; i++) {
             sim_ids.add(bytebuf.readInt());
             String name = ByteBufUtils.readUTF8String(bytebuf);
-            System.out.println(sim_names);
-            System.out.println("Name: " + name);
             sim_names.add(name);
         }
         this.x = bytebuf.readInt();
@@ -51,11 +49,8 @@ public class ReturnSimIdPacket implements IMessage {
             int id = entitySim.getEntityId();
             bytebuf.writeInt(id);
             num++;
-            System.out.println(entitySim.getName());
             ByteBufUtils.writeUTF8String(bytebuf, entitySim.getName());
         }
-        System.out.println(num);
-        System.out.println(amount);
         bytebuf.writeInt(x);
         bytebuf.writeInt(y);
         bytebuf.writeInt(z);

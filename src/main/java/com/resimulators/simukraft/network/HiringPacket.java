@@ -8,7 +8,6 @@ public class HiringPacket implements IMessage {
     int sims;
     public HiringPacket(){}
     public HiringPacket(int id, int job_int) {
-        System.out.println("Sending hire packet");
         this.job = job_int;
         this.sims = id;
     }

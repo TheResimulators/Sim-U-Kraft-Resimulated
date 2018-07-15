@@ -15,7 +15,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class TileEntityDestroyed {
     @SubscribeEvent
     public static void BlockDestroyed(BlockEvent.BreakEvent event) {
-        System.out.println("Event executed");
         if (!event.getWorld().isRemote) {
             if (event.getWorld().getTileEntity(event.getPos()) instanceof ISimJob) {
                 TileDestroy(event.getPos(), (WorldServer) event.getWorld());
@@ -24,7 +23,6 @@ public class TileEntityDestroyed {
     }
 
     public static void TileDestroy(BlockPos pos, WorldServer world) {
-        System.out.println("successfilly called this method");
         ISimJob entity = (ISimJob) world.getTileEntity(pos);
         if (entity.getId() != null) {
             SaveSimData.get(world).firedSim(entity.getId());

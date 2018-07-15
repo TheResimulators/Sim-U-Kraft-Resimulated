@@ -76,7 +76,6 @@ public class GuiMiner extends GuiScreen {
                 if (yOffset + 10 >= height - 70 || yOffset + 5 <= 0) {
                     buttonList.get(buttoni).enabled = false;
                     buttonList.get(buttoni).visible = false;
-                    System.out.println("disabling button " + buttoni);
                 } else {
                     buttonList.get(buttoni).enabled = true;
                     buttonList.get(buttoni).visible = true;
@@ -92,7 +91,6 @@ public class GuiMiner extends GuiScreen {
             //negative numbers here to make it able to check if a sims button has been pressed
             case -1:
                 status = "hiring";
-                System.out.println("status updated");
                 updateButtons(-1);
                 break;
             case -2:
@@ -109,13 +107,11 @@ public class GuiMiner extends GuiScreen {
         if (status.equals("hiring")) {
             button1.visible = false;
             button1.enabled = false;
-            System.out.println("hired sim is " + hiredSim);
             initGui();
             if (id > 0) {
                 EntitySim hired_sim = sims.get(id);
                 hired_sim.setProfession(1);
                 hiredSim = true;
-                System.out.println("sim is hired " + hiredSim);
                 this.mc.displayGuiScreen(null);
             }
         }

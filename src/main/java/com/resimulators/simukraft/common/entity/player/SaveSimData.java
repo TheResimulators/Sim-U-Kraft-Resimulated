@@ -60,7 +60,6 @@ public class SaveSimData extends WorldSavedData {
     }
 
     public void hiredsim(UUID id) {
-        System.out.println("This has been called");
         Unemployed_sims.remove(id);
         markDirty();
     }
@@ -135,12 +134,9 @@ public class SaveSimData extends WorldSavedData {
                 addTile(entity);
             }
         }
-        System.out.println("tag count " + EnabledList.tagCount());
         for (int i = 0;i < EnabledList.tagCount();i++){
             NBTTagCompound enabled = EnabledList.getCompoundTagAt(i);
-            System.out.println("nbttag " + enabled);
             setEnabled(UUID.fromString(enabled.getString("uuid")),enabled.getBoolean("enable"));
-            System.out.println("enabled " + UUID.fromString(enabled.getString("uuid"))+ " " +enabled.getBoolean("enabled"));
         }
 
     }
@@ -152,7 +148,6 @@ public class SaveSimData extends WorldSavedData {
         NBTTagList JobTiles = new NBTTagList();
         NBTTagList modeList = new NBTTagList();
         NBTTagList enabledList = new NBTTagList();
-        System.out.println("size " + enables.size());
         for (UUID id: Total_sims)
         {
             NBTTagCompound sims = new NBTTagCompound();
@@ -185,12 +180,10 @@ public class SaveSimData extends WorldSavedData {
             modeList.appendTag(modes);
         }
         nbt.setTag("Modes",modeList);
-        System.out.println("size " + enables.size());
         for (UUID uuid: enables.keySet()) {
             NBTTagCompound enabled = new NBTTagCompound();
             enabled.setBoolean("enable",enables.get(uuid));
             enabled.setString("uuid",uuid.toString());
-            System.out.println("enabled id " + uuid.toString() + " boolean " + enables.get(uuid));
             enabledList.appendTag(enabled);
 
         }

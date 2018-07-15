@@ -18,7 +18,6 @@ public class PlayerUpdateHandler implements IMessageHandler<PlayerUpdatePacket, 
     public IMessage onMessage(PlayerUpdatePacket message, MessageContext ctx) {
         IThreadListener mainThread = Minecraft.getMinecraft();
         mainThread.addScheduledTask(() -> {
-            System.out.println(message.totalsim);
             if (SimEventHandler.getWorldSimData() == null) {
                 SimEventHandler.setWorldSimData(SaveSimData.get(Minecraft.getMinecraft().world));
             }

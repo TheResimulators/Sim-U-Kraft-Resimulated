@@ -8,6 +8,7 @@ import com.resimulators.simukraft.network.GetSimIdPacket;
 import com.resimulators.simukraft.network.PacketHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -39,6 +40,7 @@ public class TileConstructor extends TileBuilderBase implements ITickable,ISimJo
 
 	    this.hired = hired;
 	    markDirty();
+
 	}
 
 	@Override
@@ -55,7 +57,7 @@ public class TileConstructor extends TileBuilderBase implements ITickable,ISimJo
 
 	@Override
 	public boolean getHired() {
-		return this.hired;
+		return hired;
 	}
 
 	@Override
@@ -127,12 +129,22 @@ public class TileConstructor extends TileBuilderBase implements ITickable,ISimJo
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+        super.writeToNBT(nbt);
 	    System.out.println("Writing hire to nbt: " + getHired());
 		nbt.setBoolean("hired", getHired());
 		nbt.setInteger("profession", professionint);
 		if (id != null) {
 			nbt.setUniqueId("id", id);
 		}
-		return super.writeToNBT(nbt);
+		return nbt;
 	}
+	
+    @Override
+    public NBTTagCompound getUpdateTag() {
+        return super.getUpdateTag();
+    }
+
+
+    @Override
+    public void handleUpdateTag(NBTTagCompound tag){super.handleUpdateTag(tag);}
 }

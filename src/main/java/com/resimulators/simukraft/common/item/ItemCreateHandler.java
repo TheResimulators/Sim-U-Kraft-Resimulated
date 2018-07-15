@@ -34,7 +34,6 @@ public class ItemCreateHandler {
 
     @SubscribeEvent
     public static void ItemCrafted(PlayerEvent.ItemCraftedEvent event) {
-        System.out.println(event.crafting.getItem().getRegistryName().getResourceDomain());
         if (event.crafting.getItem().getRegistryName().getResourceDomain().equals(Reference.MOD_ID)) {
             setItemCrafted(true);
             player = event.player;

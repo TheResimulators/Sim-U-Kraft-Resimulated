@@ -18,7 +18,6 @@ public class UpdateJobIdPacket implements IMessage {
 
     @Override
     public void fromBytes(ByteBuf byteBuf) {
-        System.out.println("Reading info");
         id = byteBuf.readInt();
         x = byteBuf.readInt();
         y = byteBuf.readInt();

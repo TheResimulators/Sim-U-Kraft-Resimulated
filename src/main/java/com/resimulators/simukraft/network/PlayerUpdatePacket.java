@@ -30,7 +30,6 @@ public class PlayerUpdatePacket implements IMessage {
         totalsim = new HashSet<>(totalsimsize);
         for (int i = 0; i < this.totalsimsize; i++) {
             UUID sim = UUID.fromString(ByteBufUtils.readUTF8String(bytebuf));
-            System.out.println("Reading sim " + sim);
             totalsim.add(sim);
         }
         this.unemployedsize = bytebuf.readInt();
@@ -45,7 +44,6 @@ public class PlayerUpdatePacket implements IMessage {
     public void toBytes(ByteBuf bytebuf) {
         bytebuf.writeInt(totalsimsize);
         for (UUID sim : totalsim) {
-            System.out.println("writing uuid " + sim);
             ByteBufUtils.writeUTF8String(bytebuf, sim.toString());
         }
         bytebuf.writeInt(unemployedsize);

@@ -16,7 +16,6 @@ public class FireSimHandler implements IMessageHandler<FireSimPacket, IMessage> 
         IThreadListener mainThread = Minecraft.getMinecraft();
         mainThread.addScheduledTask(() -> {
             UUID id = message.sims;
-            System.out.println("sim " + id);
             if (!(SimEventHandler.getWorldSimData().getTotalSims().contains(id))) {
                 SimEventHandler.getWorldSimData().setUnemployed_sims(message.sims);
                 EntitySim sim = (EntitySim) Minecraft.getMinecraft().world.getEntityByID(message.ids);

@@ -13,9 +13,6 @@ public class GetSimIdHandler implements IMessageHandler<GetSimIdPacket,ReturnSim
         int x = message.x;
         int y = message.y;
         int z = message.z;
-        System.out.println(message.x + " " + message.y + " " + message.z);
-        System.out.println("Message recieved");
-        System.out.println("Sending packet");
         return new ReturnSimIdPacket(world, x, y, z, SimEventHandler.getWorldSimData().getUnemployed_sims().size());
     }
 }

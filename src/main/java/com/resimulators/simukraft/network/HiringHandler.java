@@ -17,7 +17,6 @@ public class HiringHandler implements IMessageHandler<HiringPacket, IMessage> {
         mainThread.addScheduledTask(() -> {
             EntitySim sim = (EntitySim) ctx.getServerHandler().player.world.getEntityByID(message.sims);
             UUID id = sim.getUniqueID();
-            System.out.println("Hiring sim");
             SimEventHandler.getWorldSimData().hiredsim(id);
             sim.setProfession(message.job);
             PacketHandler.INSTANCE.sendToAll(new ClientHirePacket(id));

@@ -16,7 +16,6 @@ public class SimDeathPacket implements IMessage {
     @Override
     public void fromBytes(ByteBuf byteBuf) {
         this.sims = byteBuf.readInt();
-        System.out.println("Reading sim death id");
     }
 
     @Override

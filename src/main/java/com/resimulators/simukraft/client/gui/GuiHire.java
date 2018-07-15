@@ -103,11 +103,8 @@ public class GuiHire extends GuiScreen {
                 ypos += 25;
 
             }
-            System.out.print(id);
             EntitySim sim = (EntitySim) world.getEntityByID(id);
             sim_id.add(id);
-            System.out.println(names);
-            System.out.println(names.get(num));
             name = names.get(num);
             if (name == null) {
                 name = "Error";
@@ -141,7 +138,6 @@ public class GuiHire extends GuiScreen {
             ((SimButton) button).clicked = true;
             ((ISimJob)tileEntity).setHired(true);
             PacketHandler.INSTANCE.sendToServer(new HiringPacket(((SimButton) button).simid,((ISimJob)tileEntity).getProfessionint()));
-            System.out.println("Sending id packet");
             PacketHandler.INSTANCE.sendToServer(new UpdateJobIdPacket(((SimButton) button).simid, tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ()));
             mc.displayGuiScreen(null);
         }
