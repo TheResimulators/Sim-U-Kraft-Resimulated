@@ -8,6 +8,7 @@ import com.resimulators.simukraft.network.GetSimIdPacket;
 import com.resimulators.simukraft.network.PacketHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
@@ -141,10 +142,18 @@ public class TileConstructor extends TileBuilderBase implements ITickable,ISimJo
 	
     @Override
     public NBTTagCompound getUpdateTag() {
-        return super.getUpdateTag();
+        return writeToNBT(new NBTTagCompound());
+    }
+
+    @Override
+    public SPacketUpdateTileEntity getUpdatePacket() {
+        return new SPacketUpdateTileEntity(this.pos,0,writeToNBT(getUpdateTag()));
     }
 
 
     @Override
-    public void handleUpdateTag(NBTTagCompound tag){super.handleUpdateTag(tag);}
+    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {
+	    readFromNBT(packet.getNbtCompound());
+
+    }
 }
