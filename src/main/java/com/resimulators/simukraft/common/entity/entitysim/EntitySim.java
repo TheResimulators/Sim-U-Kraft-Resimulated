@@ -7,6 +7,7 @@ import com.resimulators.simukraft.SimUKraft;
 import com.resimulators.simukraft.common.entity.ai.AISimBuild;
 import com.resimulators.simukraft.common.entity.ai.AISimChildPlay;
 import com.resimulators.simukraft.common.entity.ai.AISimEat;
+import com.resimulators.simukraft.common.entity.player.SaveSimData;
 import com.resimulators.simukraft.common.tileentity.TileFarm;
 import com.resimulators.simukraft.common.tileentity.structure.Structure;
 import com.resimulators.simukraft.init.ModItems;
@@ -77,7 +78,8 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
     private BlockPos farmPos1;
     private BlockPos farmPos2;
     private StructureBoundingBox bounds;
-
+    //Faction releated
+    private long Factionid;
     private boolean areAdditionalTasksSet;
     private int wealth;
 
@@ -196,6 +198,7 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
         }
         compound.setTag("Inventory", nbtTagList);
         compound.setInteger("hunger", this.hunger);
+        compound.setLong("Factionid",Factionid);
     }
 
     @Override
@@ -234,6 +237,7 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
         }
 
         this.hunger = compound.getInteger("hunger");
+        this.Factionid = compound.getLong("Factionid");
         this.setCanPickUpLoot(true);
         this.setAdditionalAITasks();
     }
@@ -512,7 +516,7 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
                     hunger += finalheal;
                     final_stack.shrink(1);
                 }
-                PacketHandler.INSTANCE.sendToAll(new HungerPacket(this.getFoodLevel(), this.getEntityId()));
+                SaveSimData.get(this.world).SendFactionPacket(new HungerPacket(this.getFoodLevel(), this.getEntityId()),this.getFactionId());
             }
         }
     }
@@ -538,7 +542,7 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
             } else {
                 if (hunger > 0) {
                     hunger -= 1;
-                    PacketHandler.INSTANCE.sendToAll(new HungerPacket(this.getFoodLevel(), this.getEntityId()));
+                    SaveSimData.get(this.world).SendFactionPacket(new HungerPacket(this.getFoodLevel(), this.getEntityId()),this.getFactionId());
                 }
 
                 counter = 0;
@@ -551,6 +555,14 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
 
     public void setHunger(int hunger) {
         this.hunger = hunger;
+    }
+
+    public void setFactionid(Long id){
+        Factionid = id;
+    }
+
+    public Long getFactionId(){
+        return Factionid;
     }
 }
 

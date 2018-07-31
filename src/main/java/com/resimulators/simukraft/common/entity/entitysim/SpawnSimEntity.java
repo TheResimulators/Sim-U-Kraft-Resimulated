@@ -1,17 +1,13 @@
 package com.resimulators.simukraft.common.entity.entitysim;
 import com.resimulators.simukraft.common.entity.player.SaveSimData;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import java.util.List;
-import java.util.Objects;
+
 import java.util.Random;
 
 public class SpawnSimEntity {
@@ -25,16 +21,14 @@ public class SpawnSimEntity {
             if (!world.isRemote){
             Random rand = world.rand;
             ticks++;
-
-            List<EntityPlayer> players = world.playerEntities;
-            if (players.size() > 0) {
-                EntityPlayer player = players.get(0);
+                EntityPlayer player = event.player;
                 if (ticks/20 == 20) {
 
                     ticks = 0;
-                    if (Objects.requireNonNull(SaveSimData.get(event.player.world)).getUnemployed_sims().size() < 1) {
-                        EntitySim entity = new EntitySim(world);
 
+                    if (SaveSimData.get(world).getUnemployedSims(SaveSimData.get(world).getPlayerFaction(player.getUniqueID())).size() < 1) {
+                        EntitySim entity = new EntitySim(world);
+                        entity.setFactionid(SaveSimData.get(world).getPlayerFaction(event.player.getUniqueID()));
                         double entityx = player.posX + rand.nextInt(11)-5;
                         double entityz = player.posZ + rand.nextInt(11)-5;
                         int height = world.getHeight((int)entityx,(int)entityz);
@@ -49,4 +43,4 @@ public class SpawnSimEntity {
 
         }}
     }
-}}
+}

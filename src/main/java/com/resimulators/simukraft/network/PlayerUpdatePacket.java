@@ -14,14 +14,20 @@ public class PlayerUpdatePacket implements IMessage {
     Set<UUID> unemployedsim;
     int unemployedsize;
     float credits;
-
+    long factionid;
     public PlayerUpdatePacket(){}
-    public PlayerUpdatePacket(Set<UUID> totalsims, Set<UUID> unemployedsims, float credits) {
+    public PlayerUpdatePacket(Set<UUID> totalsims, Set<UUID> unemployedsims, float credits,long factionid) {
         this.totalsim = totalsims;
         this.unemployedsim = unemployedsims;
         this.credits = credits;
+        this.factionid = factionid;
+        if (totalsims != null && unemployedsims != null){
         this.totalsimsize = totalsim.size();
         this.unemployedsize = unemployedsim.size();
+    }else{
+            this.totalsimsize = 0;
+            this.unemployedsize = 0;
+        }
     }
 
     @Override
@@ -38,6 +44,7 @@ public class PlayerUpdatePacket implements IMessage {
             unemployedsim.add(UUID.fromString(ByteBufUtils.readUTF8String(bytebuf)));
         }
         this.credits = bytebuf.readFloat();
+        this.factionid = bytebuf.readLong();
     }
 
     @Override
@@ -47,10 +54,12 @@ public class PlayerUpdatePacket implements IMessage {
             ByteBufUtils.writeUTF8String(bytebuf, sim.toString());
         }
         bytebuf.writeInt(unemployedsize);
+        System.out.println("unemployed sims " + unemployedsim);
         for (UUID sim : unemployedsim) {
             ByteBufUtils.writeUTF8String(bytebuf, sim.toString());
         }
         bytebuf.writeFloat(credits);
+        bytebuf.writeLong(factionid);
     }
 }
 

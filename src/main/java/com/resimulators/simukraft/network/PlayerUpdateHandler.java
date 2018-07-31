@@ -17,15 +17,16 @@ public class PlayerUpdateHandler implements IMessageHandler<PlayerUpdatePacket, 
     @Override
     public IMessage onMessage(PlayerUpdatePacket message, MessageContext ctx) {
         IThreadListener mainThread = Minecraft.getMinecraft();
+        System.out.println("Faction: " + message.factionid);
+        Long uuid = message.factionid;
+
         mainThread.addScheduledTask(() -> {
-            if (SimEventHandler.getWorldSimData() == null) {
-                SimEventHandler.setWorldSimData(SaveSimData.get(Minecraft.getMinecraft().world));
-            }
+            SaveSimData.get(Minecraft.getMinecraft().world).addPlayertoFaction(Minecraft.getMinecraft().player.getUniqueID(),message.factionid);
             for (UUID id : message.totalsim) {
-                SimEventHandler.getWorldSimData().addSim(id);
+                SaveSimData.get(Minecraft.getMinecraft().world).addtotalSim(id,uuid);
             }
             for (UUID id : message.unemployedsim) {
-                SimEventHandler.getWorldSimData().setUnemployed_sims(id);
+                SaveSimData.get(Minecraft.getMinecraft().world).addUnemployedsim(id,uuid);
             }
             SimEventHandler.setCredits(message.credits);
         });

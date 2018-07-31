@@ -25,10 +25,10 @@ public class TileEntityDestroyed {
     public static void TileDestroy(BlockPos pos, WorldServer world) {
         ISimJob entity = (ISimJob) world.getTileEntity(pos);
         if (entity.getId() != null) {
-            SaveSimData.get(world).firedSim(entity.getId());
             EntitySim sim = (EntitySim) world.getEntityFromUuid(entity.getId());
+            SaveSimData.get(world).addUnemployedsim(entity.getId(),sim.getFactionId());
             sim.setProfession(0);
-            PacketHandler.INSTANCE.sendToAll(new FireSimPacket(entity.getId(), sim.getEntityId()));
+            SaveSimData.get(world).SendFactionPacket(new FireSimPacket(entity.getId(), sim.getEntityId()),sim.getFactionId());
             entity.setId(null);
         }
     }

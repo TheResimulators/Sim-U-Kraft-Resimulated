@@ -10,7 +10,7 @@ public class TileController extends TileEntity {
     private String type;
     private float rent;
     private int[] simMarker;
-    TileController(){}
+    public TileController(){}
 
 
     public void setOccupied(boolean occupied){

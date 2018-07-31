@@ -50,13 +50,10 @@ public class SimEventHandler {
         if (event.getEntity() instanceof EntitySim) {
 
             if (!world.isRemote) {
-
-                if (!data.getTotalSims().contains(event.getEntity().getUniqueID())) {
-                    UUID id = event.getEntity().getUniqueID();
-                    data.spawnedSim(id);
-
-                    PacketHandler.INSTANCE.sendToAll(new SimSpawnPacket(id));
-                }
+                System.out.println("faction " + ((EntitySim) event.getEntity()).getFactionId());
+                SaveSimData.get(world).addtotalSim(event.getEntity().getUniqueID(),((EntitySim) event.getEntity()).getFactionId());
+                SaveSimData.get(world).addUnemployedsim(event.getEntity().getUniqueID(),((EntitySim) event.getEntity()).getFactionId());
+                SaveSimData.get(world).SendFactionPacket(new SimSpawnPacket(event.getEntity().getUniqueID()),((EntitySim) event.getEntity()).getFactionId());
             }
         }
     }
@@ -69,8 +66,9 @@ public class SimEventHandler {
             if (!world.isRemote) {
                 UUID id = event.getEntity().getPersistentID();
                 int ids = event.getEntity().getEntityId();
-                data.simDied(id);
-                PacketHandler.INSTANCE.sendToAll(new SimDeathPacket(ids));
+                SaveSimData.get(world).removeTotalSim(event.getEntity().getUniqueID(),((EntitySim) event.getEntity()).getFactionId());
+                SaveSimData.get(world).removeUnemployedSim(event.getEntity().getUniqueID(),((EntitySim) event.getEntity()).getFactionId());
+                SaveSimData.get(event.getEntity().world).SendFactionPacket(new SimDeathPacket(ids),((EntitySim) event.getEntity()).getFactionId());
                 for (TileEntity entity : data.getJob_tiles()) {
                     ISimJob tile = (ISimJob) entity;
                     if (tile.getId() == id) {
@@ -79,7 +77,7 @@ public class SimEventHandler {
                         tile.setId(null);
                         tile.removeSim(ids);
 
-                        PacketHandler.INSTANCE.sendToAll(new HiredSimDeathPacket(entity.getPos().getX(), entity.getPos().getY(), entity.getPos().getZ(), ids));
+                        SaveSimData.get(event.getEntity().world).SendFactionPacket(new HiredSimDeathPacket(entity.getPos().getX(), entity.getPos().getY(), entity.getPos().getZ(), ids),((EntitySim) event.getEntity()).getFactionId());
                         return;
 
                     }

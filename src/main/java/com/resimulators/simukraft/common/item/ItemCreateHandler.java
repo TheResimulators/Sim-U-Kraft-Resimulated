@@ -13,6 +13,7 @@ import net.minecraft.client.gui.inventory.GuiCrafting;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.GuiScreenEvent;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
@@ -38,7 +39,6 @@ public class ItemCreateHandler {
             setItemCrafted(true);
             player = event.player;
             world = event.player.world;
-                Minecraft.getMinecraft().currentScreen.initGui();
         }
     }
 
@@ -46,19 +46,29 @@ public class ItemCreateHandler {
     @SubscribeEvent
     public static void OpenGui(GuiScreenEvent.InitGuiEvent event) {
         if (event.getGui() instanceof GuiCrafting) {
-            if (itemCrafted && !SaveSimData.get(world).isEnabled(Minecraft.getMinecraft().player.getUniqueID())) {
                 if (!event.getButtonList().contains(sim)) {
                     int xpos = ((GuiCrafting) event.getGui()).getGuiLeft() + ((GuiCrafting) event.getGui()).getXSize() / 2 - 30;
                     int ypos = ((GuiCrafting) event.getGui()).getGuiTop() - 20;
                     event.getButtonList().add(sim = new GuiButton(event.getButtonList().size(), xpos, ypos, 60, 20, "Sim_U_Kraft"));
-    }}}}
+                }
+                if (!itemCrafted)
+                {
+                    event.getButtonList().get(sim.id).enabled = false;
+                    event.getButtonList().get(sim.id).visible = false;
+                }
+            }
+        }
 
     @SubscribeEvent
     public static void Buttonpressed(GuiScreenEvent.ActionPerformedEvent event) {
         if (event.getButton() == sim)
-            if (itemCrafted && !SaveSimData.get(world).isEnabled(Minecraft.getMinecraft().player.getUniqueID()))
-            {
+            if (itemCrafted && !SaveSimData.get(world).isEnabled(Minecraft.getMinecraft().player.getUniqueID())) {
                 PacketHandler.INSTANCE.sendToServer(new StartingGuiPacket());
             }
+        if (event.getGui() instanceof GuiCrafting)
+        {
+            event.getButtonList().get(sim.id).enabled = true;
+            event.getButtonList().get(sim.id).visible = true;
+        }
         }
     }
