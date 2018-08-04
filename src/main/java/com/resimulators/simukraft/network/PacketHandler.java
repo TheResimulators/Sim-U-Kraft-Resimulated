@@ -31,6 +31,8 @@ public class PacketHandler {
         INSTANCE.registerMessage(HungerHandler.class,HungerPacket.class,17,Side.CLIENT);
         INSTANCE.registerMessage(StartingGuiHandler.class,StartingGuiPacket.class,18,Side.SERVER);
         INSTANCE.registerMessage(ModeChangeHandler.class,ModeChangePacket.class,19,Side.SERVER);
+        INSTANCE.registerMessage(ItemRightClickedHandler.class,ItemRightClickedPacket.class,20,Side.SERVER);
+        INSTANCE.registerMessage(ItemClickedReturnHandler.class,ItemClickedReturnPacket.class,21,Side.CLIENT);
     }
 
 }

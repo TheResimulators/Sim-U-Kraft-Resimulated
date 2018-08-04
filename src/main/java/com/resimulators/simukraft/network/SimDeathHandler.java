@@ -15,6 +15,8 @@ public class SimDeathHandler implements IMessageHandler<SimDeathPacket, IMessage
         mainThread.addScheduledTask(() -> {
             int id = message.sims;
             EntitySim e = (EntitySim) Minecraft.getMinecraft().world.getEntityByID(id);
+            System.out.println("entity " + e);
+            System.out.println("entity long " + e.getFactionId());
             SaveSimData.get(Minecraft.getMinecraft().world).removeUnemployedSim(e.getUniqueID(),e.getFactionId());
             SaveSimData.get(Minecraft.getMinecraft().world).removeTotalSim(e.getUniqueID(),e.getFactionId());
         });

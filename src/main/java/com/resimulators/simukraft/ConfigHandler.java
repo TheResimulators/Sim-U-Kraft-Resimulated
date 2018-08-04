@@ -1,59 +1,47 @@
 package com.resimulators.simukraft;
 
 import com.google.common.collect.Lists;
+import jdk.nashorn.internal.ir.annotations.Ignore;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.config.ConfigCategory;
-import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.common.config.Property;
+import net.minecraftforge.common.config.*;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.io.File;
+import java.sql.Ref;
 import java.util.List;
 
-/**
- * Created by fabbe on 11/03/2018 - 6:52 PM.
- */
+@Config(modid=Reference.MOD_ID, name = Reference.MOD_ID)
 public class ConfigHandler {
-    public static ConfigHandler config = new ConfigHandler();
 
-    static Configuration configFile;
 
-    public static ConfigCategory general;
+    @Config.Name("Special Spawn Chance")
+    @Config.Comment("Decides from 1 out of X what chance special sims spawn with.")
+    public static int specialSpawn = 500;
 
-    public static void load (FMLPreInitializationEvent event) {
-        configFile = new Configuration(new File(event.getModConfigurationDirectory() + "\\simukraft\\", "simukraft.cfg"), Reference.CONFIGURATION_VERSION, false);
+    @Config.Name("Server Configs")
+    @Config.Comment("Only used for dedicated server")
+    public static ServerConfigs Server_Configs = new ServerConfigs();
 
-        MinecraftForge.EVENT_BUS.register(config);
+    @Mod.EventBusSubscriber(modid =Reference.MOD_ID)
+    public static class ConfigEvents {
 
-        syncConfig();
+        @SubscribeEvent
+        public static void ChangeEvent(ConfigChangedEvent.OnConfigChangedEvent event) {
+            if (event.getModID().equals(Reference.MOD_ID)) {
+                ConfigManager.sync(Reference.MOD_ID, Config.Type.INSTANCE);
+            }
+        }
+
     }
-
-    @SubscribeEvent
-    public void update(ConfigChangedEvent.OnConfigChangedEvent event) {
-        if (event.getModID().equals(Reference.MOD_ID)) {
-            syncConfig();
-        }
-    }
-
-    public static void syncConfig() {
-        Property prop;
-
-        /* General */
-        {
-            String cat = "General";
-            List<String> propOrder = Lists.newArrayList();
-            general = configFile.getCategory(cat);
-
-            prop = configFile.get(cat, "Special Sim Spawn Chance", ConfigValues.specialSimSpawnChance);
-            prop.setComment("Decides from 1 out of X what chance special sims spawn with.");
-            ConfigValues.specialSimSpawnChance = prop.getInt();
-            propOrder.add(prop.getName());
-        }
-
-        if(configFile.hasChanged()) {
-            configFile.save();
-        }
+    @Ignore
+    public static class ServerConfigs{
+        @Config.Name("Server Mode")
+        @Config.Comment("used to set the mode of the mod on a dedicated server\n" +
+                "-1: Disabled\n 1: Survival\n 2: Creative\n Default is -1")
+        public int mode = -1;
     }
 }
+

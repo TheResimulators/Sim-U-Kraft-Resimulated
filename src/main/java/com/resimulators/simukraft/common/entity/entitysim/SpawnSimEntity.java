@@ -29,6 +29,7 @@ public class SpawnSimEntity {
                     if (SaveSimData.get(world).getUnemployedSims(SaveSimData.get(world).getPlayerFaction(player.getUniqueID())).size() < 1) {
                         EntitySim entity = new EntitySim(world);
                         entity.setFactionid(SaveSimData.get(world).getPlayerFaction(event.player.getUniqueID()));
+                        System.out.println("entity faction id " + entity.getFactionId());
                         double entityx = player.posX + rand.nextInt(11)-5;
                         double entityz = player.posZ + rand.nextInt(11)-5;
                         int height = world.getHeight((int)entityx,(int)entityz);

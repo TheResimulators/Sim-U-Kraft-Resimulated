@@ -29,7 +29,6 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
  */
 public class CommonProxy {
     public void preInit(FMLPreInitializationEvent event) {
-        ConfigHandler.load(event);
         NameStorage.init();
         SpecialNameStorage.init();
         ModFluids.init();

@@ -66,6 +66,7 @@ public class SimEventHandler {
             if (!world.isRemote) {
                 UUID id = event.getEntity().getPersistentID();
                 int ids = event.getEntity().getEntityId();
+                System.out.println("sim death faction id " + ((EntitySim) event.getEntity()).getFactionId());
                 SaveSimData.get(world).removeTotalSim(event.getEntity().getUniqueID(),((EntitySim) event.getEntity()).getFactionId());
                 SaveSimData.get(world).removeUnemployedSim(event.getEntity().getUniqueID(),((EntitySim) event.getEntity()).getFactionId());
                 SaveSimData.get(event.getEntity().world).SendFactionPacket(new SimDeathPacket(ids),((EntitySim) event.getEntity()).getFactionId());

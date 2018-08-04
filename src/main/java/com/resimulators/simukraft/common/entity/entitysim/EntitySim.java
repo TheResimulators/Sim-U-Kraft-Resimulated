@@ -1,20 +1,16 @@
 package com.resimulators.simukraft.common.entity.entitysim;
 
 import com.mojang.authlib.GameProfile;
-import com.resimulators.simukraft.ConfigValues;
+import com.resimulators.simukraft.ConfigHandler;
 import com.resimulators.simukraft.GuiHandler;
 import com.resimulators.simukraft.SimUKraft;
 import com.resimulators.simukraft.common.entity.ai.AISimBuild;
 import com.resimulators.simukraft.common.entity.ai.AISimChildPlay;
 import com.resimulators.simukraft.common.entity.ai.AISimEat;
 import com.resimulators.simukraft.common.entity.player.SaveSimData;
-import com.resimulators.simukraft.common.tileentity.TileFarm;
 import com.resimulators.simukraft.common.tileentity.structure.Structure;
 import com.resimulators.simukraft.init.ModItems;
 import com.resimulators.simukraft.network.HungerPacket;
-import com.resimulators.simukraft.network.PacketHandler;
-import javafx.scene.Parent;
-import net.minecraft.block.Block;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.item.EntityItem;
@@ -32,19 +28,15 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNavigateGround;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.FoodStats;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
@@ -384,7 +376,7 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
     @Override
     public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata) {
         IEntityLivingData livingData = super.onInitialSpawn(difficulty, livingdata);
-        this.setStaff(randomizeBooleanWithChance(ConfigValues.specialSimSpawnChance));
+        this.setStaff(randomizeBooleanWithChance(ConfigHandler.specialSpawn));
         this.setProfession(rand.nextInt(2)); //TODO: add more professions.
 
         if (this.getStaff()) {

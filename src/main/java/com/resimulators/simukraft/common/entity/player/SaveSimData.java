@@ -99,6 +99,8 @@ public class SaveSimData extends WorldSavedData {
 
     public void addUnemployedsim(UUID uuid,long longid){
         Set<UUID> unemployedsims = Unemployed_sims.get(longid);
+        System.out.println("unemployed sims " + unemployedsims);
+        System.out.println("uuid " + uuid);
         if (unemployedsims == null){
             unemployedsims = new HashSet<>();
         }
@@ -116,7 +118,11 @@ public class SaveSimData extends WorldSavedData {
     }
 
     public void removeUnemployedSim(UUID uuid,long longid){
+        System.out.println(Unemployed_sims);
+        System.out.println("long "+ longid);
         Set<UUID> unemployedsims = Unemployed_sims.get(longid);
+        System.out.println("unemployed sims " + unemployedsims);
+        System.out.println("uuid " + uuid);
         unemployedsims.remove(uuid);
         Unemployed_sims.put(longid,unemployedsims);
         markDirty();
@@ -180,6 +186,8 @@ public class SaveSimData extends WorldSavedData {
         return mode.get(id);
     }
 
+    public Map<UUID,Integer> getModeMap(){return mode;}
+
     public void setMode(UUID id,int mode)
     {
         this.mode.put(id,mode);
@@ -207,11 +215,8 @@ public class SaveSimData extends WorldSavedData {
             }
         }
         for (int i = 0;i < EnabledList.tagCount();i++){
-            System.out.println("enabled list " + EnabledList.tagCount());
             NBTTagCompound enabled = EnabledList.getCompoundTagAt(i);
-            System.out.println("tags " + enabled.getString("uuid") + " " + enabled.getBoolean("enable") );
             setEnabled(UUID.fromString(enabled.getString("uuid")),enabled.getBoolean("enable"));
-            System.out.println("is player enabled " + isEnabled(enabled.getUniqueId("uuid")));
         }
         System.out.println("enabled " + enables);
 
