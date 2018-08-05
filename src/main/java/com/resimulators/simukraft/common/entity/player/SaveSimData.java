@@ -4,6 +4,7 @@ import com.resimulators.simukraft.Reference;
 import com.resimulators.simukraft.common.interfaces.ISimJob;
 import com.resimulators.simukraft.network.PacketHandler;
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -17,6 +18,7 @@ import net.minecraft.world.storage.WorldSavedData;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.relauncher.Side;
 import scala.collection.immutable.Stream;
 
 import java.util.*;
@@ -118,11 +120,8 @@ public class SaveSimData extends WorldSavedData {
     }
 
     public void removeUnemployedSim(UUID uuid,long longid){
-        System.out.println(Unemployed_sims);
-        System.out.println("long "+ longid);
+        System.out.println("long id that was sent as parameter to remove unemployed sim " + longid);
         Set<UUID> unemployedsims = Unemployed_sims.get(longid);
-        System.out.println("unemployed sims " + unemployedsims);
-        System.out.println("uuid " + uuid);
         unemployedsims.remove(uuid);
         Unemployed_sims.put(longid,unemployedsims);
         markDirty();
@@ -131,7 +130,6 @@ public class SaveSimData extends WorldSavedData {
 
 
     public Set<UUID> getFactionPlayers(long longid){
-        System.out.println("revfaction list " + revfaction.get(longid));
         if (revfaction.get(longid) != null){
         return revfaction.get(longid);}
 
@@ -148,12 +146,23 @@ public class SaveSimData extends WorldSavedData {
 
     public void SendFactionPacket(IMessage message, long longid)
     {
+        if (FMLCommonHandler.instance().getSide() == Side.SERVER){
         Set<UUID> players = getFactionPlayers(longid);
         if (players != null){
+            System.out.println(players);
         for (UUID id:players){
+            if (FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayerByUUID(id) != null){
             EntityPlayerMP playerMP = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayerByUUID(id);
+            System.out.println("sending packet to player " + playerMP);
+            System.out.println("message being sent");
+            if (playerMP != null){
             PacketHandler.INSTANCE.sendTo(message,playerMP);
-        }}}
+                        }
+                    }
+                }
+            }
+        }
+    }
 
       public void addTile(TileEntity tile) {
         job_tiles.add(tile);
@@ -209,7 +218,13 @@ public class SaveSimData extends WorldSavedData {
             int y = tag.getInteger("Tile y");
             int z = tag.getInteger("Tile Z");
             BlockPos pos = new BlockPos(x, y, z);
-            TileEntity entity = Minecraft.getMinecraft().player.world.getTileEntity(pos);
+            TileEntity entity;
+            if (FMLCommonHandler.instance().getSide() == Side.CLIENT){
+            System.out.println("tile entity client " + Minecraft.getMinecraft().player.world.getTileEntity(pos));
+             entity = Minecraft.getMinecraft().player.world.getTileEntity(pos);}else{
+                System.out.println("tile entity server " + FMLCommonHandler.instance().getMinecraftServerInstance().getEntityWorld().getTileEntity(pos));
+                entity = FMLCommonHandler.instance().getMinecraftServerInstance().getEntityWorld().getTileEntity(pos);
+            }
             if (entity instanceof ISimJob) {
                 addTile(entity);
             }

@@ -32,21 +32,4 @@ public class ItemStart extends ItemBase {
         System.out.println("Item right clicked");
         PacketHandler.INSTANCE.sendToServer(new ItemRightClickedPacket(handIn,stack));}
         return ActionResult.newResult(EnumActionResult.SUCCESS, stack);}
-
-
-    public void OpenGui(UUID uuid, EnumHand handIn){
-        World worldIn = Minecraft.getMinecraft().world;
-        EntityPlayerSP playerIn = Minecraft.getMinecraft().player;
-        if (isdedicated){
-            if (!SaveSimData.get(worldIn).isEnabled(playerIn.getUniqueID())){
-                playerIn.openGui(SimUKraft.instance, GuiHandler.GUI_START, worldIn,0,0,0);
-                playerIn.getHeldItem(handIn).shrink(playerIn.getHeldItem(handIn).getCount());
-            }
-        }
-    }
-
-
-    public void setIsdedicated(boolean isdedicated){
-        this.isdedicated = isdedicated;
-    }
 }

@@ -8,18 +8,22 @@ import java.util.UUID;
 
 public class SimDeathPacket implements IMessage {
     int sims;
+    long factionid;
     public SimDeathPacket(){}
-    public SimDeathPacket(int id) {
+    public SimDeathPacket(int id,long factionid) {
         this.sims = id;
+        this.factionid = factionid;
     }
 
     @Override
     public void fromBytes(ByteBuf byteBuf) {
+        this.factionid = byteBuf.readLong();
         this.sims = byteBuf.readInt();
     }
 
     @Override
     public void toBytes(ByteBuf byteBuf) {
+        byteBuf.writeLong(factionid);
         byteBuf.writeInt(sims);
     }
 }

@@ -52,7 +52,7 @@ public class CommonProxy {
 
     public void onServerStarting(FMLServerStartingEvent event) {
         event.registerServerCommand(new CommandStructure());
-        RenderSim.initSkinService();
+
     }
 
     public void onServerStarted(FMLServerStartedEvent event) {

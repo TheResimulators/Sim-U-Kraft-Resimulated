@@ -34,7 +34,7 @@ public class GuiStart extends GuiScreen {
         }else{ drawCenteredString(fontRenderer,"the mode has already been chosen for the server",width / 2, height / 3 - 30, Color.WHITE.getRGB());}
         if (isDedicated){drawCenteredString(fontRenderer,"Press button to activate mod, you are playing on dedicated server because of this the server chooses the mode",width / 2, height / 3 - 30, Color.WHITE.getRGB());}
 
-
+        if (buttonList.contains(button1)){
         int buttonx = button1.x;
         int buttony = button1.y;
         String desc;
@@ -52,12 +52,13 @@ public class GuiStart extends GuiScreen {
                 drawHoveringText(desc, buttonx - fontRenderer.getStringWidth(desc) / 4, buttony - 10);
             }
 
-        }
+        }}
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
     @Override
     public void initGui() {
+        if (mc.getIntegratedServer() != null){
         System.out.println("server owner " + mc.getIntegratedServer().getServerOwner());
         System.out.println("player name " + Minecraft.getMinecraft().player.getName());
         if (mc.getIntegratedServer().getServerOwner().equals(Minecraft.getMinecraft().player.getName())){
@@ -65,7 +66,9 @@ public class GuiStart extends GuiScreen {
         buttonList.add(button3 = new GuiButton(3, width / 2 - button_width / 2, height / 3 + 90, button_width, button_height, "Creative"));
         super.initGui();
     }else{buttonList.add(button4 = new GuiButton(4,width/2-button_width/2,height/2-button_height/2,"Activate"));}
-    }
+    }else{
+            buttonList.add(button4 = new GuiButton(4,width/2-button_width/2,height/2-button_height/2,"Activate"));}
+         }
 
     @Override
     protected void actionPerformed(GuiButton button) throws IOException {

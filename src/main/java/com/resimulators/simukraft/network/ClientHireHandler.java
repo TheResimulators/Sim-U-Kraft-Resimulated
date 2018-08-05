@@ -6,8 +6,11 @@ import net.minecraft.util.IThreadListener;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ClientHireHandler implements IMessageHandler<ClientHirePacket,IMessage> {
+    @SideOnly(Side.CLIENT)
     @Override
     public IMessage onMessage(ClientHirePacket message, MessageContext messageContext) {
         IThreadListener mainthread = Minecraft.getMinecraft();

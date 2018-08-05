@@ -191,6 +191,7 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
         compound.setTag("Inventory", nbtTagList);
         compound.setInteger("hunger", this.hunger);
         compound.setLong("Factionid",Factionid);
+        System.out.println("writing faction id " + Factionid);
     }
 
     @Override
@@ -230,6 +231,7 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
 
         this.hunger = compound.getInteger("hunger");
         this.Factionid = compound.getLong("Factionid");
+        System.out.println("readed faction id " + Factionid);
         this.setCanPickUpLoot(true);
         this.setAdditionalAITasks();
     }

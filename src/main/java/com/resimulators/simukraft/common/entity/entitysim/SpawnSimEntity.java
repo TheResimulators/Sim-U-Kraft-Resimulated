@@ -8,11 +8,14 @@ import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
+import java.util.UUID;
 
 public class SpawnSimEntity {
-    int ticks;
-
+    int tick;
+    private Map<UUID,Integer> ticks= new HashMap<>();
     @SubscribeEvent
     public void Tick(TickEvent.PlayerTickEvent event) {
             World world = event.player.getEntityWorld();
@@ -20,11 +23,16 @@ public class SpawnSimEntity {
             if (event.phase == TickEvent.Phase.START){
             if (!world.isRemote){
             Random rand = world.rand;
-            ticks++;
                 EntityPlayer player = event.player;
-                if (ticks/20 == 20) {
-
-                    ticks = 0;
+                System.out.println("player " + player);
+                    if (ticks.get(player.getUniqueID()) == null){
+                         tick = 0;
+                    } else{
+                     tick = ticks.get(player.getUniqueID());}
+                    tick++;
+                    ticks.put(player.getUniqueID(),tick);
+                if (ticks.get(player.getUniqueID())/20 == 20) {
+                    ticks.put(player.getUniqueID(),0);
 
                     if (SaveSimData.get(world).getUnemployedSims(SaveSimData.get(world).getPlayerFaction(player.getUniqueID())).size() < 1) {
                         EntitySim entity = new EntitySim(world);

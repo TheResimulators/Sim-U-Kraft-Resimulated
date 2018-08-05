@@ -33,20 +33,11 @@ public class SimEventHandler {
         return credits;
     }
 
-    public static void setWorldSimData(SaveSimData datas) {
-        data = datas;
-    }
 
-
-    public static SaveSimData getWorldSimData() {
-        return data;
-    }
 
     @SubscribeEvent
     public void Sim_Spawn(LivingSpawnEvent event) {
         World world = event.getWorld();
-        data = SaveSimData.get(world);
-
         if (event.getEntity() instanceof EntitySim) {
 
             if (!world.isRemote) {
@@ -69,8 +60,8 @@ public class SimEventHandler {
                 System.out.println("sim death faction id " + ((EntitySim) event.getEntity()).getFactionId());
                 SaveSimData.get(world).removeTotalSim(event.getEntity().getUniqueID(),((EntitySim) event.getEntity()).getFactionId());
                 SaveSimData.get(world).removeUnemployedSim(event.getEntity().getUniqueID(),((EntitySim) event.getEntity()).getFactionId());
-                SaveSimData.get(event.getEntity().world).SendFactionPacket(new SimDeathPacket(ids),((EntitySim) event.getEntity()).getFactionId());
-                for (TileEntity entity : data.getJob_tiles()) {
+                SaveSimData.get(event.getEntity().world).SendFactionPacket(new SimDeathPacket(ids,((EntitySim) event.getEntity()).getFactionId()),((EntitySim) event.getEntity()).getFactionId());
+                for (TileEntity entity : SaveSimData.get(world).getJob_tiles()) {
                     ISimJob tile = (ISimJob) entity;
                     if (tile.getId() == id) {
 

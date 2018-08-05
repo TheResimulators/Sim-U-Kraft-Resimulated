@@ -21,9 +21,7 @@ public class HudGui extends Gui {
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
     public void Renderstats(RenderGameOverlayEvent.Post event) {
-        //System.out.println((SimEventHandler.getWorldSimData().isEnabled(Minecraft.getMinecraft().player.getUniqueID())));
-        if (SimEventHandler.getWorldSimData() != null){
-            if (SimEventHandler.getWorldSimData().isEnabled(Minecraft.getMinecraft().player.getUniqueID())){
+        if (SaveSimData.get(Minecraft.getMinecraft().world) != null){
                 credits = SimEventHandler.getCredits();
                 if (event.getType() == RenderGameOverlayEvent.ElementType.SUBTITLES){
                     Minecraft mc = Minecraft.getMinecraft();
@@ -44,4 +42,4 @@ public class HudGui extends Gui {
             }
         }
     }
-}
+
