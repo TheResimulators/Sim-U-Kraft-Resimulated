@@ -23,7 +23,10 @@ public class HudGui extends Gui {
     public void Renderstats(RenderGameOverlayEvent.Post event) {
         if (SaveSimData.get(Minecraft.getMinecraft().world) != null){
                 credits = SimEventHandler.getCredits();
-                if (event.getType() == RenderGameOverlayEvent.ElementType.SUBTITLES){
+                if (event.getType() == RenderGameOverlayEvent.ElementType.TEXT){
+                    if (Minecraft.getMinecraft().gameSettings.showDebugInfo)return;
+                    if (SaveSimData.get(Minecraft.getMinecraft().world).isMode(Minecraft.getMinecraft().player.getUniqueID()) != null){
+                    if (SaveSimData.get(Minecraft.getMinecraft().world).isMode(Minecraft.getMinecraft().player.getUniqueID()) != -1){
                     Minecraft mc = Minecraft.getMinecraft();
                     sim = SaveSimData.get(Minecraft.getMinecraft().world).getTotalSims(SaveSimData.get(Minecraft.getMinecraft().world).getPlayerFaction(Minecraft.getMinecraft().player.getUniqueID()));
                     if (sim == null) {
@@ -40,6 +43,6 @@ public class HudGui extends Gui {
                     drawString(mc.fontRenderer, "Credits: " + credits, 1, 11, Color.WHITE.getRGB());
                 }
             }
-        }
-    }
+        }}
+    }}
 

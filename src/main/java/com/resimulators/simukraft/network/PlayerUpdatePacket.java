@@ -15,8 +15,9 @@ public class PlayerUpdatePacket implements IMessage {
     int unemployedsize;
     float credits;
     long factionid;
+    int mode;
     public PlayerUpdatePacket(){}
-    public PlayerUpdatePacket(Set<UUID> totalsims, Set<UUID> unemployedsims, float credits,long factionid) {
+    public PlayerUpdatePacket(Set<UUID> totalsims, Set<UUID> unemployedsims, float credits,long factionid,int mode) {
         this.totalsim = totalsims;
         this.unemployedsim = unemployedsims;
         this.credits = credits;
@@ -24,6 +25,7 @@ public class PlayerUpdatePacket implements IMessage {
         if (totalsims != null && unemployedsims != null){
         this.totalsimsize = totalsim.size();
         this.unemployedsize = unemployedsim.size();
+        this.mode = mode;
     }else{
             this.totalsimsize = 0;
             this.unemployedsize = 0;
@@ -32,6 +34,7 @@ public class PlayerUpdatePacket implements IMessage {
 
     @Override
     public void fromBytes(ByteBuf bytebuf) {
+        this.mode = bytebuf.readInt();
         this.totalsimsize = bytebuf.readInt();
         totalsim = new HashSet<>(totalsimsize);
         for (int i = 0; i < this.totalsimsize; i++) {
@@ -49,6 +52,7 @@ public class PlayerUpdatePacket implements IMessage {
 
     @Override
     public void toBytes(ByteBuf bytebuf) {
+        bytebuf.writeInt(mode);
         bytebuf.writeInt(totalsimsize);
         for (UUID sim : totalsim) {
             ByteBufUtils.writeUTF8String(bytebuf, sim.toString());

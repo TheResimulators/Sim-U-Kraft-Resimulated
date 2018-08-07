@@ -20,7 +20,7 @@ public class PlayerJoinDataEvent {
         if (!event.player.world.isRemote) {
             Long factionid = SaveSimData.get(event.player.world).getPlayerFaction(event.player.getUniqueID());
             System.out.println("faction id " + factionid);
-            PacketHandler.INSTANCE.sendTo(new PlayerUpdatePacket(SaveSimData.get(event.player.world).getTotalSims(factionid), SaveSimData.get(event.player.world).getUnemployedSims(factionid), SimEventHandler.getCredits(),factionid), (EntityPlayerMP) event.player);
+            PacketHandler.INSTANCE.sendTo(new PlayerUpdatePacket(SaveSimData.get(event.player.world).getTotalSims(factionid), SaveSimData.get(event.player.world).getUnemployedSims(factionid), SimEventHandler.getCredits(),factionid,SaveSimData.get(event.player.world).isMode(event.player.getUniqueID())), (EntityPlayerMP) event.player);
         }
     }
 }

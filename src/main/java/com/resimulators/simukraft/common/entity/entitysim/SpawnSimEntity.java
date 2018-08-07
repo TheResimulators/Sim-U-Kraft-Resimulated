@@ -19,37 +19,40 @@ public class SpawnSimEntity {
     @SubscribeEvent
     public void Tick(TickEvent.PlayerTickEvent event) {
             World world = event.player.getEntityWorld();
-            if (SaveSimData.get(world).isEnabled(event.player.getUniqueID())){
-            if (event.phase == TickEvent.Phase.START){
-            if (!world.isRemote){
-            Random rand = world.rand;
-                EntityPlayer player = event.player;
-                System.out.println("player " + player);
-                    if (ticks.get(player.getUniqueID()) == null){
-                         tick = 0;
-                    } else{
-                     tick = ticks.get(player.getUniqueID());}
-                    tick++;
-                    ticks.put(player.getUniqueID(),tick);
-                if (ticks.get(player.getUniqueID())/20 == 20) {
-                    ticks.put(player.getUniqueID(),0);
 
-                    if (SaveSimData.get(world).getUnemployedSims(SaveSimData.get(world).getPlayerFaction(player.getUniqueID())).size() < 1) {
-                        EntitySim entity = new EntitySim(world);
-                        entity.setFactionid(SaveSimData.get(world).getPlayerFaction(event.player.getUniqueID()));
-                        System.out.println("entity faction id " + entity.getFactionId());
-                        double entityx = player.posX + rand.nextInt(11)-5;
-                        double entityz = player.posZ + rand.nextInt(11)-5;
-                        int height = world.getHeight((int)entityx,(int)entityz);
-                        entity.setPosition(entityx,height,entityz);
-                        entity.onInitialSpawn(world.getDifficultyForLocation(new BlockPos(entity)), null);
-                        world.spawnEntity(entity);
-                        entity.setProfession(rand.nextInt(2));
-                        MinecraftForge.EVENT_BUS.post(new LivingSpawnEvent(entity,world,(float)entityx,height,(float)entityz));
+            if (event.phase == TickEvent.Phase.START){
+
+                if (SaveSimData.get(world).isMode(event.player.getUniqueID()) != null){
+                    if (!world.isRemote){
+                        System.out.println("players mode = " + SaveSimData.get(world).isMode(event.player.getUniqueID()));
+                    Random rand = world.rand;
+                        EntityPlayer player = event.player;
+                            if (ticks.get(player.getUniqueID()) == null){
+                                 tick = 0;
+                            } else{
+                             tick = ticks.get(player.getUniqueID());}
+                            tick++;
+                            ticks.put(player.getUniqueID(),tick);
+                            System.out.println("tick " + tick/20);
+                        if (ticks.get(player.getUniqueID())/20 > 5) {
+                            ticks.put(player.getUniqueID(),0);
+                            System.out.println("players unemployed sims " + SaveSimData.get(world).getUnemployedSims(SaveSimData.get(world).getPlayerFaction(player.getUniqueID())).size());
+                            if (SaveSimData.get(world).getUnemployedSims(SaveSimData.get(world).getPlayerFaction(player.getUniqueID())).size() < 1) {
+                                EntitySim entity = new EntitySim(world);
+                                entity.setFactionid(SaveSimData.get(world).getPlayerFaction(event.player.getUniqueID()));
+                                System.out.println("entity faction id " + entity.getFactionId());
+                                double entityx = player.posX + rand.nextInt(11)-5;
+                                double entityz = player.posZ + rand.nextInt(11)-5;
+                                int height = world.getHeight((int)entityx,(int)entityz);
+                                entity.setPosition(entityx,height,entityz);
+                                entity.onInitialSpawn(world.getDifficultyForLocation(new BlockPos(entity)), null);
+                                world.spawnEntity(entity);
+                                entity.setProfession(rand.nextInt(2));
+                                MinecraftForge.EVENT_BUS.post(new LivingSpawnEvent(entity,world,(float)entityx,height,(float)entityz));
+                        }
                     }
                 }
             }
-
-        }}
+        }
     }
 }

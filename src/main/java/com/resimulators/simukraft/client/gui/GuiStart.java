@@ -63,11 +63,11 @@ public class GuiStart extends GuiScreen {
         System.out.println("player name " + Minecraft.getMinecraft().player.getName());
         if (mc.getIntegratedServer().getServerOwner().equals(Minecraft.getMinecraft().player.getName())){
         buttonList.add(button1 = new GuiButton(1, width / 2 - button_width / 2, height / 3 - 10, button_width, button_height, "Survival"));
-        buttonList.add(button3 = new GuiButton(3, width / 2 - button_width / 2, height / 3 + 90, button_width, button_height, "Creative"));
+        buttonList.add(button3 = new GuiButton(3, width / 2 - button_width / 2, height / 3 + 40, button_width, button_height, "Creative"));
         super.initGui();
-    }else{buttonList.add(button4 = new GuiButton(4,width/2-button_width/2,height/2-button_height/2,"Activate"));}
+    }else{buttonList.add(button4 = new GuiButton(4,width/2-button_width/2,height/2-button_height/2,button_width,button_height,"Activate"));}
     }else{
-            buttonList.add(button4 = new GuiButton(4,width/2-button_width/2,height/2-button_height/2,"Activate"));}
+            buttonList.add(button4 = new GuiButton(4,width/2-button_width/2,height/2-button_height/2,button_width,button_height,"Activate"));}
          }
 
     @Override
@@ -80,10 +80,10 @@ public class GuiStart extends GuiScreen {
                 Gamemode = 1;
             }
             case 4: {
-
-                    Gamemode = serverMode;
+                Gamemode = serverMode;
                 }
             }
+            SaveSimData.get(Minecraft.getMinecraft().world).setMode(Minecraft.getMinecraft().player.getUniqueID(),Gamemode);
         PacketHandler.INSTANCE.sendToServer(new ModeChangePacket(Minecraft.getMinecraft().player.getUniqueID(),Gamemode));
 
         Minecraft.getMinecraft().displayGuiScreen(null);

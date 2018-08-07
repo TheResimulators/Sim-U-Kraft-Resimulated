@@ -21,6 +21,7 @@ public class PlayerUpdateHandler implements IMessageHandler<PlayerUpdatePacket, 
         Long uuid = message.factionid;
 
         mainThread.addScheduledTask(() -> {
+            SaveSimData.get(Minecraft.getMinecraft().world).setMode(Minecraft.getMinecraft().player.getUniqueID(),message.mode);
             SaveSimData.get(Minecraft.getMinecraft().world).addPlayertoFaction(Minecraft.getMinecraft().player.getUniqueID(),message.factionid);
             for (UUID id : message.totalsim) {
                 SaveSimData.get(Minecraft.getMinecraft().world).addtotalSim(id,uuid);
