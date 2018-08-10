@@ -8,7 +8,7 @@ item.simukraft:fries.name=Fries
 item.simukraft:debug.name=Debug Stick
 item.simukraft:blueprint.name=Blueprint
 item.simukraft:planning_sheet.name=Planning Sheet
-item.simukraft:starting item.name=Village Founder
+item.simukraft:village_founder.name=Village Founder
 
 item.simukraft:granules.copper.name=Copper Granules
 item.simukraft:granules.gold.name=Gold Granules
