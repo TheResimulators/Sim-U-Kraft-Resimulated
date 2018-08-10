@@ -1,0 +1,64 @@
+#############################################################################
+#                                  Items                                    #
+#############################################################################
+item.simukraft:burger.name=Burger
+item.simukraft:cheese.name=Fromage
+item.simukraft:cheeseburger.name=Cheeseburger
+item.simukraft:fries.name=Frites
+item.simukraft:debug.name=Debug Stick
+item.simukraft:blueprint.name=Plan
+item.simukraft:planning_sheet.name=Feuille de Planification
+
+item.simukraft:granules.copper.name=Poudre de Cuivre
+item.simukraft:granules.gold.name=Poudre d'or
+item.simukraft:granules.iron.name=Poudre de Fer
+item.simukraft:granules.tin.name=Poudre d'étain
+
+#############################################################################
+#                                  Blocks                                   #
+#############################################################################
+tile.simukraft:cheese_block.name=Bloc de Fromage
+tile.simukraft:composite_brick.name=Brique Composite
+tile.simukraft:city_box.name=City Box
+tile.simukraft:constructor_box.name=Constructor Box
+tile.simukraft:control_box.name=Control Box
+tile.simukraft:milk_block.name=Lait
+tile.simukraft:farm_box.name=Farm Box
+tile.simukraft:mine_box.name=Mine Box
+tile.simukraft:rainbow_light.name=Lampe Arc-en-ciel
+
+tile.simukraft:light.white.name=Lampe Blanche
+tile.simukraft:light.orange.name=Lampe Orange
+tile.simukraft:light.green.name=Lampe Verte
+tile.simukraft:light.purple.name=Lampe Violette
+tile.simukraft:light.red.name=Lampe Rouge
+tile.simukraft:light.yellow.name=Lampe Jaune
+tile.simukraft:light.blue.name=Lampe Bleue
+
+#############################################################################
+#                                 Entities                                  #
+#############################################################################
+entity.sim.name=Sim
+
+#############################################################################
+#                               Advancements                                #
+#############################################################################
+
+#############################################################################
+#                                    GUI                                    #
+#############################################################################
+#CreativeTabs
+itemGroup.simukraft=Sim-U-Kraft
+container.SimContainer=Inventaire du Sim
+#############################################################################
+#                                  Commands                                 #
+#############################################################################
+commands.simukraft:structure.usage=/structure <sauvegarder | aide | charger> ...
+commands.simukraft:structure.save.usage=/structure save <x1 | nom> [<y1> <z1> <x2> <y2> <z2> <nom>]
+commands.simukraft:structure.save.fileexists=Ce fichier existe déja. Veuillez changer de nom.
+commands.simukraft:structure.load.usage=/structure load <nom>
+commands.simukraft:structure.list.usage=/structure list
+
+#############################################################################
+#                               Miscellaneous                               #
+#############################################################################
