@@ -2,6 +2,7 @@ package com.resimulators.simukraft.network;
 
 import com.resimulators.simukraft.GuiHandler;
 import com.resimulators.simukraft.SimUKraft;
+import com.resimulators.simukraft.client.gui.GuiStart;
 import com.resimulators.simukraft.common.entity.player.SaveSimData;
 import ibxm.Player;
 import net.minecraft.client.Minecraft;
@@ -27,9 +28,12 @@ public class ItemClickedReturnHandler implements IMessageHandler<ItemClickedRetu
             EntityPlayerSP playerIn = Minecraft.getMinecraft().player;
             World worldIn = Minecraft.getMinecraft().world;
 
-            if (!SaveSimData.get(worldIn).isEnabled(playerIn.getUniqueID())){
+            if (SaveSimData.get(Minecraft.getMinecraft().world).isMode(Minecraft.getMinecraft().player.getUniqueID()) == -1){
                 playerIn.openGui(SimUKraft.instance, GuiHandler.GUI_START, worldIn,0,0,0);
-                playerIn.getHeldItem(handIn).shrink(playerIn.getHeldItem(handIn).getCount());
+                if (Minecraft.getMinecraft().currentScreen instanceof GuiStart){
+                ((GuiStart) Minecraft.getMinecraft().currentScreen).SetModeFactors(message.isdedicated,message.mode);}
+                //playerIn.getHeldItem(handIn).shrink(playerIn.getHeldItem(handIn).getCount());
+
             }
         });
         return null;

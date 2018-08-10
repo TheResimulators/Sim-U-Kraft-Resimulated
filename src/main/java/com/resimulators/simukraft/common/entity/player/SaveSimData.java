@@ -4,22 +4,18 @@ import com.resimulators.simukraft.Reference;
 import com.resimulators.simukraft.common.interfaces.ISimJob;
 import com.resimulators.simukraft.network.PacketHandler;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
 import net.minecraft.world.storage.MapStorage;
 import net.minecraft.world.storage.WorldSavedData;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.relauncher.Side;
-import scala.collection.immutable.Stream;
 
 import java.util.*;
 
@@ -101,8 +97,6 @@ public class SaveSimData extends WorldSavedData {
 
     public void addUnemployedsim(UUID uuid,long longid){
         Set<UUID> unemployedsims = Unemployed_sims.get(longid);
-        System.out.println("unemployed sims " + unemployedsims);
-        System.out.println("uuid " + uuid);
         if (unemployedsims == null){
             unemployedsims = new HashSet<>();
         }
@@ -112,7 +106,6 @@ public class SaveSimData extends WorldSavedData {
     }
 
     public void removeTotalSim(UUID uuid,long longid){
-        System.out.println("this has been called");
         Set<UUID> totalSims = getTotalSims(longid);
         totalSims.remove(uuid);
         Total_sims.put(longid,totalSims);
@@ -120,7 +113,6 @@ public class SaveSimData extends WorldSavedData {
     }
 
     public void removeUnemployedSim(UUID uuid,long longid){
-        System.out.println("long id that was sent as parameter to remove unemployed sim " + longid);
         Set<UUID> unemployedsims = Unemployed_sims.get(longid);
         unemployedsims.remove(uuid);
         Unemployed_sims.put(longid,unemployedsims);
@@ -146,19 +138,14 @@ public class SaveSimData extends WorldSavedData {
 
     public void SendFactionPacket(IMessage message, long longid)
     {
-        if (FMLCommonHandler.instance().getSide() == Side.SERVER){
+
         Set<UUID> players = getFactionPlayers(longid);
         if (players != null){
-            System.out.println(players);
         for (UUID id:players){
             if (FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayerByUUID(id) != null){
             EntityPlayerMP playerMP = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayerByUUID(id);
-            System.out.println("sending packet to player " + playerMP);
-            System.out.println("message being sent");
-            if (playerMP != null){
+
             PacketHandler.INSTANCE.sendTo(message,playerMP);
-                        }
-                    }
                 }
             }
         }
@@ -192,13 +179,13 @@ public class SaveSimData extends WorldSavedData {
 
     public Integer isMode(UUID id)
     {
+        mode.putIfAbsent(id, -1);
         return mode.get(id);
     }
 
     public Map<UUID,Integer> getModeMap(){return mode;}
 
-    public void setMode(UUID id,int mode)
-    {
+    public void setMode(UUID id,int mode) {
         this.mode.put(id,mode);
         markDirty();
     }
@@ -210,7 +197,7 @@ public class SaveSimData extends WorldSavedData {
         NBTTagList TotalSimList = nbt.getTagList("TotalSimsList",Constants.NBT.TAG_COMPOUND);
         NBTTagList UnemployedSimList = nbt.getTagList("UnemployedSimsList",Constants.NBT.TAG_COMPOUND);
         NBTTagList FactionList = nbt.getTagList("faction",Constants.NBT.TAG_COMPOUND);
-
+        NBTTagList ModeList = nbt.getTagList("Modes",Constants.NBT.TAG_COMPOUND);
 
         for (int i = 0; i < JobTiles.tagCount(); i++) {
             NBTTagCompound tag = JobTiles.getCompoundTagAt(i);
@@ -220,9 +207,7 @@ public class SaveSimData extends WorldSavedData {
             BlockPos pos = new BlockPos(x, y, z);
             TileEntity entity;
             if (FMLCommonHandler.instance().getSide() == Side.CLIENT){
-            System.out.println("tile entity client " + Minecraft.getMinecraft().player.world.getTileEntity(pos));
              entity = Minecraft.getMinecraft().player.world.getTileEntity(pos);}else{
-                System.out.println("tile entity server " + FMLCommonHandler.instance().getMinecraftServerInstance().getEntityWorld().getTileEntity(pos));
                 entity = FMLCommonHandler.instance().getMinecraftServerInstance().getEntityWorld().getTileEntity(pos);
             }
             if (entity instanceof ISimJob) {
@@ -233,7 +218,6 @@ public class SaveSimData extends WorldSavedData {
             NBTTagCompound enabled = EnabledList.getCompoundTagAt(i);
             setEnabled(UUID.fromString(enabled.getString("uuid")),enabled.getBoolean("enable"));
         }
-        System.out.println("enabled " + enables);
 
         for (int i = 0;i < TotalSimList.tagCount();i++){
          NBTTagCompound compound = TotalSimList.getCompoundTagAt(i);
@@ -247,7 +231,6 @@ public class SaveSimData extends WorldSavedData {
 
         for (int i = 0;i< UnemployedSimList.tagCount();i++){
             NBTTagCompound compound = TotalSimList.getCompoundTagAt(i);
-            System.out.println("reading unemployed sim compound " + compound + " " + i);
             long longid = compound.getLong("key");
             NBTTagList values = compound.getTagList("values", Constants.NBT.TAG_LIST);
             for (int x = 0;x<values.tagCount();x++){
@@ -258,12 +241,16 @@ public class SaveSimData extends WorldSavedData {
 
         for (int i = 0;i<FactionList.tagCount();i++){
             NBTTagCompound factions = FactionList.getCompoundTagAt(i);
-            System.out.println("faction nbt " + factions);
             UUID uuid = factions.getUniqueId("key");
             long longid = factions.getLong("value");
             faction.put(uuid,longid);
         }
-
+        for (int i = 0; i<ModeList.tagCount();i++){
+            NBTTagCompound mode = ModeList.getCompoundTagAt(i);
+            UUID uuid =UUID.fromString(mode.getString("uuid"));
+            int playermode = mode.getInteger(uuid.toString());
+            setMode(uuid,playermode);
+        }
     }
 
     @Override
@@ -284,17 +271,19 @@ public class SaveSimData extends WorldSavedData {
 
             }
             nbt.setTag("JobTiles", JobTiles);
+
             for (UUID uuid : mode.keySet()) {
                 NBTTagCompound modes = new NBTTagCompound();
+                modes.setString("uuid",uuid.toString());
                 modes.setInteger(uuid.toString(), mode.get(uuid));
                 modeList.appendTag(modes);
             }
             nbt.setTag("Modes", modeList);
+
             for (UUID uuid : enables.keySet()) {
                 NBTTagCompound enabled = new NBTTagCompound();
                 enabled.setBoolean("enable", enables.get(uuid));
                 enabled.setString("uuid", uuid.toString());
-                System.out.println("enabled " + enables.get(uuid));
                 enabledList.appendTag(enabled);
 
             }
@@ -337,7 +326,6 @@ public class SaveSimData extends WorldSavedData {
                 compound.setTag("values",values);
                 UnemployedSimsList.appendTag(compound);
             }
-            System.out.println("unemployted tag " + UnemployedSimsList);
             nbt.setTag("UnemployedSimsList",UnemployedSimsList);
             return nbt;
         }}

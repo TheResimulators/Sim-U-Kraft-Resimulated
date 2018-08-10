@@ -21,9 +21,15 @@ public class GuiStart extends GuiScreen {
     private GuiButton button4;
     private int Gamemode = -2;
     private boolean isDedicated;
-    private int serverMode;
+    private int serverMode = -1;
     private int button_width = 100;
     private int button_height = 20;
+
+
+    public void SetModeFactors(boolean isdedicated, int mode){
+        this.isDedicated = isdedicated;
+        serverMode = mode;
+    }
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
@@ -73,22 +79,28 @@ public class GuiStart extends GuiScreen {
     @Override
     protected void actionPerformed(GuiButton button) throws IOException {
         switch (button.id) {
-            case 1:{
+            case 1:
                 Gamemode = 0;
-            }
-            case 3: {
-                Gamemode = 1;
-            }
+                System.out.println("this should be printed if mode is wanted to be survival");
+
+            case 3:
+                if (Gamemode == -1) {
+                    Gamemode = 1;
+                    System.out.println("This should be only be called is gamemode is going to be creative");}
             case 4: {
-                Gamemode = serverMode;
+                System.out.println("servermode " + serverMode);
+                if (serverMode != -1) {
+                    if (Gamemode == -1) Gamemode = serverMode;
                 }
             }
+            System.out.println("gamemode is now " + Gamemode);
             SaveSimData.get(Minecraft.getMinecraft().world).setMode(Minecraft.getMinecraft().player.getUniqueID(),Gamemode);
         PacketHandler.INSTANCE.sendToServer(new ModeChangePacket(Minecraft.getMinecraft().player.getUniqueID(),Gamemode));
+        System.out.println("the mode for the player is now " + SaveSimData.get(Minecraft.getMinecraft().world).isMode(Minecraft.getMinecraft().player.getUniqueID()));
 
         Minecraft.getMinecraft().displayGuiScreen(null);
         super.actionPerformed(button);
-    }
+    }}
 
     @Override
     public boolean doesGuiPauseGame() {
@@ -96,9 +108,5 @@ public class GuiStart extends GuiScreen {
     }
 
 
-    public void SetModeFactors(boolean isdedicated, int mode){
-        this.isDedicated = isdedicated;
-        serverMode = mode;
-    }
 }
 

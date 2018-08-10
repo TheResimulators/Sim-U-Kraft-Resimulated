@@ -18,13 +18,15 @@ public class Rent_collection {
         if (!world.isRemote) {
             credits = SimEventHandler.getCredits();
             long time = world.getWorldTime() % 24000;
-            if (time == 0 && !rent_paid) {
+            System.out.println("time " + time );
+            if (time == 1 && !rent_paid) {
                 credits = credits + rent;
                 SimEventHandler.setCredits(credits);
                 PacketHandler.INSTANCE.sendToAll(new CreditsPacket());
                 rent_paid = true;
+                System.out.println("is this happening twice on the server");
             }
-            if (time != 0) {
+            if (time > 1) {
                 rent_paid = false;
             }
         }

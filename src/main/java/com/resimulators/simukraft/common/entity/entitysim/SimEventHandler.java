@@ -23,13 +23,13 @@ public class SimEventHandler {
     private static float credits = 10;
 
     public static float getCredits() {
-        //System.out.println(" getting credits that is equal to: " + credits);
+
         return credits;
     }
 
     public static float setCredits(float credit) {
         credits = credit;
-        //System.out.println(" set credits to" + credits);
+
         return credits;
     }
 
@@ -39,12 +39,13 @@ public class SimEventHandler {
     public void Sim_Spawn(LivingSpawnEvent event) {
         World world = event.getWorld();
         if (event.getEntity() instanceof EntitySim) {
-
             if (!world.isRemote) {
-                System.out.println("faction " + ((EntitySim) event.getEntity()).getFactionId());
+                if (!SaveSimData.get(world).getTotalSims(((EntitySim) event.getEntity()).getFactionId()).contains(event.getEntity().getUniqueID())){
                 SaveSimData.get(world).addtotalSim(event.getEntity().getUniqueID(),((EntitySim) event.getEntity()).getFactionId());
                 SaveSimData.get(world).addUnemployedsim(event.getEntity().getUniqueID(),((EntitySim) event.getEntity()).getFactionId());
+                System.out.println("sim spawn event called");
                 SaveSimData.get(world).SendFactionPacket(new SimSpawnPacket(event.getEntity().getUniqueID()),((EntitySim) event.getEntity()).getFactionId());
+                }
             }
         }
     }
@@ -57,7 +58,7 @@ public class SimEventHandler {
             if (!world.isRemote) {
                 UUID id = event.getEntity().getPersistentID();
                 int ids = event.getEntity().getEntityId();
-                System.out.println("sim death faction id " + ((EntitySim) event.getEntity()).getFactionId());
+
                 SaveSimData.get(world).removeTotalSim(event.getEntity().getUniqueID(),((EntitySim) event.getEntity()).getFactionId());
                 SaveSimData.get(world).removeUnemployedSim(event.getEntity().getUniqueID(),((EntitySim) event.getEntity()).getFactionId());
                 SaveSimData.get(event.getEntity().world).SendFactionPacket(new SimDeathPacket(ids,((EntitySim) event.getEntity()).getFactionId()),((EntitySim) event.getEntity()).getFactionId());

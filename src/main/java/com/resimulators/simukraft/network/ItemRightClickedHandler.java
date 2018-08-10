@@ -15,14 +15,24 @@ public class ItemRightClickedHandler implements IMessageHandler<ItemRightClicked
     private int mode;
     @Override
     public ItemClickedReturnPacket onMessage(ItemRightClickedPacket message, MessageContext ctx) {
-        if (ctx.getServerHandler().player.getServer().isDedicatedServer()){
-             mode = ConfigHandler.Server_Configs.mode;
-        }else if (!SaveSimData.get(ctx.getServerHandler().player.world).getModeMap().isEmpty()){
-            UUID uuid = SaveSimData.get(ctx.getServerHandler().player.world).getModeMap().keySet().iterator().next();
-            mode = SaveSimData.get(ctx.getServerHandler().player.world).getModeMap().get(uuid);
+        IThreadListener mainThread = ctx.getServerHandler().player.getServerWorld();
 
-        }
-        else{mode = -2;}
+
+        mainThread.addScheduledTask(() -> {
+            System.out.println("mode map " + SaveSimData.get(ctx.getServerHandler().player.world).getModeMap());
+            if (ctx.getServerHandler().player.getServer().isDedicatedServer()){
+                mode = ConfigHandler.Server_Configs.mode;
+            }
+            else if (!SaveSimData.get(ctx.getServerHandler().player.world).getModeMap().isEmpty()){
+                UUID uuid = SaveSimData.get(ctx.getServerHandler().player.world).getModeMap().keySet().iterator().next();
+                mode = SaveSimData.get(ctx.getServerHandler().player.world).getModeMap().get(uuid);
+            }
+
+            else{mode = -2;}
+            ctx.getServerHandler().player.getHeldItem(message.handin).shrink(1);
+            System.out.println("modes " + mode);
+        });
+
     return new ItemClickedReturnPacket(ctx.getServerHandler().player.getServer().isDedicatedServer(),message.handin,message.stack,mode);
     }
 }

@@ -40,9 +40,12 @@ public class HudGui extends Gui {
                     else{
                         unemployedsize = 0; }
                     drawString(mc.fontRenderer, "Population " + population + ", Unemployed sims: " + unemployedsize, 1, 1, Color.WHITE.getRGB());
+                    if (SaveSimData.get(Minecraft.getMinecraft().world).isMode(Minecraft.getMinecraft().player.getUniqueID()) == 0){
                     drawString(mc.fontRenderer, "Credits: " + credits, 1, 11, Color.WHITE.getRGB());
+                        }
+                    }
                 }
             }
-        }}
+        }
     }}
 
