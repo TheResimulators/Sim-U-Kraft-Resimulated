@@ -41,10 +41,7 @@ public class CommonProxy {
 
     public void init(FMLInitializationEvent event) {
         NetworkRegistry.INSTANCE.registerGuiHandler(SimUKraft.instance, new GuiHandler());
-
         ModOreDict.init();
-
-       // GameRegistry.registerTileEntity(TileFarm.class, Reference.MOD_ID + "TileFarm");
     }
 
     public void postInit(FMLPostInitializationEvent event) {

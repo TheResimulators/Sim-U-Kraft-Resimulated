@@ -26,6 +26,7 @@ public class ItemRightClickedHandler implements IMessageHandler<ItemRightClicked
             else if (!SaveSimData.get(ctx.getServerHandler().player.world).getModeMap().isEmpty()){
                 UUID uuid = SaveSimData.get(ctx.getServerHandler().player.world).getModeMap().keySet().iterator().next();
                 mode = SaveSimData.get(ctx.getServerHandler().player.world).getModeMap().get(uuid);
+                System.out.println("mode on server " + mode);
             }
 
             else{mode = -2;}

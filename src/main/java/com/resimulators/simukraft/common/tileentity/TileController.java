@@ -50,22 +50,23 @@ public class TileController extends TileEntity {
     public void readFromNBT(NBTTagCompound nbt) {
         super.readFromNBT(nbt);
         setOccupied(nbt.getBoolean("occupied"));
-        setType(nbt.getString("type"));
+        if (nbt.hasKey("type")) setType(nbt.getString("type"));
         setRent(nbt.getFloat("rent"));
-        setSimMarker(nbt.getIntArray("simmarker"));
+        if (nbt.hasKey("simmarker"))setSimMarker(nbt.getIntArray("simmarker"));
     }
 
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbt){
-        super.writeToNBT(nbt);
+
         nbt.setBoolean("occupied", occupied);
-        nbt.setString("type",type);
+        if (type != null) nbt.setString("type",type);
         nbt.setFloat("rent",rent);
-        nbt.setIntArray("simmarker",simMarker);
+        if (simMarker != null)nbt.setIntArray("simmarker",simMarker);
+        super.writeToNBT(nbt);
         return nbt;
     }
-
+/*
     @Override
     public NBTTagCompound getUpdateTag() {
         return writeToNBT(new NBTTagCompound());
@@ -81,5 +82,5 @@ public class TileController extends TileEntity {
     public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {
         readFromNBT(packet.getNbtCompound());
 
-    }
+    }*/
 }
