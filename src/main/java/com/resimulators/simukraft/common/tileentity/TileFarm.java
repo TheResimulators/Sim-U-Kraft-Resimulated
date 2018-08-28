@@ -130,7 +130,7 @@ public class TileFarm extends TileEntity implements ITickable,ISimJob {
         if (getHired()) {
             playerIn.openGui(SimUKraft.instance, GuiHandler.GUI_FARM, worldIn, pos.getX(), pos.getY(), pos.getZ());
         } else {
-            PacketHandler.INSTANCE.sendToServer(new GetSimIdPacket(pos.getX(), pos.getY(), pos.getZ()));
+            PacketHandler.INSTANCE.sendToServer(new GetSimIdPacket(pos.getX(), pos.getY(), pos.getZ(),GuiHandler.GUI_FARM));
 
         }
     }

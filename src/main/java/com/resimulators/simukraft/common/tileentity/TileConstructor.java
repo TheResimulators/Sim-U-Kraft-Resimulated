@@ -6,6 +6,7 @@ import com.resimulators.simukraft.common.interfaces.ISimJob;
 import com.resimulators.simukraft.common.tileentity.base.TileBuilderBase;
 import com.resimulators.simukraft.network.GetSimIdPacket;
 import com.resimulators.simukraft.network.PacketHandler;
+import com.resimulators.simukraft.network.ServerStructurePacket;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -29,9 +30,11 @@ public class TileConstructor extends TileBuilderBase implements ITickable,ISimJo
 	private List<String> sims_name = new ArrayList<>();
 	@Override
 	public void update() {
+
 		if (building)
-			if (isFinished())
-				building = false;
+			if (isFinished()){
+			    progress = 0;
+				building = false;}
 			else
 				build();
 	}
@@ -106,11 +109,11 @@ public class TileConstructor extends TileBuilderBase implements ITickable,ISimJo
 	}
 
 	public void openGui(World worldIn, BlockPos pos, EntityPlayer playerIn){
-	    System.out.println("hired: " + getHired());
 		if (getHired()) {
-			playerIn.openGui(SimUKraft.instance, GuiHandler.GUI_BUILDER, worldIn, pos.getX(), pos.getY(), pos.getZ());
+
+			PacketHandler.INSTANCE.sendToServer(new ServerStructurePacket(pos.getX(),pos.getY(),pos.getZ()));
 		} else{
-			PacketHandler.INSTANCE.sendToServer(new GetSimIdPacket(pos.getX(),pos.getY(),pos.getZ()));
+			PacketHandler.INSTANCE.sendToServer(new GetSimIdPacket(pos.getX(),pos.getY(),pos.getZ(),GuiHandler.GUI_HIRED));
 
 		}
 	}
@@ -120,7 +123,6 @@ public class TileConstructor extends TileBuilderBase implements ITickable,ISimJo
 	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 		setHired(nbt.getBoolean("hired"));
-		System.out.println("reading if hired: " + nbt.getBoolean("hired"));
 		professionint = nbt.getInteger("profession");
 		if (nbt.hasKey("id")) {
 			id = nbt.getUniqueId("id");
@@ -131,7 +133,6 @@ public class TileConstructor extends TileBuilderBase implements ITickable,ISimJo
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
         super.writeToNBT(nbt);
-	    System.out.println("Writing hire to nbt: " + getHired());
 		nbt.setBoolean("hired", getHired());
 		nbt.setInteger("profession", professionint);
 		if (id != null) {

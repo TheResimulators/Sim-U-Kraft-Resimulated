@@ -5,12 +5,13 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 
-public class TileController extends TileEntity {
+public class TileResidential extends TileEntity {
     private boolean occupied;
     private String type;
     private float rent;
     private int[] simMarker;
-    public TileController(){}
+    public TileResidential(){}
+    public TileResidential(String name){}
 
 
     public void setOccupied(boolean occupied){
