@@ -7,6 +7,7 @@ import com.resimulators.simukraft.SimUKraft;
 import com.resimulators.simukraft.common.entity.ai.AISimBuild;
 import com.resimulators.simukraft.common.entity.ai.AISimChildPlay;
 import com.resimulators.simukraft.common.entity.ai.AISimEat;
+import com.resimulators.simukraft.common.entity.ai.AISimGotoToWork;
 import com.resimulators.simukraft.common.entity.player.SaveSimData;
 import com.resimulators.simukraft.common.tileentity.structure.Structure;
 import com.resimulators.simukraft.init.ModItems;
@@ -74,7 +75,8 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
     private long Factionid;
     private boolean areAdditionalTasksSet;
     private int wealth;
-
+    //Job Common
+    private BlockPos jobBlockPos;
     private final InventoryBasic inventory;
 
     public EntitySim(World worldIn) {
@@ -104,7 +106,9 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
     }
 
     private void setProfessionAIs() {
+
         this.tasks.addTask(2, new AISimBuild(this));
+        this.tasks.addTask(3, new AISimGotoToWork(this));
     }
 
     private void setAdditionalAITasks() {
@@ -274,6 +278,8 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
                 return "Fisher";
             case 4:
                 return "Butcher";
+            case 5:
+                return "Cattle Farmer";
         }
 
         return "Oh well, this is awkward.";
@@ -433,7 +439,6 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
     }
 
     private boolean canSimPickupItem(Item item) {
-        //Used for specifying items Sim can pick up
         return false;
     }
 
@@ -528,14 +533,14 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
                 heal_counter = 0;
             }
         }
-        if (counter / 20 > 5) {
+        if (counter / 20 > 4) {
             if (hunger <= 0) {
                 this.attackEntityFrom(DamageSource.STARVE, 1.0f);
                 counter = 0;
                 hunger = 0;
             } else {
                 if (hunger > 0) {
-                    hunger -= 1;
+                    hunger --;
                     SaveSimData.get(this.world).SendFactionPacket(new HungerPacket(this.getFoodLevel(), this.getEntityId()),this.getFactionId());
                 }
 
@@ -557,6 +562,14 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
 
     public Long getFactionId(){
         return Factionid;
+    }
+
+    public void setJobBlockPos(BlockPos pos){
+        jobBlockPos = pos;
+    }
+
+    public BlockPos getJobBlockPos() {
+        return jobBlockPos;
     }
 }
 
