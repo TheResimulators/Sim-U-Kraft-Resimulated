@@ -23,7 +23,6 @@ public class AISimGotoToWork extends EntityAIBase {
         int xpos = rnd.nextInt(2)-1;
         int zpos = rnd.nextInt(2)-1;
         World world = FMLCommonHandler.instance().getMinecraftServerInstance().getEntityWorld();
-        System.out.println("start executing");
         boolean success = sim.getNavigator().tryMoveToXYZ(sim.getJobBlockPos().getX()+xpos,world.getHeight(sim.getJobBlockPos().getX(),sim.getJobBlockPos().getZ()),sim.getJobBlockPos().getZ()+zpos,0.7D);
         if (!success){
             if (tries == 0 ){
@@ -35,8 +34,6 @@ public class AISimGotoToWork extends EntityAIBase {
     }
     @Override
     public boolean shouldExecute() {
-        System.out.println("should eecute");
-
         return !sim.getLabeledProfession().equals("nitwit") && sim.getFoodLevel() > 10 && FMLCommonHandler.instance().getMinecraftServerInstance().getEntityWorld().isDaytime() && sim.getJobBlockPos() != null;
     }
 }

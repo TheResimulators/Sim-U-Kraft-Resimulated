@@ -208,12 +208,23 @@ public class SaveSimData extends WorldSavedData {
             BlockPos pos = new BlockPos(x, y, z);
             TileEntity entity;
             if (FMLCommonHandler.instance().getSide() == Side.CLIENT){
-             entity = Minecraft.getMinecraft().player.world.getTileEntity(pos);}else{
-                entity = FMLCommonHandler.instance().getMinecraftServerInstance().getEntityWorld().getTileEntity(pos);
+                System.out.println("pos " + pos);
+                System.out.println("tile entity " +Minecraft.getMinecraft().world.getTileEntity(pos));
+                if (Minecraft.getMinecraft().world.getTileEntity(pos) != null){
+                    entity = Minecraft.getMinecraft().player.world.getTileEntity(pos);
+                    if (entity instanceof ISimJob) {
+                        addTile(entity);
+                    }
+                }}
+                else{
+                if (FMLCommonHandler.instance().getMinecraftServerInstance().getEntityWorld().getTileEntity(pos) != null) {
+                    entity = FMLCommonHandler.instance().getMinecraftServerInstance().getEntityWorld().getTileEntity(pos);
+                    if (entity instanceof ISimJob) {
+                        addTile(entity);
+                    }
+                }
             }
-            if (entity instanceof ISimJob) {
-                addTile(entity);
-            }
+
         }
         for (int i = 0;i < EnabledList.tagCount();i++){
             NBTTagCompound enabled = EnabledList.getCompoundTagAt(i);

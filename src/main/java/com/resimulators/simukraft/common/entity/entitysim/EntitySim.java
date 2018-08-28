@@ -4,10 +4,7 @@ import com.mojang.authlib.GameProfile;
 import com.resimulators.simukraft.ConfigHandler;
 import com.resimulators.simukraft.GuiHandler;
 import com.resimulators.simukraft.SimUKraft;
-import com.resimulators.simukraft.common.entity.ai.AISimBuild;
-import com.resimulators.simukraft.common.entity.ai.AISimChildPlay;
-import com.resimulators.simukraft.common.entity.ai.AISimEat;
-import com.resimulators.simukraft.common.entity.ai.AISimGotoToWork;
+import com.resimulators.simukraft.common.entity.ai.*;
 import com.resimulators.simukraft.common.entity.player.SaveSimData;
 import com.resimulators.simukraft.common.tileentity.structure.Structure;
 import com.resimulators.simukraft.init.ModItems;
@@ -109,6 +106,7 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
 
         this.tasks.addTask(2, new AISimBuild(this));
         this.tasks.addTask(3, new AISimGotoToWork(this));
+        this.tasks.addTask(4,new AISimKillCow(this));
     }
 
     private void setAdditionalAITasks() {

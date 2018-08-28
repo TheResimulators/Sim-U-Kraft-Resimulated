@@ -19,12 +19,14 @@ public class AISimKillCow extends EntityAIBase {
     private EntitySim sim;
     private World world = FMLCommonHandler.instance().getMinecraftServerInstance().getEntityWorld();
     private Random rnd = new Random();
+    private boolean killing = false;
     public AISimKillCow(EntitySim sim ){
         this.sim = sim;
     }
     @Override
     public boolean shouldExecute() {
-        if (counter/20 == 5){
+        if (counter/20 == 5 && !killing){
+            killing = true;
             return true;
         }else{
             counter++;
@@ -41,6 +43,7 @@ public class AISimKillCow extends EntityAIBase {
             if (entity instanceof EntityCow){
                 cows.add((EntityCow) entity);
             }
+            System.out.println("is this working");
             EntityCow cow = cows.get(rnd.nextInt(cows.size()-1));
             sim.faceEntity(cow,0,0);
             cow.attackEntityFrom(DamageSource.causeMobDamage(sim),5);

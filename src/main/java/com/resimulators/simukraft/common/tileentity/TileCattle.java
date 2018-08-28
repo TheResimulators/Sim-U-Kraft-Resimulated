@@ -40,7 +40,7 @@ public class TileCattle extends TileEntity implements ITickable,ISimIndustrial {
      if (!world.isRemote) {
          if (getHired()) {
              if (world.getWorldTime() % 20 == 0) {
-                 int numCows = world.getEntitiesWithinAABB(EntityCow.class, new AxisAlignedBB(pos.getX() - 2, pos.getY(), pos.getZ() - 2, pos.getX() + 2, pos.getY() + 2, pos.getZ() + 2)).size();
+                 int numCows = world.getEntitiesWithinAABB(EntityCow.class, new AxisAlignedBB(pos.getX() - 3, pos.getY(), pos.getZ() - 3, pos.getX() + 3, pos.getY() + 2, pos.getZ() + 3)).size();
                  for (int i = numCows; i < 5; i++) {
                      EntityCow cow = new EntityCow(world);
                      cow.setPosition(pos.getX(), pos.getY() + 1, pos.getZ());
