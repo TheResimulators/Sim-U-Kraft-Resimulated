@@ -11,7 +11,6 @@ public class Rent_collection {
     boolean rent_paid = true;
     float credits;
 
-    @SubscribeEvent
     protected void Collect_Rent(TickEvent.WorldTickEvent event) {
         World world = event.world;
         float rent = 4;
