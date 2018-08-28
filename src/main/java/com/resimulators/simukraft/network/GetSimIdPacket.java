@@ -7,11 +7,13 @@ public class GetSimIdPacket implements IMessage {
     int x;
     int y;
     int z;
+    int guiid;
     public GetSimIdPacket(){}
-    public GetSimIdPacket(int x, int y, int z) {
+    public GetSimIdPacket(int x, int y, int z,int guiid) {
         this.x = x;
         this.y = y;
         this.z = z;
+        this.guiid = guiid;
     }
 
     @Override
@@ -19,6 +21,7 @@ public class GetSimIdPacket implements IMessage {
         x = bytebuf.readInt();
         y = bytebuf.readInt();
         z = bytebuf.readInt();
+        guiid = bytebuf.readInt();
     }
 
     @Override
@@ -26,5 +29,6 @@ public class GetSimIdPacket implements IMessage {
         bytebuf.writeInt(x);
         bytebuf.writeInt(y);
         bytebuf.writeInt(z);
+        bytebuf.writeInt(guiid);
     }
 }

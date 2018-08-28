@@ -13,6 +13,6 @@ public class GetSimIdHandler implements IMessageHandler<GetSimIdPacket,ReturnSim
         int y = message.y;
         int z = message.z;
         long playerid = SaveSimData.get(ctx.getServerHandler().player.world).getPlayerFaction(ctx.getServerHandler().player.getUniqueID());
-        return new ReturnSimIdPacket(world, x, y, z, SaveSimData.get(ctx.getServerHandler().player.world).getUnemployedSims(playerid).size(),ctx.getServerHandler().player.getUniqueID());
+        return new ReturnSimIdPacket(world, x, y, z, SaveSimData.get(ctx.getServerHandler().player.world).getUnemployedSims(playerid).size(),ctx.getServerHandler().player.getUniqueID(),message.guiid);
     }
 }

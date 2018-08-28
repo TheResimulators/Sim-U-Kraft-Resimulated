@@ -114,6 +114,7 @@ public class SaveSimData extends WorldSavedData {
 
     public void removeUnemployedSim(UUID uuid,long longid){
         Set<UUID> unemployedsims = Unemployed_sims.get(longid);
+        if (unemployedsims == null)return;
         unemployedsims.remove(uuid);
         Unemployed_sims.put(longid,unemployedsims);
         markDirty();

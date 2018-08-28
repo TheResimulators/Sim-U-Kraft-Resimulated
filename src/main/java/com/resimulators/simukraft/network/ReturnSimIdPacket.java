@@ -14,18 +14,20 @@ public class ReturnSimIdPacket implements IMessage {
     int y;
     int z;
     int amount;
+    int guiid;
     UUID playerid;
     WorldServer world;
     Set<Integer> sim_ids;
     List<String> sim_names = new ArrayList<>();
     public ReturnSimIdPacket(){}
-    public ReturnSimIdPacket(WorldServer world, int x, int y, int z, int amount,UUID playerid) {
+    public ReturnSimIdPacket(WorldServer world, int x, int y, int z, int amount,UUID playerid,int guiid) {
         this.world = world;
         this.x = x;
         this.y = y;
         this.z = z;
         this.amount = amount;
         this.playerid = playerid;
+        this.guiid = guiid;
     }
 
     @Override
@@ -40,6 +42,7 @@ public class ReturnSimIdPacket implements IMessage {
         this.x = bytebuf.readInt();
         this.y = bytebuf.readInt();
         this.z = bytebuf.readInt();
+        this.guiid = bytebuf.readInt();
     }
 
     @Override
@@ -56,5 +59,6 @@ public class ReturnSimIdPacket implements IMessage {
         bytebuf.writeInt(x);
         bytebuf.writeInt(y);
         bytebuf.writeInt(z);
+        bytebuf.writeInt(guiid);
     }
 }
