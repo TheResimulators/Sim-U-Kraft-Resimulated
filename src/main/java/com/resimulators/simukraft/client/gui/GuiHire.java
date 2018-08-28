@@ -1,6 +1,7 @@
 package com.resimulators.simukraft.client.gui;
 
 import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
+import com.resimulators.simukraft.common.interfaces.ISim;
 import com.resimulators.simukraft.common.interfaces.ISimJob;
 import com.resimulators.simukraft.network.HiringPacket;
 import com.resimulators.simukraft.network.PacketHandler;
@@ -35,7 +36,7 @@ public class GuiHire extends GuiScreen {
 
     public GuiHire(TileEntity tileEntity){
         this.tileEntity = tileEntity;
-        this.profession = ((ISimJob)tileEntity).getProfession();
+        this.profession = ((ISim)tileEntity).getProfession();
     }
 
     public void add_sim(int id) {
@@ -92,8 +93,8 @@ public class GuiHire extends GuiScreen {
         sims.clear();
         world = Minecraft.getMinecraft().world;
         int num = 0;
-        List<String> names = ((ISimJob)tileEntity).getnames();
-        for (int id: ((ISimJob)tileEntity).getSims())
+        List<String> names = ((ISim)tileEntity).getnames();
+        for (int id: ((ISim)tileEntity).getSims())
         {
             int xpos = pos*100+20+pos*5;
 
@@ -136,8 +137,8 @@ public class GuiHire extends GuiScreen {
         }
         if (button instanceof SimButton) {
             ((SimButton) button).clicked = true;
-            ((ISimJob)tileEntity).setHired(true);
-            PacketHandler.INSTANCE.sendToServer(new HiringPacket(((SimButton) button).simid,((ISimJob)tileEntity).getProfessionint()));
+            ((ISim)tileEntity).setHired(true);
+            PacketHandler.INSTANCE.sendToServer(new HiringPacket(((SimButton) button).simid,((ISim)tileEntity).getProfessionint(),tileEntity.getPos().getX(),tileEntity.getPos().getY(),tileEntity.getPos().getZ()));
             PacketHandler.INSTANCE.sendToServer(new UpdateJobIdPacket(((SimButton) button).simid, tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ()));
             mc.displayGuiScreen(null);
         }
