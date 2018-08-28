@@ -1,7 +1,8 @@
 package com.resimulators.simukraft.common.block;
 
 import com.resimulators.simukraft.common.block.base.BlockBase;
-import com.resimulators.simukraft.common.tileentity.TileController;
+import com.resimulators.simukraft.common.enums.enumStructure;
+import com.resimulators.simukraft.common.tileentity.TileCattle;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -23,10 +24,14 @@ public class BlockControlBox extends BlockBase implements ITileEntityProvider {
     public BlockControlBox(String name, CreativeTabs tab, Material blockMaterialIn, MapColor blockMapColorIn) {
         super(name, tab, blockMaterialIn, blockMapColorIn);
     }
+    public String name;
 
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        //TODO: implement logic
+        TileEntity entity = worldIn.getTileEntity(pos);
+        System.out.println("open");
+        if (worldIn.isRemote){
+        if (entity instanceof TileCattle)((TileCattle) entity).openGui(worldIn,pos,playerIn);}
         return false;
     }
 
@@ -37,6 +42,8 @@ public class BlockControlBox extends BlockBase implements ITileEntityProvider {
 
     @Override
     public TileEntity createNewTileEntity(World world, int i) {
-        return new TileController();
+        if (name == null) return null;
+        if (enumStructure.FarmStructure.byName(name) == null){return null;}
+        return enumStructure.FarmStructure.byName(name);
     }
 }

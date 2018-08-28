@@ -2,6 +2,7 @@ package com.resimulators.simukraft.common.tileentity.Events;
 
 import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
 import com.resimulators.simukraft.common.entity.player.SaveSimData;
+import com.resimulators.simukraft.common.interfaces.ISim;
 import com.resimulators.simukraft.common.interfaces.ISimJob;
 import com.resimulators.simukraft.network.FireSimPacket;
 import com.resimulators.simukraft.network.PacketHandler;
@@ -16,7 +17,7 @@ public class TileEntityDestroyed {
     @SubscribeEvent
     public static void BlockDestroyed(BlockEvent.BreakEvent event) {
         if (!event.getWorld().isRemote) {
-            if (event.getWorld().getTileEntity(event.getPos()) instanceof ISimJob) {
+            if (event.getWorld().getTileEntity(event.getPos()) instanceof ISim) {
                 TileDestroy(event.getPos(), (WorldServer) event.getWorld());
             }
         }

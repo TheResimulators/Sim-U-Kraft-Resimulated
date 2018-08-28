@@ -22,7 +22,7 @@ import java.io.File;
  * Created by fabbe on 15/01/2018 - 8:43 PM.
  */
 public class BlockConstructorBox extends BlockContainerBase {
-	public static final File FILE = new File(Loader.instance().getConfigDir(), Reference.MOD_ID + ".struct");
+	public static final File FILE = new File(Loader.instance().getConfigDir(), Reference.MOD_ID + "\\structures\\industrial\\cattle_farm.struct");
 
     public BlockConstructorBox(String name, CreativeTabs tab, Material blockMaterialIn, MapColor blockMapColorIn) {
         super(name, tab, blockMaterialIn, blockMapColorIn);
@@ -37,21 +37,17 @@ public class BlockConstructorBox extends BlockContainerBase {
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         //TODO: implement logic
+
         TileEntity tile = worldIn.getTileEntity(pos);
         if (tile instanceof TileConstructor) {
             TileConstructor tiles = (TileConstructor) tile;
             if (worldIn.isRemote) {
                tiles.openGui(worldIn,pos,playerIn);
-            }
-
-    }
+            }}
         return false;
     }
-
     @Override
     public TileEntity createNewTileEntity(World world, int i) {
-        TileConstructor tile = new TileConstructor();
-        tile.setStructure(Structure.load(FILE));
-        return tile;
+        return new TileConstructor();
     }
 }

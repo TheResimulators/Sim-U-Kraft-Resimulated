@@ -3,10 +3,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-public interface ISimJob extends ISim {
+public interface ISimIndustrial extends ISim {
     void setHired(boolean hired);
 
-    void setId(UUID id);
+    void addId(UUID id);
 
     UUID getId();
 
@@ -22,11 +22,10 @@ public interface ISimJob extends ISim {
 
     void removeSim(int sim);
 
-    void removeSimName(String name);
-
     void addSimName(String name);
 
     List<String> getnames();
-}
 
+    void setSimname(int id);
+}
 
