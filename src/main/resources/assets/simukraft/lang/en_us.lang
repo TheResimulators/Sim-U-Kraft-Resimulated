@@ -54,10 +54,10 @@ container.SimContainer=Sim Inventory
 #                                  Commands                                 #
 #############################################################################
 commands.simukraft:structure.usage=/structure <save | help | load> ...
-commands.simukraft:structure.save.usage=/structure save <x1 | name> [<y1> <z1> <x2> <y2> <z2> <name>]
+commands.simukraft:structure.save.usage=/structure save <x1 | name> [<y1> <z1> <x2> <y2> <z2> <name>] <folder>, if folder not specified, "special is the default folder"
 commands.simukraft:structure.save.fileexists=File already exists. Specify another name.
-commands.simukraft:structure.load.usage=/structure load <name>
-commands.simukraft:structure.list.usage=/structure list
+commands.simukraft:structure.load.usage=/structure load <folder> <name>. if folder is not specified, "special" is default
+commands.simukraft:structure.list.usage=/structure list <folder>, if folder nto specified, "special" is default
 
 #############################################################################
 #                               Miscellaneous                               #
