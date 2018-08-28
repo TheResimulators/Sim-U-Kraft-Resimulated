@@ -25,6 +25,7 @@ public class Structure {
 
 	private final IBlockState[][][] data;
 	private final int width, height, depth;
+	static public String name;
 
 	public Structure(IBlockState[][][] data) {
 		this.data = data;
@@ -34,6 +35,7 @@ public class Structure {
 	}
 
 	public static Structure load(File file) throws StructureParseException {
+		name = file.getName().replace(".struct","");
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader(file));
 			String[] dimensions = reader.readLine().split("x");
@@ -119,7 +121,7 @@ public class Structure {
 		return ((IProperty<T>) property).getName((V) value);
 	}
 
-	public boolean save(File file) {
+	public boolean save(File file,String type) {
 		Map<IBlockState, Character> key = new HashMap<>();
 		char cur = ' ';
 		StringBuilder states = new StringBuilder();
@@ -149,6 +151,7 @@ public class Structure {
 			writer.println(width + "x" + height + "x" + depth);
 			writer.println(states);
 			writer.println(blocks);
+			writer.println(type);
 			writer.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -175,5 +178,9 @@ public class Structure {
 	public ItemStack getItemStack(int x, int y, int z) {
 		IBlockState temp = data[x][y][z];
 		return temp.getBlock().getItem(null, null, temp);
+	}
+
+	public String getName() {
+		return name;
 	}
 }

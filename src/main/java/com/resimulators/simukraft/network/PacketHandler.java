@@ -32,6 +32,9 @@ public class PacketHandler {
         INSTANCE.registerMessage(ModeChangeHandler.class,ModeChangePacket.class,19,Side.SERVER);
         INSTANCE.registerMessage(ItemRightClickedHandler.class,ItemRightClickedPacket.class,20,Side.SERVER);
         INSTANCE.registerMessage(ItemClickedReturnHandler.class,ItemClickedReturnPacket.class,21,Side.CLIENT);
+        INSTANCE.registerMessage(ClientStructureHandler.class,ClientStructuresPacket.class,22,Side.CLIENT);
+        INSTANCE.registerMessage(ServerStructureHandler.class,ServerStructurePacket.class,23,Side.SERVER);
+        INSTANCE.registerMessage(LoadStructureHandler.class,LoadStructurePacket.class,24,Side.SERVER);
     }
 
 }
