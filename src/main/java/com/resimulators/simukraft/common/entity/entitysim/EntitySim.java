@@ -5,14 +5,17 @@ import com.resimulators.simukraft.ConfigHandler;
 import com.resimulators.simukraft.GuiHandler;
 import com.resimulators.simukraft.SimUKraft;
 import com.resimulators.simukraft.common.entity.ai.*;
+import com.resimulators.simukraft.common.entity.ai.pathfinding.CustomPathNavigateGround;
 import com.resimulators.simukraft.common.entity.player.SaveSimData;
 import com.resimulators.simukraft.common.tileentity.structure.Structure;
 import com.resimulators.simukraft.init.ModItems;
 import com.resimulators.simukraft.network.HungerPacket;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.InventoryBasic;
@@ -30,6 +33,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -78,27 +82,30 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
 
     public EntitySim(World worldIn) {
         super(worldIn);
+        this.navigator = new CustomPathNavigateGround(this,this.world);
         this.inventory = new InventoryBasic("Items", false, 8);
         this.setSize(0.6f, 1.95f);
-        ((PathNavigateGround) this.getNavigator()).setBreakDoors(true);
+        ((CustomPathNavigateGround) this.getNavigator()).setBreakDoors(true);
         this.setCanPickUpLoot(true);
         this.setCustomNameTag("Sim (WIP)");
         this.setAlwaysRenderNameTag(false);
         this.handler = new ItemStackHandler(27);
+
     }
 
     @Override
     protected void initEntityAI() {
         this.tasks.addTask(0, new AISimEat(this));
-        this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(1, new EntityAIAvoidEntity<>(this, EntityZombie.class, 8.0f, 0.6d, 0.6d));
+        this.tasks.addTask(1, new EntityAISwimming(this));
+        this.tasks.addTask(2, new EntityAIAvoidEntity<>(this, EntityZombie.class, 8.0f, 0.6d, 0.6d));
         this.setProfessionAIs();
-        this.tasks.addTask(2, new EntityAIMoveIndoors(this));
-        this.tasks.addTask(3, new EntityAIRestrictOpenDoor(this));
-        this.tasks.addTask(4, new EntityAIOpenDoor(this, true));
-        this.tasks.addTask(5, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0f, 1.0f));
-        this.tasks.addTask(6, new EntityAIWanderAvoidWater(this, 0.6d));
-        this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityLiving.class, 8.0f));
+        this.tasks.addTask(3, new AISimOpenGate(this,true));
+        this.tasks.addTask(4, new EntityAIMoveIndoors(this));
+        this.tasks.addTask(5, new EntityAIRestrictOpenDoor(this));
+        this.tasks.addTask(6, new EntityAIOpenDoor(this, true));
+        this.tasks.addTask(7, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0f, 1.0f));
+        this.tasks.addTask(8, new EntityAIWanderAvoidWater(this, 0.6d));
+        this.tasks.addTask(9, new EntityAIWatchClosest(this, EntityLiving.class, 8.0f));
 
     }
 
@@ -106,7 +113,8 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
 
         this.tasks.addTask(2, new AISimBuild(this));
         this.tasks.addTask(3, new AISimGotoToWork(this));
-        this.tasks.addTask(4,new AISimKillCow(this));
+        this.tasks.addTask(4,new AISimKillCow(0.7D,false,this));
+        this.targetTasks.addTask(4, new EntityAINearestAttackableTarget<>(this,EntityCow.class,true));
     }
 
     private void setAdditionalAITasks() {
@@ -126,6 +134,7 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.5D);
+        this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(1);
     }
 
     @Override
@@ -525,13 +534,14 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
     @Override
     public void onUpdate() {
         super.onUpdate();
+        //heal counter. checks to heal af
         if (heal_counter / 20 > 4) {
             if (hunger > 15 && getHealth() < 20) {
-                heal(1.0f);
+                 heal(1.0f);
                 heal_counter = 0;
             }
         }
-        if (counter / 20 > 4) {
+        if (counter / 20 > 200) {
             if (hunger <= 0) {
                 this.attackEntityFrom(DamageSource.STARVE, 1.0f);
                 counter = 0;
@@ -568,6 +578,49 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
 
     public BlockPos getJobBlockPos() {
         return jobBlockPos;
+    }
+
+
+
+    @Override
+    public  boolean attackEntityAsMob(Entity p_attackEntityAsMob_1_){
+        float f = (float)this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue();
+        int i = 0;
+        if (p_attackEntityAsMob_1_ instanceof EntityLivingBase) {
+            f += EnchantmentHelper.getModifierForCreature(this.getHeldItemMainhand(), ((EntityLivingBase)p_attackEntityAsMob_1_).getCreatureAttribute());
+            i += EnchantmentHelper.getKnockbackModifier(this);
+        }
+
+        boolean flag = p_attackEntityAsMob_1_.attackEntityFrom(DamageSource.causeMobDamage(this), f);
+        if (flag) {
+            if (i > 0 && p_attackEntityAsMob_1_ instanceof EntityLivingBase) {
+                ((EntityLivingBase)p_attackEntityAsMob_1_).knockBack(this, (float)i * 0.5F, (double) MathHelper.sin(this.rotationYaw * 0.017453292F), (double)(-MathHelper.cos(this.rotationYaw * 0.017453292F)));
+                this.motionX *= 0.6D;
+                this.motionZ *= 0.6D;
+            }
+
+            int j = EnchantmentHelper.getFireAspectModifier(this);
+            if (j > 0) {
+                p_attackEntityAsMob_1_.setFire(j * 4);
+            }
+
+            if (p_attackEntityAsMob_1_ instanceof EntityPlayer) {
+                EntityPlayer entityplayer = (EntityPlayer)p_attackEntityAsMob_1_;
+                ItemStack itemstack = this.getHeldItemMainhand();
+                ItemStack itemstack1 = entityplayer.isHandActive() ? entityplayer.getActiveItemStack() : ItemStack.EMPTY;
+                if (!itemstack.isEmpty() && !itemstack1.isEmpty() && itemstack.getItem().canDisableShield(itemstack, itemstack1, entityplayer, this) && itemstack1.getItem().isShield(itemstack1, entityplayer)) {
+                    float f1 = 0.25F + (float)EnchantmentHelper.getEfficiencyModifier(this) * 0.05F;
+                    if (this.rand.nextFloat() < f1) {
+                        entityplayer.getCooldownTracker().setCooldown(itemstack1.getItem(), 100);
+                        this.world.setEntityState(entityplayer, (byte)30);
+                    }
+                }
+            }
+
+            this.applyEnchantments(this, p_attackEntityAsMob_1_);
+        }
+
+        return flag;
     }
 }
 
