@@ -24,7 +24,7 @@ public class BlockMineBox extends BlockBase {
 	}
 
 	@Override
-	public void onBlockDestroyedByPlayer(World worldIn, BlockPos pos, IBlockState state) {
+	public void onPlayerDestroy(World worldIn, BlockPos pos, IBlockState state) {
 		//TODO: implement logic
 	}
 

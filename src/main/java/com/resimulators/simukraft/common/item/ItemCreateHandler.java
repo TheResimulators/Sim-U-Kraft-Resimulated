@@ -19,7 +19,7 @@ public class ItemCreateHandler {
 
     @SubscribeEvent
     public static void ItemCrafted(PlayerEvent.ItemCraftedEvent event) {
-        if (event.crafting.getItem().getRegistryName().getResourceDomain().equals(Reference.MOD_ID)) {
+        if (event.crafting.getItem().getRegistryName().getNamespace().equals(Reference.MOD_ID)) {
             player = event.player;
             world = event.player.world;
             player.addItemStackToInventory(new ItemStack(ModItems.VILLAGE_FOUNDER));

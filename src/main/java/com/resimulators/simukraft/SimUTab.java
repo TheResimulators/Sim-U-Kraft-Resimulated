@@ -12,7 +12,7 @@ import net.minecraft.item.ItemStack;
 public class SimUTab {
     public static CreativeTabs SUTab = new CreativeTabs(Reference.MOD_ID) {
         @Override
-        public ItemStack getTabIconItem() {
+        public ItemStack createIcon() {
             return new ItemStack(ModBlocks.CONTROL_BOX);
         }
     };

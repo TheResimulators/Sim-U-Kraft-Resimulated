@@ -52,7 +52,7 @@ public class RegistryHandler {
             for (final Block block : blocks) {
                 if (block.getRegistryName() != null) {
                     reg.register(block);
-                    SimUKraft.getLogger().info("Successfully added block: " + block.getRegistryName().getResourcePath() + " to the game.");
+                    SimUKraft.getLogger().info("Successfully added block: " + block.getLocalizedName() + " to the game.");
                 } else
                     SimUKraft.getLogger().warn("Tried to register block without registry name, ignoring.");
             }
@@ -80,7 +80,7 @@ public class RegistryHandler {
             for (Item item : items.keySet()) {
                 if (item.getRegistryName() != null) {
                     reg.register(item);
-                    SimUKraft.getLogger().info("Successfully added item: " + item.getRegistryName().getResourcePath() + " to the game.");
+                    SimUKraft.getLogger().info("Successfully added item: " + item.getRegistryName().getNamespace() + " to the game.");
                 } else
                     SimUKraft.getLogger().warn("Tried to register item without registry name, ignoring.");
             }
@@ -125,10 +125,10 @@ public class RegistryHandler {
         }
 
         @Override
-        public String getUnlocalizedName(ItemStack p_getUnlocalizedName_1_) {
+        public String getTranslationKey(ItemStack p_getUnlocalizedName_1_) {
             if (p_getUnlocalizedName_1_.getMetadata() < names.length)
-                return super.getUnlocalizedName(p_getUnlocalizedName_1_) + "." + names[p_getUnlocalizedName_1_.getMetadata()];
-            return super.getUnlocalizedName(p_getUnlocalizedName_1_);
+                return super.getTranslationKey(p_getUnlocalizedName_1_) + "." + names[p_getUnlocalizedName_1_.getMetadata()];
+            return super.getTranslationKey(p_getUnlocalizedName_1_);
         }
 
         @Override

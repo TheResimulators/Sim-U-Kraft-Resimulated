@@ -165,7 +165,7 @@ public class RenderSim extends RenderLiving<EntitySim> {
         AuthenticationService authenticationservice = new YggdrasilAuthenticationService(proxy, UUID.randomUUID().toString());
         MinecraftSessionService minecraftsessionservice = authenticationservice.createMinecraftSessionService();
         GameProfileRepository gameprofilerepository = authenticationservice.createProfileRepository();
-        PlayerProfileCache playerprofilecache = new PlayerProfileCache(gameprofilerepository, new File(Minecraft.getMinecraft().mcDataDir, MinecraftServer.USER_CACHE_FILE.getName()));
+        PlayerProfileCache playerprofilecache = new PlayerProfileCache(gameprofilerepository, new File(Minecraft.getMinecraft().gameDir, MinecraftServer.USER_CACHE_FILE.getName()));
         TileEntitySkull.setProfileCache(playerprofilecache);
         TileEntitySkull.setSessionService(minecraftsessionservice);
         PlayerProfileCache.setOnlineMode(false);

@@ -16,6 +16,6 @@ public class ItemFoodBase extends ItemFood {
 
     private void setName(String name) {
         this.setRegistryName(Reference.MOD_ID, name);
-        this.setUnlocalizedName(this.getRegistryName().toString());
+        this.setTranslationKey(this.getRegistryName().toString());
     }
 }

@@ -17,11 +17,11 @@ public class ItemGranules extends ItemBase {
     }
 
     @Override
-    public String getUnlocalizedName(ItemStack stack) {
+    public String getUnlocalizedNameInefficiently(ItemStack stack) {
         int i = stack.getMetadata();
         if (i > 3)
             i = 0;
-        return super.getUnlocalizedName() + "." + TYPES[i];
+        return super.getUnlocalizedNameInefficiently(stack) + "." + TYPES[i];
     }
 
     @Override

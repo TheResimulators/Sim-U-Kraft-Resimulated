@@ -1,5 +1,6 @@
 package com.resimulators.simukraft.common.block.base;
 
+import com.resimulators.simukraft.SimUKraft;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -18,7 +19,6 @@ public abstract class BlockContainerBase extends BlockBase implements ITileEntit
 		super(name, tab, blockMaterialIn, blockMapColorIn);
 		this.hasTileEntity = true;
 	}
-
 	@Override
 	public void breakBlock(World world, BlockPos pos, IBlockState state) {
 		super.breakBlock(world, pos, state);
