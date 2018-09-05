@@ -33,12 +33,13 @@ public class GuiCattle extends GuiScreen{
 
     @Override
     public void drawScreen(int mouseX, int mouseY,float partialTicks) {
+        if (mc != null){
         drawDefaultBackground();
         super.drawScreen(mouseX,mouseY,partialTicks);
         System.out.println("name " + tileCattle.getSimname());
         if (tileCattle.getSimname() != null){
         drawCenteredString(fontRenderer,"Hired Sim: " + tileCattle.getSimname(),30,30, Color.WHITE.getRGB());
-    }}
+    }}}
 
 
     @Override
@@ -159,6 +160,11 @@ public class GuiCattle extends GuiScreen{
         int simid;
         simButton(int id,int x,int y, String string,int simid){super(id,x,y,100,20,string);
         this.simid = simid;}
+    }
+
+    @Override
+    public boolean doesGuiPauseGame() {
+        return false;
     }
 
 }

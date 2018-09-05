@@ -20,27 +20,28 @@ public class AISimGotoToWork extends EntityAIBase {
 
     @Override
     public void startExecuting(){
-        sim.attemptTeleport(sim.getJobBlockPos().getX(),sim.getJobBlockPos().getY()+0.5d,sim.getJobBlockPos().getZ());
-        //sim.getNavigator().tryMoveToXYZ(sim.getJobBlockPos().getX(),sim.getJobBlockPos().getY()+0.5d,sim.getJobBlockPos().getZ(),0.7d);
+        sim.getNavigator().tryMoveToXYZ(sim.getJobBlockPos().getX(),sim.getJobBlockPos().getY()+0.5d,sim.getJobBlockPos().getZ(),0.7d);
     }
 
 
     @Override
     public boolean shouldExecute() {
-        return !sim.getLabeledProfession().equals("nitwit") && sim.getFoodLevel() > 10 && FMLCommonHandler.instance().getMinecraftServerInstance().getEntityWorld().isDaytime() && sim.getJobBlockPos() != null && sim.getDistanceSq(sim.getJobBlockPos()) > 2;
+        return !sim.getLabeledProfession().equals("nitwit") && sim.getFoodLevel() > 10 && FMLCommonHandler.instance().getMinecraftServerInstance().getEntityWorld().isDaytime() && sim.getJobBlockPos() != null && sim.getDistanceSq(sim.getJobBlockPos()) > 2.5d;
     }
 
 
     public boolean shouldContinueExecuting(){
         return sim.getDistanceSq(sim.getJobBlockPos()) > 2;
     }
-
+    @Override
     public void updateTask(){
-        if(sim.getDistanceSq(sim.getJobBlockPos()) > 2){
-            sim.getNavigator().tryMoveToXYZ(sim.getJobBlockPos().getX(),sim.getJobBlockPos().getY()+0.5d,sim.getJobBlockPos().getZ(),0.7d);
+        if(sim.getDistanceSq(sim.getJobBlockPos()) > 2) {
+            sim.getNavigator().tryMoveToXYZ(sim.getJobBlockPos().getX(), sim.getJobBlockPos().getY() + 0.5d, sim.getJobBlockPos().getZ(), 0.7d);
         }
-
     }
-
+    @Override
+    public void resetTask(){
+        sim.setWorking(false);
+    }
     }
 

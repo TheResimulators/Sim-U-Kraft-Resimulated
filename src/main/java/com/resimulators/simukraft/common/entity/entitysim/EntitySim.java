@@ -78,6 +78,7 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
     private int wealth;
     //Job Common
     private BlockPos jobBlockPos;
+    private boolean working = false;
     private final InventoryBasic inventory;
 
     public EntitySim(World worldIn) {
@@ -202,7 +203,7 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
         compound.setTag("Inventory", nbtTagList);
         compound.setInteger("hunger", this.hunger);
         compound.setLong("Factionid",Factionid);
-        System.out.println("writing faction id " + Factionid);
+        compound.setBoolean("working",working);
     }
 
     @Override
@@ -227,7 +228,9 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
             this.setFarmPos2(new BlockPos(compound.getIntArray("FarmPos2")[0], compound.getIntArray("FarmPos2")[1], compound.getIntArray("FarmPos2")[2]));
         if (compound.hasKey("FarmPos1") && compound.hasKey("FarmPos1"))
             this.setBounds(new StructureBoundingBox(this.getFarmPos1(), this.getFarmPos2()));
-
+        if (compound.hasKey("working")){
+            this.working = compound.getBoolean("working");
+        }
         NBTTagList nbtTagList = compound.getTagList("Inventory", 10);
         for (int i = 0; i < nbtTagList.tagCount(); i++) {
             ItemStack itemStack = new ItemStack(nbtTagList.getCompoundTagAt(i));
@@ -535,13 +538,16 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
     public void onUpdate() {
         super.onUpdate();
         //heal counter. checks to heal af
+        if (this.getAttackTarget() == null){
+            working = false;
+        }
         if (heal_counter / 20 > 4) {
             if (hunger > 15 && getHealth() < 20) {
                  heal(1.0f);
                 heal_counter = 0;
             }
         }
-        if (counter / 20 > 200) {
+        if (counter / 20 > 15) {
             if (hunger <= 0) {
                 this.attackEntityFrom(DamageSource.STARVE, 1.0f);
                 counter = 0;
@@ -621,6 +627,14 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
         }
 
         return flag;
+    }
+
+    public void setWorking(boolean working){
+        this.working = working;
+    }
+
+    public boolean getWorking(){
+        return working;
     }
 }
 

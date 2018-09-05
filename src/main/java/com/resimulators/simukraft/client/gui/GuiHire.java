@@ -45,14 +45,15 @@ public class GuiHire extends GuiScreen {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        drawDefaultBackground();
-        if (!status.equals("hiring")) {
-            drawString(mc.fontRenderer, profession, (width / 2) - fontRenderer.getStringWidth(profession) / 2, height / 4 - 10, Color.WHITE.getRGB());
+        if (mc != null) {
+            drawDefaultBackground();
+            if (!status.equals("hiring")) {
+                drawString(mc.fontRenderer, profession, (width / 2) - fontRenderer.getStringWidth(profession) / 2, height / 4 - 10, Color.WHITE.getRGB());
+            }
+            this.mouseX = mouseX;
+            this.mouseY = mouseY;
+            super.drawScreen(mouseX, mouseY, partialTicks);
         }
-        this.mouseX = mouseX;
-        this.mouseY = mouseY;
-        super.drawScreen(mouseX, mouseY, partialTicks);
-
     }
 
     @Override
