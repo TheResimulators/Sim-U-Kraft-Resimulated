@@ -27,12 +27,7 @@ public class AISimGotoToWork extends EntityAIBase {
 
     @Override
     public boolean shouldExecute() {
-        if (!sim.getLabeledProfession().equals("nitwit")) {
-            System.out.println("Sim " + sim.getName() + " everything " + (!sim.getLabeledProfession().equals("nitwit") && sim.getFoodLevel() > 10 && FMLCommonHandler.instance().getMinecraftServerInstance().getEntityWorld().isDaytime() && sim.getJobBlockPos() != null && sim.getDistanceSq(sim.getJobBlockPos()) > 2));
-            System.out.println("Sim " + sim.getName() + " proffesion " + !sim.getLabeledProfession().equals("nitwit"));
-            System.out.println("Sim " + sim.getName() + " food " + sim.getFoodLevel());
-        }
-        return !sim.getLabeledProfession().equals("nitwit") && sim.getFoodLevel() > 10 && FMLCommonHandler.instance().getMinecraftServerInstance().getEntityWorld().isDaytime() && sim.getJobBlockPos() != null && sim.getDistanceSq(sim.getJobBlockPos()) > 1;
+        return !sim.getLabeledProfession().equals("nitwit") && sim.getFoodLevel() > 10 && FMLCommonHandler.instance().getMinecraftServerInstance().getEntityWorld().isDaytime() && sim.getJobBlockPos() != null && sim.getDistanceSq(sim.getJobBlockPos()) > 2;
     }
 
 
