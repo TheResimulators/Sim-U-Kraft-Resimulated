@@ -7,6 +7,7 @@ import com.resimulators.simukraft.SimUKraft;
 import com.resimulators.simukraft.common.entity.ai.*;
 import com.resimulators.simukraft.common.entity.ai.pathfinding.CustomPathNavigateGround;
 import com.resimulators.simukraft.common.entity.player.SaveSimData;
+import com.resimulators.simukraft.common.enums.cattleFarmMode;
 import com.resimulators.simukraft.common.tileentity.structure.Structure;
 import com.resimulators.simukraft.init.ModItems;
 import com.resimulators.simukraft.network.HungerPacket;
@@ -80,6 +81,10 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
     private BlockPos jobBlockPos;
     private boolean working = false;
     private final InventoryBasic inventory;
+
+    //Milking related
+    private EntityCow target;
+    private cattleFarmMode.FarmMode cowmode = cattleFarmMode.FarmMode.KILL;
 
     public EntitySim(World worldIn) {
         super(worldIn);
@@ -638,6 +643,23 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
 
     public boolean getWorking(){
         return working;
+    }
+
+    public void setTargetCow(EntityCow cow){
+        this.target = cow;
+    }
+
+    public EntityCow getTarget() {
+        return target;
+    }
+
+    public void setCowmode(cattleFarmMode.FarmMode cowmode){
+        this.cowmode = cowmode;
+
+    }
+
+    public cattleFarmMode.FarmMode getCowmode(){
+        return cowmode;
     }
 }
 

@@ -3,6 +3,7 @@ package com.resimulators.simukraft.common.entity.ai;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
+import com.resimulators.simukraft.common.enums.cattleFarmMode;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
@@ -11,6 +12,7 @@ import net.minecraft.entity.ai.EntityAITarget;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
@@ -73,15 +75,15 @@ public class AISimNearestAttackableTarget <T extends EntityLivingBase> extends E
      */
     public boolean shouldExecute()
     {
-        if (!sim.getWorking()){return false;}
-        if (this.targetChance > 0 && this.taskOwner.getRNG().nextInt(this.targetChance) != 0)
+        System.out.println("should execute " + sim.getWorking());
+        if (!sim.getWorking()){
+            return false;}
+        System.out.println("is this getting here");
+        if (this.targetClass != EntityPlayer.class && this.targetClass != EntityPlayerMP.class)
         {
-            return false;
-        }
-        else if (this.targetClass != EntityPlayer.class && this.targetClass != EntityPlayerMP.class)
-        {
+            System.out.println("getting list of cows");
             List<T> list = this.taskOwner.world.<T>getEntitiesWithinAABB(this.targetClass, this.getTargetableArea(this.getTargetDistance()), this.targetEntitySelector);
-
+            System.out.println("list of cows " + list);
             if (list.isEmpty())
             {
                 return false;
@@ -107,7 +109,12 @@ public class AISimNearestAttackableTarget <T extends EntityLivingBase> extends E
      */
     public void startExecuting()
     {
-        this.taskOwner.setAttackTarget(this.targetEntity);
+        System.out.println("this is executing setting target");
+        if (sim.getCowmode() == cattleFarmMode.FarmMode.KILL) {
+            this.taskOwner.setAttackTarget(this.targetEntity);
+        } else{
+            this.sim.setTargetCow((EntityCow) this.targetEntity);
+        }
         super.startExecuting();
     }
 

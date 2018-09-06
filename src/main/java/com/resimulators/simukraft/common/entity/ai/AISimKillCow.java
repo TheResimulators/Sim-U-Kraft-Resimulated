@@ -54,13 +54,13 @@ public class AISimKillCow extends EntityAIBase{
 
     @Override
     public boolean shouldContinueExecuting(){
-        return sim.getWorking();}
+        return false;}
     @Override
     public void updateTask(){
     }
 
     @Override
     public boolean isInterruptible(){
-        return false;
+        return true;
     }
 }
