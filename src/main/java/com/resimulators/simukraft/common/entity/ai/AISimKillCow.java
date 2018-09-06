@@ -5,6 +5,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
@@ -17,74 +18,47 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class AISimKillCow extends EntityAIAttackMelee {
+public class AISimKillCow extends EntityAIBase{
     private EntitySim sim;
     private World world = FMLCommonHandler.instance().getMinecraftServerInstance().getEntityWorld();
     private Random rnd = new Random();
     private boolean killing = false;
-    public AISimKillCow(double speed, boolean memory,EntitySim sim){
-        super(sim,speed,memory);
+    public AISimKillCow(EntitySim sim){
         this.sim = sim;
         setMutexBits(7);
     }
     @Override
     public boolean shouldExecute() {
-        if (sim.getJobBlockPos() != null){
-            if (sim.getAttackTarget() == null){
-                killing = false;
-            }
-            if (sim.getLabeledProfession().equals("Cattle Farmer"))System.out.println("sim distance " + sim.getDistanceSq(sim.getJobBlockPos()));
-        if (!killing && sim.getLabeledProfession().equals("Cattle Farmer") && sim.getDistanceSq(sim.getJobBlockPos().add(0,1,0)) <=  3){
-            return super.shouldExecute();
-        }else{
-            return false;
-        }
-    }else {return false;
+        if (sim.getJobBlockPos() != null && sim.getLabeledProfession().equals("Cattle Farmer")) {
+//            System.out.println("Should execute");
+  //          System.out.println("Blockpos " + sim.getJobBlockPos() + " sim pos " + sim.getPosition());
+    //        System.out.println("Distance " + sim.getDistance(sim.getJobBlockPos().getX(),sim.getJobBlockPos().getY()+ 1,sim.getJobBlockPos().getZ()));
+      //      System.out.println("executing " + (sim.getLabeledProfession().equals("Cattle Farmer") && sim.getDistanceSq(sim.getJobBlockPos().add(0, 1, 0)) <= 3));
+        //    System.out.println("job " + sim.getLabeledProfession().equals("Cattle Farmer"));
+            return sim.getLabeledProfession().equals("Cattle Farmer") && sim.getDistance(sim.getJobBlockPos().getX(),sim.getJobBlockPos().getY(),sim.getJobBlockPos().getZ()) <= 3;
+        }else {return false;
         }
     }
 
 
     @Override
     public void startExecuting(){
-        setTarget();
-        super.startExecuting();
-
+        sim.setWorking(true);
+        System.out.println("Sim working " + sim.getWorking());
         }
 
     @Override
     public void resetTask(){
-        if (!killing)sim.setWorking(false);
+        sim.setWorking(false);
     }
 
     @Override
     public boolean shouldContinueExecuting(){
-        return super.shouldContinueExecuting();
-        }
+        return sim.getWorking();}
     @Override
     public void updateTask(){
-        super.updateTask();
     }
 
-
-    private void setTarget(){
-        BlockPos pos = sim.getPosition();
-        List<Entity> animals = world.getEntitiesWithinAABBExcludingEntity(sim,new AxisAlignedBB(pos.getX()-3,pos.getY(),pos.getZ()-3,pos.getX()+3,pos.getY()+ 2,pos.getZ()+3));
-        List<EntityCow> cows = new ArrayList<>();
-        for (Entity entity: animals){
-            if (entity instanceof EntityCow){
-                cows.add((EntityCow) entity);
-            }
-            System.out.println("axis alignment " + new AxisAlignedBB(pos.getX()-3,pos.getY()-1,pos.getZ()-3,pos.getX()+3,pos.getY()+ 2,pos.getZ()+3));
-            System.out.println("is this working");
-            System.out.println("cow size " +cows.size());
-            if (cows.size() > 0){
-            int randnum = rnd.nextInt(cows.size());
-            System.out.println("random num " + randnum);
-            EntityCow cow = cows.get(randnum);
-            sim.setAttackTarget(cow);
-            }
-        }
-    }
     @Override
     public boolean isInterruptible(){
         return false;

@@ -20,14 +20,23 @@ public class AISimGotoToWork extends EntityAIBase {
 
     @Override
     public void startExecuting(){
+        System.out.println("is the executing");
         sim.getNavigator().tryMoveToXYZ(sim.getJobBlockPos().getX(),sim.getJobBlockPos().getY()+0.5d,sim.getJobBlockPos().getZ(),0.7d);
     }
 
 
     @Override
     public boolean shouldExecute() {
-        return !sim.getLabeledProfession().equals("nitwit") && sim.getFoodLevel() > 10 && FMLCommonHandler.instance().getMinecraftServerInstance().getEntityWorld().isDaytime() && sim.getJobBlockPos() != null && sim.getDistanceSq(sim.getJobBlockPos()) > 2.5d;
+        if (sim.getJobBlockPos() != null){
+   //     System.out.println("1 " + !sim.getLabeledProfession().equals("nitwit"));
+     //   System.out.println("2 " + (sim.getFoodLevel() > 10));
+       // System.out.println("3 " + (sim.getJobBlockPos() != null));
+      //  System.out.println("4 " + (sim.getDistance(sim.getJobBlockPos().getX(),sim.getJobBlockPos().getY(),sim.getJobBlockPos().getX()) > 2.5d));
+       // System.out.println("5 can execute " + (!sim.getLabeledProfession().equals("nitwit") && sim.getFoodLevel() > 10 && FMLCommonHandler.instance().getMinecraftServerInstance().getEntityWorld().isDaytime() && sim.getDistance(sim.getJobBlockPos().getX(),sim.getJobBlockPos().getY(),sim.getJobBlockPos().getX()) > 2.5d));
+
+        return !sim.getLabeledProfession().equals("nitwit") && sim.getFoodLevel() > 10 && FMLCommonHandler.instance().getMinecraftServerInstance().getEntityWorld().isDaytime() && sim.getDistance(sim.getJobBlockPos().getX(),sim.getJobBlockPos().getY(),sim.getJobBlockPos().getX()) > 2.5d;
     }
+    return false;}
 
 
     public boolean shouldContinueExecuting(){

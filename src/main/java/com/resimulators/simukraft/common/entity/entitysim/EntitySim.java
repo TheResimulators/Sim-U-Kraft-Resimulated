@@ -114,8 +114,9 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
 
         this.tasks.addTask(2, new AISimBuild(this));
         this.tasks.addTask(3, new AISimGotoToWork(this));
-        this.tasks.addTask(4,new AISimKillCow(0.7D,false,this));
-        this.targetTasks.addTask(4, new EntityAINearestAttackableTarget<>(this,EntityCow.class,true));
+        this.tasks.addTask(4,new AISimKillCow(this));
+        this.targetTasks.addTask(4,new AISimNearestAttackableTarget<>(this,EntityCow.class,false));
+        this.tasks.addTask(4,new AiSimAttackNearest(0.7,true,this));
     }
 
     private void setAdditionalAITasks() {
@@ -630,6 +631,8 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
     }
 
     public void setWorking(boolean working){
+
+
         this.working = working;
     }
 
