@@ -75,11 +75,9 @@ public class SimContainer extends Container {
             previous = current.copy();
 
             if (fromSlot < this.handler.getSlots()) {
-                // From the block breaker inventory to player's inventory
                 if (!this.mergeItemStack(current, handler.getSlots(), handler.getSlots() + 36, true))
                     return ItemStack.EMPTY;
             } else {
-                // From the player's inventory to block breaker's inventory
                 if (!this.mergeItemStack(current, 0, handler.getSlots(), false))
                     return ItemStack.EMPTY;
             }
