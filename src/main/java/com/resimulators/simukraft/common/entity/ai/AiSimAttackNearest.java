@@ -6,6 +6,10 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemSword;
 import net.minecraft.pathfinding.Path;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
@@ -46,7 +50,7 @@ public class AiSimAttackNearest extends EntityAIBase {
     public boolean shouldExecute()
     {
         EntityLivingBase entitylivingbase = this.sim.getAttackTarget();
-
+        if (!checkInvForSword()){return false;}
         if (entitylivingbase == null)
         {
             return false;
@@ -70,9 +74,6 @@ public class AiSimAttackNearest extends EntityAIBase {
                     return true;
                 }
             }
-            System.out.println("attack " + this.attacker);
-            System.out.println("navigator " + this.attacker.getNavigator());
-            System.out.println("getpath " + this.attacker.getNavigator().getPathToEntityLiving(entitylivingbase));
             this.path = this.attacker.getNavigator().getPathToEntityLiving(entitylivingbase);
 
             if (this.path != null)
@@ -81,7 +82,7 @@ public class AiSimAttackNearest extends EntityAIBase {
             }
             else
             {
-                return this.getAttackReachSqr(entitylivingbase) >= this.attacker.getDistanceSq(entitylivingbase.posX, entitylivingbase.getEntityBoundingBox().minY, entitylivingbase.posZ);
+                return this.getAttackReachSqr(entitylivingbase) >= this.attacker.getDistanceSq(entitylivingbase.posX, entitylivingbase.getEntityBoundingBox().minY, entitylivingbase.posZ) && checkInvForSword();
             }
         }
     }
@@ -198,6 +199,10 @@ public class AiSimAttackNearest extends EntityAIBase {
 
         if (distToEnemySqr <= d0 && this.attackTick <= 0)
         {
+            if (getSword() != null){
+            if (!(sim.getActiveItemStack().getItem() instanceof ItemSword)){
+                sim.setHeldItem(EnumHand.MAIN_HAND,getSword());
+            }}
             this.attackTick = 20;
             this.attacker.swingArm(EnumHand.MAIN_HAND);
             this.attacker.attackEntityAsMob(enemy);
@@ -207,5 +212,45 @@ public class AiSimAttackNearest extends EntityAIBase {
     protected double getAttackReachSqr(EntityLivingBase attackTarget)
     {
         return (double)(this.attacker.width * 2.0F * this.attacker.width * 2.0F + attackTarget.width);
+    }
+
+
+    public ItemStack getSword(){
+        ItemStack itemStack = null;
+        for (int i = 0;i<sim.gethandler().getSlots();i++){
+            if (sim.gethandler().getStackInSlot(i).getItem() instanceof ItemSword){
+                if (itemStack == null){
+                    itemStack = sim.gethandler().getStackInSlot(i);
+                }else{
+                    if (checkMaterial(itemStack,sim.gethandler().getStackInSlot(i))){
+                        itemStack = sim.gethandler().getStackInSlot(i);
+                    }
+
+                }
+            }
+        }
+    return itemStack;
+    }
+
+
+
+    public boolean checkMaterial(ItemStack itemStack,ItemStack newStack){
+        if (itemStack.getItem().getMaxDamage(itemStack) < newStack.getItem().getMaxDamage(newStack)){
+            return true;
+        }
+        return false;
+
+    }
+
+
+    public boolean checkInvForSword(){
+
+        for (int i = 0;i<sim.gethandler().getSlots();i++){
+            if (sim.gethandler().getStackInSlot(i).getItem() instanceof ItemSword){
+                return true;
+            }
+        }
+
+        return false;
     }
 }

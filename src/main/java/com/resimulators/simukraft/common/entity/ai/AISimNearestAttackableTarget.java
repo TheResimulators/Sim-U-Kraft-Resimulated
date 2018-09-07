@@ -75,15 +75,11 @@ public class AISimNearestAttackableTarget <T extends EntityLivingBase> extends E
      */
     public boolean shouldExecute()
     {
-        System.out.println("should execute " + sim.getWorking());
         if (!sim.getWorking()){
             return false;}
-        System.out.println("is this getting here");
         if (this.targetClass != EntityPlayer.class && this.targetClass != EntityPlayerMP.class)
         {
-            System.out.println("getting list of cows");
             List<T> list = this.taskOwner.world.<T>getEntitiesWithinAABB(this.targetClass, this.getTargetableArea(this.getTargetDistance()), this.targetEntitySelector);
-            System.out.println("list of cows " + list);
             if (list.isEmpty())
             {
                 return false;
@@ -109,7 +105,6 @@ public class AISimNearestAttackableTarget <T extends EntityLivingBase> extends E
      */
     public void startExecuting()
     {
-        System.out.println("this is executing setting target");
         if (sim.getCowmode() == cattleFarmMode.FarmMode.KILL) {
             this.taskOwner.setAttackTarget(this.targetEntity);
         } else{

@@ -15,12 +15,16 @@ import com.resimulators.simukraft.common.entity.entitysim.SpecialNameStorage;
 import com.resimulators.simukraft.common.entity.entitysim.SimEventHandler;
 import com.resimulators.simukraft.common.entity.entitysim.SpawnSimEntity;
 import com.resimulators.simukraft.common.entity.player.PlayerFirstJoin;
+import com.resimulators.simukraft.common.interfaces.CowCapability;
 import com.resimulators.simukraft.common.tileentity.Events.TileEntityCreate;
 import com.resimulators.simukraft.common.tileentity.TileFarm;
 import com.resimulators.simukraft.common.world.Rent_collection;
 import com.resimulators.simukraft.init.*;
 import com.resimulators.simukraft.network.PacketHandler;
+import com.sun.glass.ui.View;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 
@@ -37,6 +41,7 @@ public class CommonProxy {
         ModTileEntities.init();
         ModEntities.init();
         PacketHandler.init();
+        CapabilityManager.INSTANCE.register(CowCapability.class,new CowCapability.Storage(),CowCapability.Impl::new);
     }
 
     public void init(FMLInitializationEvent event) {

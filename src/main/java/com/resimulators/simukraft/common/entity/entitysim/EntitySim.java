@@ -658,6 +658,10 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
     public cattleFarmMode.FarmMode getCowmode(){
         return cowmode;
     }
+
+    public ItemStackHandler gethandler(){
+        return handler;
+    }
 }
 
 

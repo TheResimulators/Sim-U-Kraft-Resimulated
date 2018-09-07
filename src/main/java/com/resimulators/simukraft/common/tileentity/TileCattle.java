@@ -2,7 +2,9 @@ package com.resimulators.simukraft.common.tileentity;
 
 import com.resimulators.simukraft.GuiHandler;
 import com.resimulators.simukraft.SimUKraft;
+import com.resimulators.simukraft.common.capabilities.ModCapabilities;
 import com.resimulators.simukraft.common.entity.player.SaveSimData;
+import com.resimulators.simukraft.common.interfaces.CowCapability;
 import com.resimulators.simukraft.common.interfaces.ISimIndustrial;
 import com.resimulators.simukraft.common.interfaces.ISimJob;
 import com.resimulators.simukraft.network.GetSimIdPacket;
@@ -40,15 +42,24 @@ public class TileCattle extends TileEntity implements ITickable,ISimIndustrial {
      if (!world.isRemote) {
          if (getHired()) {
              if (world.getWorldTime() % 20 == 0) {
-                 int numCows = world.getEntitiesWithinAABB(EntityCow.class, new AxisAlignedBB(pos.getX() - 3, pos.getY(), pos.getZ() - 3, pos.getX() + 3, pos.getY() + 2, pos.getZ() + 3)).size();
+                 int numCows = world.getEntitiesWithinAABB(EntityCow.class, new AxisAlignedBB(pos.getX() - 4, pos.getY(), pos.getZ() - 4, pos.getX() + 4, pos.getY() + 2, pos.getZ() + 4)).size();
                  for (int i = numCows; i < 5; i++) {
                      EntityCow cow = new EntityCow(world);
+                     attachCapability(cow);
                      cow.setPosition(pos.getX(), pos.getY() + 1, pos.getZ());
                      world.spawnEntity(cow);
                     }
                 }
             }
         }
+    }
+
+    private void attachCapability(EntityCow cow){
+        if (cow.hasCapability(ModCapabilities.getCAP(),null)){
+            cow.getCapability(ModCapabilities.getCAP(),null).setcontroledspawn();
+            System.out.println("this is being reached");
+        }
+
     }
 
     @Override
@@ -164,5 +175,7 @@ public class TileCattle extends TileEntity implements ITickable,ISimIndustrial {
     public SPacketUpdateTileEntity getUpdatePacket() {
         return new SPacketUpdateTileEntity(this.pos,0,writeToNBT(getUpdateTag()));
     }
+
+
 
 }
