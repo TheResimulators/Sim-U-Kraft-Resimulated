@@ -36,6 +36,7 @@ public class AiSimAttackNearest extends EntityAIBase {
         this.sim = sim;
         this.speedTowardsTarget = speedIn;
         this.longMemory = useLongMemory;
+        this.attacker = sim;
         this.setMutexBits(3);
     }
 
@@ -69,6 +70,9 @@ public class AiSimAttackNearest extends EntityAIBase {
                     return true;
                 }
             }
+            System.out.println("attack " + this.attacker);
+            System.out.println("navigator " + this.attacker.getNavigator());
+            System.out.println("getpath " + this.attacker.getNavigator().getPathToEntityLiving(entitylivingbase));
             this.path = this.attacker.getNavigator().getPathToEntityLiving(entitylivingbase);
 
             if (this.path != null)

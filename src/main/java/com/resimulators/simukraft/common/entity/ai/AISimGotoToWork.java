@@ -49,8 +49,6 @@ public class AISimGotoToWork extends EntityAIBase {
         }
     }
     @Override
-    public void resetTask(){
-        sim.setWorking(false);
-    }
+    public void resetTask(){}
     }
 

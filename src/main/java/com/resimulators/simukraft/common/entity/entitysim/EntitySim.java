@@ -455,7 +455,7 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
     }
 
     private boolean canSimPickupItem(Item item) {
-        return false;
+        return true;
     }
 
     private boolean randomizeBoolean() {
@@ -543,10 +543,7 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
     @Override
     public void onUpdate() {
         super.onUpdate();
-        //heal counter. checks to heal af
-        if (this.getAttackTarget() == null){
-            working = false;
-        }
+        //heal counter. checks to heal after
         if (heal_counter / 20 > 4) {
             if (hunger > 15 && getHealth() < 20) {
                  heal(1.0f);
