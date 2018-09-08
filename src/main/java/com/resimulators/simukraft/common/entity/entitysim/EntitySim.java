@@ -11,6 +11,7 @@ import com.resimulators.simukraft.common.enums.cattleFarmMode;
 import com.resimulators.simukraft.common.tileentity.structure.Structure;
 import com.resimulators.simukraft.init.ModItems;
 import com.resimulators.simukraft.network.HungerPacket;
+import net.minecraft.block.BlockChest;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
@@ -29,7 +30,6 @@ import net.minecraft.nbt.NBTUtil;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -73,15 +73,19 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
     private BlockPos farmPos1;
     private BlockPos farmPos2;
     private StructureBoundingBox bounds;
-    //Faction releated
+    //Faction related
     private long Factionid;
     private boolean areAdditionalTasksSet;
     private int wealth;
     //Job Common
     private BlockPos jobBlockPos;
     private boolean working = false;
+    private boolean endWork = false;
     private final InventoryBasic inventory;
 
+
+    //inventory AI related
+    private BlockChest emptychest;
     //Milking related
     private EntityCow target;
     private cattleFarmMode.FarmMode cowmode = cattleFarmMode.FarmMode.KILL;
@@ -661,6 +665,22 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
 
     public ItemStackHandler gethandler(){
         return handler;
+    }
+
+    public void setEndWork(boolean end_work){
+        this.endWork = end_work;
+    }
+
+    public boolean getEndWork(){
+        return endWork;
+    }
+
+    public void setEmptychest(BlockChest chest){
+        this.emptychest = chest;
+    }
+
+    public BlockChest getEmptychest(){
+        return emptychest;
     }
 }
 
