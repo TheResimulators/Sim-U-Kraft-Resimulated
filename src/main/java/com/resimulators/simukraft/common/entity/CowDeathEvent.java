@@ -20,29 +20,31 @@ import java.util.List;
 public class CowDeathEvent {
 
     @SubscribeEvent
-    public static void CowDeath(LivingDropsEvent event){
-        if (event.getEntity() instanceof EntityCow){
-            if (!event.getEntity().world.isRemote){
-                EntityCow cow = (EntityCow) event.getEntity();
-                if (cow.hasCapability(ModCapabilities.getCAP(),null)){
-                if(cow.getCapability(ModCapabilities.getCAP(),null).iscontroledspawn()){
-                    event.setCanceled(true);
-                    List<EntityItem> items = event.getDrops();
-                    System.out.println("items " + items);
-                    for (EntityItem item :items){
-                        EntitySim sim = ((EntitySim)event.getSource().getTrueSource());
-                        for (int i = 0;i<sim.gethandler().getSlots();i++){
-                            System.out.println(sim.gethandler().getStackInSlot(i).getItem());
-                            System.out.println(item.getItem().getItem());
-                            if (sim.gethandler().getStackInSlot(i).isEmpty() || (sim.gethandler().getStackInSlot(i).getItem().equals(item.getItem().getItem())) && sim.gethandler().getStackInSlot(i).getCount() != 64){
-                                if ((sim.gethandler().getStackInSlot(i).equals(item.getItem()))){
-                                    ItemStack stack  = sim.gethandler().getStackInSlot(i);
-                                    ItemStack mergestack = new ItemStack(stack.getItem(),stack.getCount() + item.getItem().getCount());
-                                    sim.gethandler().insertItem(i,mergestack,true);
-                                }
-                                sim.gethandler().insertItem(i,item.getItem(),false);
-                                System.out.println("adding items");
-                                break;
+    public static void CowDeath(LivingDropsEvent event) {
+        if (event.getEntity() instanceof EntityCow) {
+            if (event.getSource().getTrueSource() instanceof EntitySim) {
+                if (!event.getEntity().world.isRemote) {
+                    EntityCow cow = (EntityCow) event.getEntity();
+                    if (cow.hasCapability(ModCapabilities.getCAP(), null)) {
+                        if (cow.getCapability(ModCapabilities.getCAP(), null).iscontroledspawn()) {
+                            event.setCanceled(true);
+                            List<EntityItem> items = event.getDrops();
+                            System.out.println("items " + items);
+                            for (EntityItem item : items) {
+                                EntitySim sim = ((EntitySim) event.getSource().getTrueSource());
+                                for (int i = 0; i < sim.gethandler().getSlots(); i++) {
+                                    System.out.println(sim.gethandler().getStackInSlot(i).getItem());
+                                    System.out.println(item.getItem().getItem());
+                                    if (sim.gethandler().getStackInSlot(i).isEmpty() || (sim.gethandler().getStackInSlot(i).getItem().equals(item.getItem().getItem())) && !(sim.gethandler().getStackInSlot(i).getCount() + item.getItem().getCount() > 64)) {
+                                        if ((sim.gethandler().getStackInSlot(i).equals(item.getItem()))) {
+                                            ItemStack stack = sim.gethandler().getStackInSlot(i);
+                                            ItemStack mergestack = new ItemStack(stack.getItem(), stack.getCount() + item.getItem().getCount());
+                                            sim.gethandler().insertItem(i, mergestack, true);
+                                        }
+                                        sim.gethandler().insertItem(i, item.getItem(), false);
+                                        System.out.println("adding items");
+                                        break;
+                                    }
                                 }
                             }
                         }
