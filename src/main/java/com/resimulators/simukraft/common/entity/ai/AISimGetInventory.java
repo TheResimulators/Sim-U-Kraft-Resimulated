@@ -11,8 +11,10 @@ import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ILockableContainer;
+import net.minecraftforge.items.CapabilityItemHandler;
 
 import java.util.ArrayList;
 
@@ -60,10 +62,10 @@ public class AISimGetInventory extends EntityAIBase{
 
     private int simGetnumberitems(){
         ArrayList<Item> items = new ArrayList();
-        for(int i = 0;i<sim.gethandler().getSlots();i++){
-            if (!items.contains(sim.gethandler().getStackInSlot(i).getItem())){
-                if (sim.gethandler().getStackInSlot(i).getItem().equals(Items.LEATHER) ||sim.gethandler().getStackInSlot(i).getItem().equals(Items.BEEF));
-                items.add(sim.gethandler().getStackInSlot(i).getItem());
+        for(int i = 0; i<sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.SOUTH).getSlots(); i++){
+            if (!items.contains(sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.SOUTH).getStackInSlot(i).getItem())){
+                if (sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.SOUTH).getStackInSlot(i).getItem().equals(Items.LEATHER) ||sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.SOUTH).getStackInSlot(i).getItem().equals(Items.BEEF));
+                items.add(sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.SOUTH).getStackInSlot(i).getItem());
             }
             return items.size();
         }

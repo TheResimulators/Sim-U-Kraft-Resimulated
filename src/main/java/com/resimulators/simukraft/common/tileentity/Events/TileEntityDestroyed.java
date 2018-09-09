@@ -3,7 +3,9 @@ package com.resimulators.simukraft.common.tileentity.Events;
 import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
 import com.resimulators.simukraft.common.entity.player.SaveSimData;
 import com.resimulators.simukraft.common.interfaces.ISim;
+import com.resimulators.simukraft.common.interfaces.ISimIndustrial;
 import com.resimulators.simukraft.common.interfaces.ISimJob;
+import com.resimulators.simukraft.common.tileentity.TileCattle;
 import com.resimulators.simukraft.network.FireSimPacket;
 import com.resimulators.simukraft.network.PacketHandler;
 import net.minecraft.util.math.BlockPos;
@@ -24,9 +26,13 @@ public class TileEntityDestroyed {
     }
 
     public static void TileDestroy(BlockPos pos, WorldServer world) {
-        ISimJob entity = (ISimJob) world.getTileEntity(pos);
+
+        ISim entity = (ISim) world.getTileEntity(pos);
+        System.out.println("this has made it here");
+
         if (entity.getId() != null) {
             EntitySim sim = (EntitySim) world.getEntityFromUuid(entity.getId());
+            System.out.println("sim " +sim);
             SaveSimData.get(world).addUnemployedsim(entity.getId(),sim.getFactionId());
             sim.setProfession(0);
             SaveSimData.get(world).SendFactionPacket(new FireSimPacket(entity.getId(), sim.getEntityId()),sim.getFactionId());

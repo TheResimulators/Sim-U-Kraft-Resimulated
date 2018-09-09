@@ -8,6 +8,8 @@ public interface ISim {
 
     void setId(UUID id);
 
+    UUID getId();
+
     boolean getHired();
 
     String getProfession();

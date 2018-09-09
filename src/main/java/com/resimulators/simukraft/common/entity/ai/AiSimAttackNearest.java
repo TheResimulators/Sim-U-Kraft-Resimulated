@@ -11,9 +11,11 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.pathfinding.Path;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.items.CapabilityItemHandler;
 
 public class AiSimAttackNearest extends EntityAIBase {
     World world;
@@ -217,13 +219,13 @@ public class AiSimAttackNearest extends EntityAIBase {
 
     public ItemStack getSword(){
         ItemStack itemStack = null;
-        for (int i = 0;i<sim.gethandler().getSlots();i++){
-            if (sim.gethandler().getStackInSlot(i).getItem() instanceof ItemSword){
+        for (int i = 0; i<sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH).getSlots(); i++){
+            if (sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.NORTH).getStackInSlot(i).getItem() instanceof ItemSword){
                 if (itemStack == null){
-                    itemStack = sim.gethandler().getStackInSlot(i);
+                    itemStack = sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.NORTH).getStackInSlot(i);
                 }else{
-                    if (checkMaterial(itemStack,sim.gethandler().getStackInSlot(i))){
-                        itemStack = sim.gethandler().getStackInSlot(i);
+                    if (checkMaterial(itemStack,sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.NORTH).getStackInSlot(i))){
+                        itemStack = sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.NORTH).getStackInSlot(i);
                     }
 
                 }
@@ -245,8 +247,8 @@ public class AiSimAttackNearest extends EntityAIBase {
 
     public boolean checkInvForSword(){
 
-        for (int i = 0;i<sim.gethandler().getSlots();i++){
-            if (sim.gethandler().getStackInSlot(i).getItem() instanceof ItemSword){
+        for (int i = 0;i<sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.NORTH).getSlots();i++){
+            if (sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.NORTH).getStackInSlot(i).getItem() instanceof ItemSword){
                 return true;
             }
         }

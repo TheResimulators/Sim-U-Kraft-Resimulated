@@ -63,7 +63,8 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
     private boolean isAllowedToBuild;
     private BlockPos startPos;
     //Inventory
-    private ItemStackHandler handler;
+    private ItemStackHandler toolinv;
+    private ItemStackHandler pickups;
     //Food related
     private int hunger = 20;
     private int maxhunger = 20;
@@ -99,7 +100,8 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
         this.setCanPickUpLoot(true);
         this.setCustomNameTag("Sim (WIP)");
         this.setAlwaysRenderNameTag(false);
-        this.handler = new ItemStackHandler(27);
+        this.pickups = new ItemStackHandler(18);
+        this.toolinv = new ItemStackHandler(9);
 
     }
 
@@ -207,9 +209,10 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
                 nbtTagList.appendTag(itemStack.writeToNBT(new NBTTagCompound()));
             }
         }
-        if (handler != null) {
-            compound.setTag("SimInventory", handler.serializeNBT());
+        if (toolinv != null) {
+            compound.setTag("SimToolInv", toolinv.serializeNBT());
         }
+        if (pickups != null)compound.setTag("PickUpInv",pickups.serializeNBT());
         compound.setTag("Inventory", nbtTagList);
         compound.setInteger("hunger", this.hunger);
         compound.setLong("Factionid",Factionid);
@@ -249,13 +252,12 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
                 this.inventory.addItem(itemStack);
             }
         }
-        if (compound.hasKey("SimInventory")) {
-            this.handler.deserializeNBT(compound.getCompoundTag("SimInventory"));
-        }
+        if (compound.hasKey("SimToolInv"))this.toolinv.deserializeNBT(compound.getCompoundTag("SimToolInv"));
+
+        if (compound.hasKey("PickUpInv"))this.pickups.deserializeNBT(compound.getCompoundTag("PickUpInv"));
 
         this.hunger = compound.getInteger("hunger");
         this.Factionid = compound.getLong("Factionid");
-        System.out.println("readed faction id " + Factionid);
         this.setCanPickUpLoot(true);
         this.setAdditionalAITasks();
     }
@@ -479,15 +481,22 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
 
     @Override
     public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && facing == EnumFacing.NORTH) {
             return true;
+        }
+        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && facing == EnumFacing.SOUTH){
+         return true;
+        }
         return super.hasCapability(capability, facing);
     }
 
     @Override
     public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
-        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-            return (T) this.handler;
+        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && facing == EnumFacing.NORTH) {
+            return (T) this.toolinv;
+        }
+        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && facing == EnumFacing.SOUTH){
+            return  (T) this.pickups;
         }
         return super.getCapability(capability, facing);
 
@@ -498,19 +507,19 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
             int heal = 0;
             int finalheal = 0;
             ItemStack final_stack = null;
-            for (int i = 0; i < handler.getSlots(); i++) {
-                ItemStack stack = handler.getStackInSlot(i);
+            for (int i = 0; i < toolinv.getSlots(); i++) {
+                ItemStack stack = toolinv.getStackInSlot(i);
                 if (stack.getItem() instanceof ItemFood) {
                     heal = (((ItemFood) stack.getItem()).getHealAmount(stack));
                     if (finalheal <= 0) finalheal = heal;
                     else if (this.getFoodLevel() + finalheal > 20) {
                         if (heal < finalheal) {
                             finalheal = heal;
-                            final_stack = handler.getStackInSlot(i);
+                            final_stack = toolinv.getStackInSlot(i);
                         }
                     } else {
                         finalheal = heal;
-                        final_stack = handler.getStackInSlot(i);
+                        final_stack = toolinv.getStackInSlot(i);
                     }
                 }
             }
@@ -554,7 +563,7 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
                 heal_counter = 0;
             }
         }
-        if (counter / 20 > 15) {
+        if (counter/20 > 60) {
             if (hunger <= 0) {
                 this.attackEntityFrom(DamageSource.STARVE, 1.0f);
                 counter = 0;
@@ -661,10 +670,6 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
 
     public cattleFarmMode.FarmMode getCowmode(){
         return cowmode;
-    }
-
-    public ItemStackHandler gethandler(){
-        return handler;
     }
 
     public void setEndWork(boolean end_work){

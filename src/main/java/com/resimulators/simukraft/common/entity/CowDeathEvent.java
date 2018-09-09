@@ -6,12 +6,14 @@ import com.resimulators.simukraft.common.item.base.ItemBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.items.CapabilityItemHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,20 +31,16 @@ public class CowDeathEvent {
                         if (cow.getCapability(ModCapabilities.getCAP(), null).iscontroledspawn()) {
                             event.setCanceled(true);
                             List<EntityItem> items = event.getDrops();
-                            System.out.println("items " + items);
                             for (EntityItem item : items) {
                                 EntitySim sim = ((EntitySim) event.getSource().getTrueSource());
-                                for (int i = 0; i < sim.gethandler().getSlots(); i++) {
-                                    System.out.println(sim.gethandler().getStackInSlot(i).getItem());
-                                    System.out.println(item.getItem().getItem());
-                                    if (sim.gethandler().getStackInSlot(i).isEmpty() || (sim.gethandler().getStackInSlot(i).getItem().equals(item.getItem().getItem())) && !(sim.gethandler().getStackInSlot(i).getCount() + item.getItem().getCount() > 64)) {
-                                        if ((sim.gethandler().getStackInSlot(i).equals(item.getItem()))) {
-                                            ItemStack stack = sim.gethandler().getStackInSlot(i);
+                                for (int i = 0; i < sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH).getSlots(); i++) {
+                                    if (sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.NORTH).getStackInSlot(i).isEmpty() || (sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.NORTH).getStackInSlot(i).getItem().equals(item.getItem().getItem())) && !(sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.NORTH).getStackInSlot(i).getCount() + item.getItem().getCount() > 64)) {
+                                        if ((sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.NORTH).getStackInSlot(i).equals(item.getItem()))) {
+                                            ItemStack stack = sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.NORTH).getStackInSlot(i);
                                             ItemStack mergestack = new ItemStack(stack.getItem(), stack.getCount() + item.getItem().getCount());
-                                            sim.gethandler().insertItem(i, mergestack, true);
+                                            sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.NORTH).insertItem(i, mergestack, true);
                                         }
-                                        sim.gethandler().insertItem(i, item.getItem(), false);
-                                        System.out.println("adding items");
+                                        sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.NORTH).insertItem(i, item.getItem(), false);
                                         break;
                                     }
                                 }
