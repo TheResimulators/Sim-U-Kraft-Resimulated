@@ -11,6 +11,7 @@ import com.resimulators.simukraft.common.enums.cattleFarmMode;
 import com.resimulators.simukraft.common.tileentity.structure.Structure;
 import com.resimulators.simukraft.init.ModItems;
 import com.resimulators.simukraft.network.HungerPacket;
+import com.sun.istack.internal.NotNull;
 import net.minecraft.block.BlockChest;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
@@ -605,7 +606,7 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
 
 
     @Override
-    public  boolean attackEntityAsMob(Entity p_attackEntityAsMob_1_){
+    public boolean attackEntityAsMob(Entity p_attackEntityAsMob_1_){
         float f = (float)this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue();
         int i = 0;
         if (p_attackEntityAsMob_1_ instanceof EntityLivingBase) {
@@ -615,7 +616,7 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
 
         boolean flag = p_attackEntityAsMob_1_.attackEntityFrom(DamageSource.causeMobDamage(this), f);
         if (flag) {
-            if (i > 0 && p_attackEntityAsMob_1_ instanceof EntityLivingBase) {
+            if (i > 0) {
                 ((EntityLivingBase)p_attackEntityAsMob_1_).knockBack(this, (float)i * 0.5F, (double) MathHelper.sin(this.rotationYaw * 0.017453292F), (double)(-MathHelper.cos(this.rotationYaw * 0.017453292F)));
                 this.motionX *= 0.6D;
                 this.motionZ *= 0.6D;

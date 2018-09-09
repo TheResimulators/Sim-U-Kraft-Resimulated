@@ -17,6 +17,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.items.CapabilityItemHandler;
 
+import java.util.Objects;
+
 public class AiSimAttackNearest extends EntityAIBase {
     World world;
     protected EntityCreature attacker;
@@ -148,51 +150,44 @@ public class AiSimAttackNearest extends EntityAIBase {
     public void updateTask()
     {
         EntityLivingBase entitylivingbase = this.attacker.getAttackTarget();
-        this.attacker.getLookHelper().setLookPositionWithEntity(entitylivingbase, 30.0F, 30.0F);
-        double d0 = this.attacker.getDistanceSq(entitylivingbase.posX, entitylivingbase.getEntityBoundingBox().minY, entitylivingbase.posZ);
-        --this.delayCounter;
+        if (entitylivingbase != null) {
+            this.attacker.getLookHelper().setLookPositionWithEntity(entitylivingbase, 30.0F, 30.0F);
+            double d0 = this.attacker.getDistanceSq(entitylivingbase.posX, entitylivingbase.getEntityBoundingBox().minY, entitylivingbase.posZ);
+            --this.delayCounter;
 
-        if ((this.longMemory || this.attacker.getEntitySenses().canSee(entitylivingbase)) && this.delayCounter <= 0 && (this.targetX == 0.0D && this.targetY == 0.0D && this.targetZ == 0.0D || entitylivingbase.getDistanceSq(this.targetX, this.targetY, this.targetZ) >= 1.0D || this.attacker.getRNG().nextFloat() < 0.05F))
-        {
-            this.targetX = entitylivingbase.posX;
-            this.targetY = entitylivingbase.getEntityBoundingBox().minY;
-            this.targetZ = entitylivingbase.posZ;
-            this.delayCounter = 4 + this.attacker.getRNG().nextInt(7);
+            if ((this.longMemory || this.attacker.getEntitySenses().canSee(entitylivingbase)) && this.delayCounter <= 0 && (this.targetX == 0.0D && this.targetY == 0.0D && this.targetZ == 0.0D || entitylivingbase.getDistanceSq(this.targetX, this.targetY, this.targetZ) >= 1.0D || this.attacker.getRNG().nextFloat() < 0.05F)) {
+                this.targetX = entitylivingbase.posX;
+                this.targetY = entitylivingbase.getEntityBoundingBox().minY;
+                this.targetZ = entitylivingbase.posZ;
+                this.delayCounter = 4 + this.attacker.getRNG().nextInt(7);
 
-            if (this.canPenalize)
-            {
-                this.delayCounter += failedPathFindingPenalty;
-                if (this.attacker.getNavigator().getPath() != null)
-                {
-                    net.minecraft.pathfinding.PathPoint finalPathPoint = this.attacker.getNavigator().getPath().getFinalPathPoint();
-                    if (finalPathPoint != null && entitylivingbase.getDistanceSq(finalPathPoint.x, finalPathPoint.y, finalPathPoint.z) < 1)
-                        failedPathFindingPenalty = 0;
-                    else
+                if (this.canPenalize) {
+                    this.delayCounter += failedPathFindingPenalty;
+                    if (this.attacker.getNavigator().getPath() != null) {
+                        net.minecraft.pathfinding.PathPoint finalPathPoint = this.attacker.getNavigator().getPath().getFinalPathPoint();
+                        if (finalPathPoint != null && entitylivingbase.getDistanceSq(finalPathPoint.x, finalPathPoint.y, finalPathPoint.z) < 1)
+                            failedPathFindingPenalty = 0;
+                        else
+                            failedPathFindingPenalty += 10;
+                    } else {
                         failedPathFindingPenalty += 10;
+                    }
                 }
-                else
-                {
-                    failedPathFindingPenalty += 10;
+
+                if (d0 > 1024.0D) {
+                    this.delayCounter += 10;
+                } else if (d0 > 256.0D) {
+                    this.delayCounter += 5;
+                }
+
+                if (!this.attacker.getNavigator().tryMoveToEntityLiving(entitylivingbase, this.speedTowardsTarget)) {
+                    this.delayCounter += 15;
                 }
             }
 
-            if (d0 > 1024.0D)
-            {
-                this.delayCounter += 10;
-            }
-            else if (d0 > 256.0D)
-            {
-                this.delayCounter += 5;
-            }
-
-            if (!this.attacker.getNavigator().tryMoveToEntityLiving(entitylivingbase, this.speedTowardsTarget))
-            {
-                this.delayCounter += 15;
-            }
+            this.attackTick = Math.max(this.attackTick - 1, 0);
+            this.checkAndPerformAttack(entitylivingbase, d0);
         }
-
-        this.attackTick = Math.max(this.attackTick - 1, 0);
-        this.checkAndPerformAttack(entitylivingbase, d0);
     }
 
     protected void checkAndPerformAttack(EntityLivingBase enemy, double distToEnemySqr)
@@ -219,36 +214,32 @@ public class AiSimAttackNearest extends EntityAIBase {
 
     public ItemStack getSword(){
         ItemStack itemStack = null;
-        for (int i = 0; i<sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH).getSlots(); i++){
-            if (sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.NORTH).getStackInSlot(i).getItem() instanceof ItemSword){
-                if (itemStack == null){
-                    itemStack = sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.NORTH).getStackInSlot(i);
-                }else{
-                    if (checkMaterial(itemStack,sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.NORTH).getStackInSlot(i))){
-                        itemStack = sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.NORTH).getStackInSlot(i);
+        for (int i = 0; i < Objects.requireNonNull(sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH)).getSlots(); i++) {
+            if (Objects.requireNonNull(sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH)).getStackInSlot(i).getItem() instanceof ItemSword) {
+                if (itemStack == null) {
+                    itemStack = Objects.requireNonNull(sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH)).getStackInSlot(i);
+                } else {
+                    if (checkMaterial(itemStack, Objects.requireNonNull(sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH)).getStackInSlot(i))) {
+                        itemStack = Objects.requireNonNull(sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH)).getStackInSlot(i);
                     }
 
                 }
             }
         }
-    return itemStack;
+        return itemStack;
     }
 
 
 
     public boolean checkMaterial(ItemStack itemStack,ItemStack newStack){
-        if (itemStack.getItem().getMaxDamage(itemStack) < newStack.getItem().getMaxDamage(newStack)){
-            return true;
-        }
-        return false;
+        return itemStack.getItem().getMaxDamage(itemStack) < newStack.getItem().getMaxDamage(newStack);
 
     }
 
 
     public boolean checkInvForSword(){
-
-        for (int i = 0;i<sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.NORTH).getSlots();i++){
-            if (sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.NORTH).getStackInSlot(i).getItem() instanceof ItemSword){
+        for (int i = 0; i< Objects.requireNonNull(sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH)).getSlots(); i++){
+            if (Objects.requireNonNull(sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH)).getStackInSlot(i).getItem() instanceof ItemSword){
                 return true;
             }
         }
