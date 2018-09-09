@@ -49,7 +49,8 @@ entity.sim.name=Sim
 #############################################################################
 #CreativeTabs
 itemGroup.simukraft=Sim-U-Kraft
-container.SimContainer=Sim Inventory
+container.SimContainer=Sim Tool/Food Inventory
+container.SimContainer.drops=Sim Drops Inventory
 #############################################################################
 #                                  Commands                                 #
 #############################################################################
