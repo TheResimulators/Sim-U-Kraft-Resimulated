@@ -214,19 +214,22 @@ public class AiSimAttackNearest extends EntityAIBase {
 
     public ItemStack getSword(){
         ItemStack itemStack = null;
-        for (int i = 0; i < Objects.requireNonNull(sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH)).getSlots(); i++) {
-            if (Objects.requireNonNull(sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH)).getStackInSlot(i).getItem() instanceof ItemSword) {
-                if (itemStack == null) {
-                    itemStack = Objects.requireNonNull(sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH)).getStackInSlot(i);
-                } else {
-                    if (checkMaterial(itemStack, Objects.requireNonNull(sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH)).getStackInSlot(i))) {
-                        itemStack = Objects.requireNonNull(sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH)).getStackInSlot(i);
+        int slot = 0;
+        for (int i = 0; i<sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH).getSlots(); i++){
+            if (sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.NORTH).getStackInSlot(i).getItem() instanceof ItemSword){
+                if (itemStack == null){
+                    itemStack = sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.NORTH).getStackInSlot(i);
+                    slot = i;
+                }else{
+                    if (checkMaterial(itemStack,sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.NORTH).getStackInSlot(i))){
+                        itemStack = sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.NORTH).getStackInSlot(i);
+                        slot = i;
                     }
-
                 }
             }
         }
-        return itemStack;
+    sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.NORTH).getStackInSlot(slot).shrink(1);
+    return itemStack;
     }
 
 

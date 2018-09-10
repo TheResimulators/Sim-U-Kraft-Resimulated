@@ -18,12 +18,14 @@ import net.minecraftforge.items.CapabilityItemHandler;
 
 import java.util.ArrayList;
 
-public class AISimGetInventory extends EntityAIBase{
+public class AISimGetInventory extends EntityAIBase {
     private BlockChest chest;
     private EntitySim sim;
-    public AISimGetInventory(EntitySim sim){
+
+    public AISimGetInventory(EntitySim sim) {
         this.sim = sim;
     }
+
     @Override
     public boolean shouldExecute() {
         return sim.getEndWork();
@@ -31,25 +33,24 @@ public class AISimGetInventory extends EntityAIBase{
 
 
     @Override
-    public void startExecuting(){
-        for (int y = 0;y<2;y++) {
+    public void startExecuting() {
+        for (int y = 0; y < 2; y++) {
             for (int x = 0; x < 4; x++) {
                 for (int z = 0; z < 4; z++) {
-                    BlockPos checkpos = sim.getJobBlockPos().add(x-2,0,z-2);
+                    BlockPos checkpos = sim.getJobBlockPos().add(x - 2, 0, z - 2);
                     Block block = sim.getEntityWorld().getBlockState(sim.getJobBlockPos().add(checkpos)).getBlock();
-                    if (block instanceof BlockChest){
-                        BlockChest chest = (BlockChest)block;
-                        ILockableContainer container = chest.getContainer(sim.world,new BlockPos(checkpos),true);
+                    if (block instanceof BlockChest) {
+                        BlockChest chest = (BlockChest) block;
+                        ILockableContainer container = chest.getContainer(sim.world, new BlockPos(checkpos), true);
                         int simsize = simGetnumberitems();
                         int chestavaliable = 0;
-                        for (int i = 0;i<container.getSizeInventory();i++){
-                            if (container.getStackInSlot(i).getItem().equals(Items.LEATHER) || container.getStackInSlot(i).getItem().equals(Items.BEEF) || container.getStackInSlot(i).isEmpty()){
+                        for (int i = 0; i < container.getSizeInventory(); i++) {
+                            if (getSimItems().contains(container.getStackInSlot(i).getItem()) || container.getStackInSlot(i).isEmpty()) {
                                 chestavaliable++;
-                            }
-                        if (simsize<chestavaliable){
-                                sim.setEmptychest(chest);
-                                break;
-                        }
+                            }}
+                            if (simsize < chestavaliable) {
+                                sim.setEmptychest(chest,checkpos);
+                                return;
                         }
                     }
                 }
@@ -58,18 +59,30 @@ public class AISimGetInventory extends EntityAIBase{
     }
 
 
-
-
-    private int simGetnumberitems(){
-        ArrayList<Item> items = new ArrayList();
-        for(int i = 0; i<sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.SOUTH).getSlots(); i++){
-            if (!items.contains(sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.SOUTH).getStackInSlot(i).getItem())){
-                if (sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.SOUTH).getStackInSlot(i).getItem().equals(Items.LEATHER) ||sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.SOUTH).getStackInSlot(i).getItem().equals(Items.BEEF));
-                items.add(sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.SOUTH).getStackInSlot(i).getItem());
+    private int simGetnumberitems() {
+        ArrayList<Item> items = new ArrayList<>();
+        for (int i = 0; i < sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.SOUTH).getSlots(); i++) {
+            if (!items.contains(sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.SOUTH).getStackInSlot(i).getItem())) {
+                if (sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.SOUTH).getStackInSlot(i).getItem().equals(Items.LEATHER) || sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.SOUTH).getStackInSlot(i).getItem().equals(Items.BEEF))
+                    ;
+                items.add(sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.SOUTH).getStackInSlot(i).getItem());
             }
             return items.size();
         }
         return 0;
+    }
+
+
+    private ArrayList<Item> getSimItems() {
+        ArrayList<Item> items = new ArrayList();
+        for (int i = 0; i < sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.SOUTH).getSlots(); i++) {
+            if (!items.contains(sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.SOUTH).getStackInSlot(i).getItem())) {
+                if (sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.SOUTH).getStackInSlot(i).getItem().equals(Items.LEATHER) || sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.SOUTH).getStackInSlot(i).getItem().equals(Items.BEEF))
+                    ;
+                items.add(sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.SOUTH).getStackInSlot(i).getItem());
+            }
+        }
+        return items;
     }
 }
 

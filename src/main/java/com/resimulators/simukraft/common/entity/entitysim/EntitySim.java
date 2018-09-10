@@ -88,6 +88,7 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
 
     //inventory AI related
     private BlockChest emptychest;
+    private BlockPos emptychestpos;
     //Milking related
     private EntityCow target;
     private cattleFarmMode.FarmMode cowmode = cattleFarmMode.FarmMode.KILL;
@@ -681,13 +682,17 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
         return endWork;
     }
 
-    public void setEmptychest(BlockChest chest){
+    public void setEmptychest(BlockChest chest,BlockPos pos){
         this.emptychest = chest;
+        this.emptychestpos = pos;
     }
 
     public BlockChest getEmptychest(){
         return emptychest;
     }
+
+
+    public BlockPos getEmptychestpos(){return emptychestpos;}
 }
 
 
