@@ -34,7 +34,7 @@ public class AiSimAttackNearest extends EntityAIBase {
     private double targetX;
     private double targetY;
     private double targetZ;
-    protected final int attackInterval = 20;
+    private int worktimelimit = 100;
     private EntitySim sim;
     private int failedPathFindingPenalty = 0;
     private boolean canPenalize = false;
@@ -55,6 +55,7 @@ public class AiSimAttackNearest extends EntityAIBase {
     {
         EntityLivingBase entitylivingbase = this.sim.getAttackTarget();
         if (!checkInvForSword()){return false;}
+        if (sim.getEndWork()) return false;
         if (entitylivingbase == null)
         {
             return false;
@@ -96,6 +97,16 @@ public class AiSimAttackNearest extends EntityAIBase {
      */
     public boolean shouldContinueExecuting()
     {
+        worktimelimit--;
+
+        if (worktimelimit <= 0){
+            sim.setEndWork(true);
+            System.out.println("worklimit reached " + worktimelimit);
+            System.out.println("end work " +sim.getEndWork());
+            worktimelimit = 100;
+            return false;
+
+        }
         EntityLivingBase entitylivingbase = this.attacker.getAttackTarget();
 
         if (entitylivingbase == null)
@@ -196,8 +207,8 @@ public class AiSimAttackNearest extends EntityAIBase {
 
         if (distToEnemySqr <= d0 && this.attackTick <= 0)
         {
-            if (getSword() != null){
-            if (!(sim.getActiveItemStack().getItem() instanceof ItemSword)){
+            if (checkInvForSword()){
+            if (!(Objects.requireNonNull(sim.getActiveItemStack().getItem()) instanceof ItemSword)){
                 sim.setHeldItem(EnumHand.MAIN_HAND,getSword());
             }}
             this.attackTick = 20;
@@ -215,20 +226,20 @@ public class AiSimAttackNearest extends EntityAIBase {
     public ItemStack getSword(){
         ItemStack itemStack = null;
         int slot = 0;
-        for (int i = 0; i<sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH).getSlots(); i++){
-            if (sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.NORTH).getStackInSlot(i).getItem() instanceof ItemSword){
-                if (itemStack == null){
-                    itemStack = sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.NORTH).getStackInSlot(i);
+        for (int i = 0; i < Objects.requireNonNull(sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH)).getSlots(); i++) {
+            if (Objects.requireNonNull(sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH)).getStackInSlot(i).getItem() instanceof ItemSword) {
+                if (itemStack == null) {
+                    itemStack = Objects.requireNonNull(sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH)).getStackInSlot(i);
                     slot = i;
-                }else{
-                    if (checkMaterial(itemStack,sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.NORTH).getStackInSlot(i))){
-                        itemStack = sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.NORTH).getStackInSlot(i);
+                } else {
+                    if (checkMaterial(itemStack, Objects.requireNonNull(sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH)).getStackInSlot(i))) {
+                        itemStack = Objects.requireNonNull(sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH)).getStackInSlot(i);
                         slot = i;
                     }
                 }
             }
         }
-    sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.NORTH).getStackInSlot(slot).shrink(1);
+   // sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.NORTH).getStackInSlot(slot).shrink(1);
     return itemStack;
     }
 

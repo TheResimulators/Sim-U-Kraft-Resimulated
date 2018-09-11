@@ -128,6 +128,8 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
         this.tasks.addTask(2, new AISimBuild(this));
         this.tasks.addTask(3, new AISimGotoToWork(this));
         this.tasks.addTask(4,new AISimKillCow(this));
+        this.tasks.addTask(5,new AISimGetInventory(this));
+        this.tasks.addTask(6,new AISimEmptyInventory(this));
         this.targetTasks.addTask(4,new AISimNearestAttackableTarget<>(this,EntityCow.class,false));
         this.tasks.addTask(4,new AiSimAttackNearest(0.7,true,this));
     }
@@ -558,7 +560,9 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
     @Override
     public void onUpdate() {
         super.onUpdate();
+        if (!world.isRemote){
         //heal counter. checks to heal after
+        updatenotworking();
         if (heal_counter / 20 > 4) {
             if (hunger > 15 && getHealth() < 20) {
                  heal(1.0f);
@@ -582,6 +586,19 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
         heal_counter++;
         counter++;
 
+    }
+    }
+
+    private void updatenotworking(){
+
+        if (getEndWork()){
+            System.out.println("counter " + counter/20);
+            System.out.println("end work " + endWork ) ;
+        if (counter/20 > 10){
+            setEndWork(false);
+            counter = 0;
+        }else{counter++;}
+    }else{counter = 0;}
     }
 
     public void setHunger(int hunger) {
