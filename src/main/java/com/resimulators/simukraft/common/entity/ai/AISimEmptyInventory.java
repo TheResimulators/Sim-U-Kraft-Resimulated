@@ -22,13 +22,17 @@ public class AISimEmptyInventory extends EntityAIBase {
 
     @Override
     public void startExecuting(){
+        System.out.println("this has been executed");
         //gets slots and items of sim to trasfer. only transfers from drops inventory
         for (int i =0;i<sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.SOUTH).getSlots();i++){
               ItemStack item = sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.SOUTH).getStackInSlot(i);
               for (int x = 0;x<sim.getEmptychest().getContainer(sim.world,sim.getEmptychestpos(),true).getSizeInventory();x++){
                   ItemStack cheststack = sim.getEmptychest().getContainer(sim.world,sim.getEmptychestpos(),true).getStackInSlot(x);
-                  if (item.equals(cheststack)){
+                  if (item.getItem().equals(cheststack.getItem())){
                       sim.getEmptychest().getContainer(sim.world,sim.getEmptychestpos(),true).setInventorySlotContents(x,new ItemStack(item.getItem(),item.getCount()+cheststack.getCount()));
+                      sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.SOUTH).getStackInSlot(i).shrink(item.getCount());
+                  }else if (cheststack.isEmpty()){
+                      sim.getEmptychest().getContainer(sim.world,sim.getEmptychestpos(),true).setInventorySlotContents(x,new ItemStack(item.getItem(),item.getCount()));
                       sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.SOUTH).getStackInSlot(i).shrink(item.getCount());
                   }
               }

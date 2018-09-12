@@ -33,14 +33,14 @@ public class CowDeathEvent {
                             List<EntityItem> items = event.getDrops();
                             for (EntityItem item : items) {
                                 EntitySim sim = ((EntitySim) event.getSource().getTrueSource());
-                                for (int i = 0; i < sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH).getSlots(); i++) {
-                                    if (sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.NORTH).getStackInSlot(i).isEmpty() || (sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.NORTH).getStackInSlot(i).getItem().equals(item.getItem().getItem())) && !(sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.NORTH).getStackInSlot(i).getCount() + item.getItem().getCount() > 64)) {
-                                        if ((sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.NORTH).getStackInSlot(i).equals(item.getItem()))) {
-                                            ItemStack stack = sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.NORTH).getStackInSlot(i);
+                                for (int i = 0; i < sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.SOUTH).getSlots(); i++) {
+                                    if (sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.SOUTH).getStackInSlot(i).isEmpty() || (sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.SOUTH).getStackInSlot(i).getItem().equals(item.getItem().getItem())) && !(sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.SOUTH).getStackInSlot(i).getCount() + item.getItem().getCount() > 64)) {
+                                        if ((sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.SOUTH).getStackInSlot(i).equals(item.getItem()))) {
+                                            ItemStack stack = sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.SOUTH).getStackInSlot(i);
                                             ItemStack mergestack = new ItemStack(stack.getItem(), stack.getCount() + item.getItem().getCount());
-                                            sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.NORTH).insertItem(i, mergestack, true);
+                                            sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.SOUTH).insertItem(i, mergestack, true);
                                         }
-                                        sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.NORTH).insertItem(i, item.getItem(), false);
+                                        sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.SOUTH).insertItem(i, item.getItem(), false);
                                         break;
                                     }
                                 }

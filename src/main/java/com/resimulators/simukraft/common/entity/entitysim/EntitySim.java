@@ -25,6 +25,7 @@ import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemSword;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTUtil;
@@ -563,6 +564,9 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
         if (!world.isRemote){
         //heal counter. checks to heal after
         updatenotworking();
+        if (endWork){
+            emptyHand(getActiveItemStack());
+        }
         if (heal_counter / 20 > 4) {
             if (hunger > 15 && getHealth() < 20) {
                  heal(1.0f);
@@ -589,17 +593,37 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
     }
     }
 
-    private void updatenotworking(){
+    private void updatenotworking() {
 
-        if (getEndWork()){
-            System.out.println("counter " + counter/20);
-            System.out.println("end work " + endWork ) ;
-        if (counter/20 > 10){
-            setEndWork(false);
+        if (getEndWork()) {
+            System.out.println("counter " + counter / 20);
+            System.out.println("end work " + endWork);
+            if (counter / 20 > 10) {
+                setEndWork(false);
+                counter = 0;
+            } else {
+                counter++;
+            }
+        } else {
             counter = 0;
-        }else{counter++;}
-    }else{counter = 0;}
+        }
+
+
     }
+
+    private void emptyHand(ItemStack stack){
+        System.out.println("active item stack before resetting " + getHeldItemMainhand().getItem());
+        getHeldItemMainhand();
+            if (getHeldItemMainhand().getItem() instanceof ItemSword){
+                this.setHeldItem(EnumHand.MAIN_HAND,ItemStack.EMPTY);
+                System.out.println("active itemstack " + getHeldItemMainhand());
+                for (int i = 0;i<toolinv.getSlots();i++){
+                    if (toolinv.getStackInSlot(i).isEmpty()){
+                        toolinv.insertItem(i,stack,false);
+                    }
+                }
+            }
+        }
 
     public void setHunger(int hunger) {
         this.hunger = hunger;

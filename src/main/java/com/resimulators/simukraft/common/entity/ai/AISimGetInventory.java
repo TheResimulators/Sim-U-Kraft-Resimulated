@@ -13,6 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.ILockableContainer;
 import net.minecraftforge.items.CapabilityItemHandler;
 
@@ -36,15 +37,19 @@ public class AISimGetInventory extends EntityAIBase {
     @Override
     public void startExecuting() {
         System.out.println("this has been executing. go here !@");
-        for (int y = 0; y < 2; y++) {
-            for (int x = 0; x < 4; x++) {
-                for (int z = 0; z < 4; z++) {
-                    BlockPos checkpos = sim.getJobBlockPos().add(x - 2, -1, z - 2);
-                    Block block = sim.getEntityWorld().getBlockState(sim.getJobBlockPos().add(checkpos)).getBlock();
+        for (int y = 0; y < 3; y++) {
+            for (int x = 0; x < 5; x++) {
+                for (int z = 0; z < 5; z++) {
+                    System.out.println("z " + z);
+                    System.out.println("x " + x);
+                    System.out.println("y " + y);
+                    BlockPos checkpos = sim.getJobBlockPos().add(x - 2, y-1, z - 2);
+                    System.out.println(checkpos);
+                    Block block = sim.world.getBlockState(checkpos).getBlock();
                     System.out.println(block);
                     if (block instanceof BlockChest) {
                         BlockChest chest = (BlockChest) block;
- `                       ILockableContainer container = chest.getContainer(sim.world, new BlockPos(checkpos), true);
+                        ILockableContainer container = chest.getContainer(sim.world, new BlockPos(checkpos), true);
                         int simsize = simGetnumberitems();
                         int chestavaliable = 0;
                         for (int i = 0; i < container.getSizeInventory(); i++) {

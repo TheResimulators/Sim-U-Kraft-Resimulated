@@ -208,8 +208,9 @@ public class AiSimAttackNearest extends EntityAIBase {
         if (distToEnemySqr <= d0 && this.attackTick <= 0)
         {
             if (checkInvForSword()){
-            if (!(Objects.requireNonNull(sim.getActiveItemStack().getItem()) instanceof ItemSword)){
+            if (!(Objects.requireNonNull(sim.getHeldItemMainhand().getItem()) instanceof ItemSword)){
                 sim.setHeldItem(EnumHand.MAIN_HAND,getSword());
+                System.out.println("sim help item after setting it " + sim.getHeldItemMainhand());
             }}
             this.attackTick = 20;
             this.attacker.swingArm(EnumHand.MAIN_HAND);
@@ -239,7 +240,7 @@ public class AiSimAttackNearest extends EntityAIBase {
                 }
             }
         }
-   // sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.NORTH).getStackInSlot(slot).shrink(1);
+   sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.NORTH).getStackInSlot(slot).shrink(1);
     return itemStack;
     }
 
