@@ -1,6 +1,7 @@
 package com.resimulators.simukraft.common.entity.ai;
 
 import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
+import net.minecraft.block.BlockAir;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
@@ -8,6 +9,7 @@ import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemAir;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.pathfinding.Path;
@@ -16,6 +18,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
 import java.util.Objects;
 
@@ -38,6 +41,7 @@ public class AiSimAttackNearest extends EntityAIBase {
     private EntitySim sim;
     private int failedPathFindingPenalty = 0;
     private boolean canPenalize = false;
+    private ItemStack sword;
 
     public AiSimAttackNearest(double speedIn, boolean useLongMemory, EntitySim sim) {
         this.world = sim.world;
@@ -54,7 +58,9 @@ public class AiSimAttackNearest extends EntityAIBase {
     public boolean shouldExecute()
     {
         EntityLivingBase entitylivingbase = this.sim.getAttackTarget();
-        if (!checkInvForSword()){return false;}
+        if (!checkInvForSword()){
+            System.out.println("false");
+            return false;}
         if (sim.getEndWork()) return false;
         if (entitylivingbase == null)
         {
@@ -138,6 +144,8 @@ public class AiSimAttackNearest extends EntityAIBase {
     {
         this.attacker.getNavigator().setPath(this.path, this.speedTowardsTarget);
         this.delayCounter = 0;
+        if (sword == null || !(Objects.requireNonNull(sword).getItem() instanceof ItemSword)) sword = getSword();
+        System.out.println("sword " + sword);
     }
 
     /**
@@ -207,11 +215,10 @@ public class AiSimAttackNearest extends EntityAIBase {
 
         if (distToEnemySqr <= d0 && this.attackTick <= 0)
         {
-            if (checkInvForSword()){
-            if (!(Objects.requireNonNull(sim.getHeldItemMainhand().getItem()) instanceof ItemSword)){
-                sim.setHeldItem(EnumHand.MAIN_HAND,getSword());
-                System.out.println("sim help item after setting it " + sim.getHeldItemMainhand());
-            }}
+                if (sword != null && !(Objects.requireNonNull(sim.getHeldItemMainhand().getItem()) instanceof ItemSword) && Objects.requireNonNull(sword).getItem() instanceof ItemSword) {
+                    sim.setHeldItem(EnumHand.MAIN_HAND, sword);
+                    System.out.println("sim help item after setting it " + sim.getHeldItemMainhand());
+                }
             this.attackTick = 20;
             this.attacker.swingArm(EnumHand.MAIN_HAND);
             this.attacker.attackEntityAsMob(enemy);
@@ -225,25 +232,26 @@ public class AiSimAttackNearest extends EntityAIBase {
 
 
     public ItemStack getSword(){
-        ItemStack itemStack = null;
-        int slot = 0;
-        for (int i = 0; i < Objects.requireNonNull(sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH)).getSlots(); i++) {
-            if (Objects.requireNonNull(sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH)).getStackInSlot(i).getItem() instanceof ItemSword) {
-                if (itemStack == null) {
-                    itemStack = Objects.requireNonNull(sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH)).getStackInSlot(i);
-                    slot = i;
-                } else {
-                    if (checkMaterial(itemStack, Objects.requireNonNull(sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH)).getStackInSlot(i))) {
-                        itemStack = Objects.requireNonNull(sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH)).getStackInSlot(i);
-                        slot = i;
+        IItemHandler handler = Objects.requireNonNull(sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH));
+        int currentslot = 0;
+
+        for (int i = 0; i < handler.getSlots(); i++) {
+
+            if (handler.getStackInSlot(i).getItem() instanceof ItemSword){
+                if (currentslot == 0){
+                    currentslot = i;
+                }else{
+                    if (checkMaterial(handler.getStackInSlot(currentslot),handler.getStackInSlot(i))){
+                        currentslot = i;
                     }
                 }
             }
-        }
-   sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.NORTH).getStackInSlot(slot).shrink(1);
-    return itemStack;
-    }
+            System.out.println("Current slot " + currentslot);
 
+
+        }
+        return handler.getStackInSlot(currentslot);
+    }
 
 
     public boolean checkMaterial(ItemStack itemStack,ItemStack newStack){
@@ -254,6 +262,8 @@ public class AiSimAttackNearest extends EntityAIBase {
 
     public boolean checkInvForSword(){
         for (int i = 0; i< Objects.requireNonNull(sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH)).getSlots(); i++){
+            System.out.println("check inv for sword " + Objects.requireNonNull(sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH)).getStackInSlot(i).getItem());
+            System.out.println("is it a sword " + (Objects.requireNonNull(sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH)).getStackInSlot(i).getItem() instanceof ItemSword));
             if (Objects.requireNonNull(sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH)).getStackInSlot(i).getItem() instanceof ItemSword){
                 return true;
             }

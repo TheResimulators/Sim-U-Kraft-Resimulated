@@ -11,7 +11,6 @@ import com.resimulators.simukraft.common.enums.cattleFarmMode;
 import com.resimulators.simukraft.common.tileentity.structure.Structure;
 import com.resimulators.simukraft.init.ModItems;
 import com.resimulators.simukraft.network.HungerPacket;
-import com.sun.istack.internal.NotNull;
 import net.minecraft.block.BlockChest;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
@@ -565,7 +564,7 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
         //heal counter. checks to heal after
         updatenotworking();
         if (endWork){
-            emptyHand(getActiveItemStack());
+            de_EquipSword(getActiveItemStack());
         }
         if (heal_counter / 20 > 4) {
             if (hunger > 15 && getHealth() < 20) {
@@ -611,7 +610,7 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
 
     }
 
-    private void emptyHand(ItemStack stack){
+    private void de_EquipSword(ItemStack stack){
         System.out.println("active item stack before resetting " + getHeldItemMainhand().getItem());
         getHeldItemMainhand();
             if (getHeldItemMainhand().getItem() instanceof ItemSword){
