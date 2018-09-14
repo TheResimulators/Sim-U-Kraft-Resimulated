@@ -77,16 +77,16 @@ public class AISimChildPlay extends EntityAIBase {
 
         if (this.targetVillager != null) {
             if (this.sim.getDistanceSq(this.targetVillager) > 4.0D) {
-                this.sim.getNavigator().tryMoveToEntityLiving(this.targetVillager, this.speed);
+                this.sim.getCustomNavigator().tryMoveToEntityLiving(this.targetVillager, this.speed);
             }
-        } else if (this.sim.getNavigator().noPath()) {
+        } else if (this.sim.getCustomNavigator().noPath()) {
             Vec3d vec3d = RandomPositionGenerator.findRandomTarget(this.sim, 16, 3);
 
             if (vec3d == null) {
                 return;
             }
 
-            this.sim.getNavigator().tryMoveToXYZ(vec3d.x, vec3d.y, vec3d.z, this.speed);
+            this.sim.getCustomNavigator().tryMoveToXYZ(vec3d.x, vec3d.y, vec3d.z, this.speed);
         }
     }
 }

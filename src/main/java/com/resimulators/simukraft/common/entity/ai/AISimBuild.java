@@ -147,7 +147,7 @@ public class AISimBuild extends EntityAIBase {
         if (this.entitySim.getDistanceSq(thePos) > 256.0D) {
             Vec3d vec3d = RandomPositionGenerator.findRandomTargetBlockTowards(this.entitySim, 14, 7, new Vec3d((double) thePos.getX() + 0.5D, (double) thePos.getY(), (double) thePos.getZ() + 0.5D));
             if (vec3d != null) {
-                boolean success = this.entitySim.getNavigator().tryMoveToXYZ(vec3d.x, vec3d.y, vec3d.z, 0.7D);
+                boolean success = this.entitySim.getCustomNavigator().tryMoveToXYZ(vec3d.x, vec3d.y, vec3d.z, 0.7D);
                 if (!success) {
                     if (tries == 0) {
                         this.entitySim.attemptTeleport(vec3d.x + (rand.nextInt(20) - 10) + 0.5, vec3d.y + (rand.nextInt(20) - 10), vec3d.z + (rand.nextInt(20) - 10) + 0.5);
@@ -158,7 +158,7 @@ public class AISimBuild extends EntityAIBase {
                 }
             }
         } else {
-            boolean success = this.entitySim.getNavigator().tryMoveToXYZ(thePos.getX(), thePos.getY(), thePos.getZ(), 0.7D);
+            boolean success = this.entitySim.getCustomNavigator().tryMoveToXYZ(thePos.getX(), thePos.getY(), thePos.getZ(), 0.7D);
             if (!success) {
                 if (tries == 0) {
                     this.entitySim.attemptTeleport(thePos.getX() + (rand.nextInt(6) - 3) + 0.5, thePos.getY() + (rand.nextInt(6) - 3), thePos.getZ() + (rand.nextInt(6) - 3) + 0.5);

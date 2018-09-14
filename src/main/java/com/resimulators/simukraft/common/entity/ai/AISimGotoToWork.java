@@ -21,7 +21,7 @@ public class AISimGotoToWork extends EntityAIBase {
     @Override
     public void startExecuting(){
         //System.out.println("is the executing");
-        sim.getNavigator().tryMoveToXYZ(sim.getJobBlockPos().getX(),sim.getJobBlockPos().getY()+0.5d,sim.getJobBlockPos().getZ(),0.7d);
+        sim.getCustomNavigator().tryMoveToXYZ(sim.getJobBlockPos().getX(),sim.getJobBlockPos().getY()+0.5d,sim.getJobBlockPos().getZ(),0.7d);
     }
 
 
@@ -39,7 +39,7 @@ public class AISimGotoToWork extends EntityAIBase {
     @Override
     public void updateTask(){
         if(sim.getDistanceSq(sim.getJobBlockPos()) > 2) {
-            sim.getNavigator().tryMoveToXYZ(sim.getJobBlockPos().getX(), sim.getJobBlockPos().getY() + 0.5d, sim.getJobBlockPos().getZ(), 0.7d);
+            sim.getCustomNavigator().tryMoveToXYZ(sim.getJobBlockPos().getX(), sim.getJobBlockPos().getY() + 0.5d, sim.getJobBlockPos().getZ(), 0.7d);
         }
     }
     @Override

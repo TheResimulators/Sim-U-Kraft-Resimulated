@@ -24,7 +24,7 @@ import java.util.Objects;
 
 public class AiSimAttackNearest extends EntityAIBase {
     World world;
-    protected EntityCreature attacker;
+    protected EntitySim attacker;
     /** An amount of decrementing ticks that allows the entity to attack once the tick reaches 0. */
     protected int attackTick;
     /** The speed with which the mob will approach the target */
@@ -76,7 +76,7 @@ public class AiSimAttackNearest extends EntityAIBase {
             {
                 if (--this.delayCounter <= 0)
                 {
-                    this.path = this.attacker.getNavigator().getPathToEntityLiving(entitylivingbase);
+                    this.path = this.attacker.getCustomNavigator().getPathToEntityLiving(entitylivingbase);
                     this.delayCounter = 4 + this.attacker.getRNG().nextInt(7);
                     return this.path != null;
                 }
@@ -85,7 +85,7 @@ public class AiSimAttackNearest extends EntityAIBase {
                     return true;
                 }
             }
-            this.path = this.attacker.getNavigator().getPathToEntityLiving(entitylivingbase);
+            this.path = this.attacker.getCustomNavigator().getPathToEntityLiving(entitylivingbase);
 
             if (this.path != null)
             {
@@ -125,7 +125,7 @@ public class AiSimAttackNearest extends EntityAIBase {
         }
         else if (!this.longMemory)
         {
-            return !this.attacker.getNavigator().noPath();
+            return !this.attacker.getCustomNavigator().noPath();
         }
         else if (!this.attacker.isWithinHomeDistanceFromPosition(new BlockPos(entitylivingbase)))
         {
@@ -142,7 +142,7 @@ public class AiSimAttackNearest extends EntityAIBase {
      */
     public void startExecuting()
     {
-        this.attacker.getNavigator().setPath(this.path, this.speedTowardsTarget);
+        this.attacker.getCustomNavigator().setPath(this.path, this.speedTowardsTarget);
         this.delayCounter = 0;
         if (sword == null || !(Objects.requireNonNull(sword).getItem() instanceof ItemSword)) sword = getSword();
         System.out.println("sword " + sword);
@@ -160,7 +160,7 @@ public class AiSimAttackNearest extends EntityAIBase {
             this.attacker.setAttackTarget((EntityLivingBase)null);
         }
 
-        this.attacker.getNavigator().clearPath();
+        this.attacker.getCustomNavigator().clearPath();
     }
 
     /**
@@ -182,8 +182,8 @@ public class AiSimAttackNearest extends EntityAIBase {
 
                 if (this.canPenalize) {
                     this.delayCounter += failedPathFindingPenalty;
-                    if (this.attacker.getNavigator().getPath() != null) {
-                        net.minecraft.pathfinding.PathPoint finalPathPoint = this.attacker.getNavigator().getPath().getFinalPathPoint();
+                    if (this.attacker.getCustomNavigator().getPath() != null) {
+                        net.minecraft.pathfinding.PathPoint finalPathPoint = this.attacker.getCustomNavigator().getPath().getFinalPathPoint();
                         if (finalPathPoint != null && entitylivingbase.getDistanceSq(finalPathPoint.x, finalPathPoint.y, finalPathPoint.z) < 1)
                             failedPathFindingPenalty = 0;
                         else
@@ -199,7 +199,7 @@ public class AiSimAttackNearest extends EntityAIBase {
                     this.delayCounter += 5;
                 }
 
-                if (!this.attacker.getNavigator().tryMoveToEntityLiving(entitylivingbase, this.speedTowardsTarget)) {
+                if (!this.attacker.getCustomNavigator().tryMoveToEntityLiving(entitylivingbase, this.speedTowardsTarget)) {
                     this.delayCounter += 15;
                 }
             }
