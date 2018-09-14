@@ -91,14 +91,14 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
     private BlockPos emptychestpos;
     //Milking related
     private EntityCow target;
-    private cattleFarmMode.FarmMode cowmode = cattleFarmMode.FarmMode.KILL;
+    private cattleFarmMode.FarmMode cowmode = cattleFarmMode.FarmMode.MILK;
 
     public EntitySim(World worldIn) {
         super(worldIn);
         this.navigator = new CustomPathNavigateGround(this,this.world);
         this.inventory = new InventoryBasic("Items", false, 8);
         this.setSize(0.6f, 1.95f);
-        ((CustomPathNavigateGround) this.getNavigator()).setBreakDoors(true);
+        this.getCustomNavigator().setBreakDoors(true);
         this.setCanPickUpLoot(true);
         this.setCustomNameTag("Sim (WIP)");
         this.setAlwaysRenderNameTag(false);
@@ -130,6 +130,7 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
         this.tasks.addTask(4,new AISimKillCow(this));
         this.tasks.addTask(5,new AISimGetInventory(this));
         this.tasks.addTask(6,new AISimEmptyInventory(this));
+        this.tasks.addTask(7,new AISimGetBuckets(this));
         this.targetTasks.addTask(4,new AISimNearestAttackableTarget<>(this,EntityCow.class,false));
         this.tasks.addTask(4,new AiSimAttackNearest(0.7,true,this));
     }
@@ -175,6 +176,10 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
         } else {
             return super.processInteract(player, hand);
         }
+    }
+
+    public CustomPathNavigateGround getCustomNavigator(){
+        return(CustomPathNavigateGround) navigator;
     }
 
     @Override
