@@ -21,12 +21,13 @@ public class AISimGetBuckets extends EntityAIBase {
     }
     @Override
     public boolean shouldExecute() {
-        return checkInvBucket() && sim.getCowmode() == cattleFarmMode.FarmMode.MILK;
+        return checkInvBucket() && sim.getCowmode() == cattleFarmMode.FarmMode.MILK || sim.getHeldItemMainhand().getItem() instanceof ItemBucket;
     }
 
     @Override
     public void startExecuting(){
-        sim.getCustomNavigator().tryMoveToXYZ(sim.getTarget().posX,sim.getTarget().posY,sim.getTarget().posZ,0.7d);
+
+        sim.getNavigator().tryMoveToXYZ(sim.getTarget().posX,sim.getTarget().posY,sim.getTarget().posZ,0.7d);
         equipBucket();
 
     }
@@ -49,17 +50,13 @@ public class AISimGetBuckets extends EntityAIBase {
 }
     private void milkCow(){
         ItemStack itemstack = sim.getHeldItemMainhand();
-        sim.getHeldItemMainhand().shrink(1);
-        if (itemstack.getItem() == Items.BUCKET);
+        System.out.println("this is being called");
+        if (itemstack.getItem() instanceof ItemBucket);
         {
             sim.playSound(SoundEvents.ENTITY_COW_MILK, 1.0F, 1.0F);
             itemstack.shrink(1);
 
-            if (itemstack.isEmpty())
-            {
-                sim.setHeldItem(EnumHand.MAIN_HAND, new ItemStack(Items.MILK_BUCKET));
-            }
-            else if (!addMilkBucket()) {
+            if (!addMilkBucket()) {
                 sim.dropItem(new ItemStack(Items.MILK_BUCKET).getItem(), 1);
             }
 

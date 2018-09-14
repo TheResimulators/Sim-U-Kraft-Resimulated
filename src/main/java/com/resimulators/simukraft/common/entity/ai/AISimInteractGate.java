@@ -28,7 +28,7 @@ public class AISimInteractGate extends EntityAIBase {
         {
             this.entity = entityIn;
 
-            if ((entityIn.getCustomNavigator() == null))
+            if ((entityIn.getNavigator() == null))
             {
                 throw new IllegalArgumentException("Unsupported mob type for DoorInteractGoal");
             }
@@ -45,7 +45,7 @@ public class AISimInteractGate extends EntityAIBase {
             }
             else
             {
-                PathNavigateGround pathnavigateground = (PathNavigateGround)this.entity.getCustomNavigator();
+                PathNavigateGround pathnavigateground = (PathNavigateGround)this.entity.getNavigator();
                 Path path = pathnavigateground.getPath();
 
                 if (path != null && !path.isFinished() && pathnavigateground.getEnterDoors())

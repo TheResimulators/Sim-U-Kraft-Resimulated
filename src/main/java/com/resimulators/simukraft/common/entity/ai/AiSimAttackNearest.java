@@ -1,6 +1,7 @@
 package com.resimulators.simukraft.common.entity.ai;
 
 import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
+import com.resimulators.simukraft.common.enums.cattleFarmMode;
 import net.minecraft.block.BlockAir;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
@@ -59,8 +60,10 @@ public class AiSimAttackNearest extends EntityAIBase {
     {
         EntityLivingBase entitylivingbase = this.sim.getAttackTarget();
         if (!checkInvForSword()){
-            System.out.println("false");
             return false;}
+        if (sim.getCowmode() == cattleFarmMode.FarmMode.MILK ){
+            return false;
+        }
         if (sim.getEndWork()) return false;
         if (entitylivingbase == null)
         {
@@ -76,7 +79,7 @@ public class AiSimAttackNearest extends EntityAIBase {
             {
                 if (--this.delayCounter <= 0)
                 {
-                    this.path = this.attacker.getCustomNavigator().getPathToEntityLiving(entitylivingbase);
+                    this.path = this.attacker.getNavigator().getPathToEntityLiving(entitylivingbase);
                     this.delayCounter = 4 + this.attacker.getRNG().nextInt(7);
                     return this.path != null;
                 }
@@ -85,7 +88,7 @@ public class AiSimAttackNearest extends EntityAIBase {
                     return true;
                 }
             }
-            this.path = this.attacker.getCustomNavigator().getPathToEntityLiving(entitylivingbase);
+            this.path = this.attacker.getNavigator().getPathToEntityLiving(entitylivingbase);
 
             if (this.path != null)
             {
@@ -107,8 +110,6 @@ public class AiSimAttackNearest extends EntityAIBase {
 
         if (worktimelimit <= 0){
             sim.setEndWork(true);
-            System.out.println("worklimit reached " + worktimelimit);
-            System.out.println("end work " +sim.getEndWork());
             worktimelimit = 100;
             return false;
 
@@ -125,7 +126,7 @@ public class AiSimAttackNearest extends EntityAIBase {
         }
         else if (!this.longMemory)
         {
-            return !this.attacker.getCustomNavigator().noPath();
+            return !this.attacker.getNavigator().noPath();
         }
         else if (!this.attacker.isWithinHomeDistanceFromPosition(new BlockPos(entitylivingbase)))
         {
@@ -142,10 +143,9 @@ public class AiSimAttackNearest extends EntityAIBase {
      */
     public void startExecuting()
     {
-        this.attacker.getCustomNavigator().setPath(this.path, this.speedTowardsTarget);
+        this.attacker.getNavigator().setPath(this.path, this.speedTowardsTarget);
         this.delayCounter = 0;
         if (sword == null || !(Objects.requireNonNull(sword).getItem() instanceof ItemSword)) sword = getSword();
-        System.out.println("sword " + sword);
     }
 
     /**
@@ -160,7 +160,7 @@ public class AiSimAttackNearest extends EntityAIBase {
             this.attacker.setAttackTarget((EntityLivingBase)null);
         }
 
-        this.attacker.getCustomNavigator().clearPath();
+        this.attacker.getNavigator().clearPath();
     }
 
     /**
@@ -182,8 +182,8 @@ public class AiSimAttackNearest extends EntityAIBase {
 
                 if (this.canPenalize) {
                     this.delayCounter += failedPathFindingPenalty;
-                    if (this.attacker.getCustomNavigator().getPath() != null) {
-                        net.minecraft.pathfinding.PathPoint finalPathPoint = this.attacker.getCustomNavigator().getPath().getFinalPathPoint();
+                    if (this.attacker.getNavigator().getPath() != null) {
+                        net.minecraft.pathfinding.PathPoint finalPathPoint = this.attacker.getNavigator().getPath().getFinalPathPoint();
                         if (finalPathPoint != null && entitylivingbase.getDistanceSq(finalPathPoint.x, finalPathPoint.y, finalPathPoint.z) < 1)
                             failedPathFindingPenalty = 0;
                         else
@@ -199,7 +199,7 @@ public class AiSimAttackNearest extends EntityAIBase {
                     this.delayCounter += 5;
                 }
 
-                if (!this.attacker.getCustomNavigator().tryMoveToEntityLiving(entitylivingbase, this.speedTowardsTarget)) {
+                if (!this.attacker.getNavigator().tryMoveToEntityLiving(entitylivingbase, this.speedTowardsTarget)) {
                     this.delayCounter += 15;
                 }
             }
@@ -217,7 +217,6 @@ public class AiSimAttackNearest extends EntityAIBase {
         {
                 if (sword != null && !(Objects.requireNonNull(sim.getHeldItemMainhand().getItem()) instanceof ItemSword) && Objects.requireNonNull(sword).getItem() instanceof ItemSword) {
                     sim.setHeldItem(EnumHand.MAIN_HAND, sword);
-                    System.out.println("sim help item after setting it " + sim.getHeldItemMainhand());
                 }
             this.attackTick = 20;
             this.attacker.swingArm(EnumHand.MAIN_HAND);
@@ -246,7 +245,6 @@ public class AiSimAttackNearest extends EntityAIBase {
                     }
                 }
             }
-            System.out.println("Current slot " + currentslot);
 
 
         }
@@ -262,8 +260,6 @@ public class AiSimAttackNearest extends EntityAIBase {
 
     public boolean checkInvForSword(){
         for (int i = 0; i< Objects.requireNonNull(sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH)).getSlots(); i++){
-            System.out.println("check inv for sword " + Objects.requireNonNull(sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH)).getStackInSlot(i).getItem());
-            System.out.println("is it a sword " + (Objects.requireNonNull(sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH)).getStackInSlot(i).getItem() instanceof ItemSword));
             if (Objects.requireNonNull(sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH)).getStackInSlot(i).getItem() instanceof ItemSword){
                 return true;
             }

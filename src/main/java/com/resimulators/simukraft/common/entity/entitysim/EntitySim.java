@@ -98,7 +98,7 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
         this.navigator = new CustomPathNavigateGround(this,this.world);
         this.inventory = new InventoryBasic("Items", false, 8);
         this.setSize(0.6f, 1.95f);
-        this.getCustomNavigator().setBreakDoors(true);
+        ((CustomPathNavigateGround) this.getNavigator()).setBreakDoors(false);
         this.setCanPickUpLoot(true);
         this.setCustomNameTag("Sim (WIP)");
         this.setAlwaysRenderNameTag(false);
@@ -178,9 +178,6 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
         }
     }
 
-    public CustomPathNavigateGround getCustomNavigator(){
-        return(CustomPathNavigateGround) navigator;
-    }
 
     @Override
     protected void entityInit() {

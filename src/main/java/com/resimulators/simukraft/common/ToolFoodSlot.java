@@ -2,6 +2,7 @@ package com.resimulators.simukraft.common;
 
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemBucket;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
@@ -17,7 +18,7 @@ public class ToolFoodSlot extends SlotItemHandler {
 
     @Override
     public boolean isItemValid(ItemStack stack) {
-        if (stack.getItem() instanceof ItemSword || stack.getItem() instanceof ItemFood){
+        if (stack.getItem() instanceof ItemSword || stack.getItem() instanceof ItemFood || stack.getItem() instanceof ItemBucket){
             super.isItemValid(stack);
             return true;
         }
