@@ -117,9 +117,9 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
         this.tasks.addTask(4, new EntityAIMoveIndoors(this));
         this.tasks.addTask(5, new EntityAIRestrictOpenDoor(this));
         this.tasks.addTask(6, new EntityAIOpenDoor(this, true));
-        this.tasks.addTask(7, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0f, 1.0f));
-        this.tasks.addTask(8, new EntityAIWanderAvoidWater(this, 0.6d));
-        this.tasks.addTask(9, new EntityAIWatchClosest(this, EntityLiving.class, 8.0f));
+        this.tasks.addTask(8, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0f, 1.0f));
+        this.tasks.addTask(9, new EntityAIWanderAvoidWater(this, 0.6d));
+        this.tasks.addTask(10, new EntityAIWatchClosest(this, EntityLiving.class, 8.0f));
 
     }
 

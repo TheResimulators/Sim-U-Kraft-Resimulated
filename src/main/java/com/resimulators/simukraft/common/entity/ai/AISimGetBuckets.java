@@ -6,22 +6,23 @@ import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemBucket;
+import net.minecraft.item.ItemBucketMilk;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
 
 public class AISimGetBuckets extends EntityAIBase {
     private EntitySim sim;
     int milkdelay = 30;
+    int worktimelimit;
     public AISimGetBuckets(EntitySim sim){
         this.sim = sim;
     }
     @Override
     public boolean shouldExecute() {
-        return checkInvBucket() && sim.getCowmode() == cattleFarmMode.FarmMode.MILK || sim.getHeldItemMainhand().getItem() instanceof ItemBucket;
+        return (checkInvBucket() && sim.getCowmode() == cattleFarmMode.FarmMode.MILK || sim.getHeldItemMainhand().getItem() instanceof ItemBucket) && !sim.getEndWork();
     }
 
     @Override
@@ -37,6 +38,9 @@ public class AISimGetBuckets extends EntityAIBase {
         if (sim.getDistance(sim.getTarget()) < 1) {
             if (milkdelay <= 0) {
                 milkdelay = 30;
+                if (!(sim.getHeldItemMainhand().getItem() instanceof ItemBucket)){
+                    if (!checkInvBucket()) equipBucket();
+                }
                 if (sim.getHeldItemMainhand().getItem() instanceof ItemBucket) {
                     sim.swingArm(EnumHand.MAIN_HAND);
                     milkCow();
@@ -54,14 +58,14 @@ public class AISimGetBuckets extends EntityAIBase {
         if (itemstack.getItem() instanceof ItemBucket);
         {
             sim.playSound(SoundEvents.ENTITY_COW_MILK, 1.0F, 1.0F);
+            sim.getTarget().playSound(SoundEvents.ENTITY_COW_AMBIENT,0.5f,1.0f);
             itemstack.shrink(1);
 
             if (!addMilkBucket()) {
                 sim.dropItem(new ItemStack(Items.MILK_BUCKET).getItem(), 1);
             }
-
-            }
-    }
+        }
+}
 
 
 
@@ -96,5 +100,19 @@ public class AISimGetBuckets extends EntityAIBase {
                 }
             }
             return false;
+        }
+
+        @Override
+        public boolean shouldContinueExecuting()
+        {
+            worktimelimit--;
+
+            if (worktimelimit <= 0){
+                sim.setEndWork(true);
+                worktimelimit = 100;
+                return false;
+
+            }
+        return checkInvBucket();
         }
     }
