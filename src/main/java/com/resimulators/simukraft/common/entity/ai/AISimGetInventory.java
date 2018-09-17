@@ -36,17 +36,11 @@ public class AISimGetInventory extends EntityAIBase {
 
     @Override
     public void startExecuting() {
-        System.out.println("this has been executing. go here !@");
         for (int y = 0; y < 3; y++) {
             for (int x = 0; x < 5; x++) {
                 for (int z = 0; z < 5; z++) {
-                    System.out.println("z " + z);
-                    System.out.println("x " + x);
-                    System.out.println("y " + y);
                     BlockPos checkpos = sim.getJobBlockPos().add(x - 2, y-1, z - 2);
-                    System.out.println(checkpos);
                     Block block = sim.world.getBlockState(checkpos).getBlock();
-                    System.out.println(block);
                     if (block instanceof BlockChest) {
                         BlockChest chest = (BlockChest) block;
                         ILockableContainer container = chest.getContainer(sim.world, new BlockPos(checkpos), true);
@@ -58,7 +52,6 @@ public class AISimGetInventory extends EntityAIBase {
                             }}
                             if (simsize < chestavaliable) {
                                 sim.setEmptychest(chest,checkpos);
-                                System.out.println("sim size + chestavailable " + simsize +" " + chestavaliable);
                                 return;
                         }
                     }

@@ -35,23 +35,19 @@ public class AISimGetBuckets extends EntityAIBase {
 
     @Override
     public void updateTask(){
+
+        if (milkdelay < 0){
+            milkdelay = 30;
         if (sim.getDistance(sim.getTarget()) < 1) {
-            if (milkdelay <= 0) {
-                milkdelay = 30;
-                if (!(sim.getHeldItemMainhand().getItem() instanceof ItemBucket)){
-                    if (!checkInvBucket()) equipBucket();
-                }
                 if (sim.getHeldItemMainhand().getItem() instanceof ItemBucket) {
                     sim.swingArm(EnumHand.MAIN_HAND);
+                    sim.getJumpHelper().doJump();
                     milkCow();
 
                 }
-            } else {
-                milkdelay--;
-            }
+            }else{ sim.getNavigator().tryMoveToXYZ(sim.getTarget().posX,sim.getTarget().posY,sim.getTarget().posZ,0.7d);}
 
-        }
-}
+        }else{milkdelay--;}}
     private void milkCow(){
         ItemStack itemstack = sim.getHeldItemMainhand();
         System.out.println("this is being called");
@@ -59,11 +55,15 @@ public class AISimGetBuckets extends EntityAIBase {
         {
             sim.playSound(SoundEvents.ENTITY_COW_MILK, 1.0F, 1.0F);
             sim.getTarget().playSound(SoundEvents.ENTITY_COW_AMBIENT,0.5f,1.0f);
+            sim.swingArm(EnumHand.MAIN_HAND);
             itemstack.shrink(1);
-
+            if (checkInvBucket()){
+                if (itemstack.isEmpty()) equipBucket();
+            }
             if (!addMilkBucket()) {
                 sim.dropItem(new ItemStack(Items.MILK_BUCKET).getItem(), 1);
             }
+
         }
 }
 
@@ -85,9 +85,10 @@ public class AISimGetBuckets extends EntityAIBase {
         private void equipBucket(){
             IItemHandler handler = sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.NORTH);
             for (int i = 0;i<handler.getSlots();i++){
-                if (handler.getStackInSlot(i).getItem() instanceof ItemBucket){
+                if ((handler.getStackInSlot(i).getItem() instanceof ItemBucket)){
                     sim.setHeldItem(EnumHand.MAIN_HAND,new ItemStack(Items.BUCKET,1));
                     handler.getStackInSlot(i).shrink(1);
+                    return;
                 }
             }
         }

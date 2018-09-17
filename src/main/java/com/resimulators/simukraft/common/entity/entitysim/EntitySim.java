@@ -597,8 +597,6 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
     private void updatenotworking() {
 
         if (getEndWork()) {
-            System.out.println("counter " + counter / 20);
-            System.out.println("end work " + endWork);
             if (counter / 20 > 10) {
                 setEndWork(false);
                 counter = 0;
@@ -613,11 +611,9 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
     }
 
     private void de_EquipSword(ItemStack stack){
-        System.out.println("active item stack before resetting " + getHeldItemMainhand().getItem());
         getHeldItemMainhand();
             if (getHeldItemMainhand().getItem() instanceof ItemSword){
                 this.setHeldItem(EnumHand.MAIN_HAND,ItemStack.EMPTY);
-                System.out.println("active itemstack " + getHeldItemMainhand());
                 for (int i = 0;i<toolinv.getSlots();i++){
                     if (toolinv.getStackInSlot(i).isEmpty()){
                         toolinv.insertItem(i,stack,false);
