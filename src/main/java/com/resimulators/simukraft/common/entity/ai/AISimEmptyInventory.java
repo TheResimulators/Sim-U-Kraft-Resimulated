@@ -28,7 +28,7 @@ public class AISimEmptyInventory extends EntityAIBase {
               ItemStack item = sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.SOUTH).getStackInSlot(i);
               for (int x = 0;x<sim.getEmptychest().getContainer(sim.world,sim.getEmptychestpos(),true).getSizeInventory();x++){
                   ItemStack cheststack = sim.getEmptychest().getContainer(sim.world,sim.getEmptychestpos(),true).getStackInSlot(x);
-                  if (item.getItem().equals(cheststack.getItem())){
+                  if (item.getItem().equals(cheststack.getItem()) && item.getCount() + cheststack.getCount() <= cheststack.getMaxStackSize()){
                       sim.getEmptychest().getContainer(sim.world,sim.getEmptychestpos(),true).setInventorySlotContents(x,new ItemStack(item.getItem(),item.getCount()+cheststack.getCount()));
                       sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.SOUTH).getStackInSlot(i).shrink(item.getCount());
                   }else if (cheststack.isEmpty()){

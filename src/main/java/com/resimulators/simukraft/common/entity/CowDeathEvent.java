@@ -65,11 +65,11 @@ public class CowDeathEvent {
                     if (cow.getCapability(ModCapabilities.getCAP(),null) != null){
                         if (cow.getCapability(ModCapabilities.getCAP(),null).iscontroledspawn()){
                         CowCapability cap = Objects.requireNonNull(cow.getCapability(ModCapabilities.getCAP(),null));
+                        if (!cap.ismilkable()){
                         if (cap.getCooldown() >= 0 ){
                             cap.resetmilkcooldown();
-                            }
-                            cap.decrementMilkcooldown();
-                        }
+                            }else cap.decrementMilkcooldown();
+                        }}
                     }
                 }
             }

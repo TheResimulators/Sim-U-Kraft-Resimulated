@@ -41,6 +41,8 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
@@ -113,7 +115,7 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
         this.tasks.addTask(1, new EntityAISwimming(this));
         this.tasks.addTask(2, new EntityAIAvoidEntity<>(this, EntityZombie.class, 8.0f, 0.6d, 0.6d));
         this.setProfessionAIs();
-        this.tasks.addTask(3, new AISimOpenGate(this,true));
+        this.tasks.addTask(1, new AISimOpenGate(this,true));
         this.tasks.addTask(4, new EntityAIMoveIndoors(this));
         this.tasks.addTask(5, new EntityAIRestrictOpenDoor(this));
         this.tasks.addTask(6, new EntityAIOpenDoor(this, true));
@@ -481,6 +483,7 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public float getSwingProgress(float partialTickTime) {
         return super.getSwingProgress(partialTickTime);
     }

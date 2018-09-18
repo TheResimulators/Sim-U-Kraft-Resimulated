@@ -47,7 +47,7 @@ public class AISimGetInventory extends EntityAIBase {
                         int simsize = simGetnumberitems();
                         int chestavaliable = 0;
                         for (int i = 0; i < container.getSizeInventory(); i++) {
-                            if (getSimItems().contains(container.getStackInSlot(i).getItem()) || container.getStackInSlot(i).isEmpty()) {
+                            if (getSimItems().contains(container.getStackInSlot(i).getItem()) &&container.getStackInSlot(i).getCount() < container.getStackInSlot(i).getMaxStackSize() || container.getStackInSlot(i).isEmpty()) {
                                 chestavaliable++;
                             }}
                             if (simsize < chestavaliable) {

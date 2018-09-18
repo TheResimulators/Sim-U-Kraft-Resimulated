@@ -37,7 +37,7 @@ public interface CowCapability extends INBTSerializable<NBTTagCompound> {
 
     class Impl implements CowCapability{
 
-        private byte ismilked = 0;
+        private byte ismilked = 1;
         private int milkcooldown = 200;
         private byte controledspawn = 0;
         @Override
@@ -52,7 +52,7 @@ public interface CowCapability extends INBTSerializable<NBTTagCompound> {
 
         @Override
         public void setmilked() {
-            ismilked = 1;
+            ismilked = 0;
         }
 
         @Override
@@ -84,7 +84,7 @@ public interface CowCapability extends INBTSerializable<NBTTagCompound> {
         @Override
         public void resetmilkcooldown() {
             milkcooldown = 200;
-            ismilked = 0;
+            ismilked = 1;
         }
 
         @Override
