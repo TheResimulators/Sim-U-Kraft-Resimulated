@@ -6,7 +6,6 @@ import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemBucket;
-import net.minecraft.item.ItemBucketMilk;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -36,36 +35,33 @@ public class AISimGetBuckets extends EntityAIBase {
     @Override
     public void updateTask(){
 
-        if (milkdelay < 0){
-            milkdelay = 30;
+        if (milkdelay <= 0){
+
         if (sim.getDistance(sim.getTarget()) < 1) {
                 if (sim.getHeldItemMainhand().getItem() instanceof ItemBucket) {
                     sim.swingArm(EnumHand.MAIN_HAND);
-                    sim.getJumpHelper().doJump();
                     milkCow();
+
 
                 }
             }else{ sim.getNavigator().tryMoveToXYZ(sim.getTarget().posX,sim.getTarget().posY,sim.getTarget().posZ,0.7d);}
-
+            milkdelay = 30;
         }else{milkdelay--;}}
     private void milkCow(){
-        ItemStack itemstack = sim.getHeldItemMainhand();
-        System.out.println("this is being called");
-        if (itemstack.getItem() instanceof ItemBucket);
-        {
-            sim.playSound(SoundEvents.ENTITY_COW_MILK, 1.0F, 1.0F);
-            sim.getTarget().playSound(SoundEvents.ENTITY_COW_AMBIENT,0.5f,1.0f);
-            sim.swingArm(EnumHand.MAIN_HAND);
-            itemstack.shrink(1);
-            if (checkInvBucket()){
-                if (itemstack.isEmpty()) equipBucket();
+        if (milkdelay <= 0){
+            ItemStack itemstack = sim.getHeldItemMainhand();
+            System.out.println("this is being called");
+            if (itemstack.getItem() instanceof ItemBucket){
+                sim.playSound(SoundEvents.ENTITY_COW_MILK, 1.0F, 1.0F);
+                sim.getTarget().playSound(SoundEvents.ENTITY_COW_AMBIENT,0.5f,1.0f);
+                sim.swingArm(EnumHand.MAIN_HAND);
+                itemstack.shrink(1);
+                if (!addMilkBucket()) {
+                    sim.dropItem(new ItemStack(Items.MILK_BUCKET).getItem(), 1);
+                }
             }
-            if (!addMilkBucket()) {
-                sim.dropItem(new ItemStack(Items.MILK_BUCKET).getItem(), 1);
-            }
-
         }
-}
+    }
 
 
 
@@ -107,13 +103,12 @@ public class AISimGetBuckets extends EntityAIBase {
         public boolean shouldContinueExecuting()
         {
             worktimelimit--;
-
             if (worktimelimit <= 0){
                 sim.setEndWork(true);
                 worktimelimit = 100;
                 return false;
 
             }
-        return checkInvBucket();
+        return sim.getHeldItemMainhand().getItem() instanceof ItemBucket;
         }
     }

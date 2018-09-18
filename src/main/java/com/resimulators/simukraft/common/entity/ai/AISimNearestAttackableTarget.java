@@ -2,8 +2,10 @@ package com.resimulators.simukraft.common.entity.ai;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
+import com.resimulators.simukraft.common.capabilities.ModCapabilities;
 import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
 import com.resimulators.simukraft.common.enums.cattleFarmMode;
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
@@ -25,6 +27,7 @@ import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 public class AISimNearestAttackableTarget <T extends EntityLivingBase> extends EntityAITarget
 {
@@ -85,8 +88,17 @@ public class AISimNearestAttackableTarget <T extends EntityLivingBase> extends E
                 return false;
             }
             else {
-                Collections.sort(list, this.sorter);
-                this.targetEntity = list.get(0);
+                list.sort(this.sorter);
+                if (sim.getCowmode() == cattleFarmMode.FarmMode.MILK){
+                    for (T aList : list) {
+                        if (aList.hasCapability(ModCapabilities.getCAP(), null)) {
+                            if (Objects.requireNonNull(aList.getCapability(ModCapabilities.getCAP(), null)).ismilkable()) {
+                                this.targetEntity = aList;
+                                return true;
+                            }
+                        }
+                    }
+                }else{this.targetEntity = list.get(0);}
             }
                 return true;
             }

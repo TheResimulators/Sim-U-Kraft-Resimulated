@@ -7,16 +7,14 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.INBTSerializable;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.security.Provider;
 
-public interface CowCapability extends INBTSerializable<NBTTagByte> {
+public interface CowCapability extends INBTSerializable<NBTTagCompound> {
 
     ResourceLocation RL = new ResourceLocation(Reference.MOD_ID,"_cap");
 
@@ -24,11 +22,23 @@ public interface CowCapability extends INBTSerializable<NBTTagByte> {
 
     boolean iscontroledspawn();
 
+    void setmilked();
+
+    boolean ismilkable();
+
+    void decrementMilkcooldown();
+
+    void resetmilkcooldown();
+
+    int getCooldown();
+
+
 
 
     class Impl implements CowCapability{
 
-
+        private byte ismilked = 0;
+        private int milkcooldown = 200;
         private byte controledspawn = 0;
         @Override
         public void setcontroledspawn() {
@@ -41,14 +51,45 @@ public interface CowCapability extends INBTSerializable<NBTTagByte> {
         }
 
         @Override
-        public NBTTagByte serializeNBT() {
-            return new NBTTagByte(controledspawn);
+        public void setmilked() {
+            ismilked = 1;
         }
 
         @Override
-        public void deserializeNBT(NBTTagByte nbtTagByte) {
-            controledspawn = nbtTagByte.getByte();
+        public boolean ismilkable() {
+            return ismilked > 0;
+        }
 
+        @Override
+        public NBTTagCompound serializeNBT() {
+            NBTTagCompound bytes = new NBTTagCompound();
+            bytes.setByte("spawn",controledspawn);
+            bytes.setByte("milked",ismilked);
+            bytes.setInteger("cooldown",milkcooldown);
+            return bytes;
+        }
+
+        @Override
+        public void deserializeNBT(NBTTagCompound nbt) {
+            controledspawn = nbt.getByte("spawn");
+            ismilked = nbt.getByte("milked");
+            milkcooldown = nbt.getInteger("cooldown");
+
+        }
+        @Override
+        public void decrementMilkcooldown() {
+            this.milkcooldown--;
+        }
+
+        @Override
+        public void resetmilkcooldown() {
+            milkcooldown = 200;
+            ismilked = 0;
+        }
+
+        @Override
+        public int getCooldown(){
+            return milkcooldown;
         }
     }
 
@@ -62,12 +103,13 @@ public interface CowCapability extends INBTSerializable<NBTTagByte> {
 
         @Override
         public void readNBT(Capability<CowCapability> capability, CowCapability cowCapability, EnumFacing enumFacing, NBTBase nbtBase) {
-            cowCapability.deserializeNBT((NBTTagByte) nbtBase);
+            cowCapability.deserializeNBT((NBTTagCompound) nbtBase);
         }
+
     }
 
 
-    class Provider implements ICapabilityProvider,ICapabilitySerializable<NBTTagByte>{
+    class Provider implements ICapabilityProvider,ICapabilitySerializable<NBTTagCompound>{
 
         private CowCapability cowcapability;
         private Capability<CowCapability> capability;
@@ -91,13 +133,13 @@ public interface CowCapability extends INBTSerializable<NBTTagByte> {
         }
 
         @Override
-        public NBTTagByte serializeNBT()
+        public NBTTagCompound serializeNBT()
         {
             return cowcapability.serializeNBT();
         }
 
         @Override
-        public void deserializeNBT(NBTTagByte nbt)
+        public void deserializeNBT(NBTTagCompound nbt)
         {
             cowcapability.deserializeNBT(nbt);
         }
