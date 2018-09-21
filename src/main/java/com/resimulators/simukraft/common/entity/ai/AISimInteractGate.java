@@ -1,5 +1,6 @@
 package com.resimulators.simukraft.common.entity.ai;
 
+import com.resimulators.simukraft.common.entity.ai.pathfinding.CustomPathNavigateGround;
 import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDoor;
@@ -26,12 +27,8 @@ public class AISimInteractGate extends EntityAIBase {
 
     public AISimInteractGate(EntitySim entityIn)
         {
+            setMutexBits(8);
             this.entity = entityIn;
-
-            if ((entityIn.getNavigator() == null))
-            {
-                throw new IllegalArgumentException("Unsupported mob type for DoorInteractGoal");
-            }
         }
 
         /**
@@ -47,18 +44,16 @@ public class AISimInteractGate extends EntityAIBase {
             {
                 PathNavigateGround pathnavigateground = (PathNavigateGround)this.entity.getNavigator();
                 Path path = pathnavigateground.getPath();
-
                 if (path != null && !path.isFinished() && pathnavigateground.getEnterDoors())
                 {
-                    for (int i = 0; i < Math.min(path.getCurrentPathIndex() + 2, path.getCurrentPathLength()); ++i)
+                    for (int i = 0; i < Math.min(path.getCurrentPathIndex()+2, path.getCurrentPathLength()); ++i)
                     {
                         PathPoint pathpoint = path.getPathPointFromIndex(i);
                         this.doorPosition = new BlockPos(pathpoint.x, pathpoint.y, pathpoint.z);
 
-                        if (this.entity.getDistanceSq((double)this.doorPosition.getX(), this.entity.posY, (double)this.doorPosition.getZ()) <= 2.25D)
+                        if (this.entity.getDistanceSq((double)this.doorPosition.getX(), this.entity.posY, (double)this.doorPosition.getZ()) <= 5D)
                         {
                              this.gate = this.getBlockDoor(this.doorPosition);
-
                             if (this.gate != null)
                             {
                                 return true;
@@ -66,7 +61,7 @@ public class AISimInteractGate extends EntityAIBase {
                         }
                     }
 
-                    this.doorPosition = (new BlockPos(this.entity)).up();
+                    this.doorPosition = (new BlockPos(this.entity));
                     this.gate = this.getBlockDoor(this.doorPosition);
                     return this.gate != null;
                 }
@@ -114,6 +109,7 @@ public class AISimInteractGate extends EntityAIBase {
         {
             IBlockState iblockstate = this.entity.world.getBlockState(pos);
             Block block = iblockstate.getBlock();
+            System.out.println("block " + block);
             return block instanceof BlockFenceGate && iblockstate.getMaterial() == Material.WOOD ? (BlockFenceGate) block : null;
         }
     }

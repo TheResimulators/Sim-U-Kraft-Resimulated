@@ -27,6 +27,7 @@ public class AISimOpenGate extends AISimInteractGate {
         super(entitylivingIn);
         this.entity = entitylivingIn;
         this.closeDoor = shouldClose;
+        setMutexBits(8);
     }
 
     /**
@@ -35,12 +36,12 @@ public class AISimOpenGate extends AISimInteractGate {
     public boolean shouldContinueExecuting() {
         return this.closeDoor && this.closeDoorTemporisation > 0 && super.shouldContinueExecuting();
     }
-
     /**
+
      * Execute a one shot task or start executing a continuous task
      */
     public void startExecuting() {
-        this.closeDoorTemporisation = 20;
+        this.closeDoorTemporisation = 40;
         this.OnSimOpen(FMLCommonHandler.instance().getMinecraftServerInstance().getEntityWorld(),doorPosition,true);
     }
 
@@ -66,13 +67,13 @@ public class AISimOpenGate extends AISimInteractGate {
     public boolean OnSimOpen(World worldIn, BlockPos pos,boolean open){
         System.out.println("facing from the world " + worldIn.getBlockState(pos).getValue(BlockHorizontal.FACING));
         IBlockState state = worldIn.getBlockState(pos);
-
         state = state.withProperty(OPEN,open);
         worldIn.setBlockState(pos,state,10);
         return true;
     }
 
     public boolean shouldExecute(){
+        System.out.println("should execute " + super.shouldExecute());
         return super.shouldExecute();
     }
 }

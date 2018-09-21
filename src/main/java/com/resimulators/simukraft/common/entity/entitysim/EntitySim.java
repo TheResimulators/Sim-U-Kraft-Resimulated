@@ -101,6 +101,7 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
         this.inventory = new InventoryBasic("Items", false, 8);
         this.setSize(0.6f, 1.95f);
         ((CustomPathNavigateGround) this.getNavigator()).setBreakDoors(false);
+        ((CustomPathNavigateGround) this.getNavigator()).setEnterDoors(true);
         this.setCanPickUpLoot(true);
         this.setCustomNameTag("Sim (WIP)");
         this.setAlwaysRenderNameTag(false);
@@ -122,7 +123,6 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
         this.tasks.addTask(8, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0f, 1.0f));
         this.tasks.addTask(9, new EntityAIWanderAvoidWater(this, 0.6d));
         this.tasks.addTask(10, new EntityAIWatchClosest(this, EntityLiving.class, 8.0f));
-
     }
 
     private void setProfessionAIs() {

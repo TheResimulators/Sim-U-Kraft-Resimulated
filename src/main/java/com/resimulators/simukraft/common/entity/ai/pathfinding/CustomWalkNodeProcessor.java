@@ -20,7 +20,7 @@ public class CustomWalkNodeProcessor extends WalkNodeProcessor {
         Material material = iblockstate.getMaterial();
 
         if (block instanceof BlockFenceGate){
-            return PathNodeType.DOOR_WOOD_CLOSED;
+            return PathNodeType.DOOR_OPEN;
         }
         return super.getPathNodeTypeRaw(p_189553_1_,p_189553_2_,p_189553_3_,p_189553_4_);
     }

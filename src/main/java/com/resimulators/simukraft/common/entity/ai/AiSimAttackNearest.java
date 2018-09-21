@@ -143,6 +143,7 @@ public class AiSimAttackNearest extends EntityAIBase {
      */
     public void startExecuting()
     {
+        System.out.println("this should not be called right now " + this.path);
         this.attacker.getNavigator().setPath(this.path, this.speedTowardsTarget);
         this.delayCounter = 0;
         if (sword == null || !(Objects.requireNonNull(sword).getItem() instanceof ItemSword)) sword = getSword();
