@@ -25,6 +25,7 @@ public class BlockControlBox extends BlockBase implements ITileEntityProvider {
         super(name, tab, blockMaterialIn, blockMapColorIn);
     }
     public String name;
+    public boolean isresidential;
 
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
@@ -43,7 +44,11 @@ public class BlockControlBox extends BlockBase implements ITileEntityProvider {
     @Override
     public TileEntity createNewTileEntity(World world, int i) {
         if (name == null) return null;
-        if (enumStructure.FarmStructure.byName(name) == null){return null;}
+        if (enumStructure.FarmStructure.byName(name) == null && !isresidential){return null;}
+        if (isresidential){
+            return enumStructure.FarmStructure.RESIDENTIAL.teSupplier.get();
+        }
+
         return enumStructure.FarmStructure.byName(name);
     }
 }

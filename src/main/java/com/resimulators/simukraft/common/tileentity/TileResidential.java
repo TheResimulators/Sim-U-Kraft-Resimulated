@@ -14,6 +14,7 @@ public class TileResidential extends TileEntity {
     public TileResidential(String name){}
 
 
+
     public void setOccupied(boolean occupied){
         this.occupied = occupied;
     }
@@ -30,7 +31,7 @@ public class TileResidential extends TileEntity {
         return type;
     }
 
-    public void setRent(float rent) {
+    private void setRent(float rent) {
         this.rent = rent;
     }
 
@@ -38,7 +39,7 @@ public class TileResidential extends TileEntity {
         return rent;
     }
 
-    public void setSimMarker(int[] simMarker){
+    private void setSimMarker(int[] simMarker){
         this.simMarker = simMarker;
     }
 

@@ -13,6 +13,9 @@ public class TileBuilderBase extends TileEntity {
 
 	protected Structure structure;
 	protected int progress;
+	private int xdir;
+	private int zdir;
+
 
 	public void setStructure(Structure structure) {
 		this.structure = structure;
@@ -28,9 +31,11 @@ public class TileBuilderBase extends TileEntity {
 			int y = (progress / structure.getWidth()) / structure.getDepth();
 			if (!isFinished())
 				// TODO: Check for items in adjacent inventories
-				world.setBlockState(getPos().add(x + 1, y, z), structure.getBlock(x, y, z));
+			    getBuildDirection();
+				world.setBlockState(getPos().add((x + 1) * xdir, y, (z) * zdir), structure.getBlock(x, y, z));
 			    if (structure.getBlock(x,y,z).getBlock() instanceof BlockControlBox){
                     ((BlockControlBox)structure.getBlock(x,y,z).getBlock()).name = structure.getName();
+					((BlockControlBox)structure.getBlock(x,y,z).getBlock()).isresidential = structure.isResidential();
                     ((BlockControlBox)structure.getBlock(x,y,z).getBlock()).createNewTileEntity(world,0);
                 }
 				progress++;
@@ -44,4 +49,29 @@ public class TileBuilderBase extends TileEntity {
 		System.out.println("progress " + progress + " strutuce thing " +structure.getWidth() * structure.getHeight() * structure.getDepth());
 		return progress >= structure.getWidth() * structure.getHeight() * structure.getDepth();
 	}
-}
+
+
+
+
+	private void getBuildDirection(){
+	    float angle = structure.getFacing().getHorizontalAngle();
+	    String direction = null;
+
+	    if (angle <= 45 && angle > 315 ){ //looking south
+	        xdir = -1;
+	        zdir = 1;
+        }else if(angle <= 135 && angle > 45) { // looking west
+	        xdir = -1;
+	        zdir = -1;
+        } else if (angle <= 225 && angle > 135 ){ // looking north
+	        xdir = 1;
+	        zdir = -1;
+        } else if (angle <= 315 && angle > 225) {//looking east
+            xdir = 1;
+            zdir = 1;
+        }
+        }
+
+
+
+             }

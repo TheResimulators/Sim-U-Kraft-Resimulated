@@ -30,6 +30,7 @@ public class LoadStructureHandler implements IMessageHandler<LoadStructurePacket
             if (new File(Loader.instance().getConfigDir() +"\\simukraft\\structures\\"+type +"\\" +name+".struct").exists()){
                 System.out.println("this file exists");
                 Structure file = Structure.load(new File(Loader.instance().getConfigDir() +"\\simukraft\\structures\\"+type +"\\" +name+".struct"));
+                file.setFacing(ctx.getServerHandler().player.getHorizontalFacing());
                 System.out.println("tile " + tile);
                 if (tile != null){
                 tile.setStructure(file);

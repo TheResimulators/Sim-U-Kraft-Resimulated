@@ -11,6 +11,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 
 import java.io.*;
@@ -26,7 +27,8 @@ public class Structure {
 	private final IBlockState[][][] data;
 	private final int width, height, depth;
 	static public String name;
-
+	private static boolean isresidential = false;
+	private static EnumFacing facing;
 	public Structure(IBlockState[][][] data) {
 		this.data = data;
 		this.width = data.length;
@@ -36,6 +38,7 @@ public class Structure {
 
 	public static Structure load(File file) throws StructureParseException {
 		name = file.getName().replace(".struct","");
+		isresidential = file.getPath().contains("residential");
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader(file));
 			String[] dimensions = reader.readLine().split("x");
@@ -183,4 +186,14 @@ public class Structure {
 	public String getName() {
 		return name;
 	}
+	public boolean isResidential(){return isresidential;}
+
+
+    public EnumFacing getFacing() {
+        return facing;
+    }
+
+    public void setFacing(EnumFacing facing1){
+	    facing = facing1;
+    }
 }
