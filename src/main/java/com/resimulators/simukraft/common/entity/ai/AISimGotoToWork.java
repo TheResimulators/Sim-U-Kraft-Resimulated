@@ -24,11 +24,8 @@ public class AISimGotoToWork extends EntityAIBase {
 
     @Override
     public void startExecuting(){
-        //System.out.println("is the executing")
 
         sim.getNavigator().tryMoveToXYZ(sim.getJobBlockPos().getX(),sim.getJobBlockPos().getY()+0.5d,sim.getJobBlockPos().getZ(),0.7d);
-        System.out.println("sims path " + sim.getNavigator().getPath());
-        System.out.println(sim.getNavigator());
     }
 
 
@@ -41,14 +38,12 @@ public class AISimGotoToWork extends EntityAIBase {
 
     @Override
     public boolean shouldContinueExecuting(){
-        System.out.println("should continue exectuing " + shouldExecute());
         return shouldExecute();
     }
     @Override
     public void updateTask(){
         if (attempts < 5){
             attempts++;
-            System.out.println("try to move to position " + sim.getNavigator().tryMoveToXYZ(sim.getJobBlockPos().getX(),sim.getJobBlockPos().getY()+0.5d,sim.getJobBlockPos().getZ(),0.7d));
 
         } else{
             sim.attemptTeleport(sim.getJobBlockPos().getX(),sim.getJobBlockPos().getY()+0.5d,sim.getJobBlockPos().getZ());

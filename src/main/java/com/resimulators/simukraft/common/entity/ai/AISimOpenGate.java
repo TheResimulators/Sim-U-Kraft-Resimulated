@@ -65,7 +65,6 @@ public class AISimOpenGate extends AISimInteractGate {
 
 
     public boolean OnSimOpen(World worldIn, BlockPos pos,boolean open){
-        System.out.println("facing from the world " + worldIn.getBlockState(pos).getValue(BlockHorizontal.FACING));
         IBlockState state = worldIn.getBlockState(pos);
         state = state.withProperty(OPEN,open);
         worldIn.setBlockState(pos,state,10);
@@ -73,7 +72,6 @@ public class AISimOpenGate extends AISimInteractGate {
     }
 
     public boolean shouldExecute(){
-        System.out.println("should execute " + super.shouldExecute());
         return super.shouldExecute();
     }
 }

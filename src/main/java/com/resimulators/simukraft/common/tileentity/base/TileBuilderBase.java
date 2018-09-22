@@ -4,6 +4,8 @@ import com.resimulators.simukraft.common.block.BlockConstructorBox;
 import com.resimulators.simukraft.common.block.BlockControlBox;
 import com.resimulators.simukraft.common.tileentity.TileConstructor;
 import com.resimulators.simukraft.common.tileentity.structure.Structure;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 
 /**
@@ -20,13 +22,11 @@ public class TileBuilderBase extends TileEntity {
 	private int z;
 	private int x;
 
-
 	public void setStructure(Structure structure) {
 		this.structure = structure;
 	}
 
 	protected void build() {
-		System.out.println("building");
 		if (structure == null) { // Just in case this ever happens
 			progress = 0;
 		} else {
@@ -36,11 +36,19 @@ public class TileBuilderBase extends TileEntity {
 			if (!isFinished())
 				// TODO: Check for items in adjacent inventories
 			    getBuildDirection();
-				world.setBlockState(getPos().add((x) * xdir + xoffset, y, (z) * zdir + zoffset), structure.getBlock(xindex, y, zindex));
-			    if (structure.getBlock(xindex,y,zindex).getBlock() instanceof BlockControlBox){
-                    ((BlockControlBox)structure.getBlock(xindex,y,zindex).getBlock()).name = structure.getName();
-					((BlockControlBox)structure.getBlock(xindex,y,zindex).getBlock()).isresidential = structure.isResidential();
-                    ((BlockControlBox)structure.getBlock(xindex,y,zindex).getBlock()).createNewTileEntity(world,0);
+			    if (xdir == -1) xindex = structure.getDepth()-zindex-1;
+			    if (zdir == -1) zindex = structure.getDepth()-zindex-1;
+			    System.out.println("xindex " + xindex);
+			    System.out.println("zindes " + zindex);
+			    System.out.println("width " + structure.getWidth());
+			    System.out.println("depth " + structure.getWidth());
+			    IBlockState block = structure.getBlock(xindex,y,zindex);
+			System.out.println(" block from arrary " + xindex + " " + y + " " + zindex);
+				world.setBlockState(getPos().add((x) * xdir + xoffset, y, (z) * zdir + zoffset), block);
+			    if (block instanceof BlockControlBox){
+                    ((BlockControlBox)block.getBlock()).name = structure.getName();
+					((BlockControlBox)block.getBlock()).isresidential = structure.isResidential();
+                    ((BlockControlBox)block.getBlock()).createNewTileEntity(world,0);
                 }
 				progress++;
 			}
@@ -50,7 +58,6 @@ public class TileBuilderBase extends TileEntity {
 		if (structure == null){
 			return false;
 		}
-		System.out.println("progress " + progress + " strutuce thing " +structure.getWidth() * structure.getHeight() * structure.getDepth());
 		return progress >= structure.getWidth() * structure.getHeight() * structure.getDepth();
 	}
 
@@ -59,13 +66,11 @@ public class TileBuilderBase extends TileEntity {
 
 	private void getBuildDirection(){
 	    float angle = structure.getFacing().getHorizontalAngle();
-        System.out.println("angle " + angle);
 	    if (angle <= 45 && Math.max(angle,360) > 315){ //looking south
 	        xdir = -1;
 	        zdir = 1;
 	        xoffset = 0;
 	        zoffset = 1;
-	        System.out.println("this is called boo");
              x = (progress % structure.getWidth());
              z = (progress / structure.getWidth()) % structure.getDepth();
         }else if(angle <= 135 && angle > 45) { // looking west
@@ -83,9 +88,9 @@ public class TileBuilderBase extends TileEntity {
             x = (progress % structure.getWidth());
             z = (progress / structure.getWidth()) % structure.getDepth();
         } else if (angle <= 315 && angle > 225) {//looking east
-            xdir = -1;
+            xdir = 1;
             zdir = 1;
-            xoffset = -1;
+            xoffset = 1;
             zoffset = 0;
             z = (progress % structure.getWidth());
             x = (progress / structure.getWidth()) % structure.getDepth();

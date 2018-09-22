@@ -24,9 +24,7 @@ public class CustomPathNavigateGround extends PathNavigateGround {
 
     @Override
     public Path getPath(){
-        System.out.println("current path" + currentPath);
         if (currentPath == null){
-            System.out.println("this is null");
         }
         return this.currentPath;
     }
@@ -34,9 +32,7 @@ public class CustomPathNavigateGround extends PathNavigateGround {
 
     @Override
     public boolean setPath(@Nullable Path pathentityIn, double speedIn){
-        System.out.println("this is called. path is " + pathentityIn + "Entity" + entity);
         if (pathentityIn == null){
-            System.out.println("who is setting it null");
         }
         return super.setPath(pathentityIn,speedIn);
     }

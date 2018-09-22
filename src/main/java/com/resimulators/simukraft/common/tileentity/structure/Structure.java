@@ -196,4 +196,5 @@ public class Structure {
     public void setFacing(EnumFacing facing1){
 	    facing = facing1;
     }
+
 }
