@@ -15,6 +15,10 @@ public class TileBuilderBase extends TileEntity {
 	protected int progress;
 	private int xdir;
 	private int zdir;
+	private int xoffset;
+	private int zoffset;
+	private int z;
+	private int x;
 
 
 	public void setStructure(Structure structure) {
@@ -26,17 +30,17 @@ public class TileBuilderBase extends TileEntity {
 		if (structure == null) { // Just in case this ever happens
 			progress = 0;
 		} else {
-			int x = (progress % structure.getWidth());
-			int z = (progress / structure.getWidth()) % structure.getDepth();
+            int xindex = (progress % structure.getWidth());
+            int zindex = (progress / structure.getWidth()) % structure.getDepth();
 			int y = (progress / structure.getWidth()) / structure.getDepth();
 			if (!isFinished())
 				// TODO: Check for items in adjacent inventories
 			    getBuildDirection();
-				world.setBlockState(getPos().add((x + 1) * xdir, y, (z) * zdir), structure.getBlock(x, y, z));
-			    if (structure.getBlock(x,y,z).getBlock() instanceof BlockControlBox){
-                    ((BlockControlBox)structure.getBlock(x,y,z).getBlock()).name = structure.getName();
-					((BlockControlBox)structure.getBlock(x,y,z).getBlock()).isresidential = structure.isResidential();
-                    ((BlockControlBox)structure.getBlock(x,y,z).getBlock()).createNewTileEntity(world,0);
+				world.setBlockState(getPos().add((x) * xdir + xoffset, y, (z) * zdir + zoffset), structure.getBlock(xindex, y, zindex));
+			    if (structure.getBlock(xindex,y,zindex).getBlock() instanceof BlockControlBox){
+                    ((BlockControlBox)structure.getBlock(xindex,y,zindex).getBlock()).name = structure.getName();
+					((BlockControlBox)structure.getBlock(xindex,y,zindex).getBlock()).isresidential = structure.isResidential();
+                    ((BlockControlBox)structure.getBlock(xindex,y,zindex).getBlock()).createNewTileEntity(world,0);
                 }
 				progress++;
 			}
@@ -55,22 +59,38 @@ public class TileBuilderBase extends TileEntity {
 
 	private void getBuildDirection(){
 	    float angle = structure.getFacing().getHorizontalAngle();
-	    String direction = null;
-
-	    if (angle <= 45 && angle > 315 ){ //looking south
+        System.out.println("angle " + angle);
+	    if (angle <= 45 && Math.max(angle,360) > 315){ //looking south
 	        xdir = -1;
 	        zdir = 1;
+	        xoffset = 0;
+	        zoffset = 1;
+	        System.out.println("this is called boo");
+             x = (progress % structure.getWidth());
+             z = (progress / structure.getWidth()) % structure.getDepth();
         }else if(angle <= 135 && angle > 45) { // looking west
 	        xdir = -1;
 	        zdir = -1;
+	        xoffset = -1;
+	        zoffset = 0;
+            z = (progress % structure.getWidth());
+            x = (progress / structure.getWidth()) % structure.getDepth();
         } else if (angle <= 225 && angle > 135 ){ // looking north
 	        xdir = 1;
 	        zdir = -1;
+	        xoffset = 0;
+	        zoffset = -1;
+            x = (progress % structure.getWidth());
+            z = (progress / structure.getWidth()) % structure.getDepth();
         } else if (angle <= 315 && angle > 225) {//looking east
-            xdir = 1;
+            xdir = -1;
             zdir = 1;
+            xoffset = -1;
+            zoffset = 0;
+            z = (progress % structure.getWidth());
+            x = (progress / structure.getWidth()) % structure.getDepth();
         }
-        }
+    }
 
 
 
