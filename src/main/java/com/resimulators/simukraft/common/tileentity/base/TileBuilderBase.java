@@ -7,6 +7,9 @@ import com.resimulators.simukraft.common.tileentity.structure.Structure;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Rotation;
+import net.minecraft.util.math.BlockPos;
 
 /**
  * Created by Astavie on 19/01/2018 - 7:24 PM.
@@ -15,13 +18,13 @@ public class TileBuilderBase extends TileEntity {
 
 	protected Structure structure;
 	protected int progress;
-	private int xdir;
-	private int zdir;
-	private int xoffset;
-	private int zoffset;
-	private int z;
-	private int x;
-
+	private EnumFacing playerfacing;
+	private EnumFacing otherfacing;
+	private int xoffset = 1; //either 1 or -1 to make it start on different side of the block in the direction the play
+                             // is facing, if 1 then not looking in that direction
+    private int zoffset = 1; // when 1, looking in the positive z direction
+    private BlockPos origin;
+    private BlockPos newpos;
 	public void setStructure(Structure structure) {
 		this.structure = structure;
 	}
@@ -36,15 +39,14 @@ public class TileBuilderBase extends TileEntity {
 			if (!isFinished())
 				// TODO: Check for items in adjacent inventories
 			    getBuildDirection();
-			    if (xdir == -1) xindex = structure.getDepth()-zindex-1;
-			    if (zdir == -1) zindex = structure.getDepth()-zindex-1;
-			    System.out.println("xindex " + xindex);
-			    System.out.println("zindes " + zindex);
-			    System.out.println("width " + structure.getWidth());
-			    System.out.println("depth " + structure.getWidth());
+			    zoffset *= playerfacing.getZOffset();
+                xoffset *= playerfacing.getXOffset();
 			    IBlockState block = structure.getBlock(xindex,y,zindex);
-			System.out.println(" block from arrary " + xindex + " " + y + " " + zindex);
-				world.setBlockState(getPos().add((x) * xdir + xoffset, y, (z) * zdir + zoffset), block);
+			    BlockPos pos = getPos().add(xindex +1,y,zindex);
+			    System.out.println("get pos " + getPos());
+
+			    rotateAroundOrigin();
+				world.setBlockState(pos, block);
 			    if (block instanceof BlockControlBox){
                     ((BlockControlBox)block.getBlock()).name = structure.getName();
 					((BlockControlBox)block.getBlock()).isresidential = structure.isResidential();
@@ -65,38 +67,13 @@ public class TileBuilderBase extends TileEntity {
 
 
 	private void getBuildDirection(){
-	    float angle = structure.getFacing().getHorizontalAngle();
-	    if (angle <= 45 && Math.max(angle,360) > 315){ //looking south
-	        xdir = -1;
-	        zdir = 1;
-	        xoffset = 0;
-	        zoffset = 1;
-             x = (progress % structure.getWidth());
-             z = (progress / structure.getWidth()) % structure.getDepth();
-        }else if(angle <= 135 && angle > 45) { // looking west
-	        xdir = -1;
-	        zdir = -1;
-	        xoffset = -1;
-	        zoffset = 0;
-            z = (progress % structure.getWidth());
-            x = (progress / structure.getWidth()) % structure.getDepth();
-        } else if (angle <= 225 && angle > 135 ){ // looking north
-	        xdir = 1;
-	        zdir = -1;
-	        xoffset = 0;
-	        zoffset = -1;
-            x = (progress % structure.getWidth());
-            z = (progress / structure.getWidth()) % structure.getDepth();
-        } else if (angle <= 315 && angle > 225) {//looking east
-            xdir = 1;
-            zdir = 1;
-            xoffset = 1;
-            zoffset = 0;
-            z = (progress % structure.getWidth());
-            x = (progress / structure.getWidth()) % structure.getDepth();
+	    EnumFacing angle = structure.getFacing();
+			playerfacing = angle;
+			otherfacing = EnumFacing.SOUTH.rotateY();
         }
+
+
+    private void rotateAroundOrigin(){
+
     }
-
-
-
-             }
+    }
