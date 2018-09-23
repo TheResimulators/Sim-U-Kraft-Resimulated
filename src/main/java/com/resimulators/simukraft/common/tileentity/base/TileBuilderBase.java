@@ -23,8 +23,10 @@ public class TileBuilderBase extends TileEntity {
 	private int xoffset = 1; //either 1 or -1 to make it start on different side of the block in the direction the play
                              // is facing, if 1 then not looking in that direction
     private int zoffset = 1; // when 1, looking in the positive z direction
-    private BlockPos origin;
+    private BlockPos posoffset;
     private BlockPos newpos;
+    private int zdir;
+    private int xdir;
 	public void setStructure(Structure structure) {
 		this.structure = structure;
 	}
@@ -39,14 +41,19 @@ public class TileBuilderBase extends TileEntity {
 			if (!isFinished())
 				// TODO: Check for items in adjacent inventories
 			    getBuildDirection();
-			    zoffset *= playerfacing.getZOffset();
-                xoffset *= playerfacing.getXOffset();
 			    IBlockState block = structure.getBlock(xindex,y,zindex);
-			    BlockPos pos = getPos().add(xindex +1,y,zindex);
-			    System.out.println("get pos " + getPos());
-
+			    posoffset = getPos().add((xindex +xoffset) * xdir ,y,(zindex+zoffset)*zdir);
+                newpos = posoffset;
+			   // System.out.println("original pos offset " + posoffset);
 			    rotateAroundOrigin();
-				world.setBlockState(pos, block);
+			    rotateAroundOrigin();
+			 //   System.out.println("new pos " + newpos);
+
+
+                world.setBlockState(newpos, block);
+
+
+
 			    if (block instanceof BlockControlBox){
                     ((BlockControlBox)block.getBlock()).name = structure.getName();
 					((BlockControlBox)block.getBlock()).isresidential = structure.isResidential();
@@ -68,12 +75,42 @@ public class TileBuilderBase extends TileEntity {
 
 	private void getBuildDirection(){
 	    EnumFacing angle = structure.getFacing();
-			playerfacing = angle;
-			otherfacing = EnumFacing.SOUTH.rotateY();
-        }
+	        if (angle == EnumFacing.SOUTH) {
+                xoffset = 0;
+                zoffset = -1;
+                zdir = -1;
+                xdir = 1;
+            }
+            if (angle == EnumFacing.WEST){
+	            xoffset = -1;
+	            zoffset = 0;
+	            zdir = -1;
+	            xdir = -1;
+            }
+    }
 
 
-    private void rotateAroundOrigin(){
+
+    private BlockPos rotateAroundOrigin(){
+		int newx;
+		int newz;
+		System.out.println();
+        System.out.println();
+        System.out.println();
+		System.out.println("x " +getPos().getX());
+        System.out.println("z " +getPos().getZ());
+        System.out.println(posoffset);
+        System.out.println("x pos - offset " +(getPos().getX()-posoffset.getX()));
+        System.out.println("z pos - offset " +(getPos().getZ()-posoffset.getZ()));
+		newx = getPos().getX() + (getPos().getX()-posoffset.getX());
+		newz = getPos().getZ() + (getPos().getZ()-posoffset.getZ());
+		System.out.println("newx " + newx);
+		System.out.println("newz " + newz);
+		System.out.println("this should be newx " + (getPos().getZ() + (getPos().getZ()-posoffset.getZ())));
+        newpos = new BlockPos(newx,posoffset.getY(),newz);
+		System.out.println("rotated " + newpos);
+
+		return newpos;
 
     }
     }
