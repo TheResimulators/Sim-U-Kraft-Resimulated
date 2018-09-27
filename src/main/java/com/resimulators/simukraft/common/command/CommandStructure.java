@@ -181,7 +181,7 @@ public class CommandStructure extends CommandTreeBase {
                     ItemStack stack = ((EntityPlayer) entity).getHeldItem(EnumHand.MAIN_HAND);
                     if (stack.getItem() == ModItems.BLUEPRINT) {
                         if (new File(Loader.instance().getConfigDir() + "\\simukraft\\structures\\" +folder+ "\\"+  args[args.length-1] + ".struct").exists()) {
-                            ((ItemBlueprint) stack.getItem()).setStructure(stack, new File(Loader.instance().getConfigDir() + "\\simukraft\\structures\\" + args[0] + ".struct"));
+                            ((ItemBlueprint) stack.getItem()).setStructure(stack, new File(Loader.instance().getConfigDir() + "\\simukraft\\structures\\"+ folder + "\\" + args[0] + ".struct"));
                             sender.sendMessage(new TextComponentString("Structure Loaded!"));
                         } else
                             throw new WrongUsageException(getUsage(sender));

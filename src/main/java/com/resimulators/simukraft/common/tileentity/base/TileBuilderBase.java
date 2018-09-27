@@ -1,10 +1,7 @@
 package com.resimulators.simukraft.common.tileentity.base;
 
-import com.resimulators.simukraft.common.block.BlockConstructorBox;
 import com.resimulators.simukraft.common.block.BlockControlBox;
-import com.resimulators.simukraft.common.tileentity.TileConstructor;
 import com.resimulators.simukraft.common.tileentity.structure.Structure;
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -42,12 +39,14 @@ public class TileBuilderBase extends TileEntity {
 				// TODO: Check for items in adjacent inventories
 			    getBuildDirection();
 			    IBlockState block = structure.getBlock(xindex,y,zindex);
-                world.setBlockState(getPos().add(rotatedpos.getX()*xdir + xoffset,rotatedpos.getY() + 1,rotatedpos.getZ() *xdir + zoffest), block);
+                world.setBlockState(getPos().add(rotatedpos.getX()*xdir + xoffset,rotatedpos.getY() + 1,rotatedpos.getZ() *xdir + zoffest), block.withRotation(rotation));
                 System.out.println("zdir " + zdir);
-
-
-			    if (block instanceof BlockControlBox){
+                System.out.println("block " + block);
+                System.out.println((block.getBlock() instanceof BlockControlBox));
+			    if (block.getBlock() instanceof BlockControlBox){
+			        System.out.println("this is true");
                     ((BlockControlBox)block.getBlock()).name = structure.getName();
+                    System.out.println("structure name " + structure.getName());
 					((BlockControlBox)block.getBlock()).isresidential = structure.isResidential();
                     ((BlockControlBox)block.getBlock()).createNewTileEntity(world,0);
                 }

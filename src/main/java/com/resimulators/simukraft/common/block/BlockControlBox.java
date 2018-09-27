@@ -43,12 +43,15 @@ public class BlockControlBox extends BlockBase implements ITileEntityProvider {
 
     @Override
     public TileEntity createNewTileEntity(World world, int i) {
+        System.out.println("name " + name );
         if (name == null) return null;
-        if (enumStructure.FarmStructure.byName(name) == null && !isresidential){return null;}
-        if (isresidential){
-            return enumStructure.FarmStructure.RESIDENTIAL.teSupplier.get();
-        }
+        if (enumStructure.FarmStructure.byName(name) == null && !isresidential){System.out.println("null");return null;}
+        if (!isresidential){
+            System.out.println("cattle TE");
+            return enumStructure.FarmStructure.byName(name);
 
-        return enumStructure.FarmStructure.byName(name);
+        }
+        return enumStructure.FarmStructure.RESIDENTIAL.teSupplier.get();
+
     }
 }
