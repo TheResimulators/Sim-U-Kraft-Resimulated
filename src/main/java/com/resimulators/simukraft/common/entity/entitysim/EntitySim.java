@@ -310,6 +310,8 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
                 return "Butcher";
             case 5:
                 return "Cattle Farmer";
+            case 6:
+                return "Sheep Farmer";
         }
 
         return "Oh well, this is awkward.";
@@ -655,7 +657,6 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
             f += EnchantmentHelper.getModifierForCreature(this.getHeldItemMainhand(), ((EntityLivingBase)p_attackEntityAsMob_1_).getCreatureAttribute());
             i += EnchantmentHelper.getKnockbackModifier(this);
         }
-
         boolean flag = p_attackEntityAsMob_1_.attackEntityFrom(DamageSource.causeMobDamage(this), f);
         if (flag) {
             if (i > 0) {
@@ -668,7 +669,7 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
             if (j > 0) {
                 p_attackEntityAsMob_1_.setFire(j * 4);
             }
-
+            this.getHeldItemMainhand().setItemDamage(getHeldItemMainhand().getItemDamage()-1);
             if (p_attackEntityAsMob_1_ instanceof EntityPlayer) {
                 EntityPlayer entityplayer = (EntityPlayer)p_attackEntityAsMob_1_;
                 ItemStack itemstack = this.getHeldItemMainhand();

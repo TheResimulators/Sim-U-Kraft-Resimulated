@@ -4,6 +4,7 @@ import com.resimulators.simukraft.common.capabilities.ModCapabilities;
 import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
 import com.resimulators.simukraft.common.interfaces.CowCapability;
 import com.resimulators.simukraft.common.item.base.ItemBase;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.item.ItemStack;
@@ -26,10 +27,10 @@ public class CowDeathEvent {
 
     @SubscribeEvent
     public static void CowDeath(LivingDropsEvent event) {
-        if (event.getEntity() instanceof EntityCow) {
+        if (event.getEntity() instanceof EntityLiving) {
             if (event.getSource().getTrueSource() instanceof EntitySim) {
                 if (!event.getEntity().world.isRemote) {
-                    EntityCow cow = (EntityCow) event.getEntity();
+                    EntityLiving cow = (EntityCow) event.getEntity();
                     if (cow.hasCapability(ModCapabilities.getCAP(), null)) {
                         if (cow.getCapability(ModCapabilities.getCAP(), null).iscontroledspawn()) {
                             event.setCanceled(true);

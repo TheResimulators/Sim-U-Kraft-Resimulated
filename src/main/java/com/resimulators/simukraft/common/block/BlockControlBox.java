@@ -31,6 +31,7 @@ public class BlockControlBox extends BlockBase implements ITileEntityProvider {
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         TileEntity entity = worldIn.getTileEntity(pos);
         System.out.println("open");
+        System.out.println(entity);
         if (worldIn.isRemote){
         if (entity instanceof TileCattle)((TileCattle) entity).openGui(worldIn,pos,playerIn);}
         return false;
@@ -47,7 +48,6 @@ public class BlockControlBox extends BlockBase implements ITileEntityProvider {
         if (name == null) return null;
         if (enumStructure.FarmStructure.byName(name) == null && !isresidential){System.out.println("null");return null;}
         if (!isresidential){
-            System.out.println("cattle TE");
             return enumStructure.FarmStructure.byName(name);
 
         }

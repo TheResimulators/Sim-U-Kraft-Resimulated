@@ -110,12 +110,14 @@ public class TileCattle extends TileEntity implements ITickable,ISimIndustrial {
 
     @Override
     public void removeSim(int sim) {
-
+        sims.remove(sim);
+        markDirty();
     }
 
     @Override
     public void removeSimName(String name) {
-
+        sims_name.remove(name);
+        markDirty();
     }
 
     @Nullable
@@ -176,6 +178,10 @@ public class TileCattle extends TileEntity implements ITickable,ISimIndustrial {
         return new SPacketUpdateTileEntity(this.pos,0,writeToNBT(getUpdateTag()));
     }
 
+    @Override
+    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {
+        readFromNBT(packet.getNbtCompound());
 
+    }
 
 }
