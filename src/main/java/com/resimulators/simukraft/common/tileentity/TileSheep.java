@@ -1,10 +1,12 @@
 package com.resimulators.simukraft.common.tileentity;
 
 import com.resimulators.simukraft.GuiHandler;
+import com.resimulators.simukraft.common.capabilities.ModCapabilities;
 import com.resimulators.simukraft.common.interfaces.ISimIndustrial;
 import com.resimulators.simukraft.network.GetSimIdPacket;
 import com.resimulators.simukraft.network.PacketHandler;
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -15,6 +17,9 @@ import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -39,6 +44,7 @@ public class TileSheep extends TileEntity implements ITickable,ISimIndustrial {
                     int numsheep = world.getEntitiesWithinAABB(EntitySheep.class, new AxisAlignedBB(pos.getX() - 4, pos.getY(), pos.getZ() - 4, pos.getX() + 4, pos.getY() + 2, pos.getZ() + 4)).size();
                     for (int i = numsheep; i < 5; i++) {
                         EntitySheep sheep = new EntitySheep(world);
+                        attachCapability(sheep);
                         sheep.setPosition(pos.getX(), pos.getY() + 1, pos.getZ());
                         world.spawnEntity(sheep);
                     }
@@ -47,6 +53,12 @@ public class TileSheep extends TileEntity implements ITickable,ISimIndustrial {
         }
     }
 
+
+    private void attachCapability(EntitySheep cow){
+        if (cow.hasCapability(ModCapabilities.getCAP(),null)){
+            cow.getCapability(ModCapabilities.getCAP(),null).setcontroledspawn();
+            System.out.println("this is being reached");
+        }}
     @Override
     public int getProfessionint() {
         return professionint;
@@ -106,7 +118,7 @@ public class TileSheep extends TileEntity implements ITickable,ISimIndustrial {
     }
     @Override
     public void setSimname(int id){
-        simname = Minecraft.getMinecraft().world.getEntityByID(id).getName();
+        simname = FMLCommonHandler.instance().getMinecraftServerInstance().getEntityWorld().getEntityByID(id).getName();
         System.out.println("sim name " + simname);
         markDirty();
 
@@ -124,7 +136,7 @@ public class TileSheep extends TileEntity implements ITickable,ISimIndustrial {
 
     public void openGui(World worldIn, BlockPos pos, EntityPlayer playerIn) {
         System.out.println("hired " + getHired());
-        PacketHandler.INSTANCE.sendToServer(new GetSimIdPacket(pos.getX(), pos.getY(), pos.getZ(), GuiHandler.GUI_CATTLE));
+        PacketHandler.INSTANCE.sendToServer(new GetSimIdPacket(pos.getX(), pos.getY(), pos.getZ(), GuiHandler.GUI_SHEEP));
 
 
     }
@@ -158,12 +170,7 @@ public class TileSheep extends TileEntity implements ITickable,ISimIndustrial {
         System.out.println("sim name after reading " + simname);
     }
 
-
-    @Override
-    public SPacketUpdateTileEntity getUpdatePacket() {
-        return new SPacketUpdateTileEntity(this.pos,0,writeToNBT(getUpdateTag()));
-    }
-
+    @SideOnly(Side.CLIENT)
     @Override
     public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {
         readFromNBT(packet.getNbtCompound());

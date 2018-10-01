@@ -59,10 +59,13 @@ public class AiSimAttackNearest extends EntityAIBase {
     public boolean shouldExecute()
     {
         EntityLivingBase entitylivingbase = this.sim.getAttackTarget();
+        System.out.println("entity target " + this.sim.getAttackTarget());
         if (!checkInvForSword()){
             return false;}
-        if (sim.getCowmode() == cattleFarmMode.FarmMode.MILK ){
+        if (sim.getCowmode() == cattleFarmMode.FarmMode.MILK && sim.getLabeledProfession().equals("Cattle Farmer") ){
+            System.out.println("is this being called");
             return false;
+
         }
         if (sim.getEndWork()) return false;
         if (entitylivingbase == null)
@@ -96,6 +99,7 @@ public class AiSimAttackNearest extends EntityAIBase {
             }
             else
             {
+                System.out.println(this.getAttackReachSqr(entitylivingbase) >= this.attacker.getDistanceSq(entitylivingbase.posX, entitylivingbase.getEntityBoundingBox().minY, entitylivingbase.posZ) && checkInvForSword());
                 return this.getAttackReachSqr(entitylivingbase) >= this.attacker.getDistanceSq(entitylivingbase.posX, entitylivingbase.getEntityBoundingBox().minY, entitylivingbase.posZ) && checkInvForSword();
             }
         }

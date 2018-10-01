@@ -89,7 +89,7 @@ public class AISimNearestAttackableTarget <T extends EntityLivingBase> extends E
             }
             else {
                 list.sort(this.sorter);
-                if (sim.getCowmode() == cattleFarmMode.FarmMode.MILK){
+                if (sim.getCowmode() == cattleFarmMode.FarmMode.MILK && sim.getLabeledProfession().equals("Cattle Farmer")){
                     for (T aList : list) {
                         if (aList.hasCapability(ModCapabilities.getCAP(), null)) {
                             if (Objects.requireNonNull(aList.getCapability(ModCapabilities.getCAP(), null)).ismilkable()) {
@@ -100,6 +100,7 @@ public class AISimNearestAttackableTarget <T extends EntityLivingBase> extends E
                     }
                 }else{this.targetEntity = list.get(0);}
             }
+            System.out.println("this is being reached");
                 return true;
             }
         return false;
@@ -117,12 +118,17 @@ public class AISimNearestAttackableTarget <T extends EntityLivingBase> extends E
      */
     public void startExecuting()
     {
+        if (sim.getLabeledProfession().equals("Cattle Farmer")){
         if (sim.getCowmode() == cattleFarmMode.FarmMode.KILL) {
             this.taskOwner.setAttackTarget(this.targetEntity);
         } else{
             this.sim.setTargetCow((EntityCow) this.targetEntity);
         }
         super.startExecuting();
+    }
+    else{
+            System.out.println("setting target " + this.targetEntity);
+            this.taskOwner.setAttackTarget(this.targetEntity);}
     }
 
     public static class Sorter implements Comparator<Entity>

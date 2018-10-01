@@ -30,7 +30,7 @@ public class CowDeathEvent {
         if (event.getEntity() instanceof EntityLiving) {
             if (event.getSource().getTrueSource() instanceof EntitySim) {
                 if (!event.getEntity().world.isRemote) {
-                    EntityLiving cow = (EntityCow) event.getEntity();
+                    EntityLiving cow = (EntityLiving) event.getEntity();
                     if (cow.hasCapability(ModCapabilities.getCAP(), null)) {
                         if (cow.getCapability(ModCapabilities.getCAP(), null).iscontroledspawn()) {
                             event.setCanceled(true);

@@ -21,6 +21,9 @@ import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -138,7 +141,7 @@ public class TileCattle extends TileEntity implements ITickable,ISimIndustrial {
         }
     @Override
     public void setSimname(int id){
-        simname = Minecraft.getMinecraft().world.getEntityByID(id).getName();
+        simname = FMLCommonHandler.instance().getMinecraftServerInstance().getEntityWorld().getEntityByID(id).getName();
         System.out.println("sim name " + simname);
         markDirty();
 
@@ -177,7 +180,7 @@ public class TileCattle extends TileEntity implements ITickable,ISimIndustrial {
     public SPacketUpdateTileEntity getUpdatePacket() {
         return new SPacketUpdateTileEntity(this.pos,0,writeToNBT(getUpdateTag()));
     }
-
+    @SideOnly(Side.CLIENT)
     @Override
     public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {
         readFromNBT(packet.getNbtCompound());

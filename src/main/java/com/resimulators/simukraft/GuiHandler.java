@@ -5,6 +5,7 @@ import com.resimulators.simukraft.common.containers.SimContainer;
 import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
 import com.resimulators.simukraft.common.tileentity.TileCattle;
 import com.resimulators.simukraft.common.tileentity.TileFarm;
+import com.resimulators.simukraft.common.tileentity.TileSheep;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -27,6 +28,7 @@ public class GuiHandler implements IGuiHandler {
     public static final int GUI_SIMINV = 5;
     public static final int GUI_BUILDER = 6;
     public static final int GUI_CATTLE = 7;
+    public static final int GUI_SHEEP = 8;
 
     @Nullable
     @Override
@@ -60,6 +62,8 @@ public class GuiHandler implements IGuiHandler {
             return new GuiBuilding(x,z,y);
         if (ID == GUI_CATTLE)
             return new GuiCattle((TileCattle) tileEntity);
+        if (ID == GUI_SHEEP)
+            return new GuiSheep((TileSheep) tileEntity);
         return null;
     }
 }

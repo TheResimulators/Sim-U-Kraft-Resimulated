@@ -1,9 +1,6 @@
 package com.resimulators.simukraft.init;
 
-import com.resimulators.simukraft.common.tileentity.TileCattle;
-import com.resimulators.simukraft.common.tileentity.TileConstructor;
-import com.resimulators.simukraft.common.tileentity.TileResidential;
-import com.resimulators.simukraft.common.tileentity.TileFarm;
+import com.resimulators.simukraft.common.tileentity.*;
 import net.minecraft.tileentity.TileEntity;
 
 /**
@@ -15,6 +12,7 @@ public class ModTileEntities {
         TileEntity.register("farm", TileFarm.class);
         TileEntity.register("control", TileResidential.class);
         TileEntity.register("cattle", TileCattle.class);
+        TileEntity.register("sheep", TileSheep.class);
     }
 }
 

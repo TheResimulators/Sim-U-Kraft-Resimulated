@@ -29,13 +29,13 @@ public class AISimKillCow extends EntityAIBase{
     }
     @Override
     public boolean shouldExecute() {
-        if (sim.getJobBlockPos() != null && sim.getLabeledProfession().equals("Cattle Farmer")) {
+        if (sim.getJobBlockPos() != null && sim.getLabeledProfession().equals("Cattle Farmer") || sim.getLabeledProfession().equals("Sheep Farmer")) {
 //            System.out.println("Should execute");
   //          System.out.println("Blockpos " + sim.getJobBlockPos() + " sim pos " + sim.getPosition());
     //        System.out.println("Distance " + sim.getDistance(sim.getJobBlockPos().getX(),sim.getJobBlockPos().getY()+ 1,sim.getJobBlockPos().getZ()));
       //      System.out.println("executing " + (sim.getLabeledProfession().equals("Cattle Farmer") && sim.getDistanceSq(sim.getJobBlockPos().add(0, 1, 0)) <= 3));
         //    System.out.println("job " + sim.getLabeledProfession().equals("Cattle Farmer"));
-            return sim.getLabeledProfession().equals("Cattle Farmer") && sim.getDistance(sim.getJobBlockPos().getX(),sim.getJobBlockPos().getY(),sim.getJobBlockPos().getZ()) <= 3 && !sim.getWorking();
+            return sim.getDistance(sim.getJobBlockPos().getX(),sim.getJobBlockPos().getY(),sim.getJobBlockPos().getZ()) <= 3 && !sim.getWorking();
         }else {return false;
         }
     }

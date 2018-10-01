@@ -18,6 +18,7 @@ import net.minecraft.entity.ai.*;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityCow;
+import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.InventoryBasic;
@@ -134,6 +135,7 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
         this.tasks.addTask(6,new AISimEmptyInventory(this));
         this.tasks.addTask(7,new AISimGetBuckets(this));
         this.targetTasks.addTask(4,new AISimNearestAttackableTarget<>(this,EntityCow.class,false));
+        this.targetTasks.addTask(4, new AISimNearestAttackableTarget<>(this, EntitySheep.class,false));
         this.tasks.addTask(4,new AiSimAttackNearest(0.7,true,this));
     }
 

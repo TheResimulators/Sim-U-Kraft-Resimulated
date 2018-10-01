@@ -2,6 +2,8 @@ package com.resimulators.simukraft.common.block;
 
 import com.resimulators.simukraft.common.block.base.BlockBase;
 import com.resimulators.simukraft.common.enums.enumStructure;
+import com.resimulators.simukraft.common.interfaces.ISim;
+import com.resimulators.simukraft.common.interfaces.ISimJob;
 import com.resimulators.simukraft.common.tileentity.TileCattle;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.MapColor;
@@ -15,6 +17,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
 import java.util.Random;
 
 /**
@@ -33,7 +36,7 @@ public class BlockControlBox extends BlockBase implements ITileEntityProvider {
         System.out.println("open");
         System.out.println(entity);
         if (worldIn.isRemote){
-        if (entity instanceof TileCattle)((TileCattle) entity).openGui(worldIn,pos,playerIn);}
+        if (entity instanceof ISim)((ISim) entity).openGui(worldIn,pos,playerIn);}
         return false;
     }
 
@@ -41,17 +44,20 @@ public class BlockControlBox extends BlockBase implements ITileEntityProvider {
     public int quantityDropped(Random random) {
         return 0;
     }
-
+    @Nullable
     @Override
     public TileEntity createNewTileEntity(World world, int i) {
-        System.out.println("name " + name );
-        if (name == null) return null;
-        if (enumStructure.FarmStructure.byName(name) == null && !isresidential){System.out.println("null");return null;}
-        if (!isresidential){
-            return enumStructure.FarmStructure.byName(name);
+          System.out.println("name " + name);
+            if (name == null) return null;
+            if (enumStructure.FarmStructure.byName(name) == null && !isresidential) {
+                System.out.println("null");
+                return null;
+            }
+            if (!isresidential) {
+                System.out.println(enumStructure.FarmStructure.byName(name));
+                return enumStructure.FarmStructure.byName(name);
 
-        }
-        return enumStructure.FarmStructure.RESIDENTIAL.teSupplier.get();
-
+            }
+            return enumStructure.FarmStructure.RESIDENTIAL.teSupplier.get();
     }
 }
