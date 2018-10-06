@@ -137,7 +137,10 @@ public class CommandStructure extends CommandTreeBase {
                 throw new WrongUsageException(getUsage(sender));
             }
 
-			if (!new File(Loader.instance().getConfigDir() + "\\simukraft\\structures" + type + "\\").exists())
+            if (!new File(Loader.instance().getConfigDir() + "\\simukraft\\structures\\").exists())
+                new File(Loader.instance().getConfigDir() + "\\simukraft\\structures\\").mkdir();
+
+			if (!new File(Loader.instance().getConfigDir() + "\\simukraft\\structures\\" + type + "\\").exists())
                 new File(Loader.instance().getConfigDir() + "\\simukraft\\structures\\"+ type + "\\").mkdir();
 
 
