@@ -14,10 +14,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.client.config.GuiButtonExt;
 import java.awt.*;
 import java.io.IOException;
-import java.util.HashSet;
+import java.util.*;
 import java.util.List;
-import java.util.Set;
-import java.util.UUID;
 
 public class GuiHire extends GuiScreen {
     private String name;
@@ -58,7 +56,8 @@ public class GuiHire extends GuiScreen {
 
     @Override
     public void updateScreen() {
-        for (GuiButton button : buttonList) {
+        List<GuiButton> buttons = buttonList;
+        for (GuiButton button : buttons) {
             if (button instanceof SimButton) {
                 if (!status.equals("hiring")) {
                     button.visible = false;

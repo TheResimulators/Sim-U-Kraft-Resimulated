@@ -59,11 +59,9 @@ public class AiSimAttackNearest extends EntityAIBase {
     public boolean shouldExecute()
     {
         EntityLivingBase entitylivingbase = this.sim.getAttackTarget();
-        System.out.println("entity target " + this.sim.getAttackTarget());
         if (!checkInvForSword()){
             return false;}
         if (sim.getCowmode() == cattleFarmMode.FarmMode.MILK && sim.getLabeledProfession().equals("Cattle Farmer") ){
-            System.out.println("is this being called");
             return false;
 
         }
@@ -99,7 +97,6 @@ public class AiSimAttackNearest extends EntityAIBase {
             }
             else
             {
-                System.out.println(this.getAttackReachSqr(entitylivingbase) >= this.attacker.getDistanceSq(entitylivingbase.posX, entitylivingbase.getEntityBoundingBox().minY, entitylivingbase.posZ) && checkInvForSword());
                 return this.getAttackReachSqr(entitylivingbase) >= this.attacker.getDistanceSq(entitylivingbase.posX, entitylivingbase.getEntityBoundingBox().minY, entitylivingbase.posZ) && checkInvForSword();
             }
         }
@@ -147,7 +144,6 @@ public class AiSimAttackNearest extends EntityAIBase {
      */
     public void startExecuting()
     {
-        System.out.println("this should not be called right now " + this.path);
         this.attacker.getNavigator().setPath(this.path, this.speedTowardsTarget);
         this.delayCounter = 0;
         if (sword == null || !(Objects.requireNonNull(sword).getItem() instanceof ItemSword)) sword = getSword();
@@ -175,6 +171,7 @@ public class AiSimAttackNearest extends EntityAIBase {
     {
         EntityLivingBase entitylivingbase = this.attacker.getAttackTarget();
         if (entitylivingbase != null) {
+            this.attacker.getLookHelper().setLookPositionWithEntity(entitylivingbase, 30.0F, 30.0F);
             this.attacker.getLookHelper().setLookPositionWithEntity(entitylivingbase, 30.0F, 30.0F);
             double d0 = this.attacker.getDistanceSq(entitylivingbase.posX, entitylivingbase.getEntityBoundingBox().minY, entitylivingbase.posZ);
             --this.delayCounter;

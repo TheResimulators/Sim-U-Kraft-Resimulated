@@ -35,7 +35,7 @@ public class AISimKillCow extends EntityAIBase{
     //        System.out.println("Distance " + sim.getDistance(sim.getJobBlockPos().getX(),sim.getJobBlockPos().getY()+ 1,sim.getJobBlockPos().getZ()));
       //      System.out.println("executing " + (sim.getLabeledProfession().equals("Cattle Farmer") && sim.getDistanceSq(sim.getJobBlockPos().add(0, 1, 0)) <= 3));
         //    System.out.println("job " + sim.getLabeledProfession().equals("Cattle Farmer"));
-            return sim.getDistance(sim.getJobBlockPos().getX(),sim.getJobBlockPos().getY(),sim.getJobBlockPos().getZ()) <= 3 && !sim.getWorking();
+            return sim.getDistance(sim.getJobBlockPos().getX(),sim.getJobBlockPos().getY(),sim.getJobBlockPos().getZ()) <= 3 && !sim.getWorking() && !sim.getLabeledProfession().equals("Nitwit");
         }else {return false;
         }
     }

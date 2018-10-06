@@ -42,7 +42,7 @@ public class BlockControlBox extends BlockBase implements ITileEntityProvider {
 
     @Override
     public int quantityDropped(Random random) {
-        return 0;
+        return 1;
     }
     @Nullable
     @Override
