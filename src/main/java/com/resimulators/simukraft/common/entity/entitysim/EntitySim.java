@@ -7,7 +7,7 @@ import com.resimulators.simukraft.SimUKraft;
 import com.resimulators.simukraft.common.entity.ai.*;
 import com.resimulators.simukraft.common.entity.ai.pathfinding.CustomPathNavigateGround;
 import com.resimulators.simukraft.common.entity.player.SaveSimData;
-import com.resimulators.simukraft.common.enums.cattleFarmMode;
+import com.resimulators.simukraft.common.enums.FarmModes;
 import com.resimulators.simukraft.common.tileentity.structure.Structure;
 import com.resimulators.simukraft.init.ModItems;
 import com.resimulators.simukraft.network.HungerPacket;
@@ -93,8 +93,12 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
     private BlockChest emptychest;
     private BlockPos emptychestpos;
     //Milking related
-    private EntityCow target;
-    private cattleFarmMode.FarmMode cowmode = cattleFarmMode.FarmMode.MILK;
+    private EntityCow cowtarget;
+    private FarmModes.CowMode cowmode = FarmModes.CowMode.KILL;
+
+    //Sheep related
+    private EntitySheep sheeptarget;
+    private FarmModes.SheepMode sheepmode = FarmModes.SheepMode.SHEAR;s
 
     public EntitySim(World worldIn) {
         super(worldIn);
@@ -133,7 +137,8 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
         this.tasks.addTask(4,new AISimKillCow(this));
         this.tasks.addTask(5,new AISimGetInventory(this));
         this.tasks.addTask(6,new AISimEmptyInventory(this));
-        this.tasks.addTask(7,new AISimGetBuckets(this));
+        this.tasks.addTask(7,new AISimMilkCow(this));
+        this.tasks.addTask(6,new AiSimShearSheep(this));
         this.targetTasks.addTask(4,new AISimNearestAttackableTarget<>(this,EntityCow.class,false));
         this.targetTasks.addTask(4, new AISimNearestAttackableTarget<>(this, EntitySheep.class,false));
         this.tasks.addTask(4,new AiSimAttackNearest(0.7,true,this));
@@ -702,19 +707,19 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
     }
 
     public void setTargetCow(EntityCow cow){
-        this.target = cow;
+        this.cowtarget = cow;
     }
 
-    public EntityCow getTarget() {
-        return target;
+    public EntityCow getCowtarget() {
+        return cowtarget;
     }
 
-    public void setCowmode(cattleFarmMode.FarmMode cowmode){
+    public void setCowmode(FarmModes.CowMode cowmode){
         this.cowmode = cowmode;
 
     }
 
-    public cattleFarmMode.FarmMode getCowmode(){
+    public FarmModes.CowMode getCowmode(){
         return cowmode;
     }
 
@@ -737,6 +742,18 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
 
 
     public BlockPos getEmptychestpos(){return emptychestpos;}
+
+    public EntitySheep getSheeptarget(){ return sheeptarget;}
+
+    public void setSheeptarget(EntitySheep target){sheeptarget = target;}
+
+    public void setSheepMode(FarmModes.SheepMode mode){
+        this.sheepmode = mode;
+    }
+
+    public FarmModes.SheepMode getSheepMode(){
+        return sheepmode;
+    }
 }
 
 

@@ -1,16 +1,10 @@
 package com.resimulators.simukraft.common.entity.ai;
 
 import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
-import com.resimulators.simukraft.common.enums.cattleFarmMode;
-import net.minecraft.block.BlockAir;
-import net.minecraft.entity.EntityCreature;
+import com.resimulators.simukraft.common.enums.FarmModes;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemAir;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.pathfinding.Path;
@@ -61,7 +55,7 @@ public class AiSimAttackNearest extends EntityAIBase {
         EntityLivingBase entitylivingbase = this.sim.getAttackTarget();
         if (!checkInvForSword()){
             return false;}
-        if (sim.getCowmode() == cattleFarmMode.FarmMode.MILK && sim.getLabeledProfession().equals("Cattle Farmer") ){
+        if (sim.getCowmode() == FarmModes.CowMode.MILK && sim.getLabeledProfession().equals("Cattle Farmer") ){
             return false;
 
         }
