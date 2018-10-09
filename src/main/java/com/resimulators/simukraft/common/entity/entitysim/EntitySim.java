@@ -98,7 +98,7 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
 
     //Sheep related
     private EntitySheep sheeptarget;
-    private FarmModes.SheepMode sheepmode = FarmModes.SheepMode.SHEAR;s
+    private FarmModes.SheepMode sheepmode = FarmModes.SheepMode.SHEAR;
 
     public EntitySim(World worldIn) {
         super(worldIn);

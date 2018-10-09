@@ -54,6 +54,7 @@ public class AiSimShearSheep extends EntityAIBase {
     public void updateTask(){
 
         if (shearcooldown <= 0 ){
+            if (sim.getSheeptarget() != null){
             if (sim.getDistance(sim.getSheeptarget()) < 3){
                 if (sim.getHeldItemMainhand().getItem() instanceof ItemShears){
                     shearSheep();
@@ -62,13 +63,13 @@ public class AiSimShearSheep extends EntityAIBase {
             }else{
                 sim.getNavigator().tryMoveToEntityLiving(sim.getSheeptarget(),0.7d);
 
-            }
+            }}
         }else{shearcooldown--;}
     }
 
 
     private void shearSheep(){
-        IItemHandler handler = sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.NORTH);
+        IItemHandler handler = sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.SOUTH);
 
         sim.getLookHelper().setLookPosition(sim.posX,sim.posY,sim.posZ,360,360);
         List<ItemStack> stackList = sim.getSheeptarget().onSheared(sim.getHeldItemMainhand(),null,null,0);

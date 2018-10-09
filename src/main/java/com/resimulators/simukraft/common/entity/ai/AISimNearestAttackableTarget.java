@@ -80,7 +80,7 @@ public class AISimNearestAttackableTarget <T extends EntityLivingBase> extends E
             }
             else {
                 list.sort(this.sorter);
-                if (sim.getCowmode() == FarmModes.CowMode.MILK && sim.getLabeledProfession().equals("Cattle Farmer")){
+                if (sim.getCowmode() == FarmModes.CowMode.MILK && sim.getLabeledProfession().equals("Cattle Farmer") && targetEntity instanceof EntityCow && sim.getDistanceSq(sim.getJobBlockPos()) <= 4){
                     for (T aList : list) {
                         if (aList.hasCapability(ModCapabilities.getCAP(), null)) {
                             if (Objects.requireNonNull(aList.getCapability(ModCapabilities.getCAP(), null)).ismilkable()) {
@@ -89,7 +89,8 @@ public class AISimNearestAttackableTarget <T extends EntityLivingBase> extends E
                             }
                         }
                     }
-                }else if (sim.getSheepMode() == FarmModes.SheepMode.SHEAR && sim.getLabeledProfession().equals("Sheep Farmer")){
+                }else if (sim.getSheepMode() == FarmModes.SheepMode.SHEAR && sim.getLabeledProfession().equals("Sheep Farmer") && targetEntity instanceof EntitySheep && sim.getDistanceSq(sim.getJobBlockPos()) <= 4){
+
                     for (T alist : list){
                         EntitySheep sheep = (EntitySheep) alist;
                         if (!sheep.getSheared()){
@@ -97,11 +98,13 @@ public class AISimNearestAttackableTarget <T extends EntityLivingBase> extends E
                             break;
                         }
                     }
+                    if (sim.getSheeptarget() == null){
+                        sim.setEndWork(true);
+                    }
                 }
 
                 else{this.targetEntity = list.get(0);}
             }
-            System.out.println("this is being reached");
                 return true;
             }
         return false;
@@ -128,7 +131,6 @@ public class AISimNearestAttackableTarget <T extends EntityLivingBase> extends E
         super.startExecuting();
     }
     else{
-            System.out.println("setting target " + this.targetEntity);
             this.taskOwner.setAttackTarget(this.targetEntity);}
     }
 
