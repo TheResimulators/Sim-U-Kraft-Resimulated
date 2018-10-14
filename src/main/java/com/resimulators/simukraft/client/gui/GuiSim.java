@@ -3,6 +3,7 @@ package com.resimulators.simukraft.client.gui;
 import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
 import com.resimulators.simukraft.network.PacketHandler;
 import com.resimulators.simukraft.network.SimInvPacket;
+import com.resimulators.simukraft.network.TeleportPacket;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
@@ -19,6 +20,7 @@ public class GuiSim extends GuiScreen {
     private EntitySim entitySim;
     private String simName;
     private GuiButton inv;
+    private GuiButton teleport;
 
     public GuiSim(EntityPlayer player) {
         try {
@@ -72,6 +74,7 @@ public class GuiSim extends GuiScreen {
     @Override
     public void initGui() {
         buttonList.add(inv = new GuiButton(0, width / 2 - 100, (height / 4) * 3, "Inventory"));
+        buttonList.add(teleport = new GuiButton(1,width/2-100,(height/4)*3 + 30,"teleport"));
         super.initGui();
     }
 
@@ -79,6 +82,9 @@ public class GuiSim extends GuiScreen {
     protected void actionPerformed(GuiButton button) {
         if (button.id == 0) {
             PacketHandler.INSTANCE.sendToServer(new SimInvPacket(entitySim.getEntityId()));
+        }
+        if (button.id == 1){
+            PacketHandler.INSTANCE.sendToServer(new TeleportPacket(entitySim.getEntityId(),true));
         }
     }
 }
