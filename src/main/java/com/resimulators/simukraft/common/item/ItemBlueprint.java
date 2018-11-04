@@ -6,16 +6,14 @@ import com.resimulators.simukraft.Utilities;
 import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
 import com.resimulators.simukraft.common.item.base.ItemBase;
 import com.resimulators.simukraft.common.tileentity.structure.Structure;
+import com.resimulators.simukraft.structure.StructureUtils;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.lwjgl.input.Keyboard;
@@ -38,11 +36,13 @@ public class ItemBlueprint extends ItemBase {
             ItemStack stack = playerIn.getHeldItem(handIn);
             NBTTagCompound compound = stack.getTagCompound();
             if (compound != null) {
-                compound.removeTag("structurename");
-                compound.removeTag("structurefile");
+                compound.removeTag("name");
+                compound.removeTag("author");
                 compound.removeTag("posx");
                 compound.removeTag("posy");
                 compound.removeTag("posz");
+                compound.removeTag("facing");
+                compound.removeTag("facing2");
                 stack.setTagCompound(compound);
             }
         }
@@ -54,6 +54,11 @@ public class ItemBlueprint extends ItemBase {
     public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         if (!worldIn.isRemote && player.isSneaking()) {
             this.setStartPos(player.getHeldItem(hand), pos.offset(facing));
+            this.setRotation(player.getHeldItem(hand), player.getAdjustedHorizontalFacing());
+        } else if (!worldIn.isRemote && Keyboard.isKeyDown(Keyboard.KEY_LMENU) && false) {
+            this.setStartPos(player.getHeldItem(hand), pos.offset(facing));
+            this.setRotation(player.getHeldItem(hand), player.getAdjustedHorizontalFacing());
+            StructureUtils.placeStructure(worldIn, getStartPos(player.getHeldItem(hand)), StructureUtils.loadStructure(player.getServer(), player.world, getStructure(player.getHeldItem(hand))), Mirror.NONE, Utilities.convertFromFacing(getRotation(player.getHeldItem(hand))), true);
         }
 
         return EnumActionResult.FAIL;
@@ -61,25 +66,29 @@ public class ItemBlueprint extends ItemBase {
 
     @Override
     public boolean itemInteractionForEntity(ItemStack stack, EntityPlayer playerIn, EntityLivingBase target, EnumHand hand) {
-        if (!(target instanceof EntitySim))
-            return false;
-        if (((EntitySim) target).getProfession() != 1) {
-            return false;
+        if (!playerIn.world.isRemote) {
+            if (!(target instanceof EntitySim))
+                return false;
+            if (((EntitySim) target).getProfession() != 1) {
+                return false;
+            }
+
+            //Interaction logic begin
+
+            SimUKraft.getLogger().info("Building");
+            ((EntitySim) target).setStructure(StructureUtils.loadStructure(playerIn.getServer(), playerIn.world, getStructure(stack)));
+            ((EntitySim) target).setAllowedToBuild(true);
+            ((EntitySim) target).setStartPos(getStartPos(stack));
+            ((EntitySim) target).setFacing(getRotation(stack));
+
+            //Interaction logic end
+
+            if (!playerIn.isCreative())
+                stack.shrink(1);
+
+            return true;
         }
-
-        //Interaction logic begin
-
-        SimUKraft.getLogger().info("Building");
-        ((EntitySim) target).setStructure(Structure.load(new File(getStructure(stack))));
-        ((EntitySim) target).setAllowedToBuild(true);
-        ((EntitySim) target).setStartPos(getStartPos(stack));
-
-        //Interaction logic end
-
-        if (!playerIn.isCreative())
-            stack.shrink(1);
-
-        return true;
+        return false;
     }
 
     public void setStartPos(ItemStack stack, BlockPos pos) {
@@ -106,16 +115,52 @@ public class ItemBlueprint extends ItemBase {
         return new BlockPos(posX, posY, posZ);
     }
 
-    public void setStructure(ItemStack stack, File structure) {
+    public void setRotation(ItemStack stack, EnumFacing facing) {
         NBTTagCompound compound = stack.getTagCompound();
         if (compound == null)
             compound = new NBTTagCompound();
 
-        String structureFileName = structure.getAbsolutePath();
-        String structureName = structure.getName().replace(".struct", "");
+        compound.setString("facing", facing.getName());
 
-        compound.setString("structurename", structureName);
-        compound.setString("structurefile", structureFileName);
+        stack.setTagCompound(compound);
+    }
+
+    public EnumFacing getRotation(ItemStack stack) {
+        NBTTagCompound compound = stack.getTagCompound();
+        if (compound == null)
+            compound = new NBTTagCompound();
+
+        String facing = compound.getString("facing");
+
+        return EnumFacing.byName(facing);
+    }
+
+    public void setAddRotation(ItemStack stack, EnumFacing facing) {
+        NBTTagCompound compound = stack.getTagCompound();
+        if (compound == null)
+            compound = new NBTTagCompound();
+
+        compound.setString("facing2", facing.getName());
+
+        stack.setTagCompound(compound);
+    }
+
+    public EnumFacing getAddRotation(ItemStack stack) {
+        NBTTagCompound compound = stack.getTagCompound();
+        if (compound == null)
+            compound = new NBTTagCompound();
+
+        String facing = compound.getString("facing2");
+
+        return EnumFacing.byName(facing);
+    }
+
+    public void setStructure(ItemStack stack, String name) {
+        NBTTagCompound compound = stack.getTagCompound();
+        if (compound == null)
+            compound = new NBTTagCompound();
+
+        compound.setString("name", name);
 
         stack.setTagCompound(compound);
     }
@@ -125,15 +170,22 @@ public class ItemBlueprint extends ItemBase {
         if (compound == null)
             return "";
 
-        return compound.getString("structurefile");
+        return compound.getString("name");
     }
 
-    public String getStructureName(ItemStack stack) {
+    public void setAuthor(ItemStack stack, String author) {
+        NBTTagCompound compound = stack.getTagCompound();
+        if (compound == null)
+            compound = new NBTTagCompound();
+
+        compound.setString("author", author);
+    }
+
+    public String getAuthor(ItemStack stack) {
         NBTTagCompound compound = stack.getTagCompound();
         if (compound == null)
             return "";
-
-        return compound.getString("structurename");
+        return compound.getString("author");
     }
 
     @Override
@@ -146,12 +198,18 @@ public class ItemBlueprint extends ItemBase {
             tooltip.add("builder sim with the blueprint.");
         } else {
             tooltip.add(ChatFormatting.DARK_AQUA + "Used to make sims build structures!");
-            if (getStructureName(stack).length() > 0)
-                tooltip.add("Structure: " + ChatFormatting.DARK_PURPLE + Utilities.upperCaseFirstLetterInEveryWord(getStructureName(stack).split("_")));
+            if (getStructure(stack).length() > 0) {
+                tooltip.add("Structure: " + ChatFormatting.DARK_PURPLE + Utilities.upperCaseFirstLetterInEveryWord(getStructure(stack).split("_")));
+                tooltip.add("Author: " + ChatFormatting.DARK_PURPLE + getAuthor(stack));
+            }
             else
                 tooltip.add("Structure: " + ChatFormatting.DARK_RED + "No structure set");
             BlockPos pos = getStartPos(stack);
             tooltip.add("Build Position: " + Utilities.formatBlockPos(pos));
+            EnumFacing facing = getRotation(stack);
+            if (facing == null)
+                facing = EnumFacing.NORTH;
+            tooltip.add("Facing: " + ChatFormatting.DARK_PURPLE + Utilities.upperCaseFirstLetter(facing.getName()));
             tooltip.add(ChatFormatting.DARK_AQUA + "Hold '" + ChatFormatting.GOLD + "left shift" + ChatFormatting.DARK_AQUA + "' for more information.");
         }
     }

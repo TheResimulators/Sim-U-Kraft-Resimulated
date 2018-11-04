@@ -40,7 +40,11 @@ public class ItemPlanningSheet extends ItemBase {
                     if (compound != null) {
                         compound.removeTag("pos1");
                         compound.removeTag("pos2");
+                        compound.removeTag("volume");
+                        compound.removeTag("sizes");
                         stack.setTagCompound(compound);
+                        pos1 = null;
+                        playerIn.sendStatusMessage(new TextComponentString("Positions reset"), true);
                     }
                 }
             }
@@ -48,6 +52,7 @@ public class ItemPlanningSheet extends ItemBase {
         return ActionResult.newResult(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn));
     }
 
+    private BlockPos pos1;
     @Override
     public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         if (!worldIn.isRemote) {
@@ -57,15 +62,24 @@ public class ItemPlanningSheet extends ItemBase {
                 compound = new NBTTagCompound();
 
             if (!compound.hasKey("pos1")) {
+                pos1 = pos;
                 compound.setIntArray("pos1", new int[]{pos.getX(), pos.getY(), pos.getZ()});
-                player.sendMessage(new TextComponentString("Position 1 set: " + Arrays.toString(compound.getIntArray("pos1"))));
+                player.sendStatusMessage(new TextComponentString("Position 1 set: " + Arrays.toString(compound.getIntArray("pos1"))), true);
                 stack.setTagCompound(compound);
             } else if (!compound.hasKey("pos2")) {
-                compound.setIntArray("pos2", new int[]{pos.getX(), pos.getY(), pos.getZ()});
-                player.sendMessage(new TextComponentString("Position 2 set: " + Arrays.toString(compound.getIntArray("pos2"))));
-                stack.setTagCompound(compound);
+                StructureBoundingBox bounds = new StructureBoundingBox(pos1, pos);
+                int volume = calcVolume(bounds);
+                compound.setIntArray("sizes", new int[]{bounds.getXSize(), bounds.getYSize(), bounds.getZSize()});
+                compound.setInteger("volume", volume);
+                if (volume <= 2097152) {
+                    compound.setIntArray("pos2", new int[]{pos.getX(), pos.getY(), pos.getZ()});
+                    player.sendStatusMessage(new TextComponentString("Position 2 set: " + Arrays.toString(compound.getIntArray("pos2"))), true);
+                    stack.setTagCompound(compound);
+                } else {
+                    player.sendStatusMessage(new TextComponentString("Too many blocks in the specified area (" + calcVolume(new StructureBoundingBox(pos1, pos)) + " > 2097152)"), true);
+                }
             } else {
-                player.sendMessage(new TextComponentString("Positions already set!"));
+                player.sendStatusMessage(new TextComponentString("Positions already set!"), true);
             }
         }
 
@@ -76,26 +90,40 @@ public class ItemPlanningSheet extends ItemBase {
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         NBTTagCompound compound = stack.getTagCompound();
         if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-            tooltip.add("To use this, right click the item on " + ChatFormatting.DARK_PURPLE + "first" + ChatFormatting.GRAY + " corner");
-            tooltip.add("of the structure, then right click the " + ChatFormatting.DARK_PURPLE + "second");
-            tooltip.add("corner of the structure. After that, run ");
-            tooltip.add("the '" + ChatFormatting.GOLD + "/structure save [name]" + ChatFormatting.GRAY + "' command.");
+            tooltip.add("To use this, right click the item on the " + ChatFormatting.DARK_PURPLE + "first");
+            tooltip.add("corner of the structure, then right click the");
+            tooltip.add(ChatFormatting.DARK_PURPLE + "second" + ChatFormatting.GRAY + " corner of the structure.");
+        } else if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
+            tooltip.add(ChatFormatting.DARK_AQUA + "Information:");
+            if (compound != null) {
+                if (compound.hasKey("volume"))
+                    tooltip.add("Volume: " + ChatFormatting.DARK_PURPLE + compound.getInteger("volume"));
+                if (compound.hasKey("sizes")) {
+                    int[] sizes = compound.getIntArray("sizes");
+                    if (sizes.length == 3) {
+                        tooltip.add("Size: " + Utilities.formatBlockPos(new BlockPos(sizes[0], sizes[1], sizes[2])));
+                    }
+                }
+            } else {
+                tooltip.add("No positions set.");
+            }
         } else {
             tooltip.add(ChatFormatting.DARK_AQUA + "Used to save structures!");
             if (compound != null) {
                 if (compound.hasKey("pos1"))
-                    tooltip.add("Position 1: " + ChatFormatting.DARK_PURPLE + Utilities.formatBlockPos(getBlockPos1(stack)));
+                    tooltip.add("Position 1: " + Utilities.formatBlockPos(getBlockPos1(stack)));
                 else
                     tooltip.add("Position 1: " + ChatFormatting.DARK_RED + "Not set");
                 if (compound.hasKey("pos2"))
-                    tooltip.add("Position 2: " + ChatFormatting.DARK_PURPLE + Utilities.formatBlockPos(getBlockPos2(stack)));
+                    tooltip.add("Position 2: " + Utilities.formatBlockPos(getBlockPos2(stack)));
                 else
                     tooltip.add("Position 2: " + ChatFormatting.DARK_RED + "Not set");
             } else {
                 tooltip.add("Position 1: " + ChatFormatting.DARK_RED + "Not set");
                 tooltip.add("Position 2: " + ChatFormatting.DARK_RED + "Not set");
             }
-            tooltip.add(ChatFormatting.DARK_AQUA + "Hold '" + ChatFormatting.GOLD + "left shift" + ChatFormatting.DARK_AQUA + "' for more information.");
+            tooltip.add(ChatFormatting.DARK_AQUA + "Hold '" + ChatFormatting.GOLD + "left shift" + ChatFormatting.DARK_AQUA + "' for instructions.");
+            tooltip.add(ChatFormatting.DARK_AQUA + "Hold '" + ChatFormatting.GOLD + "left control" + ChatFormatting.DARK_AQUA + "' for information.");
         }
     }
 
@@ -103,6 +131,8 @@ public class ItemPlanningSheet extends ItemBase {
         NBTTagCompound compound = stack.getTagCompound();
         if (compound != null) {
             int[] aPos = compound.getIntArray("pos1");
+            if (aPos.length != 3)
+                return null;
             return new BlockPos(aPos[0], aPos[1], aPos[2]);
         } else
             return null;
@@ -112,6 +142,8 @@ public class ItemPlanningSheet extends ItemBase {
         NBTTagCompound compound = stack.getTagCompound();
         if (compound != null) {
             int[] aPos = compound.getIntArray("pos2");
+            if (aPos.length != 3)
+                return null;
             return new BlockPos(aPos[0], aPos[1], aPos[2]);
         } else
             return null;
@@ -121,5 +153,9 @@ public class ItemPlanningSheet extends ItemBase {
         BlockPos pos1 = getBlockPos1(stack);
         BlockPos pos2 = getBlockPos2(stack);
         return new StructureBoundingBox(pos1, pos2);
+    }
+
+    private int calcVolume(StructureBoundingBox bounds) {
+        return bounds.getXSize() * bounds.getYSize() * bounds.getZSize();
     }
 }

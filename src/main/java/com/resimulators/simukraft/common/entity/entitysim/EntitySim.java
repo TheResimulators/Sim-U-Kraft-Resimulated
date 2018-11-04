@@ -8,7 +8,6 @@ import com.resimulators.simukraft.common.entity.ai.*;
 import com.resimulators.simukraft.common.entity.ai.pathfinding.CustomPathNavigateGround;
 import com.resimulators.simukraft.common.entity.player.SaveSimData;
 import com.resimulators.simukraft.common.enums.cattleFarmMode;
-import com.resimulators.simukraft.common.tileentity.structure.Structure;
 import com.resimulators.simukraft.init.ModItems;
 import com.resimulators.simukraft.network.HungerPacket;
 import net.minecraft.block.BlockChest;
@@ -40,6 +39,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraft.world.gen.structure.template.Template;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.relauncher.Side;
@@ -63,9 +63,10 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
     private EntityPlayer commander;
     private GameProfile playerProfile;
     //Builder profession related
-    private Structure structure;
+    private Template structure;
     private boolean isAllowedToBuild;
     private BlockPos startPos;
+    private EnumFacing facing;
     //Inventory
     private ItemStackHandler toolinv;
     private ItemStackHandler pickups;
@@ -115,9 +116,9 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
     protected void initEntityAI() {
         this.tasks.addTask(0, new AISimEat(this));
         this.tasks.addTask(1, new EntityAISwimming(this));
+        this.tasks.addTask(1, new AISimOpenGate(this,true));
         this.tasks.addTask(2, new EntityAIAvoidEntity<>(this, EntityZombie.class, 8.0f, 0.6d, 0.6d));
         this.setProfessionAIs();
-        this.tasks.addTask(1, new AISimOpenGate(this,true));
         this.tasks.addTask(4, new EntityAIMoveIndoors(this));
         this.tasks.addTask(5, new EntityAIRestrictOpenDoor(this));
         this.tasks.addTask(6, new EntityAIOpenDoor(this, true));
@@ -319,11 +320,11 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
         return "Oh well, this is awkward.";
     }
 
-    public void setStructure(Structure structure) {
+    public void setStructure(Template structure) {
         this.structure = structure;
     }
 
-    public Structure getStructure() {
+    public Template getStructure() {
         return this.structure;
     }
 
@@ -333,6 +334,14 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
 
     public BlockPos getStartPos() {
         return startPos;
+    }
+
+    public void setFacing(EnumFacing facing) {
+        this.facing = facing;
+    }
+
+    public EnumFacing getFacing() {
+        return facing;
     }
 
     public void setFarmPos1(BlockPos farmPos1) {
@@ -515,46 +524,46 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
 
     }
 
-    public void Checkfood() {
+    public void checkFood() {
         if (!this.world.isRemote) {
             int heal = 0;
-            int finalheal = 0;
+            int finalHeal = 0;
             ItemStack final_stack = null;
             for (int i = 0; i < toolinv.getSlots(); i++) {
                 ItemStack stack = toolinv.getStackInSlot(i);
                 if (stack.getItem() instanceof ItemFood) {
                     heal = (((ItemFood) stack.getItem()).getHealAmount(stack));
-                    if (finalheal <= 0) finalheal = heal;
-                    else if (this.getFoodLevel() + finalheal > 20) {
-                        if (heal < finalheal) {
-                            finalheal = heal;
+                    if (finalHeal <= 0) finalHeal = heal;
+                    else if (this.getFoodLevel() + finalHeal > 20) {
+                        if (heal < finalHeal) {
+                            finalHeal = heal;
                             final_stack = toolinv.getStackInSlot(i);
                         }
                     } else {
-                        finalheal = heal;
+                        finalHeal = heal;
                         final_stack = toolinv.getStackInSlot(i);
                     }
                 }
             }
 
-            if (finalheal != 0 && final_stack != null) {
-                if (this.hunger + finalheal > maxhunger) {
+            if (finalHeal != 0 && final_stack != null) {
+                if (this.hunger + finalHeal > maxhunger) {
                     hunger = 20;
                     final_stack.shrink(1);
                 } else {
-                    hunger += finalheal;
+                    hunger += finalHeal;
                     final_stack.shrink(1);
                 }
 
                 if (hunger < 5) {
-                    if (finalheal + hunger > 20) {
+                    if (finalHeal + hunger > 20) {
                         hunger = 20;
                         final_stack.shrink(1);
                     } else {
-                        hunger += finalheal;
+                        hunger += finalHeal;
                     }
-                } else if (finalheal + hunger <= 20) {
-                    hunger += finalheal;
+                } else if (finalHeal + hunger <= 20) {
+                    hunger += finalHeal;
                     final_stack.shrink(1);
                 }
                 SaveSimData.get(this.world).SendFactionPacket(new HungerPacket(this.getFoodLevel(), this.getEntityId()),this.getFactionId());
