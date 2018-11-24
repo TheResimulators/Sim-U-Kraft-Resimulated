@@ -4,7 +4,7 @@ import com.mojang.authlib.GameProfile;
 import com.resimulators.simukraft.ConfigHandler;
 import com.resimulators.simukraft.GuiHandler;
 import com.resimulators.simukraft.SimUKraft;
-import com.resimulators.simukraft.client.particle.TeleportParticle;
+import com.resimulators.simukraft.common.entity.EntityParticleSpawner;
 import com.resimulators.simukraft.common.entity.ai.*;
 import com.resimulators.simukraft.common.entity.ai.pathfinding.CustomPathNavigateGround;
 import com.resimulators.simukraft.common.entity.player.SaveSimData;
@@ -12,12 +12,7 @@ import com.resimulators.simukraft.common.enums.FarmModes;
 import com.resimulators.simukraft.common.tileentity.structure.Structure;
 import com.resimulators.simukraft.init.ModItems;
 import com.resimulators.simukraft.network.HungerPacket;
-import com.resimulators.simukraft.network.PacketHandler;
-import com.resimulators.simukraft.network.TeleportClientPacket;
-import com.resimulators.simukraft.network.TeleportPacket;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
-import net.minecraft.client.Minecraft;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
@@ -107,10 +102,11 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
     private FarmModes.SheepMode sheepmode = FarmModes.SheepMode.SHEAR;
 
     //teleportation related
-    private BlockPos spawnpos;
+    private BlockPos teleporttarget;
     private boolean teleport;
     private int teleportdelay = 120;
     private int particlecooldown = 20;
+    private boolean particlspawning;
     public EntitySim(World worldIn) {
         super(worldIn);
         this.navigator = new CustomPathNavigateGround(this,this.world);
@@ -243,9 +239,6 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
         compound.setInteger("hunger", this.hunger);
         compound.setLong("Factionid",Factionid);
         compound.setBoolean("working",working);
-        if (spawnpos != null){
-        compound.setLong("spawn pos",spawnpos.toLong());}
-        System.out.println("spawn POS " + spawnpos);
     }
 
     @Override
@@ -286,10 +279,6 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
         if (compound.hasKey("PickUpInv"))this.pickups.deserializeNBT(compound.getCompoundTag("PickUpInv"));
         System.out.println(compound.hasKey("spawn pos"));
         System.out.println("this is called!!!!");
-        if (compound.hasKey("spawn pos")){
-            setSpawnpos(BlockPos.fromLong(compound.getLong("spawn pos")));
-            System.out.println("spawn pos after reading " + spawnpos);
-        }
         this.hunger = compound.getInteger("hunger");
         this.Factionid = compound.getLong("Factionid");
         this.setCanPickUpLoot(true);
@@ -621,19 +610,17 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
         }
         heal_counter++;
         counter++;
-            System.out.println("delay"+teleportdelay);
-            System.out.println("teleport on server " + teleport);
-            if (teleportdelay <= 0 && teleport){
-                setTeleport(false);
-
-                teleportdelay = 120;
-                this.setPosition(spawnpos.getX()+0.5f,spawnpos.getY()+0.5f,spawnpos.getZ()+0.5f);
-            }else if (teleport){teleportdelay--;}
     }
-    if (world.isRemote){
-            spawnTeleportParticles();
 
-    }
+    if (!world.isRemote){
+            if (teleport){
+        if (teleportdelay <= 0) {
+            setTeleport(false);
+            teleportdelay = 120;
+            this.setPosition(getTeleporttarget().getX(),getTeleporttarget().getY()+2,getTeleporttarget().getZ());
+
+        }else{teleportdelay--;}
+    }}
     }
 
     private void updatenotworking() {
@@ -684,6 +671,14 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
         return jobBlockPos;
     }
 
+
+    public void setTeleporttarget(BlockPos teleporttarget){
+        this.teleporttarget = teleporttarget;
+    }
+
+    public BlockPos getTeleporttarget(){
+        return teleporttarget;
+    }
 
 
     @Override
@@ -785,41 +780,18 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
         return sheepmode;
     }
 
-    public void setSpawnpos(BlockPos spawnpos) {
-        this.spawnpos = spawnpos;
-        if (!world.isRemote) SaveSimData.get(world).SendFactionPacket(new TeleportClientPacket(spawnpos,this.getEntityId()),this.Factionid);
-
-    }
-
-
-    public BlockPos getSpawnpos(){
-        return spawnpos;
-    }
-
     public void setTeleport(boolean teleport) {
         this.teleport = teleport;
-        if (!world.isRemote){
-        SaveSimData.get(world).SendFactionPacket(new TeleportPacket(this.getEntityId(),false),this.Factionid);}
-    }
-    public void spawnTeleportParticles(){
-        System.out.println("teleport" + teleport);
-        if (teleport && spawnpos != null){
-            if (particlecooldown <= 0){
-                particlecooldown = 20;
-
-                System.out.println(spawnpos);
-                for (int i = 0;i< 10;i++) Minecraft.getMinecraft().effectRenderer.addEffect(new TeleportParticle(this.world,spawnpos.getX()+rand.nextFloat(),spawnpos.getY() + 3,spawnpos.getZ()+rand.nextFloat(),0,-0.1f,0));
-            }else{
-                particlecooldown--;
-            }
-
-
-        }
-
     }
 
     public boolean getTeleport(){
         return teleport;
+    }
+    public void setParticlspawning(boolean spawning){
+    this.particlspawning = spawning;
+    }
+    public boolean isParticlspawning(){
+        return this.particlspawning;
     }
 }
 

@@ -51,18 +51,22 @@ public class EntityParticleSpawner extends Entity {
 
     @Override
     public void onUpdate(){
+        if (!world.isRemote){
         if (!sim.getTeleport()){
+            sim.setParticlspawning(false);
             world.removeEntity(this);
-        }
+        }}
 
         if (world.isRemote){
+            System.out.println("world is remote");
             if (particlecooldown <= 0){
                 int num = rand.nextInt(10) + 5;
                 for (int i = 0;i<num;i++){
                     double simposx = posX + rand.nextFloat()-0.5;
                     double simposz = posZ + rand.nextFloat()-0.5;
                     particlecooldown = 3;
-                    Minecraft.getMinecraft().effectRenderer.addEffect(new TeleportParticle(world,simposx,posY+ 2.5d + rand.nextFloat()-0.5,simposz));
+                    Minecraft.getMinecraft().effectRenderer.addEffect(new TeleportParticle(world,simposx,posY+ 3d + rand.nextFloat()-0.5,simposz,0,-0.1,0));
+                    System.out.println("this is being reached. particles should be spawned");
                 }}else{particlecooldown--;}
         }
     }

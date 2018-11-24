@@ -36,7 +36,6 @@ public class PacketHandler {
         INSTANCE.registerMessage(ServerStructureHandler.class,ServerStructurePacket.class,23,Side.SERVER);
         INSTANCE.registerMessage(LoadStructureHandler.class,LoadStructurePacket.class,24,Side.SERVER);
         INSTANCE.registerMessage(TeleportHandler.class,TeleportPacket.class,25,Side.SERVER);
-        INSTANCE.registerMessage(TeleportClientHandler.class,TeleportClientPacket.class,26,Side.CLIENT);
     }
 
 }

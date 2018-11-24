@@ -1,5 +1,6 @@
 package com.resimulators.simukraft.common.entity.ai;
 
+import com.resimulators.simukraft.common.entity.EntityParticleSpawner;
 import com.resimulators.simukraft.common.entity.ai.pathfinding.CustomPathNavigateGround;
 import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
 import net.minecraft.entity.MoverType;
@@ -31,10 +32,23 @@ public class AISimGotoToWork extends EntityAIBase {
 
     @Override
     public boolean shouldExecute() {
-        if (sim.getJobBlockPos() != null){
-        return !sim.getLabeledProfession().equals("nitwit") && sim.getFoodLevel() > 10 && FMLCommonHandler.instance().getMinecraftServerInstance().getEntityWorld().isDaytime() && sim.getDistance(sim.getJobBlockPos().getX(),sim.getJobBlockPos().getY(),sim.getJobBlockPos().getX()) > 2.5d && !sim.getWorking();
+        if (sim.getJobBlockPos() != null && !sim.isParticlspawning() && !sim.getTeleport()) {
+            if (sim.getDistance(sim.getJobBlockPos().getX(), sim.getJobBlockPos().getY(), sim.getJobBlockPos().getZ()) > 5) {
+                EntityParticleSpawner spawner = new EntityParticleSpawner(sim.world, sim);
+                spawner.setPosition(sim.getJobBlockPos().getX()+0.5f, sim.getJobBlockPos().getY(), sim.getJobBlockPos().getZ()+0.5f);
+                sim.setParticlspawning(true);
+                sim.world.spawnEntity(spawner);
+                sim.setTeleporttarget(sim.getJobBlockPos());
+
+                sim.setTeleport(true);
+                return false;
+            }
+
+
+            return !sim.getLabeledProfession().equals("nitwit") && sim.getFoodLevel() > 10 && FMLCommonHandler.instance().getMinecraftServerInstance().getEntityWorld().isDaytime() && sim.getDistance(sim.getJobBlockPos().getX(), sim.getJobBlockPos().getY(), sim.getJobBlockPos().getX()) > 2.5d && !sim.getWorking();
+        }
+        return false;
     }
-    return false;}
 
     @Override
     public boolean shouldContinueExecuting(){
@@ -43,6 +57,7 @@ public class AISimGotoToWork extends EntityAIBase {
     @Override
     public void updateTask(){
         if (attempts < 5){
+            sim.getNavigator().tryMoveToXYZ(sim.getJobBlockPos().getX(),sim.getJobBlockPos().getY()+0.5d,sim.getJobBlockPos().getZ(),0.7d);
             attempts++;
 
         } else{
