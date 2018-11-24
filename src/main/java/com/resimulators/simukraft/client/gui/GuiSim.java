@@ -74,7 +74,6 @@ public class GuiSim extends GuiScreen {
     @Override
     public void initGui() {
         buttonList.add(inv = new GuiButton(0, width / 2 - 100, (height / 4) * 3, "Inventory"));
-        buttonList.add(teleport = new GuiButton(1,width/2-100,(height/4)*3 + 30,"teleport"));
         super.initGui();
     }
 
@@ -82,9 +81,6 @@ public class GuiSim extends GuiScreen {
     protected void actionPerformed(GuiButton button) {
         if (button.id == 0) {
             PacketHandler.INSTANCE.sendToServer(new SimInvPacket(entitySim.getEntityId()));
-        }
-        if (button.id == 1){
-            PacketHandler.INSTANCE.sendToServer(new TeleportPacket(entitySim.getEntityId(),true));
         }
     }
 }

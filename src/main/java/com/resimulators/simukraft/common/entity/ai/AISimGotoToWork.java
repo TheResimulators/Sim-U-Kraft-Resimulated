@@ -33,14 +33,15 @@ public class AISimGotoToWork extends EntityAIBase {
     @Override
     public boolean shouldExecute() {
         if (sim.getJobBlockPos() != null && !sim.isParticlspawning() && !sim.getTeleport()) {
-            if (sim.getDistance(sim.getJobBlockPos().getX(), sim.getJobBlockPos().getY(), sim.getJobBlockPos().getZ()) > 5) {
+            if (sim.getDistance(sim.getJobBlockPos().getX(), sim.getJobBlockPos().getY(), sim.getJobBlockPos().getZ()) > 3) {
                 EntityParticleSpawner spawner = new EntityParticleSpawner(sim.world, sim);
                 spawner.setPosition(sim.getJobBlockPos().getX()+0.5f, sim.getJobBlockPos().getY(), sim.getJobBlockPos().getZ()+0.5f);
                 sim.setParticlspawning(true);
                 sim.world.spawnEntity(spawner);
+                spawner.updateClient();
                 sim.setTeleporttarget(sim.getJobBlockPos());
-
                 sim.setTeleport(true);
+                sim.setNoAI(true);
                 return false;
             }
 

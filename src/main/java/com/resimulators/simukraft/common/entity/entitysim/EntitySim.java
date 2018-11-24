@@ -4,6 +4,7 @@ import com.mojang.authlib.GameProfile;
 import com.resimulators.simukraft.ConfigHandler;
 import com.resimulators.simukraft.GuiHandler;
 import com.resimulators.simukraft.SimUKraft;
+import com.resimulators.simukraft.client.particle.TeleportParticle;
 import com.resimulators.simukraft.common.entity.EntityParticleSpawner;
 import com.resimulators.simukraft.common.entity.ai.*;
 import com.resimulators.simukraft.common.entity.ai.pathfinding.CustomPathNavigateGround;
@@ -13,6 +14,7 @@ import com.resimulators.simukraft.common.tileentity.structure.Structure;
 import com.resimulators.simukraft.init.ModItems;
 import com.resimulators.simukraft.network.HungerPacket;
 import net.minecraft.block.BlockChest;
+import net.minecraft.client.Minecraft;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
@@ -613,15 +615,26 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
     }
 
     if (!world.isRemote){
+            System.out.println("sim teleport " + teleport);
             if (teleport){
-        if (teleportdelay <= 0) {
+        if (teleportdelay <= 0 && teleporttarget != null) {
             setTeleport(false);
+            setParticlspawning(false);
             teleportdelay = 120;
-            this.setPosition(getTeleporttarget().getX(),getTeleporttarget().getY()+2,getTeleporttarget().getZ());
+            this.setPosition(getTeleporttarget().getX()+0.5f,getTeleporttarget().getY()+2,getTeleporttarget().getZ()+0.5f);
+            teleporttarget = null;
+            setNoAI(false);
 
-        }else{teleportdelay--;}
-    }}
+        }else{
+            teleportdelay--;}
+        if (teleporttarget ==  null){
+            teleport = false;
+            particlspawning = false;
+        }
+            }}
+
     }
+
 
     private void updatenotworking() {
 
@@ -790,6 +803,7 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
     public void setParticlspawning(boolean spawning){
     this.particlspawning = spawning;
     }
+
     public boolean isParticlspawning(){
         return this.particlspawning;
     }
