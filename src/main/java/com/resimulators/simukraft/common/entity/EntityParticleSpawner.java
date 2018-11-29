@@ -35,10 +35,7 @@ public class EntityParticleSpawner extends Entity {
 
     }
     public void updateClient(){
-        System.out.println(sim);
-        System.out.println(this);
         PacketHandler.INSTANCE.sendToAllAround(new ClientTeleportPacket(sim.getEntityId(),this.getEntityId()),new NetworkRegistry.TargetPoint(sim.dimension,sim.posX,sim.posY,sim.posZ,128));
-        System.out.println("particle spawner is spawned");
     }
 
     @Override
@@ -72,20 +69,20 @@ public class EntityParticleSpawner extends Entity {
         if (!sim.getTeleport() || !sim.isParticlspawning() || sim.getTeleporttarget() == null){
             world.removeEntity(this);
         }}}
-
         if (world.isRemote){
 
             if (particlecooldown <= 0){
                 particlecooldown = 3;
                 int num = rand.nextInt(10) + 5;
                 for (int i = 0;i<num;i++){
+                    System.out.println("123456 " + sim.posX);
                     double posx = posX + rand.nextFloat()-0.5;
                     double posz = posZ + rand.nextFloat()-0.5;
                     Minecraft.getMinecraft().effectRenderer.addEffect(new TeleportParticle(world,posx,posY+ 3d + rand.nextFloat()-0.5,posz,0,-0.075,0));
                     if (sim != null){
-                    float simposx = (float) sim.getPosition().getX() + rand.nextFloat();
-                    float simposy = (float) sim.getPosition().getY()+ 3 + rand.nextFloat() - 0.5f;
-                    float simposz = (float) sim.getPosition().getZ() + rand.nextFloat();
+                    float simposx = (float) sim.posX + rand.nextFloat() - 0.5f;
+                    float simposy = (float) sim.posY+ 3 + rand.nextFloat() - 0.5f;
+                    float simposz = (float) sim.posZ + rand.nextFloat() - 0.5f;
                     Minecraft.getMinecraft().effectRenderer.addEffect(new TeleportParticle(world,simposx,simposy,simposz,0,-0.075,0));}
                 }}else{particlecooldown--;}
         }

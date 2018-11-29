@@ -1,7 +1,9 @@
 package com.resimulators.simukraft.proxy;
 
 import com.resimulators.simukraft.client.gui.HudGui;
+import com.resimulators.simukraft.client.render.RenderParticleEntity;
 import com.resimulators.simukraft.client.render.RenderSim;
+import com.resimulators.simukraft.common.entity.EntityParticleSpawner;
 import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
@@ -17,6 +19,7 @@ public class ClientProxy extends CommonProxy {
     public void preInit(FMLPreInitializationEvent event) {
         super.preInit(event);
         RenderingRegistry.registerEntityRenderingHandler(EntitySim.class, RenderSim::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityParticleSpawner.class, RenderParticleEntity::new);
     }
 
     @Override
