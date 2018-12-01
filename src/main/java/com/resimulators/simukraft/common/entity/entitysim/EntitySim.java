@@ -104,9 +104,9 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
     private FarmModes.SheepMode sheepmode = FarmModes.SheepMode.SHEAR;
 
     //teleportation related
-    private BlockPos teleporttarget;
+    private BlockPos teleporttarget; 
     private boolean teleport;
-    private int teleportdelay = 120;
+    private int teleportdelay = 140;
     private int particlecooldown = 20;
     private boolean particlspawning;
     public EntitySim(World worldIn) {
@@ -615,15 +615,15 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
     }
 
     if (!world.isRemote){
-            System.out.println("sim teleport " + teleport);
+
             if (teleport){
-        if (teleportdelay <= 0 && teleporttarget != null) {
+        if (teleportdelay <= 0 || teleporttarget == null) {
             setTeleport(false);
             setParticlspawning(false);
-            teleportdelay = 120;
-            this.setPosition(getTeleporttarget().getX()+0.5f,getTeleporttarget().getY()+2,getTeleporttarget().getZ()+0.5f);
+            teleportdelay = 140;
             teleporttarget = null;
             setNoAI(false);
+
 
         }else{
             teleportdelay--;}
@@ -631,7 +631,13 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
             teleport = false;
             particlspawning = false;
         }
-            }}
+        if (teleportdelay <= 40 && teleporttarget != null){
+            this.setPosition(getTeleporttarget().getX()+0.5f,getTeleporttarget().getY()+2,getTeleporttarget().getZ()+0.5f);
+
+            teleporttarget=null;
+        }
+            }
+        }
 
     }
 

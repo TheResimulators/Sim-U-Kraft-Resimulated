@@ -12,7 +12,11 @@ public class TeleportParticle extends Particle{
         motionZ = 0;
         motionY = p_i1219_6_2;
         this.setMaxAge(40);
-        this.setRBGColorF(148,0,211);
+        float lvt_14_1_ = this.rand.nextFloat() * 0.6F + 0.4F;
+        this.particleScale = this.rand.nextFloat() * 0.2F + 0.5F;
+        this.particleRed = lvt_14_1_ * 0.9F;
+        this.particleGreen = lvt_14_1_ * 0.3F;
+        this.particleBlue = lvt_14_1_;
         particleScale = 3;
         System.out.println("is this being called");
     }
