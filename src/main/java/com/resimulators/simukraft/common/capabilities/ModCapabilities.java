@@ -1,6 +1,7 @@
 package com.resimulators.simukraft.common.capabilities;
 
 import com.resimulators.simukraft.common.interfaces.CowCapability;
+import com.resimulators.simukraft.common.interfaces.PlayerCapability;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.EntityCow;
 import net.minecraftforge.common.capabilities.Capability;
@@ -16,12 +17,15 @@ public class ModCapabilities {
     @CapabilityInject(CowCapability.class)
     private static Capability<CowCapability> CAP = null;
 
+    @CapabilityInject(PlayerCapability.class)
+    private static 
+
     @SubscribeEvent
     public static void attachCap(AttachCapabilitiesEvent<Entity> event){
         if (event.getObject() instanceof EntityCow){
-            System.out.println("adding capability");
             event.addCapability(CowCapability.RL,new CowCapability.Provider(CAP));
         }
+
     }
 
 

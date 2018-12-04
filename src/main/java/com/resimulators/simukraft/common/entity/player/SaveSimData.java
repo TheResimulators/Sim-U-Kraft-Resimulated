@@ -144,7 +144,7 @@ public class SaveSimData extends WorldSavedData {
         if (players != null) {
             for (UUID id : players) {
                     EntityPlayerMP playerMP = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayerByUUID(id);
-                    PacketHandler.INSTANCE.sendTo(message, playerMP);
+                     PacketHandler.INSTANCE.sendTo(message, playerMP);
             }
         }
     }
