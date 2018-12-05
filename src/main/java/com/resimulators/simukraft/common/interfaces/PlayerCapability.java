@@ -54,6 +54,8 @@ public interface PlayerCapability extends INBTSerializable<NBTTagCompound> {
 
     class Storage implements Capability.IStorage<PlayerCapability>{
 
+
+        public Storage(){}
         @Nullable
         @Override
         public NBTBase writeNBT(Capability<PlayerCapability> capability, PlayerCapability instance, EnumFacing side) {
@@ -71,6 +73,7 @@ public interface PlayerCapability extends INBTSerializable<NBTTagCompound> {
 
         public Provider(Capability<PlayerCapability> playerCapability){
             this.capability = playerCapability;
+            this.playerCapability = playerCapability.getDefaultInstance();
         }
 
         @Override

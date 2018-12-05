@@ -16,6 +16,7 @@ import com.resimulators.simukraft.common.entity.entitysim.SimEventHandler;
 import com.resimulators.simukraft.common.entity.entitysim.SpawnSimEntity;
 import com.resimulators.simukraft.common.entity.player.PlayerFirstJoin;
 import com.resimulators.simukraft.common.interfaces.CowCapability;
+import com.resimulators.simukraft.common.interfaces.PlayerCapability;
 import com.resimulators.simukraft.common.tileentity.Events.TileEntityCreate;
 import com.resimulators.simukraft.common.tileentity.TileFarm;
 import com.resimulators.simukraft.common.world.Rent_collection;
@@ -42,6 +43,7 @@ public class CommonProxy {
         ModEntities.init();
         PacketHandler.init();
         CapabilityManager.INSTANCE.register(CowCapability.class,new CowCapability.Storage(),CowCapability.Impl::new);
+        CapabilityManager.INSTANCE.register(PlayerCapability.class,new PlayerCapability.Storage(),PlayerCapability.Impl::new);
     }
 
     public void init(FMLInitializationEvent event) {
