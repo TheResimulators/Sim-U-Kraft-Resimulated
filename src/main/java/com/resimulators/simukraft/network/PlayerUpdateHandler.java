@@ -1,5 +1,6 @@
 package com.resimulators.simukraft.network;
 
+import com.resimulators.simukraft.common.capabilities.ModCapabilities;
 import com.resimulators.simukraft.common.entity.entitysim.SimEventHandler;
 import com.resimulators.simukraft.common.entity.player.SaveSimData;
 import net.minecraft.client.Minecraft;
@@ -21,13 +22,13 @@ public class PlayerUpdateHandler implements IMessageHandler<PlayerUpdatePacket, 
         Long uuid = message.factionid;
 
         mainThread.addScheduledTask(() -> {
-            SaveSimData.get(Minecraft.getMinecraft().world).setMode(Minecraft.getMinecraft().player.getUniqueID(),message.mode);
-            SaveSimData.get(Minecraft.getMinecraft().world).addPlayertoFaction(Minecraft.getMinecraft().player.getUniqueID(),message.factionid);
+            Minecraft.getMinecraft().player.getCapability(ModCapabilities.getPlayerCap(),null).setmode(message.mode);
+            SaveSimData.get(Minecraft.getMinecraft().world).getfaction(uuid).addPlayer(Minecraft.getMinecraft().player.getUniqueID());
             for (UUID id : message.totalsim) {
-                SaveSimData.get(Minecraft.getMinecraft().world).addtotalSim(id,uuid);
+                SaveSimData.get(Minecraft.getMinecraft().world).getfaction(uuid).addTotalSim(id);
             }
             for (UUID id : message.unemployedsim) {
-                SaveSimData.get(Minecraft.getMinecraft().world).addUnemployedsim(id,uuid);
+                SaveSimData.get(Minecraft.getMinecraft().world).getfaction(uuid).addUnemployedSim(id);
             }
             SimEventHandler.setCredits(message.credits);
         });

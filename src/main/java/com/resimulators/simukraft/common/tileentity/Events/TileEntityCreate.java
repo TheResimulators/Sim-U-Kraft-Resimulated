@@ -1,5 +1,7 @@
 package com.resimulators.simukraft.common.tileentity.Events;
 
+import com.resimulators.simukraft.common.FactionData;
+import com.resimulators.simukraft.common.capabilities.ModCapabilities;
 import com.resimulators.simukraft.common.entity.player.SaveSimData;
 import com.resimulators.simukraft.common.interfaces.ISimJob;
 import com.resimulators.simukraft.common.tileentity.TileCattle;
@@ -13,7 +15,9 @@ public class TileEntityCreate {
         if (event.getPlacedBlock().getBlock().hasTileEntity(event.getPlacedBlock())) {
             BlockPos pos = new BlockPos(event.getPos());
             if (event.getWorld().getTileEntity(pos) instanceof ISimJob || event.getWorld().getTileEntity(pos) instanceof TileCattle) {
-                SaveSimData.get(event.getWorld()).addTile(event.getWorld().getTileEntity(pos));
+
+                long factionid = event.getPlayer().getCapability(ModCapabilities.getPlayerCap(),null).getfactionid();
+                SaveSimData.get(event.getWorld()).getfaction(factionid).addJobBlock(event.getWorld().getTileEntity(pos));
             }
         }
     }

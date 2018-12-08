@@ -1,5 +1,6 @@
 package com.resimulators.simukraft.client.gui;
 
+import com.resimulators.simukraft.common.capabilities.ModCapabilities;
 import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
 import com.resimulators.simukraft.common.entity.player.SaveSimData;
 import net.minecraft.client.Minecraft;
@@ -45,7 +46,7 @@ public class GuiMiner extends GuiScreen {
     @Override
     public void initGui() {
         x = 0;
-        for (UUID id : SaveSimData.get(Minecraft.getMinecraft().world).getUnemployedSims(SaveSimData.get(Minecraft.getMinecraft().world).getPlayerFaction(Minecraft.getMinecraft().player.getUniqueID()))) {
+        for (UUID id : SaveSimData.get(Minecraft.getMinecraft().world).getfaction(Minecraft.getMinecraft().player.getCapability(ModCapabilities.getPlayerCap(),null).getfactionid()).getUnemployedSims()) {
             EntitySim sim = (EntitySim) server.getEntityFromUuid(id);
             sims.add(sim);
         }

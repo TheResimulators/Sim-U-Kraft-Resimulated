@@ -1,9 +1,11 @@
 package com.resimulators.simukraft.network;
 
+import com.resimulators.simukraft.common.capabilities.ModCapabilities;
 import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
 import com.resimulators.simukraft.common.entity.player.SaveSimData;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
@@ -48,8 +50,9 @@ public class ReturnSimIdPacket implements IMessage {
     @Override
     public void toBytes(ByteBuf bytebuf) {
         int num = 0;
+        long factionid = FMLCommonHandler.instance().getMinecraftServerInstance().getEntityWorld().getPlayerEntityByUUID(playerid).getCapability(ModCapabilities.getPlayerCap(),null).getfactionid();
         bytebuf.writeInt(amount);
-        for (UUID sim : SaveSimData.get(world).getUnemployedSims(SaveSimData.get(world).getPlayerFaction(playerid))) {
+        for (UUID sim : SaveSimData.get(world).getfaction(factionid).getUnemployedSims()) {
             EntitySim entitySim = (EntitySim) world.getEntityFromUuid(sim);
             int id = entitySim.getEntityId();
             bytebuf.writeInt(id);

@@ -1,6 +1,8 @@
 package com.resimulators.simukraft.common.interfaces;
 
 import com.resimulators.simukraft.Reference;
+import com.resimulators.simukraft.common.FactionData;
+import com.resimulators.simukraft.common.entity.player.SaveSimData;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -9,6 +11,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.INBTSerializable;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -19,32 +22,75 @@ public interface PlayerCapability extends INBTSerializable<NBTTagCompound> {
 
     void setfaction(long id);
 
-    long getfaction();
+    long getfactionid();
+
+    boolean getenabled();
+
+    void setenabled(boolean enabled);
+
+    void setmode(int mode);
+
+    int getmode();
+
+    FactionData getfaction(long id);
 
 
 
     class Impl implements PlayerCapability{
-        long factionid;
+        private long factionid;
+        private boolean isenabled = false;
+        private int mode = -1;
+
         @Override
-        public void setfaction(long id) {
-            this.factionid = id;
+        public long getfactionid() {
+            return factionid;
         }
 
         @Override
-        public long getfaction() {
-            return factionid;
+        public void setfaction(long id) {
+
+        }
+
+        @Override
+        public FactionData getfaction(long id) {
+            return SaveSimData.get(FMLCommonHandler.instance().getMinecraftServerInstance().getEntityWorld()).getfaction(id);
+        }
+
+        @Override
+        public boolean getenabled() {
+            return isenabled;
+        }
+
+        @Override
+        public void setenabled(boolean enabled) {
+            this.isenabled = enabled;
+        }
+
+        @Override
+        public int getmode() {
+            return mode;
+        }
+
+
+        @Override
+        public void setmode(int mode) {
+           this.mode = mode;
         }
 
         @Override
         public NBTTagCompound serializeNBT() {
             NBTTagCompound compound = new NBTTagCompound();
             compound.setLong("faction id",factionid);
+            compound.setInteger("mode",mode);
+            compound.setBoolean("enabled",isenabled);
             return compound;
         }
 
         @Override
         public void deserializeNBT(NBTTagCompound nbt) {
             factionid = nbt.getLong("faction id");
+            mode = nbt.getInteger("mode");
+            isenabled = nbt.getBoolean("enabled");
         }
 
         public void updateClientPlayer(){
@@ -53,7 +99,6 @@ public interface PlayerCapability extends INBTSerializable<NBTTagCompound> {
     }
 
     class Storage implements Capability.IStorage<PlayerCapability>{
-
 
         public Storage(){}
         @Nullable

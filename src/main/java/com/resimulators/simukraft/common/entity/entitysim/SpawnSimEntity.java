@@ -1,4 +1,5 @@
 package com.resimulators.simukraft.common.entity.entitysim;
+import com.resimulators.simukraft.common.capabilities.ModCapabilities;
 import com.resimulators.simukraft.common.entity.player.SaveSimData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
@@ -22,7 +23,7 @@ public class SpawnSimEntity {
 
             if (event.phase == TickEvent.Phase.START){
 
-                if (SaveSimData.get(world).isMode(event.player.getUniqueID()) != -1){
+                if (event.player.getCapability(ModCapabilities.getPlayerCap(),null).getmode() != -1){
                     if (!world.isRemote){
                     Random rand = world.rand;
                         EntityPlayer player = event.player;
@@ -34,9 +35,10 @@ public class SpawnSimEntity {
                             ticks.put(player.getUniqueID(),tick);
                         if (ticks.get(player.getUniqueID())/20 > 5) {
                             ticks.put(player.getUniqueID(),0);
-                            if (SaveSimData.get(world).getUnemployedSims(SaveSimData.get(world).getPlayerFaction(player.getUniqueID())).size() < 1) {
+                            if (SaveSimData.get(world).getfaction(event.player.getCapability(ModCapabilities.getPlayerCap(),null).getfactionid()).getUnemployedSims().size()< 1) {
                                 EntitySim entity = new EntitySim(world);
-                                entity.setFactionid(SaveSimData.get(world).getPlayerFaction(event.player.getUniqueID()));
+                                long factionid = event.player.getCapability(ModCapabilities.getPlayerCap(),null).getfactionid();
+                                entity.setFactionid(factionid);
                                 double entityx = player.posX + rand.nextInt(11)-5;
                                 double entityz = player.posZ + rand.nextInt(11)-5;
                                 int height = world.getHeight((int)entityx,(int)entityz);

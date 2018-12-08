@@ -1,6 +1,9 @@
 package com.resimulators.simukraft.network;
 
+import com.resimulators.simukraft.common.FactionData;
+import com.resimulators.simukraft.common.capabilities.ModCapabilities;
 import com.resimulators.simukraft.common.entity.player.SaveSimData;
+import com.resimulators.simukraft.common.interfaces.PlayerCapability;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.IThreadListener;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -18,10 +21,12 @@ public class SimSpawnHandler implements IMessageHandler<SimSpawnPacket, IMessage
         IThreadListener mainThread = Minecraft.getMinecraft();
         mainThread.addScheduledTask(() -> {
             UUID id = message.sims;
-            Long playerid = SaveSimData.get(Minecraft.getMinecraft().world).getPlayerFaction(Minecraft.getMinecraft().player.getUniqueID());
-            if (!(SaveSimData.get(Minecraft.getMinecraft().world).getTotalSims(playerid).contains(id))) {
-                SaveSimData.get(Minecraft.getMinecraft().world).addtotalSim(id,playerid);
-                SaveSimData.get(Minecraft.getMinecraft().world).addUnemployedsim(id,playerid);
+            PlayerCapability capability = Minecraft.getMinecraft().player.getCapability(ModCapabilities.getPlayerCap(),null);
+            Long playerid = capability.getfactionid();
+            FactionData data = SaveSimData.get(Minecraft.getMinecraft().world).getfaction(playerid);
+            if (!data.getTotalSims().contains(id)) {
+                data.addTotalSim(id);
+                data.addUnemployedSim(id);
             }
         });
         return null;

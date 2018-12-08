@@ -19,7 +19,6 @@ public class ItemRightClickedHandler implements IMessageHandler<ItemRightClicked
 
 
         mainThread.addScheduledTask(() -> {
-            System.out.println("mode map " + SaveSimData.get(ctx.getServerHandler().player.world).getModeMap());
             if (ctx.getServerHandler().player.getServer().isDedicatedServer()){
                 mode = ConfigHandler.Server_Configs.mode;
             }

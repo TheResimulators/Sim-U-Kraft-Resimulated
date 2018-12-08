@@ -1,5 +1,6 @@
 package com.resimulators.simukraft.client.gui;
 
+import com.resimulators.simukraft.common.capabilities.ModCapabilities;
 import com.resimulators.simukraft.common.entity.player.SaveSimData;
 import com.resimulators.simukraft.network.ModeChangePacket;
 import com.resimulators.simukraft.network.PacketHandler;
@@ -101,9 +102,9 @@ public class GuiStart extends GuiScreen {
                 }
             }
             System.out.println("gamemode is now " + Gamemode);
-            SaveSimData.get(Minecraft.getMinecraft().world).setMode(Minecraft.getMinecraft().player.getUniqueID(),Gamemode);
+            Minecraft.getMinecraft().player.getCapability(ModCapabilities.getPlayerCap(),null).setmode(Gamemode);
         PacketHandler.INSTANCE.sendToServer(new ModeChangePacket(Minecraft.getMinecraft().player.getUniqueID(),Gamemode));
-        System.out.println("the mode for the player is now " + SaveSimData.get(Minecraft.getMinecraft().world).isMode(Minecraft.getMinecraft().player.getUniqueID()));
+        System.out.println("the mode for the player is now " + Minecraft.getMinecraft().player.getCapability(ModCapabilities.getPlayerCap(),null).getmode());
 
         Minecraft.getMinecraft().displayGuiScreen(null);
         super.actionPerformed(button);

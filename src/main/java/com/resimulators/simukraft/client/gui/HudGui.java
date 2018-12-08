@@ -1,5 +1,6 @@
 package com.resimulators.simukraft.client.gui;
 
+import com.resimulators.simukraft.common.capabilities.ModCapabilities;
 import com.resimulators.simukraft.common.entity.entitysim.SimEventHandler;
 import com.resimulators.simukraft.common.entity.player.SaveSimData;
 import net.minecraft.client.Minecraft;
@@ -10,11 +11,13 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
 public class HudGui extends Gui {
-    private Set<UUID> sim;
+    private List<UUID> sim = new ArrayList<UUID>();
     private int population = 1;
     private static float credits;
 
@@ -25,27 +28,31 @@ public class HudGui extends Gui {
                 credits = SimEventHandler.getCredits();
                 if (event.getType() == RenderGameOverlayEvent.ElementType.TEXT){
                     if (Minecraft.getMinecraft().gameSettings.showDebugInfo)return;
-                    if (SaveSimData.get(Minecraft.getMinecraft().world).isMode(Minecraft.getMinecraft().player.getUniqueID()) != null){
-                    if (SaveSimData.get(Minecraft.getMinecraft().world).isMode(Minecraft.getMinecraft().player.getUniqueID()) != -1){
+                    int mode = Minecraft.getMinecraft().player.getCapability(ModCapabilities.getPlayerCap(),null).getmode();
+                    if (Minecraft.getMinecraft().player.getCapability(ModCapabilities.getPlayerCap(),null) == null){
+                        mode = -1;
+                    }
+                    if (mode != -1){
                     Minecraft mc = Minecraft.getMinecraft();
-                    sim = SaveSimData.get(Minecraft.getMinecraft().world).getTotalSims(SaveSimData.get(Minecraft.getMinecraft().world).getPlayerFaction(Minecraft.getMinecraft().player.getUniqueID()));
+                    long factionid = Minecraft.getMinecraft().player.getCapability(ModCapabilities.getPlayerCap(),null).getfactionid();
+                    sim = SaveSimData.get(Minecraft.getMinecraft().world).getfaction(factionid).getTotalSims();
                     if (sim == null) {
                         population = 0;
                     } else {
                         population = sim.size();
                     }
                     int unemployedsize;
-                    if (SaveSimData.get(Minecraft.getMinecraft().world).getUnemployedSims(SaveSimData.get(Minecraft.getMinecraft().world).getPlayerFaction(Minecraft.getMinecraft().player.getUniqueID())) != null){
-                    unemployedsize = SaveSimData.get(Minecraft.getMinecraft().world).getUnemployedSims(SaveSimData.get(Minecraft.getMinecraft().world).getPlayerFaction(Minecraft.getMinecraft().player.getUniqueID())).size();}
+                    if (SaveSimData.get(Minecraft.getMinecraft().world).getfaction(factionid).getUnemployedSims() != null){
+                    unemployedsize = SaveSimData.get(Minecraft.getMinecraft().world).getfaction(factionid).getUnemployedSims().size();}
                     else{
-                        unemployedsize = 0; }
+                        unemployedsize = 0;}
                     drawString(mc.fontRenderer, "Population " + population + ", Unemployed sims: " + unemployedsize, 1, 1, Color.WHITE.getRGB());
-                    if (SaveSimData.get(Minecraft.getMinecraft().world).isMode(Minecraft.getMinecraft().player.getUniqueID()) == 0){
+                    if (mode == 0){
                     drawString(mc.fontRenderer, "Credits: " + credits, 1, 11, Color.WHITE.getRGB());
                         }
                     }
                 }
             }
         }
-    }}
+    }
 
