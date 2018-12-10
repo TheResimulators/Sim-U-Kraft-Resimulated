@@ -67,7 +67,7 @@ public class SaveSimData extends WorldSavedData {
 
 
     public void addfaction(long id,String name){
-        addfaction(new FactionData(id,name));
+        addfaction(new FactionData(id,name,-1));
     }
     public void addfaction(FactionData data){
         factions.add(data);

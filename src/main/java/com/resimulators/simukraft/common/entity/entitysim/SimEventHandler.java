@@ -51,6 +51,7 @@ public class SimEventHandler {
                     if (!data.getTotalSims().contains(id)) {
                         data.addTotalSim(id);
                         data.addUnemployedSim(id);
+                        data.sendFactionPacket(new SimSpawnPacket(id));
                     }
                     }
                 }
@@ -69,6 +70,7 @@ public class SimEventHandler {
                 FactionData data = SaveSimData.get(world).getfaction(factionid);
                 data.removeTotalSim(sim);
                 data.removeUnemplyedSim(sim);
+                data.sendFactionPacket(new SimDeathPacket(ids,factionid));
                 for (TileEntity entity : data.getJobblocks()) {
                     ISimJob tile = (ISimJob) entity;
                     if (tile.getId() == id) {

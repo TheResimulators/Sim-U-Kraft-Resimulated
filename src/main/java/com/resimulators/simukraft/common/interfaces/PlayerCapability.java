@@ -3,6 +3,9 @@ package com.resimulators.simukraft.common.interfaces;
 import com.resimulators.simukraft.Reference;
 import com.resimulators.simukraft.common.FactionData;
 import com.resimulators.simukraft.common.entity.player.SaveSimData;
+import com.resimulators.simukraft.network.PacketHandler;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -12,7 +15,7 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.fml.common.FMLCommonHandler;
-
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -35,6 +38,9 @@ public interface PlayerCapability extends INBTSerializable<NBTTagCompound> {
     FactionData getfaction(long id);
 
 
+    void updateClientWithPacket(IMessage message,EntityPlayer entitiy);
+
+
 
     class Impl implements PlayerCapability{
         private long factionid;
@@ -54,6 +60,11 @@ public interface PlayerCapability extends INBTSerializable<NBTTagCompound> {
         @Override
         public FactionData getfaction(long id) {
             return SaveSimData.get(FMLCommonHandler.instance().getMinecraftServerInstance().getEntityWorld()).getfaction(id);
+        }
+
+        @Override
+        public void updateClientWithPacket(IMessage message, EntityPlayer entity) {
+            PacketHandler.INSTANCE.sendTo(message,(EntityPlayerMP) entity);
         }
 
         @Override
@@ -91,10 +102,6 @@ public interface PlayerCapability extends INBTSerializable<NBTTagCompound> {
             factionid = nbt.getLong("faction id");
             mode = nbt.getInteger("mode");
             isenabled = nbt.getBoolean("enabled");
-        }
-
-        public void updateClientPlayer(){
-            //TODO :send packet with NBTTagcompound and update client player
         }
     }
 

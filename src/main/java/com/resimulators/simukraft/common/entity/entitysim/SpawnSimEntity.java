@@ -43,7 +43,6 @@ public class SpawnSimEntity {
                                 double entityz = player.posZ + rand.nextInt(11)-5;
                                 int height = world.getHeight((int)entityx,(int)entityz);
                                 entity.setPosition(entityx,height,entityz);
-
                                 entity.onInitialSpawn(world.getDifficultyForLocation(new BlockPos(entity)), null);
                                 world.spawnEntity(entity);
                                 entity.setProfession(rand.nextInt(2));

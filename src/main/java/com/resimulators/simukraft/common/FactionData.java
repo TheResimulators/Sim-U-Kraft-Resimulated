@@ -1,15 +1,20 @@
 package com.resimulators.simukraft.common;
 
 import com.resimulators.simukraft.SimUKraft;
+import com.resimulators.simukraft.common.capabilities.ModCapabilities;
 import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.server.management.PlayerList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -23,9 +28,11 @@ public class FactionData implements INBTSerializable<NBTTagCompound> {
     private List<UUID> unemployedsims = new ArrayList<>();
     private List<UUID> totalSims = new ArrayList<>();
     private List<TileEntity> jobblocks = new ArrayList<>();
+    private int mode;
 
 
-    public FactionData(long id, String factionname) {
+    public FactionData(long id, String factionname,int mode) {
+        this.mode = mode;
         this.factionname = factionname;
         this.factionId = id;
     }
@@ -174,4 +181,24 @@ public class FactionData implements INBTSerializable<NBTTagCompound> {
             jobblocks.remove(entity);
         }
     }
+
+
+    public int getMode(){
+        return mode;
+    }
+    public void setMode(int mode){
+        this.mode = mode;
+    }
+
+
+    public void sendFactionPacket(IMessage message){
+        List<UUID> uuids = getPlayers();
+        for (UUID id:uuids){
+            EntityPlayer player = FMLCommonHandler.instance().getMinecraftServerInstance().getEntityWorld().getPlayerEntityByUUID(id);
+            if (player != null){
+                player.getCapability(ModCapabilities.getPlayerCap(),null).updateClientWithPacket(message,player);
+            }
+        }
+    }
+
 }

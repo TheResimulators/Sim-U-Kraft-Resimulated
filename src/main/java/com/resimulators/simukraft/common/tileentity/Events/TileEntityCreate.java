@@ -18,6 +18,7 @@ public class TileEntityCreate {
 
                 long factionid = event.getPlayer().getCapability(ModCapabilities.getPlayerCap(),null).getfactionid();
                 SaveSimData.get(event.getWorld()).getfaction(factionid).addJobBlock(event.getWorld().getTileEntity(pos));
+
             }
         }
     }

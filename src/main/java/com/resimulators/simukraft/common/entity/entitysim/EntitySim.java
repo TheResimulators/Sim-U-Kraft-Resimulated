@@ -603,6 +603,7 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
             } else {
                 if (hunger > 0) {
                     hunger --;
+                    SaveSimData.get(this.world).getfaction(this.getFactionId()).sendFactionPacket(new HungerPacket(hunger,this.getEntityId()));
                 }
 
                 counter = 0;

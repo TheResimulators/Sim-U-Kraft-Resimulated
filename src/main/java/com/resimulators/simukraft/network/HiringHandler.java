@@ -29,6 +29,7 @@ public class HiringHandler implements IMessageHandler<HiringPacket, IMessage> {
             SaveSimData.get(ctx.getServerHandler().player.getServerWorld()).getfaction(ctx.getServerHandler().player.getCapability(ModCapabilities.getPlayerCap(),null).getfactionid()).removeUnemplyedSim(sim);
             sim.setProfession(message.job);
             sim.setJobBlockPos(new BlockPos(message.x,message.y,message.z));
+            SaveSimData.get(sim.getEntityWorld()).getfaction(sim.getFactionId()).sendFactionPacket(new HiringPacket(sim.getEntityId(),message.job,message.x,message.y,message.z));
             if (ctx.getServerHandler().player.getServerWorld().getTileEntity(new BlockPos(message.x,message.y,message.z)) instanceof ISimIndustrial ){
             ((ISimIndustrial)ctx.getServerHandler().player.getServerWorld().getTileEntity(new BlockPos(message.x,message.y,message.z))).setSimname(ctx.getServerHandler().player.getServerWorld().getEntityFromUuid(id).getEntityId());
                 ((ISimIndustrial) ctx.getServerHandler().player.getServerWorld().getTileEntity(new BlockPos(message.x,message.y,message.z))).setHired(true);

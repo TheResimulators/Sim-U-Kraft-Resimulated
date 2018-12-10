@@ -1,6 +1,7 @@
 package com.resimulators.simukraft.network;
 
 import com.resimulators.simukraft.ConfigHandler;
+import com.resimulators.simukraft.common.capabilities.ModCapabilities;
 import com.resimulators.simukraft.common.entity.player.SaveSimData;
 import net.minecraft.util.IThreadListener;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -22,10 +23,8 @@ public class ItemRightClickedHandler implements IMessageHandler<ItemRightClicked
             if (ctx.getServerHandler().player.getServer().isDedicatedServer()){
                 mode = ConfigHandler.Server_Configs.mode;
             }
-            else if (!SaveSimData.get(ctx.getServerHandler().player.world).getModeMap().isEmpty()){
-                UUID uuid = SaveSimData.get(ctx.getServerHandler().player.world).getModeMap().keySet().iterator().next();
-                mode = SaveSimData.get(ctx.getServerHandler().player.world).getModeMap().get(uuid);
-                System.out.println("mode on server " + mode);
+            else if (SaveSimData.get(ctx.getServerHandler().player.world).getfaction(ctx.getServerHandler().player.getCapability(ModCapabilities.getPlayerCap(),null).getfactionid()).getMode() != -1){
+                mode = SaveSimData.get(ctx.getServerHandler().player.world).getfaction(ctx.getServerHandler().player.getCapability(ModCapabilities.getPlayerCap(),null).getfactionid()).getMode();
             }
 
             else{mode = -2;}
