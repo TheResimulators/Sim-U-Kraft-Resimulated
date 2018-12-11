@@ -16,7 +16,7 @@ public class TileEntityCreate {
             BlockPos pos = new BlockPos(event.getPos());
             if (event.getWorld().getTileEntity(pos) instanceof ISimJob || event.getWorld().getTileEntity(pos) instanceof TileCattle) {
 
-                long factionid = event.getPlayer().getCapability(ModCapabilities.getPlayerCap(),null).getfactionid();
+                long factionid = event.getPlayer().getCapability(ModCapabilities.PlayerCap,null).getfactionid();
                 SaveSimData.get(event.getWorld()).getfaction(factionid).addJobBlock(event.getWorld().getTileEntity(pos));
 
             }

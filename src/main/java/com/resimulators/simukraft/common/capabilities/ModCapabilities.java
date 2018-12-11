@@ -18,17 +18,8 @@ public class ModCapabilities {
 
 
     @CapabilityInject(CowCapability.class)
-    private static Capability<CowCapability> CAP = null;
+    public static Capability<CowCapability> CAP = null;
 
     @CapabilityInject(PlayerCapability.class)
-    private static Capability<PlayerCapability> PlayerCap = null;
-
-
-    public static Capability<CowCapability> getCAP() {
-        return CAP;
-    }
-
-    public static Capability<PlayerCapability> getPlayerCap() {
-        return PlayerCap;
-    }
+    public static Capability<PlayerCapability> PlayerCap = null;
 }

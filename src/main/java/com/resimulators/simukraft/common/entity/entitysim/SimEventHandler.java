@@ -45,7 +45,7 @@ public class SimEventHandler {
             if (!world.isRemote) {
                 UUID id = event.getEntity().getUniqueID();
                 if (SaveSimData.get(world) != null) {
-                    PlayerCapability capability = Minecraft.getMinecraft().player.getCapability(ModCapabilities.getPlayerCap(),null);
+                    PlayerCapability capability = Minecraft.getMinecraft().player.getCapability(ModCapabilities.PlayerCap,null);
                     Long playerid = capability.getfactionid();
                     FactionData data = SaveSimData.get(Minecraft.getMinecraft().world).getfaction(playerid);
                     if (!data.getTotalSims().contains(id)) {

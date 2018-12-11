@@ -36,7 +36,9 @@ public class HudGui extends Gui {
         SaveSimData simData = SaveSimData.get(mc.world);
         if (sim == null)
             return;
-        PlayerCapability playerCap = mc.player.getCapability(ModCapabilities.getPlayerCap(), null);
+        System.out.println(mc.player.getCapability(ModCapabilities.PlayerCap, null));
+        System.out.println(mc.player.getCapability(ModCapabilities.PlayerCap, null) != null);
+        PlayerCapability playerCap = mc.player.getCapability(ModCapabilities.PlayerCap, null);
         if (playerCap == null)
             return;
 

@@ -50,7 +50,7 @@ public class ReturnSimIdPacket implements IMessage {
     @Override
     public void toBytes(ByteBuf bytebuf) {
         int num = 0;
-        long factionid = FMLCommonHandler.instance().getMinecraftServerInstance().getEntityWorld().getPlayerEntityByUUID(playerid).getCapability(ModCapabilities.getPlayerCap(),null).getfactionid();
+        long factionid = FMLCommonHandler.instance().getMinecraftServerInstance().getEntityWorld().getPlayerEntityByUUID(playerid).getCapability(ModCapabilities.PlayerCap,null).getfactionid();
         bytebuf.writeInt(amount);
         for (UUID sim : SaveSimData.get(world).getfaction(factionid).getUnemployedSims()) {
             EntitySim entitySim = (EntitySim) world.getEntityFromUuid(sim);

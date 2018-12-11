@@ -58,8 +58,8 @@ public class TileCattle extends TileEntity implements ITickable,ISimIndustrial {
     }
 
     private void attachCapability(EntityCow cow){
-        if (cow.hasCapability(ModCapabilities.getCAP(),null)){
-            cow.getCapability(ModCapabilities.getCAP(),null).setcontroledspawn();
+        if (cow.hasCapability(ModCapabilities.CAP,null)){
+            cow.getCapability(ModCapabilities.CAP,null).setcontroledspawn();
             System.out.println("this is being reached");
         }
 

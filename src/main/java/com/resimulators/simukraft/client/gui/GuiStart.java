@@ -102,9 +102,9 @@ public class GuiStart extends GuiScreen {
                 }
             }
             System.out.println("gamemode is now " + Gamemode);
-            Minecraft.getMinecraft().player.getCapability(ModCapabilities.getPlayerCap(),null).setmode(Gamemode);
+            Minecraft.getMinecraft().player.getCapability(ModCapabilities.PlayerCap,null).setmode(Gamemode);
         PacketHandler.INSTANCE.sendToServer(new ModeChangePacket(Minecraft.getMinecraft().player.getUniqueID(),Gamemode));
-        System.out.println("the mode for the player is now " + Minecraft.getMinecraft().player.getCapability(ModCapabilities.getPlayerCap(),null).getmode());
+        System.out.println("the mode for the player is now " + Minecraft.getMinecraft().player.getCapability(ModCapabilities.PlayerCap,null).getmode());
 
         Minecraft.getMinecraft().displayGuiScreen(null);
         super.actionPerformed(button);

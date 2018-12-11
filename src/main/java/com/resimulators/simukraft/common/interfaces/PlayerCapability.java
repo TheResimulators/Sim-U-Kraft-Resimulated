@@ -2,6 +2,7 @@ package com.resimulators.simukraft.common.interfaces;
 
 import com.resimulators.simukraft.Reference;
 import com.resimulators.simukraft.common.FactionData;
+import com.resimulators.simukraft.common.capabilities.ModCapabilities;
 import com.resimulators.simukraft.common.entity.player.SaveSimData;
 import com.resimulators.simukraft.network.PacketHandler;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,6 +23,15 @@ import javax.annotation.Nullable;
 public interface PlayerCapability extends INBTSerializable<NBTTagCompound> {
 
     ResourceLocation RL = new ResourceLocation(Reference.MOD_ID,"_Player");
+
+    static ResourceLocation getkey() {
+        return RL;
+    }
+
+    static Provider getProvidor() {
+        return new Provider(ModCapabilities.PlayerCap);
+    }
+
 
     void setfaction(long id);
 
@@ -103,6 +113,8 @@ public interface PlayerCapability extends INBTSerializable<NBTTagCompound> {
             mode = nbt.getInteger("mode");
             isenabled = nbt.getBoolean("enabled");
         }
+
+
     }
 
     class Storage implements Capability.IStorage<PlayerCapability>{

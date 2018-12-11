@@ -26,7 +26,7 @@ public class HiringHandler implements IMessageHandler<HiringPacket, IMessage> {
             System.out.println("This is working");
             EntitySim sim = (EntitySim) ctx.getServerHandler().player.world.getEntityByID(message.sims);
             UUID id = sim.getUniqueID();
-            SaveSimData.get(ctx.getServerHandler().player.getServerWorld()).getfaction(ctx.getServerHandler().player.getCapability(ModCapabilities.getPlayerCap(),null).getfactionid()).removeUnemplyedSim(sim);
+            SaveSimData.get(ctx.getServerHandler().player.getServerWorld()).getfaction(ctx.getServerHandler().player.getCapability(ModCapabilities.PlayerCap,null).getfactionid()).removeUnemplyedSim(sim);
             sim.setProfession(message.job);
             sim.setJobBlockPos(new BlockPos(message.x,message.y,message.z));
             SaveSimData.get(sim.getEntityWorld()).getfaction(sim.getFactionId()).sendFactionPacket(new HiringPacket(sim.getEntityId(),message.job,message.x,message.y,message.z));

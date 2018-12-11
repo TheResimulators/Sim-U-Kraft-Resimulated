@@ -196,7 +196,7 @@ public class FactionData implements INBTSerializable<NBTTagCompound> {
         for (UUID id:uuids){
             EntityPlayer player = FMLCommonHandler.instance().getMinecraftServerInstance().getEntityWorld().getPlayerEntityByUUID(id);
             if (player != null){
-                player.getCapability(ModCapabilities.getPlayerCap(),null).updateClientWithPacket(message,player);
+                player.getCapability(ModCapabilities.PlayerCap,null).updateClientWithPacket(message,player);
             }
         }
     }

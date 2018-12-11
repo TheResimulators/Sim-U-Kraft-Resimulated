@@ -56,7 +56,7 @@ public class AISimMilkCow extends EntityAIBase {
                 sim.playSound(SoundEvents.ENTITY_COW_MILK, 1.0F, 1.0F);
                 sim.getLookHelper().setLookPosition(sim.posX,sim.posY,sim.posZ,360,360);
                 itemstack.shrink(1);
-                sim.getCowtarget().getCapability(ModCapabilities.getCAP(),null).setmilked();
+                sim.getCowtarget().getCapability(ModCapabilities.CAP,null).setmilked();
                 if (!addMilkBucket()) {
                     sim.dropItem(new ItemStack(Items.MILK_BUCKET).getItem(), 1);
                 }

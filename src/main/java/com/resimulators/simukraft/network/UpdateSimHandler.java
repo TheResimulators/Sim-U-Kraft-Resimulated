@@ -16,7 +16,7 @@ public class UpdateSimHandler implements IMessageHandler<UpdateSimPacket, IMessa
         mainThread.addScheduledTask(() -> {
             UUID e = message.sims;
             String list = message.List;
-            Long playerid = ctx.getServerHandler().player.getCapability(ModCapabilities.getPlayerCap(),null).getfactionid();
+            Long playerid = ctx.getServerHandler().player.getCapability(ModCapabilities.PlayerCap,null).getfactionid();
             if (list.equals("unemployed")) {
                 SaveSimData.get(ctx.getServerHandler().player.world).getfaction(playerid).addUnemployedSim(e);
             }

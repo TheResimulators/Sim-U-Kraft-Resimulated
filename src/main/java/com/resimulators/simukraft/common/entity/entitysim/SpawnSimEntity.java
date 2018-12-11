@@ -6,6 +6,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
+import net.minecraftforge.fml.common.IFMLHandledException;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
@@ -22,8 +23,8 @@ public class SpawnSimEntity {
             World world = event.player.getEntityWorld();
 
             if (event.phase == TickEvent.Phase.START){
-
-                if (event.player.getCapability(ModCapabilities.getPlayerCap(),null).getmode() != -1){
+                if (event.player.hasCapability(ModCapabilities.PlayerCap,null)){
+                if (event.player.getCapability(ModCapabilities.PlayerCap,null).getmode() != -1){
                     if (!world.isRemote){
                     Random rand = world.rand;
                         EntityPlayer player = event.player;
@@ -35,9 +36,9 @@ public class SpawnSimEntity {
                             ticks.put(player.getUniqueID(),tick);
                         if (ticks.get(player.getUniqueID())/20 > 5) {
                             ticks.put(player.getUniqueID(),0);
-                            if (SaveSimData.get(world).getfaction(event.player.getCapability(ModCapabilities.getPlayerCap(),null).getfactionid()).getUnemployedSims().size()< 1) {
+                            if (SaveSimData.get(world).getfaction(event.player.getCapability(ModCapabilities.PlayerCap,null).getfactionid()).getUnemployedSims().size()< 1) {
                                 EntitySim entity = new EntitySim(world);
-                                long factionid = event.player.getCapability(ModCapabilities.getPlayerCap(),null).getfactionid();
+                                long factionid = event.player.getCapability(ModCapabilities.PlayerCap,null).getfactionid();
                                 entity.setFactionid(factionid);
                                 double entityx = player.posX + rand.nextInt(11)-5;
                                 double entityz = player.posZ + rand.nextInt(11)-5;
@@ -53,4 +54,4 @@ public class SpawnSimEntity {
             }
         }
     }
-}
+}}

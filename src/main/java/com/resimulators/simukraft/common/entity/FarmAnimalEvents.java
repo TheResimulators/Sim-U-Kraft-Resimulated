@@ -28,8 +28,8 @@ public class FarmAnimalEvents {
             if (event.getSource().getTrueSource() instanceof EntitySim) {
                 if (!event.getEntity().world.isRemote) {
                     EntityCow cow = (EntityCow) event.getEntity();
-                    if (cow.hasCapability(ModCapabilities.getCAP(), null)) {
-                        if (cow.getCapability(ModCapabilities.getCAP(), null).iscontroledspawn()) {
+                    if (cow.hasCapability(ModCapabilities.CAP, null)) {
+                        if (cow.getCapability(ModCapabilities.CAP, null).iscontroledspawn()) {
                             event.setCanceled(true);
                             List<EntityItem> items = event.getDrops();
                             for (EntityItem item : items) {
@@ -60,10 +60,10 @@ public class FarmAnimalEvents {
         if ((event.getEntity() instanceof EntityCow)){
             if (!event.getEntity().world.isRemote){
                 EntityCow cow = (EntityCow) event.getEntity();
-                if (cow.hasCapability(ModCapabilities.getCAP(),null)){
-                    if (cow.getCapability(ModCapabilities.getCAP(),null) != null){
-                        if (cow.getCapability(ModCapabilities.getCAP(),null).iscontroledspawn()){
-                        CowCapability cap = Objects.requireNonNull(cow.getCapability(ModCapabilities.getCAP(),null));
+                if (cow.hasCapability(ModCapabilities.CAP,null)){
+                    if (cow.getCapability(ModCapabilities.CAP,null) != null){
+                        if (cow.getCapability(ModCapabilities.CAP,null).iscontroledspawn()){
+                        CowCapability cap = Objects.requireNonNull(cow.getCapability(ModCapabilities.CAP,null));
                         if (!cap.ismilkable()){
                         if (cap.getCooldown() >= 0 ){
                             cap.resetmilkcooldown();

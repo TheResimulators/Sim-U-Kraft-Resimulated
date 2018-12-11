@@ -20,7 +20,7 @@ public class ClientHireHandler implements IMessageHandler<ClientHirePacket,IMess
         IThreadListener mainthread = Minecraft.getMinecraft();
         mainthread.addScheduledTask(() ->{
 
-        long factionid = Minecraft.getMinecraft().player.getCapability(ModCapabilities.getPlayerCap(),null).getfactionid();
+        long factionid = Minecraft.getMinecraft().player.getCapability(ModCapabilities.PlayerCap,null).getfactionid();
         SaveSimData.get(Minecraft.getMinecraft().world).getfaction(factionid);
         ((ISim)Minecraft.getMinecraft().world.getTileEntity(new BlockPos(message.x,message.y,message.z))).setId(message.uuid);
 

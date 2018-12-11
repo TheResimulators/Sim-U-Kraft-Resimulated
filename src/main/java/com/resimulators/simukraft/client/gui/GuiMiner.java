@@ -46,7 +46,7 @@ public class GuiMiner extends GuiScreen {
     @Override
     public void initGui() {
         x = 0;
-        for (UUID id : SaveSimData.get(Minecraft.getMinecraft().world).getfaction(Minecraft.getMinecraft().player.getCapability(ModCapabilities.getPlayerCap(),null).getfactionid()).getUnemployedSims()) {
+        for (UUID id : SaveSimData.get(Minecraft.getMinecraft().world).getfaction(Minecraft.getMinecraft().player.getCapability(ModCapabilities.PlayerCap,null).getfactionid()).getUnemployedSims()) {
             EntitySim sim = (EntitySim) server.getEntityFromUuid(id);
             sims.add(sim);
         }

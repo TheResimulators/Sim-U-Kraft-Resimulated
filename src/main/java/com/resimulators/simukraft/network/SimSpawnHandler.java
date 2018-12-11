@@ -21,7 +21,7 @@ public class SimSpawnHandler implements IMessageHandler<SimSpawnPacket, IMessage
         IThreadListener mainThread = Minecraft.getMinecraft();
         mainThread.addScheduledTask(() -> {
             UUID id = message.sims;
-            PlayerCapability capability = Minecraft.getMinecraft().player.getCapability(ModCapabilities.getPlayerCap(),null);
+            PlayerCapability capability = Minecraft.getMinecraft().player.getCapability(ModCapabilities.PlayerCap,null);
             Long playerid = capability.getfactionid();
             FactionData data = SaveSimData.get(Minecraft.getMinecraft().world).getfaction(playerid);
             if (!data.getTotalSims().contains(id)) {

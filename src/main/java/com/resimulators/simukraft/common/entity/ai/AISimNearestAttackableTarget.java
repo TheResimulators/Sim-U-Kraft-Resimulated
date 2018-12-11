@@ -82,8 +82,8 @@ public class AISimNearestAttackableTarget <T extends EntityLivingBase> extends E
                 list.sort(this.sorter);
                 if (sim.getCowmode() == FarmModes.CowMode.MILK && sim.getLabeledProfession().equals("Cattle Farmer") && targetEntity instanceof EntityCow && sim.getDistanceSq(sim.getJobBlockPos()) <= 4){
                     for (T aList : list) {
-                        if (aList.hasCapability(ModCapabilities.getCAP(), null)) {
-                            if (Objects.requireNonNull(aList.getCapability(ModCapabilities.getCAP(), null)).ismilkable()) {
+                        if (aList.hasCapability(ModCapabilities.CAP, null)) {
+                            if (Objects.requireNonNull(aList.getCapability(ModCapabilities.CAP, null)).ismilkable()) {
                                 this.targetEntity = aList;
                                 return true;
                             }

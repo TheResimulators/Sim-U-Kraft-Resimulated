@@ -23,8 +23,8 @@ public class ItemRightClickedHandler implements IMessageHandler<ItemRightClicked
             if (ctx.getServerHandler().player.getServer().isDedicatedServer()){
                 mode = ConfigHandler.Server_Configs.mode;
             }
-            else if (SaveSimData.get(ctx.getServerHandler().player.world).getfaction(ctx.getServerHandler().player.getCapability(ModCapabilities.getPlayerCap(),null).getfactionid()).getMode() != -1){
-                mode = SaveSimData.get(ctx.getServerHandler().player.world).getfaction(ctx.getServerHandler().player.getCapability(ModCapabilities.getPlayerCap(),null).getfactionid()).getMode();
+            else if (SaveSimData.get(ctx.getServerHandler().player.world).getfaction(ctx.getServerHandler().player.getCapability(ModCapabilities.PlayerCap,null).getfactionid()).getMode() != -1){
+                mode = SaveSimData.get(ctx.getServerHandler().player.world).getfaction(ctx.getServerHandler().player.getCapability(ModCapabilities.PlayerCap,null).getfactionid()).getMode();
             }
 
             else{mode = -2;}
