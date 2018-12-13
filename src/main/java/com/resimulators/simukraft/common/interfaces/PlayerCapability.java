@@ -5,6 +5,7 @@ import com.resimulators.simukraft.common.FactionData;
 import com.resimulators.simukraft.common.capabilities.ModCapabilities;
 import com.resimulators.simukraft.common.entity.player.SaveSimData;
 import com.resimulators.simukraft.network.PacketHandler;
+import com.resimulators.simukraft.network.SyncPlayerCapPacket;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTBase;
@@ -45,8 +46,9 @@ public interface PlayerCapability extends INBTSerializable<NBTTagCompound> {
 
     int getmode();
 
-    FactionData getfaction(long id);
 
+    void updateClient(EntityPlayer player);
+    FactionData getfaction(long id);
 
     void updateClientWithPacket(IMessage message,EntityPlayer entitiy);
 
@@ -64,7 +66,7 @@ public interface PlayerCapability extends INBTSerializable<NBTTagCompound> {
 
         @Override
         public void setfaction(long id) {
-
+            factionid = id;
         }
 
         @Override
@@ -92,6 +94,11 @@ public interface PlayerCapability extends INBTSerializable<NBTTagCompound> {
             return mode;
         }
 
+        @Override
+        public void updateClient(EntityPlayer player) {
+            PacketHandler.INSTANCE.sendTo(new SyncPlayerCapPacket(serializeNBT()),(EntityPlayerMP) player);
+        }
+
 
         @Override
         public void setmode(int mode) {
@@ -113,8 +120,6 @@ public interface PlayerCapability extends INBTSerializable<NBTTagCompound> {
             mode = nbt.getInteger("mode");
             isenabled = nbt.getBoolean("enabled");
         }
-
-
     }
 
     class Storage implements Capability.IStorage<PlayerCapability>{
@@ -148,7 +153,7 @@ public interface PlayerCapability extends INBTSerializable<NBTTagCompound> {
         @Nullable
         @Override
         public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing enumFacing) {
-            return hasCapability(capability, enumFacing) ? (T) capability : null;
+            return hasCapability(capability, enumFacing) ? (T) playerCapability : null;
         }
 
         @Override

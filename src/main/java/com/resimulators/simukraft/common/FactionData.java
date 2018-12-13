@@ -193,8 +193,10 @@ public class FactionData implements INBTSerializable<NBTTagCompound> {
 
     public void sendFactionPacket(IMessage message){
         List<UUID> uuids = getPlayers();
+        System.out.println();
         for (UUID id:uuids){
             EntityPlayer player = FMLCommonHandler.instance().getMinecraftServerInstance().getEntityWorld().getPlayerEntityByUUID(id);
+            System.out.println("player to send faction data to " + player);
             if (player != null){
                 player.getCapability(ModCapabilities.PlayerCap,null).updateClientWithPacket(message,player);
             }

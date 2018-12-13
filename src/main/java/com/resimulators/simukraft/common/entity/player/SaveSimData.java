@@ -64,7 +64,9 @@ public class SaveSimData extends WorldSavedData {
         return instance;
 
     }
-
+    public List<FactionData> getFactions(){
+        return factions;
+    }
 
     public void addfaction(long id,String name){
         addfaction(new FactionData(id,name,-1));
@@ -77,7 +79,11 @@ public class SaveSimData extends WorldSavedData {
 
     public FactionData getfaction(long id){
         for (FactionData data: factions){
+            System.out.println(data.getFactionId());
+            System.out.println(id);
+            System.out.println(data.getFactionId() == id);
             if (data.getFactionId() == id){
+                System.out.println("this happened and return factiondata");
                 return data;
             }
         }

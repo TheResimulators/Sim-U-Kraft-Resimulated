@@ -36,6 +36,8 @@ public class HudGui extends Gui {
         SaveSimData simData = SaveSimData.get(mc.world);
         if (sim == null)
             return;
+        if (simData == null)
+            return;
         System.out.println(mc.player.getCapability(ModCapabilities.PlayerCap, null));
         System.out.println(mc.player.getCapability(ModCapabilities.PlayerCap, null) != null);
         PlayerCapability playerCap = mc.player.getCapability(ModCapabilities.PlayerCap, null);
@@ -44,6 +46,9 @@ public class HudGui extends Gui {
 
         int mode = playerCap.getmode();
         long factionid = playerCap.getfactionid();
+        System.out.println("hud "+ factionid);
+        if (simData.getfaction(factionid) == null)
+            return;
         List<UUID> sims = simData.getfaction(factionid).getTotalSims();
         int population = sims == null ? 0 : sims.size();
         sims = simData.getfaction(factionid).getUnemployedSims();

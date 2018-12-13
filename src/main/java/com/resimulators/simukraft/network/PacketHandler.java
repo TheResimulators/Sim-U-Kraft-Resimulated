@@ -37,6 +37,8 @@ public class PacketHandler {
         INSTANCE.registerMessage(LoadStructureHandler.class,LoadStructurePacket.class,24,Side.SERVER);
         INSTANCE.registerMessage(TeleportHandler.class,TeleportPacket.class,25,Side.SERVER);
         INSTANCE.registerMessage(ClientTeleportHandler.class,ClientTeleportPacket.class,26,Side.CLIENT);
+        INSTANCE.registerMessage(SyncPlayerCapHandler.class,SyncPlayerCapPacket.class,27,Side.CLIENT);
+        INSTANCE.registerMessage(FactionCreatedHandler.class,FactionCreatedPacket.class,28,Side.CLIENT);
     }
 
 }
