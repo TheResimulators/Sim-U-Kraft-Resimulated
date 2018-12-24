@@ -1,11 +1,13 @@
 package com.resimulators.simukraft.common.entity.player;
 
+import com.jcraft.jogg.Packet;
 import com.resimulators.simukraft.common.capabilities.ModCapabilities;
 import com.resimulators.simukraft.common.entity.entitysim.SimEventHandler;
 import com.resimulators.simukraft.common.interfaces.PlayerCapability;
 import com.resimulators.simukraft.network.FactionCreatedPacket;
 import com.resimulators.simukraft.network.PacketHandler;
 import com.resimulators.simukraft.network.PlayerUpdatePacket;
+import com.resimulators.simukraft.network.SaveSimDataUpdatePacket;
 import com.sun.glass.ui.View;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.common.capabilities.Capability;
@@ -48,6 +50,7 @@ public class PlayerJoinDataEvent {
                 System.out.println(SimEventHandler.getCredits());
                 System.out.println(event.player.getCapability(ModCapabilities.PlayerCap,null).getmode());
                 System.out.println(factionid);
+                PacketHandler.INSTANCE.sendTo(new SaveSimDataUpdatePacket(SaveSimData.get(event.player.world).serializeNBT()),(EntityPlayerMP) event.player);
             PacketHandler.INSTANCE.sendTo(new PlayerUpdatePacket(SaveSimData.get(event.player.world).getfaction(factionid).getTotalSims(), SaveSimData.get(event.player.world).getfaction(factionid).getUnemployedSims(), SimEventHandler.getCredits(),factionid,event.player.getCapability(ModCapabilities.PlayerCap,null).getmode()), (EntityPlayerMP) event.player);
         }
     }

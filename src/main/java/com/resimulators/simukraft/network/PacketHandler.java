@@ -39,6 +39,7 @@ public class PacketHandler {
         INSTANCE.registerMessage(ClientTeleportHandler.class,ClientTeleportPacket.class,26,Side.CLIENT);
         INSTANCE.registerMessage(SyncPlayerCapHandler.class,SyncPlayerCapPacket.class,27,Side.CLIENT);
         INSTANCE.registerMessage(FactionCreatedHandler.class,FactionCreatedPacket.class,28,Side.CLIENT);
+        INSTANCE.registerMessage(SaveSimDataUpdateHandler.class,SaveSimDataUpdatePacket.class,29,Side.CLIENT);
     }
 
 }

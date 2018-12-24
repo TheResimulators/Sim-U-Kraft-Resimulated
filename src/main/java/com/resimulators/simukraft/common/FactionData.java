@@ -74,6 +74,8 @@ public class FactionData implements INBTSerializable<NBTTagCompound> {
             blocks.appendTag(blockcompound);
         }
         compound.setTag("jobblocks", blocks);
+        compound.setLong("id",factionId);
+        compound.setInteger("mode",mode);
         return compound;
     }
 
@@ -102,6 +104,8 @@ public class FactionData implements INBTSerializable<NBTTagCompound> {
             NBTTagCompound block = jobblock.getCompoundTagAt(i);
             jobblocks.add(FMLCommonHandler.instance().getMinecraftServerInstance().getEntityWorld().getTileEntity(BlockPos.fromLong(block.getLong("blockpos"))));
         }
+        factionId = compound.getLong("id");
+        mode = compound.getInteger("mode");
     }
 
 

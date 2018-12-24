@@ -4,6 +4,7 @@ import com.resimulators.simukraft.Reference;
 import com.resimulators.simukraft.common.FactionData;
 import com.resimulators.simukraft.common.interfaces.ISimJob;
 import com.resimulators.simukraft.network.PacketHandler;
+import com.resimulators.simukraft.network.SaveSimDataUpdatePacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
@@ -36,20 +37,33 @@ public class SaveSimData extends WorldSavedData {
 
     @Override
     public void readFromNBT(NBTTagCompound nbt) {
-        NBTTagList factionlist = nbt.getTagList("factionlist", Constants.NBT.TAG_LIST);
+          System.out.println("nbt in readfromnbt " + nbt);
+        System.out.println(nbt.getTagList("factionlist",10).getTagType());
+        NBTTagList factionlist = nbt.getTagList("factionlist", Constants.NBT.TAG_COMPOUND);
+        System.out.println("factionlist " +factionlist);
         for (int i = 0;i<factionlist.tagCount();i++){
             factions.add(new FactionData(factionlist.getCompoundTagAt(i).getCompoundTag("faction")));
+            System.out.println("faction id just added after reading " + factions.get(0).getFactionId());
+            System.out.println("faction add from nbt");
+            markDirty();
+
         }
     }
+
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
         NBTTagList factionlist = new NBTTagList();
+        System.out.println("factions " + factions);
         for (FactionData data:factions){
+            System.out.println("faction id before writing " + data.getFactionId());
             NBTTagCompound faction = new NBTTagCompound();
             faction.setTag("faction",data.serializeNBT());
+            System.out.println("faction list writing " + faction.getTag("faction"));
+            factionlist.appendTag(faction);
         }
         nbt.setTag("factionlist",factionlist);
+        System.out.println("factionlist " + factionlist);
         return nbt;
     }
 
@@ -73,17 +87,14 @@ public class SaveSimData extends WorldSavedData {
     }
     public void addfaction(FactionData data){
         factions.add(data);
+        updateclients();
         markDirty();
     }
 
 
     public FactionData getfaction(long id){
         for (FactionData data: factions){
-            System.out.println(data.getFactionId());
-            System.out.println(id);
-            System.out.println(data.getFactionId() == id);
             if (data.getFactionId() == id){
-                System.out.println("this happened and return factiondata");
                 return data;
             }
         }
@@ -95,8 +106,13 @@ public class SaveSimData extends WorldSavedData {
             if (data.getFactionId() == id){
                 factions.remove(data);
                 markDirty();
+                updateclients();
                 break;
             }
         }
+    }
+
+    public void updateclients(){
+        PacketHandler.INSTANCE.sendToAll(new SaveSimDataUpdatePacket(this.serializeNBT()));
     }
 }

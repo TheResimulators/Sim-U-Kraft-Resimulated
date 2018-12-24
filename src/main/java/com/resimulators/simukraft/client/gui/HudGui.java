@@ -38,15 +38,15 @@ public class HudGui extends Gui {
             return;
         if (simData == null)
             return;
-        System.out.println(mc.player.getCapability(ModCapabilities.PlayerCap, null));
-        System.out.println(mc.player.getCapability(ModCapabilities.PlayerCap, null) != null);
         PlayerCapability playerCap = mc.player.getCapability(ModCapabilities.PlayerCap, null);
         if (playerCap == null)
             return;
-
+        if (!playerCap.getenabled())
+            return;
         int mode = playerCap.getmode();
+        if (mode == -2)
+            return;
         long factionid = playerCap.getfactionid();
-        System.out.println("hud "+ factionid);
         if (simData.getfaction(factionid) == null)
             return;
         List<UUID> sims = simData.getfaction(factionid).getTotalSims();

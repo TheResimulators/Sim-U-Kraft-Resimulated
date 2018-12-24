@@ -90,19 +90,22 @@ public class GuiStart extends GuiScreen {
             case 1:
                 Gamemode = 0;
                 System.out.println("this should be printed if mode is wanted to be survival");
+                break;
 
             case 3:
-                if (Gamemode == -1) {
+                    System.out.println("mode before setting it " + Gamemode);
+                    if (Gamemode == -2)
                     Gamemode = 1;
-                    System.out.println("This should be only be called is gamemode is going to be creative");}
+                    System.out.println("This should be only be called is gamemode is going to be creative");
             case 4: {
                 System.out.println("servermode " + serverMode);
-                if (serverMode != -1) {
+                if (serverMode != -1 && isDedicated&& Gamemode == -2) {
                     if (Gamemode == -1) Gamemode = serverMode;
                 }
             }
             System.out.println("gamemode is now " + Gamemode);
             Minecraft.getMinecraft().player.getCapability(ModCapabilities.PlayerCap,null).setmode(Gamemode);
+            Minecraft.getMinecraft().player.getCapability(ModCapabilities.PlayerCap,null).setenabled(true);
         PacketHandler.INSTANCE.sendToServer(new ModeChangePacket(Minecraft.getMinecraft().player.getUniqueID(),Gamemode));
         System.out.println("the mode for the player is now " + Minecraft.getMinecraft().player.getCapability(ModCapabilities.PlayerCap,null).getmode());
 
