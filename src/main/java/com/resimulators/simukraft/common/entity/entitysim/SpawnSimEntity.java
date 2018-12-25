@@ -40,12 +40,7 @@ public class SpawnSimEntity {
                             long factionid = event.player.getCapability(ModCapabilities.PlayerCap,null).getfactionid();
                             FactionData data = SaveSimData.get(world).getfaction(factionid);
                             List<UUID> unemployedsimms =  data.getUnemployedSims();
-                            System.out.println("size " + size);
-                            System.out.println("unemployed sims " + unemployedsimms);
-                            System.out.println("faction id " + factionid);
-                            System.out.println("faction " + data);
                             data.getUnemployedSims();
-                            System.out.println("factions " + SaveSimData.get(FMLCommonHandler.instance().getMinecraftServerInstance().getEntityWorld()).getFactions());
                             if (size < 1) {
                                 EntitySim entity = new EntitySim(world);
                                 SpawnEggNames name = new SpawnEggNames();

@@ -1,5 +1,6 @@
 package com.resimulators.simukraft.network;
 
+import com.resimulators.simukraft.common.FactionData;
 import com.resimulators.simukraft.common.capabilities.ModCapabilities;
 import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
 import com.resimulators.simukraft.common.entity.player.SaveSimData;
@@ -26,10 +27,11 @@ public class HiringHandler implements IMessageHandler<HiringPacket, IMessage> {
             System.out.println("This is working");
             EntitySim sim = (EntitySim) ctx.getServerHandler().player.world.getEntityByID(message.sims);
             UUID id = sim.getUniqueID();
-            SaveSimData.get(ctx.getServerHandler().player.getServerWorld()).getfaction(ctx.getServerHandler().player.getCapability(ModCapabilities.PlayerCap,null).getfactionid()).removeUnemplyedSim(sim);
+            FactionData data = SaveSimData.get(ctx.getServerHandler().player.getServerWorld()).getfaction(ctx.getServerHandler().player.getCapability(ModCapabilities.PlayerCap,null).getfactionid());
+            data.removeUnemplyedSim(sim);
             sim.setProfession(message.job);
             sim.setJobBlockPos(new BlockPos(message.x,message.y,message.z));
-            SaveSimData.get(sim.getEntityWorld()).getfaction(sim.getFactionId()).sendFactionPacket(new HiringPacket(sim.getEntityId(),message.job,message.x,message.y,message.z));
+            SaveSimData.get(sim.getEntityWorld()).getfaction(sim.getFactionId()).sendFactionPacket(new ClientHirePacket(id,message.x,message.y,message.z));
             if (ctx.getServerHandler().player.getServerWorld().getTileEntity(new BlockPos(message.x,message.y,message.z)) instanceof ISimIndustrial ){
             ((ISimIndustrial)ctx.getServerHandler().player.getServerWorld().getTileEntity(new BlockPos(message.x,message.y,message.z))).setSimname(ctx.getServerHandler().player.getServerWorld().getEntityFromUuid(id).getEntityId());
                 ((ISimIndustrial) ctx.getServerHandler().player.getServerWorld().getTileEntity(new BlockPos(message.x,message.y,message.z))).setHired(true);

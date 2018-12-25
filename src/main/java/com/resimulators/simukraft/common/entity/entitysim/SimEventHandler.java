@@ -53,10 +53,8 @@ public class SimEventHandler {
                         return;
                     Long playerid = ((EntitySim) event.getEntity()).getFactionId();
                     FactionData data = SaveSimData.get(event.getWorld()).getfaction(playerid);
-                    EntityList.ENTITY_EGGS.
                     System.out.println(SaveSimData.get(FMLCommonHandler.instance().getMinecraftServerInstance().getEntityWorld()).getFactions());
                     if (!data.getTotalSims().contains(id)) {
-                        System.out.println("this is happening adding " + id);
                         data.addTotalSim(id);
                         data.addUnemployedSim(id);
                         System.out.println(data.getUnemployedSims());
