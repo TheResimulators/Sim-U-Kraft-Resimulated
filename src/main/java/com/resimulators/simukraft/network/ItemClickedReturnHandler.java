@@ -30,7 +30,7 @@ public class ItemClickedReturnHandler implements IMessageHandler<ItemClickedRetu
             World worldIn = Minecraft.getMinecraft().world;
 
             if (Minecraft.getMinecraft().player.getCapability(ModCapabilities.PlayerCap,null).getmode() == -1){
-                playerIn.openGui(SimUKraft.instance, GuiHandler.GUI_START, worldIn,0,0,0);
+                playerIn.openGui(SimUKraft.instance, GuiHandler.GUI.START.ordinal(), worldIn,0,0,0);
                 if (Minecraft.getMinecraft().currentScreen instanceof GuiStart){
                 ((GuiStart) Minecraft.getMinecraft().currentScreen).SetModeFactors(isdedicated,message.mode);}
                 //playerIn.getHeldItem(handIn).shrink(playerIn.getHeldItem(handIn).getCount());

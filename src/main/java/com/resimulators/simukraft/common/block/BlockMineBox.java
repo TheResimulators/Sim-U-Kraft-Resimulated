@@ -38,7 +38,7 @@ public class BlockMineBox extends BlockBase {
 		if (!worldIn.isRemote) {
 			return true;
 		} else {
-			playerIn.openGui(SimUKraft.instance, GuiHandler.GUI_MINER, worldIn, pos.getX(), pos.getY(), pos.getZ());
+			playerIn.openGui(SimUKraft.instance, GuiHandler.GUI.MINER.ordinal(), worldIn, pos.getX(), pos.getY(), pos.getZ());
 			return true;
 		}
 	}

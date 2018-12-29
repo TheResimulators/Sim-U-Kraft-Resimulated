@@ -133,7 +133,7 @@ public class TileSheep extends TileEntity implements ITickable,ISimIndustrial {
 
     public void openGui(World worldIn, BlockPos pos, EntityPlayer playerIn) {
         System.out.println("hired " + getHired());
-        PacketHandler.INSTANCE.sendToServer(new GetSimIdPacket(pos.getX(), pos.getY(), pos.getZ(), GuiHandler.GUI_SHEEP));
+        PacketHandler.INSTANCE.sendToServer(new GetSimIdPacket(pos.getX(), pos.getY(), pos.getZ(), GuiHandler.GUI.SHEEP.ordinal()));
 
 
     }

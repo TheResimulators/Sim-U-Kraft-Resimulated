@@ -51,7 +51,7 @@ public class ServerStructureHandler implements IMessageHandler<ServerStructurePa
                 System.out.println("files " + residentialList + " " + industrialList + " " + commercialList + " " + customList);}
                 PacketHandler.INSTANCE.sendTo(new ClientStructuresPacket(residentialList,industrialList,commercialList,customList),ctx.getServerHandler().player);
             System.out.println("poses " + message.x + message.y + message.z);
-            Minecraft.getMinecraft().player.openGui(SimUKraft.instance, GuiHandler.GUI_BUILDER,ctx.getServerHandler().player.getServerWorld(),message.x,message.y,message.z);
+            Minecraft.getMinecraft().player.openGui(SimUKraft.instance, GuiHandler.GUI.BUILDER.ordinal(),ctx.getServerHandler().player.getServerWorld(),message.x,message.y,message.z);
         });
         return null;
     }
