@@ -113,7 +113,7 @@ public class TileConstructor extends TileBuilderBase implements ITickable,ISimJo
 
 			PacketHandler.INSTANCE.sendToServer(new ServerStructurePacket(pos.getX(),pos.getY(),pos.getZ()));
 		} else{
-			PacketHandler.INSTANCE.sendToServer(new GetSimIdPacket(pos.getX(),pos.getY(),pos.getZ(),GuiHandler.GUI_HIRED));
+			PacketHandler.INSTANCE.sendToServer(new GetSimIdPacket(pos.getX(),pos.getY(),pos.getZ(),GuiHandler.GUI.HIRED.ordinal()));
 
 		}
 	}

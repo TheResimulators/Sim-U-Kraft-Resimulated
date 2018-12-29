@@ -11,7 +11,7 @@ public class SimInvHandler implements IMessageHandler<SimInvPacket,IMessage> {
     public IMessage onMessage(SimInvPacket message, MessageContext ctx) {
         IThreadListener mainthread = ctx.getServerHandler().player.getServerWorld();
         mainthread.addScheduledTask(() -> {
-            ctx.getServerHandler().player.openGui(SimUKraft.instance, GuiHandler.GUI_SIMINV, ctx.getServerHandler().player.world, message.id, 0, 0);
+            ctx.getServerHandler().player.openGui(SimUKraft.instance, GuiHandler.GUI.SIMINV.ordinal(), ctx.getServerHandler().player.world, message.id, 0, 0);
         });
         return null;
     }
