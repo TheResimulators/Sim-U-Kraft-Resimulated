@@ -189,7 +189,7 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
         } else if (!this.holdingSpawnEggOfClass(itemStack, this.getClass()) && this.isEntityAlive() && !isReceivingOrders() && !isChild() && !player.isSneaking() && !flag2) {
             this.setCommander(player);
             player.addTag("ID" + this.getEntityId());
-            player.openGui(SimUKraft.instance, GuiHandler.GUI_SIM, this.world, this.getPosition().getX(), this.getPosition().getY(), this.getPosition().getZ());
+            player.openGui(SimUKraft.instance, GuiHandler.GUI.SIM.ordinal(), this.world, this.getPosition().getX(), this.getPosition().getY(), this.getPosition().getZ());
             return true;
         } else {
             return super.processInteract(player, hand);

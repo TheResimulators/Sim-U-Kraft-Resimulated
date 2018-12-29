@@ -13,6 +13,7 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 
 import java.awt.*;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -46,9 +47,10 @@ public class GuiMiner extends GuiScreen {
     @Override
     public void initGui() {
         x = 0;
+        sims = new ArrayList<>();
         for (UUID id : SaveSimData.get(Minecraft.getMinecraft().world).getfaction(Minecraft.getMinecraft().player.getCapability(ModCapabilities.PlayerCap,null).getfactionid()).getUnemployedSims()) {
             EntitySim sim = (EntitySim) server.getEntityFromUuid(id);
-            sims.add(sim);
+                sims.add(sim);
         }
 
         buttonList.clear();

@@ -10,7 +10,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 public class StartingGuiHandler implements IMessageHandler<StartingGuiPacket,IMessage> {
     @Override
     public IMessage onMessage(StartingGuiPacket message, MessageContext ctx) {
-        ctx.getServerHandler().player.openGui(SimUKraft.instance, GuiHandler.GUI_START,ctx.getServerHandler().player.world,0,0,0);
+        ctx.getServerHandler().player.openGui(SimUKraft.instance, GuiHandler.GUI.START.ordinal(),ctx.getServerHandler().player.world,0,0,0);
         return null;
     }
 }

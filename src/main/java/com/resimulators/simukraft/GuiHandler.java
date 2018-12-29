@@ -20,22 +20,16 @@ import javax.annotation.Nullable;
  * Created by fabbe on 21/01/2018 - 12:24 AM.
  */
 public class GuiHandler implements IGuiHandler {
-    public static final int GUI_SIM = 0;
-    public static final int GUI_FARM = 1;
-    public static final int GUI_MINER = 2;
-    public static final int GUI_START = 3;
-    public static final int GUI_HIRED = 4;
-    public static final int GUI_SIMINV = 5;
-    public static final int GUI_BUILDER = 6;
-    public static final int GUI_CATTLE = 7;
-    public static final int GUI_SHEEP = 8;
+
+    public enum GUI {
+        SIM, FARM, MINER, START, HIRED, SIMINV, BUILDER, CATTLE, SHEEP
+    }
 
     @Nullable
     @Override
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-        if (ID == GUI_SIMINV)
-        {
-            return new SimContainer(player.inventory,(EntitySim) world.getEntityByID(x));
+        if (ID == GUI.SIMINV.ordinal()) {
+            return new SimContainer(player.inventory, (EntitySim) world.getEntityByID(x));
         }
 
         return null;
@@ -45,24 +39,24 @@ public class GuiHandler implements IGuiHandler {
     @Nullable
     @Override
     public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-        TileEntity tileEntity = world.getTileEntity(new BlockPos(x,y,z)); 
-        if (ID == GUI_SIM)
+        TileEntity tileEntity = world.getTileEntity(new BlockPos(x, y, z));
+        if (ID == GUI.SIM.ordinal())
             return new GuiSim(player);
-        if (ID == GUI_FARM)
-            return new GuiFarm((TileFarm)tileEntity);
-        if (ID == GUI_MINER)
+        else if (ID == GUI.FARM.ordinal())
+            return new GuiFarm((TileFarm) tileEntity);
+        else if (ID == GUI.MINER.ordinal())
             return new GuiMiner();
-        if (ID == GUI_START)
+        else if (ID == GUI.START.ordinal())
             return new GuiStart();
-        if (ID == GUI_HIRED)
+        else if (ID == GUI.HIRED.ordinal())
             return new GuiHire(tileEntity);
-        if (ID == GUI_SIMINV)
-            return new GuiSimInv(player.inventory,(EntitySim) world.getEntityByID(x));
-        if (ID == GUI_BUILDER)
-            return new GuiBuilding(x,z,y);
-        if (ID == GUI_CATTLE)
+        else if (ID == GUI.SIM.ordinal())
+            return new GuiSimInv(player.inventory, (EntitySim) world.getEntityByID(x));
+        else if (ID == GUI.BUILDER.ordinal())
+            return new GuiBuilding(x, z, y);
+        else if (ID == GUI.CATTLE.ordinal())
             return new GuiCattle((TileCattle) tileEntity);
-        if (ID == GUI_SHEEP)
+        else if (ID == GUI.SHEEP.ordinal())
             return new GuiSheep((TileSheep) tileEntity);
         return null;
     }
