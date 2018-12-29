@@ -3,6 +3,7 @@ package com.resimulators.simukraft.client.gui;
 import com.resimulators.simukraft.common.capabilities.ModCapabilities;
 import com.resimulators.simukraft.common.entity.entitysim.SimEventHandler;
 import com.resimulators.simukraft.common.entity.player.SaveSimData;
+import com.resimulators.simukraft.common.enums.EnumDay;
 import com.resimulators.simukraft.common.interfaces.CowCapability;
 import com.resimulators.simukraft.common.interfaces.PlayerCapability;
 import ibxm.Player;
@@ -53,10 +54,12 @@ public class HudGui extends Gui {
         int population = sims == null ? 0 : sims.size();
         sims = simData.getfaction(factionid).getUnemployedSims();
         int unemployedsize = sim == null ? 0 : sims.size();
-
+        System.out.println(EnumDay.DayStorage.getDayInt());
+        System.out.println(EnumDay.getDay(EnumDay.DayStorage.getDayInt()));
         drawString(mc.fontRenderer, "Population " + population + ", Unemployed sims: " + unemployedsize, 1, 1, Color.WHITE.getRGB());
+        drawString(mc.fontRenderer,"Day - "+ EnumDay.getDay(EnumDay.DayStorage.getDayInt()).name(),1,11,Color.WHITE.getRGB());
         if (mode == 0)
-            drawString(mc.fontRenderer, "Credits: " + SimEventHandler.getCredits(), 1, 11, Color.WHITE.getRGB());
+            drawString(mc.fontRenderer, "Credits: " + SimEventHandler.getCredits(), 1, 21, Color.WHITE.getRGB());
     }
     }
 

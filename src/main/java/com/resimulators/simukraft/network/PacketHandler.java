@@ -40,6 +40,7 @@ public class PacketHandler {
         INSTANCE.registerMessage(SyncPlayerCapHandler.class,SyncPlayerCapPacket.class,27,Side.CLIENT);
         INSTANCE.registerMessage(FactionCreatedHandler.class,FactionCreatedPacket.class,28,Side.CLIENT);
         INSTANCE.registerMessage(SaveSimDataUpdateHandler.class,SaveSimDataUpdatePacket.class,29,Side.CLIENT);
+        INSTANCE.registerMessage(UpdateDayHandler.class,UpdateDayPacket.class,30,Side.CLIENT);
     }
 
 }
