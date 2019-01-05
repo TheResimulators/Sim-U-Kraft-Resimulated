@@ -27,13 +27,22 @@ tile.simukraft:farm_box.name=Farm Box
 tile.simukraft:mine_box.name=Mine Box
 tile.simukraft:rainbow_light.name=Rainbow Light
 
-tile.simukraft:light.white.name=White Light
-tile.simukraft:light.orange.name=Orange Light
+tile.simukraft:light.black.name=Black Light
+tile.simukraft:light.blue.name=Blue Light
+tile.simukraft:light.brown.name=Brown Light
+tile.simukraft:light.cyan.name=Cyan Light
+tile.simukraft:light.gray.name=Gray Light
 tile.simukraft:light.green.name=Green Light
+tile.simukraft:light.light_blue.name=Light Blue Light
+tile.simukraft:light.lime.name=Lime Light
+tile.simukraft:light.magenta.name=Magenta Light
+tile.simukraft:light.orange.name=Orange Light
+tile.simukraft:light.pink.name=Pink Light
 tile.simukraft:light.purple.name=Purple Light
 tile.simukraft:light.red.name=Red Light
+tile.simukraft:light.silver.name=Light Gray Light
+tile.simukraft:light.white.name=White Light
 tile.simukraft:light.yellow.name=Yellow Light
-tile.simukraft:light.blue.name=Blue Light
 
 #############################################################################
 #                                 Entities                                  #

@@ -1,6 +1,3 @@
 {
-  "parent": "block/cube_all",
-  "textures": {
-    "all": "simukraft:blocks/light_silver"
-  }
+  "parent": "simukraft:block/light_silver"
 }
