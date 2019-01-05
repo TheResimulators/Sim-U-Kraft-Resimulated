@@ -95,7 +95,9 @@ public class AISimBuild extends EntityAIBase {
 
     @Override
     public void updateTask() {
-        if (!entitySim.world.isRemote && entitySim.isAllowedToBuild()) {
+        //TODO: Needs a lot of improvement. Works with the new building system for now, but still needs inventory support and better looking building.
+        //TODO: For instance, line of sight to the place where the block is supposed to go as well as being within reach.
+        if (entitySim.isAllowedToBuild()) {
             PlacementSettings settings = (new PlacementSettings().setIgnoreEntities(false).setRotation(Utilities.convertFromFacing(facing)).setMirror(Mirror.NONE));
             try {
                 World world = entitySim.world;

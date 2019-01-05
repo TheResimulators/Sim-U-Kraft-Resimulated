@@ -59,7 +59,6 @@ public class AiSimAttackNearest extends EntityAIBase {
     public boolean shouldExecute()
     {
         EntityLivingBase entitylivingbase = this.sim.getAttackTarget();
-        System.out.println("entity target " + this.sim.getAttackTarget());
         if (!checkInvForSword()){
             return false;}
         if (sim.getCowmode() == cattleFarmMode.FarmMode.MILK && sim.getLabeledProfession().equals("Cattle Farmer") ){
