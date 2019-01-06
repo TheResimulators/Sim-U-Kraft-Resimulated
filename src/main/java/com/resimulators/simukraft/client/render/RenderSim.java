@@ -40,8 +40,11 @@ import java.util.UUID;
  * Created by fabbe on 19/01/2018 - 9:04 PM.
  */
 public class RenderSim extends RenderLiving<EntitySim> {
+    ModelSim modelSim;
+
     public RenderSim(RenderManager renderManager) {
         super(renderManager, new ModelSim(0.0f), 0.5F);
+        this.modelSim = (ModelSim) super.getMainModel();
         this.addLayer(new LayerHeldItem(this));
         this.addLayer(new LayerArrow(this));
         this.addLayer(new LayerCustomHead(this.getMainModel().bipedHead));
@@ -49,7 +52,7 @@ public class RenderSim extends RenderLiving<EntitySim> {
 
     @Override
     public ModelSim getMainModel() {
-        return (ModelSim)super.getMainModel();
+        return modelSim;
     }
 
     @Override
@@ -68,11 +71,10 @@ public class RenderSim extends RenderLiving<EntitySim> {
     }
 
     private void setModelVisibilities(EntitySim entitySim) {
-        ModelSim model = new ModelSim(0.0f);
         ItemStack itemstack = entitySim.getHeldItemMainhand();
         ItemStack itemstack1 = entitySim.getHeldItemOffhand();
-        model.setVisible(true, entitySim.getFemale());
-        model.isSneak = entitySim.isSneaking();
+        modelSim.setVisible(true, entitySim.getFemale());
+        modelSim.isSneak = entitySim.isSneaking();
         ModelBiped.ArmPose modelbiped$armpose = ModelBiped.ArmPose.EMPTY;
         ModelBiped.ArmPose modelbiped$armpose1 = ModelBiped.ArmPose.EMPTY;
 
@@ -105,11 +107,11 @@ public class RenderSim extends RenderLiving<EntitySim> {
         }
 
         if (entitySim.getPrimaryHand() == EnumHandSide.RIGHT) {
-            model.rightArmPose = modelbiped$armpose;
-            model.leftArmPose = modelbiped$armpose1;
+            modelSim.rightArmPose = modelbiped$armpose;
+            modelSim.leftArmPose = modelbiped$armpose1;
         } else {
-            model.rightArmPose = modelbiped$armpose1;
-            model.leftArmPose = modelbiped$armpose;
+            modelSim.rightArmPose = modelbiped$armpose1;
+            modelSim.leftArmPose = modelbiped$armpose;
         }
     }
 
