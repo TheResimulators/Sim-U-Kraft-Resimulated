@@ -44,7 +44,6 @@ public class SimEventHandler {
                     if (!SaveSimData.get(world).getTotalSims(((EntitySim) event.getEntity()).getFactionId()).contains(event.getEntity().getUniqueID())) {
                         SaveSimData.get(world).addtotalSim(event.getEntity().getUniqueID(), ((EntitySim) event.getEntity()).getFactionId());
                         SaveSimData.get(world).addUnemployedsim(event.getEntity().getUniqueID(), ((EntitySim) event.getEntity()).getFactionId());
-                        System.out.println("sim spawn event called");
                         SaveSimData.get(world).SendFactionPacket(new SimSpawnPacket(event.getEntity().getUniqueID()), ((EntitySim) event.getEntity()).getFactionId());
                     }
                 }

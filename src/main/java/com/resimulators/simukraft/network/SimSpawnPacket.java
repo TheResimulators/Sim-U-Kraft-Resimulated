@@ -10,9 +10,7 @@ public class SimSpawnPacket implements IMessage {
     UUID sims;
     public SimSpawnPacket(){}
     public SimSpawnPacket(UUID id) {
-        System.out.println("HAS this been called");
         this.sims = id;
-
     }
 
     @Override

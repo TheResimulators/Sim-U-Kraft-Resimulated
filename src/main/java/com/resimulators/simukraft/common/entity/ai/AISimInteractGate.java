@@ -109,7 +109,6 @@ public class AISimInteractGate extends EntityAIBase {
         {
             IBlockState iblockstate = this.entity.world.getBlockState(pos);
             Block block = iblockstate.getBlock();
-            System.out.println("block " + block);
             return block instanceof BlockFenceGate && iblockstate.getMaterial() == Material.WOOD ? (BlockFenceGate) block : null;
         }
     }
