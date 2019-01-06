@@ -10,6 +10,8 @@ import com.resimulators.simukraft.common.entity.player.SaveSimData;
 import com.resimulators.simukraft.common.enums.cattleFarmMode;
 import com.resimulators.simukraft.init.ModItems;
 import com.resimulators.simukraft.network.HungerPacket;
+import com.resimulators.simukraft.structure.StructureBuilding;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
@@ -88,6 +90,8 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
     private boolean working = false;
     private boolean endWork = false;
     private final InventoryBasic inventory;
+    //Housing
+    private StructureBuilding homeLocation;
 
 
     //inventory AI related
@@ -105,7 +109,7 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
         ((CustomPathNavigateGround) this.getNavigator()).setBreakDoors(false);
         ((CustomPathNavigateGround) this.getNavigator()).setEnterDoors(true);
         this.setCanPickUpLoot(true);
-        this.setCustomNameTag("Sim (WIP)");
+        this.setCustomNameTag("Sim");
         this.setAlwaysRenderNameTag(false);
         this.pickups = new ItemStackHandler(18);
         this.toolinv = new ItemStackHandler(9);
@@ -128,15 +132,14 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
     }
 
     private void setProfessionAIs() {
-
         this.tasks.addTask(2, new AISimBuild(this));
         this.tasks.addTask(3, new AISimGotoToWork(this));
         this.tasks.addTask(4,new AISimKillCow(this));
         this.tasks.addTask(5,new AISimGetInventory(this));
         this.tasks.addTask(6,new AISimEmptyInventory(this));
         this.tasks.addTask(7,new AISimGetBuckets(this));
-        this.targetTasks.addTask(4,new AISimNearestAttackableTarget<>(this,EntityCow.class,false));
-        this.targetTasks.addTask(4, new AISimNearestAttackableTarget<>(this, EntitySheep.class,false));
+        this.targetTasks.addTask(4,new AISimNearestAttackableTarget<>(this, EntityCow.class, false));
+        this.targetTasks.addTask(4, new AISimNearestAttackableTarget<>(this, EntitySheep.class, false));
         this.tasks.addTask(4,new AiSimAttackNearest(0.7,true,this));
     }
 
@@ -228,6 +231,9 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
         compound.setInteger("hunger", this.hunger);
         compound.setLong("Factionid",Factionid);
         compound.setBoolean("working",working);
+        if (this.getHomeLocation() != null) {
+            compound.setTag("HomeLocation", getHomeLocation().serializeNBT());
+        }
     }
 
     @Override
@@ -252,13 +258,11 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
             this.setFarmPos2(new BlockPos(compound.getIntArray("FarmPos2")[0], compound.getIntArray("FarmPos2")[1], compound.getIntArray("FarmPos2")[2]));
         if (compound.hasKey("FarmPos1") && compound.hasKey("FarmPos1"))
             this.setBounds(new StructureBoundingBox(this.getFarmPos1(), this.getFarmPos2()));
-        if (compound.hasKey("working")){
+        if (compound.hasKey("working"))
             this.working = compound.getBoolean("working");
-        }
         NBTTagList nbtTagList = compound.getTagList("Inventory", 10);
         for (int i = 0; i < nbtTagList.tagCount(); i++) {
             ItemStack itemStack = new ItemStack(nbtTagList.getCompoundTagAt(i));
-
             if (!itemStack.isEmpty()) {
                 this.inventory.addItem(itemStack);
             }
@@ -269,6 +273,8 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
 
         this.hunger = compound.getInteger("hunger");
         this.Factionid = compound.getLong("Factionid");
+        if (compound.hasKey("HomeLocation"))
+            this.setHomeLocation(homeLocation.deserializeNBT(compound));
         this.setCanPickUpLoot(true);
         this.setAdditionalAITasks();
     }
@@ -390,6 +396,14 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
 
     public GameProfile getPlayerProfile() {
         return playerProfile;
+    }
+
+    public void setHomeLocation(StructureBuilding homeLocation) {
+        this.homeLocation = homeLocation;
+    }
+
+    public StructureBuilding getHomeLocation() {
+        return homeLocation;
     }
 
     public void setFemale(boolean female) {
