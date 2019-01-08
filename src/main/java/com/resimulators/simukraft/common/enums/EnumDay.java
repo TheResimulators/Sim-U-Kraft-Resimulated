@@ -22,7 +22,6 @@ public enum EnumDay {
 
     public static EnumDay getDay(int num){
         for (EnumDay day: EnumDay.values()){
-            System.out.println("day "+day+ " num " + day.num);
             if (day.num == num){
                 return day;
             }
@@ -38,11 +37,13 @@ public enum EnumDay {
     public static class DayStorage implements INBTSerializable<NBTTagCompound>{
         private static int dayint = 0;
         private static boolean added = false;
+        private static int totaldays = 0;
         @Override
         public NBTTagCompound serializeNBT() {
             NBTTagCompound compound = new NBTTagCompound();
             compound.setInteger("dayint",dayint);
             compound.setBoolean("added",added);
+            compound.setInteger("totalday",totaldays);
             return compound;
         }
 
@@ -50,6 +51,7 @@ public enum EnumDay {
         public void deserializeNBT(NBTTagCompound nbt) {
             dayint = nbt.getInteger("dayint");
             added = nbt.getBoolean("added");
+            totaldays =nbt.getInteger("totalday");
 
         }
 
@@ -58,13 +60,11 @@ public enum EnumDay {
         public static void DayChange(TickEvent.WorldTickEvent event){
             if (!event.world.isRemote){
 
-                System.out.println(dayint);
-                System.out.println(" " + event.world.getWorldTime());
-                System.out.println(" " + event.world.getWorldTime()%24000);
                 if (event.world.getWorldTime()%24000 == 0 && !added) {
                     added = true;
                     dayint++;
                     dayint = dayint%7;
+                    addtotalday();
                     updateAll();
                 }else{
                     if (event.world.getWorldTime() != 0) {
@@ -78,6 +78,12 @@ public enum EnumDay {
     }
         public static void setDayInt(int newdayint){
             dayint = newdayint;
+        }
+        public static void addtotalday(){
+            totaldays++;
+        }
+        public static int getTotaldays(){
+            return totaldays;
         }
     public static void updateAll(){
         PacketHandler.INSTANCE.sendToAll(new UpdateDayPacket(dayint));
