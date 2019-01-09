@@ -8,32 +8,56 @@ import net.minecraft.world.gen.structure.StructureBoundingBox;
  * Created by fabbe on 06/01/2019 - 2:40 PM.
  */
 public class StructureBuilding {
+    /* Building Variables */
     private String name;
     private EnumCategory category;
     private StructureBoundingBox bounds;
 
+    /**
+     * @param name - Name of building.
+     * @param category - Category of building.
+     * @param pos1 - Corner A of building.
+     * @param pos2 - Corner B of building.
+     */
     public StructureBuilding(String name, EnumCategory category, BlockPos pos1, BlockPos pos2) {
         this(name, category, new StructureBoundingBox(pos1, pos2));
     }
 
+    /**
+     * @param name - Name of building.
+     * @param category - Category of building.
+     * @param bounds - Bounds of the building.
+     */
     public StructureBuilding(String name, EnumCategory category, StructureBoundingBox bounds) {
         this.name = name;
         this.category = category;
         this.bounds = bounds;
     }
 
+    /**
+     * @return name of building.
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * @return category of building.
+     */
     public EnumCategory getCategory() {
         return category;
     }
 
+    /**
+     * @return bounds of the building.
+     */
     public StructureBoundingBox getBounds() {
         return bounds;
     }
 
+    /**
+     * @return the building as NBT.
+     */
     public NBTTagCompound serializeNBT() {
         NBTTagCompound nbt = new NBTTagCompound();
         nbt.setString("name", getName());
@@ -42,6 +66,11 @@ public class StructureBuilding {
         return nbt;
     }
 
+
+    /**
+     * @param nbt - Building NBT
+     * @return the building extracted from NBT.
+     */
     public StructureBuilding deserializeNBT(NBTTagCompound nbt) {
         String name = "null";
         EnumCategory category = EnumCategory.UNKNOWN;
