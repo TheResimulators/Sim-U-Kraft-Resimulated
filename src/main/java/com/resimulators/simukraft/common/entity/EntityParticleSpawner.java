@@ -75,16 +75,16 @@ public class EntityParticleSpawner extends Entity {
                 return;
             if (particlecooldown <= 0){
                 particlecooldown = 2;
-                int num = rand.nextInt(10) + 5;
+                int num = rand.nextInt(5) + 5;
                 for (int i = 0;i<num;i++){
                     double posx = posX + rand.nextFloat()-0.5;
                     double posz = posZ + rand.nextFloat()-0.5;
-                    Minecraft.getMinecraft().effectRenderer.addEffect(new TeleportParticle(world,posx,posY+ 2d + rand.nextFloat()-0.5,posz,0,-0.2,0));
+                    Minecraft.getMinecraft().effectRenderer.addEffect(new TeleportParticle(world,posx,posY+ 1.5f + rand.nextFloat()-0.5,posz,0,-0.6,0));
                     if (sim != null){
                     float simposx = (float) sim.posX + rand.nextFloat() - 0.5f;
-                    float simposy = (float) sim.posY+ 2 + rand.nextFloat() - 0.5f;
+                    float simposy = (float) sim.posY + 1.5f + rand.nextFloat() - 0.5f;
                     float simposz = (float) sim.posZ + rand.nextFloat() - 0.5f;
-                    Minecraft.getMinecraft().effectRenderer.addEffect(new TeleportParticle(world,simposx,simposy,simposz,0,-0.2  ,0));}
+                    Minecraft.getMinecraft().effectRenderer.addEffect(new TeleportParticle(world,simposx,simposy,simposz,0,-0.6  ,0));}
                 }}else{particlecooldown--;}
         }
     }
