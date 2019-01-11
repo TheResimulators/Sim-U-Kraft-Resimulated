@@ -65,25 +65,26 @@ public class EntityParticleSpawner extends Entity {
     public void onUpdate(){
 
         if (!world.isRemote){
-            if (sim != null){
+            if (sim != null ){
         if (!sim.getTeleport() || !sim.isParticlspawning() || sim.getTeleporttarget() == null){
             world.removeEntity(this);
         }}}
-        if (world.isRemote){
 
+        if (world.isRemote){
+            if (sim == null)
+                return;
             if (particlecooldown <= 0){
                 particlecooldown = 2;
                 int num = rand.nextInt(10) + 5;
                 for (int i = 0;i<num;i++){
-                    System.out.println("123456 " + sim.posX);
                     double posx = posX + rand.nextFloat()-0.5;
                     double posz = posZ + rand.nextFloat()-0.5;
-                    Minecraft.getMinecraft().effectRenderer.addEffect(new TeleportParticle(world,posx,posY+ 3d + rand.nextFloat()-0.5,posz,0,-0.02,0));
+                    Minecraft.getMinecraft().effectRenderer.addEffect(new TeleportParticle(world,posx,posY+ 2d + rand.nextFloat()-0.5,posz,0,-0.2,0));
                     if (sim != null){
                     float simposx = (float) sim.posX + rand.nextFloat() - 0.5f;
-                    float simposy = (float) sim.posY+ 3 + rand.nextFloat() - 0.5f;
+                    float simposy = (float) sim.posY+ 2 + rand.nextFloat() - 0.5f;
                     float simposz = (float) sim.posZ + rand.nextFloat() - 0.5f;
-                    Minecraft.getMinecraft().effectRenderer.addEffect(new TeleportParticle(world,simposx,simposy,simposz,0,-0.02  ,0));}
+                    Minecraft.getMinecraft().effectRenderer.addEffect(new TeleportParticle(world,simposx,simposy,simposz,0,-0.2  ,0));}
                 }}else{particlecooldown--;}
         }
     }
