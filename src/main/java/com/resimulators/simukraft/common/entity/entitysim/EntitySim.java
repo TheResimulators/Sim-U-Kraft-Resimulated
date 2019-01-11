@@ -151,7 +151,6 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
         this.tasks.addTask(4,new AISimKillCow(this));
         this.tasks.addTask(5,new AISimGetInventory(this));
         this.tasks.addTask(6,new AISimEmptyInventory(this));
-        this.tasks.addTask(7,new AISimGetBuckets(this));
         this.tasks.addTask(7,new AISimMilkCow(this));
         this.tasks.addTask(6,new AiSimShearSheep(this));
         this.tasks.addTask(4,new AiSimAttackNearest(0.7,true,this));
