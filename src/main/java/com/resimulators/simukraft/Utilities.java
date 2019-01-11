@@ -7,6 +7,8 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -50,5 +52,19 @@ public class Utilities {
 
             return world.setBlockState(pos, Blocks.AIR.getDefaultState(), 3);
         }
+    }
+
+    public static Rotation convertFromFacing(EnumFacing facing) {
+        switch(facing) {
+            case NORTH:
+                return Rotation.NONE;
+            case EAST:
+                return Rotation.CLOCKWISE_90;
+            case SOUTH:
+                return Rotation.CLOCKWISE_180;
+            case WEST:
+                return Rotation.COUNTERCLOCKWISE_90;
+        }
+        return Rotation.NONE;
     }
 }

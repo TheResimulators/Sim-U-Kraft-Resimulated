@@ -38,17 +38,21 @@ public class ModelSim extends ModelBiped {
         this.bipedLeftLeg.setRotationPoint(1.9F, 12.0F, 0.0F);
     }
 
-    public void render(EntitySim entitySim, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+    public void render(Entity entitySim, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
         super.render(entitySim, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
         GlStateManager.pushMatrix();
 
         if (this.isChild) {
             GlStateManager.scale(0.5F, 0.5F, 0.5F);
             GlStateManager.translate(0.0F, 24.0F * scale, 0.0F);
+            this.femaleArmLeft.render(scale);
+            this.femaleArmRight.render(scale);
         } else {
             if (entitySim.isSneaking()) {
                 GlStateManager.translate(0.0F, 0.2F, 0.0F);
             }
+            this.femaleArmLeft.render(scale);
+            this.femaleArmRight.render(scale);
         }
 
         GlStateManager.popMatrix();

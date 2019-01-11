@@ -1,16 +1,20 @@
 {
   "variants": {
+    "color=black": { "model": "simukraft:light_black" },
     "color=blue": { "model": "simukraft:light_blue" },
+    "color=brown": { "model": "simukraft:light_brown" },
+    "color=cyan": { "model": "simukraft:light_cyan" },
+    "color=gray": { "model": "simukraft:light_gray" },
     "color=green": { "model": "simukraft:light_green" },
+    "color=light_blue": { "model": "simukraft:light_light_blue" },
+    "color=lime": { "model": "simukraft:light_lime" },
+    "color=magenta": { "model": "simukraft:light_magenta" },
     "color=orange": { "model": "simukraft:light_orange" },
+    "color=pink": { "model": "simukraft:light_pink" },
     "color=purple": { "model": "simukraft:light_purple" },
     "color=red": { "model": "simukraft:light_red" },
-    "color=white": { "model": "simukraft:light_white" },
-    "color=yellow": { "model": "simukraft:light_yellow" },
     "color=silver": { "model": "simukraft:light_silver" },
-    "color=magenta": { "model": "simukraft:light_magenta" },
-    "color=cyan": { "model": "simukraft:light_cyan" },
-    "color=light_blue": { "model": "simukraft:light_light_blue" },
-    "color=pink": { "model": "simukraft:light_pink" }
+    "color=white": { "model": "simukraft:light_white" },
+    "color=yellow": { "model": "simukraft:light_yellow" }
   }
 }

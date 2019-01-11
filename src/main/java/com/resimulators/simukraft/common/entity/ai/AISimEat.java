@@ -24,7 +24,7 @@ public class AISimEat extends EntityAIBase {
 
     @Override
     public void startExecuting() {
-        sim.Checkfood();
+        sim.checkFood();
 
     }
 

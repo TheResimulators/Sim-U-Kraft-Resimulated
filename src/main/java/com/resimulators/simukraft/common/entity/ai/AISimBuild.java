@@ -1,17 +1,26 @@
 package com.resimulators.simukraft.common.entity.ai;
 
 import com.resimulators.simukraft.SimUKraft;
+import com.resimulators.simukraft.Utilities;
 import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
 import com.resimulators.simukraft.common.tileentity.structure.Structure;
 import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.RandomPositionGenerator;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
+import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraft.world.gen.structure.template.BlockRotationProcessor;
+import net.minecraft.world.gen.structure.template.PlacementSettings;
+import net.minecraft.world.gen.structure.template.Template;
 
+import java.lang.reflect.Field;
 import java.util.*;
 
 /**
@@ -27,10 +36,11 @@ import java.util.*;
  */
 public class AISimBuild extends EntityAIBase {
     private EntitySim entitySim;
-    private Structure structure;
+    private Template structure;
     private int progress;
     private BlockPos startPos;
     private BlockPos currentPos;
+    private EnumFacing facing;
     private int cooldown = 0;
     private int tries = 0;
     private Random rand = new Random();
@@ -71,6 +81,7 @@ public class AISimBuild extends EntityAIBase {
         this.structure = this.entitySim.getStructure();
         this.startPos = this.entitySim.getStartPos();
         this.currentPos = this.entitySim.getStartPos();
+        this.facing = this.entitySim.getFacing();
         this.specialPositions.clear();
         this.specialStates.clear();
         this.specialIndex = 0;
@@ -84,61 +95,43 @@ public class AISimBuild extends EntityAIBase {
 
     @Override
     public void updateTask() {
-        //Code by Astavie, modified by fabbe50
-        if (structure == null) {
-            progress = 0;
-        } else {
-            int x = (progress % structure.getWidth());
-            int z = (progress / structure.getWidth()) % structure.getDepth();
-            int y = (progress / structure.getWidth()) / structure.getDepth();
-            if (!this.specialPositions.isEmpty() && !this.specialStates.isEmpty() && y >= structure.getHeight() && this.specialIndex < this.specialPositions.size()) {
-                if (this.specialPositions.get(specialIndex).getDistance((int) this.entitySim.posX, (int) this.entitySim.posY, (int) this.entitySim.posZ) < 4) {
-                    if (cooldown == 0) {
-                        this.entityPlaceBlock(this.specialStates.get(specialIndex), this.specialPositions.get(specialIndex));
-                        this.specialIndex++;
-                        cooldown = rand.nextInt(10) + 5;
-                    } else {
-                        cooldown--;
+        //TODO: Needs a lot of improvement. Works with the new building system for now, but still needs inventory support and better looking building.
+        //TODO: For instance, line of sight to the place where the block is supposed to go as well as being within reach.
+        if (entitySim.isAllowedToBuild()) {
+            PlacementSettings settings = (new PlacementSettings().setIgnoreEntities(false).setRotation(Utilities.convertFromFacing(facing)).setMirror(Mirror.NONE));
+            try {
+                World world = entitySim.world;
+                Field field = structure.getClass().getDeclaredField("blocks");
+                field.setAccessible(true);
+                List<Template.BlockInfo> blocks = (List<Template.BlockInfo>) field.get(structure);
+                for (Template.BlockInfo info : blocks) {
+                    BlockPos blockpos = info.pos;
+                    BlockRotationProcessor processor = new BlockRotationProcessor(blockpos, settings);
+                    Template.BlockInfo info1 = processor.processBlock(world, blockpos, info);
+                    if (info1 != null) {
+                        IBlockState state = info1.blockState.withRotation(settings.getRotation());
+                        if (entityPlaceBlock(state, startPos.add(transformedBlockPos(blockpos, settings.getMirror(), settings.getRotation()))) && info1.tileentityData != null) {
+                            TileEntity tileentity = world.getTileEntity(blockpos);
+                            if (tileentity != null) {
+                                if (tileentity instanceof IInventory)
+                                    ((IInventory) tileentity).clear();
+                                info1.tileentityData.setInteger("x", blockpos.getX());
+                                info1.tileentityData.setInteger("y", blockpos.getY());
+                                info1.tileentityData.setInteger("z", blockpos.getZ());
+                                tileentity.readFromNBT(info1.tileentityData);
+                                tileentity.mirror(settings.getMirror());
+                                tileentity.rotate(settings.getRotation());
+                                tileentity.markDirty();
+                            }
+                        }
                     }
-                } else {
-                    this.moveEntityCloser(this.specialPositions.get(specialIndex));
                 }
-            } else if (y >= structure.getHeight()) {
-                progress = 0;
-                this.entitySim.attemptTeleport(entitySim.getStartPos().getX(), entitySim.getStartPos().getY(), entitySim.getStartPos().getZ());
-                this.entitySim.setHeldItem(EnumHand.MAIN_HAND, ItemStack.EMPTY);
-                this.entitySim.setStructure(null);
-                this.entitySim.setAllowedToBuild(false);
-                this.entitySim.setStartPos(null);
-                this.specialPositions.clear();
-                this.specialStates.clear();
-            } else {
-                // TODO: make it require items from inventory
-                Block block = structure.getBlock(x, y, z).getBlock();
-                if (block == this.entitySim.world.getBlockState(currentPos.add(x + 1, y, z)).getBlock()) {
-                    currentPos = startPos.add(x + 1, y, z);
-                    progress++;
-                } else if (block instanceof BlockLadder || block instanceof BlockTorch || block instanceof BlockButton || block instanceof BlockLever || block instanceof BlockWallSign) {
-                    currentPos = startPos.add(x + 1, y, z);
-                    this.specialStates.add(structure.getBlock(x, y, z));
-                    this.specialPositions.add(currentPos);
-                    progress++;
-                } else if (currentPos.getDistance((int) this.entitySim.posX, (int) this.entitySim.posY, (int) this.entitySim.posZ) < 4) {
-                    if (cooldown == 0) {
-                        currentPos = startPos.add(x + 1, y, z);
-                        if (block instanceof BlockDoor && structure.getBlock(x, y, z) == structure.getBlock(x, y, z).withProperty(BlockDoor.HALF, BlockDoor.EnumDoorHalf.LOWER)) {
-                            this.entityPlaceBlock(this.structure.getBlock(x, y, z), currentPos);
-                            this.entitySim.world.setBlockState(currentPos.offset(EnumFacing.UP), structure.getBlock(x, y + 1, z));
-                        } else
-                            this.entityPlaceBlock(this.structure.getBlock(x, y, z), currentPos);
-                        progress++;
-                        cooldown = rand.nextInt(10) + 5;
-                    } else {
-                        cooldown--;
-                    }
-                } else {
-                    this.moveEntityCloser(this.currentPos);
-                }
+                field.setAccessible(false);
+                entitySim.setAllowedToBuild(false);
+                entitySim.setStructure(null);
+                entitySim.setStartPos(null);
+            } catch (NoSuchFieldException | IllegalAccessException | ClassCastException e) {
+                //Do Nothing
             }
         }
     }
@@ -170,11 +163,44 @@ public class AISimBuild extends EntityAIBase {
         }
     }
 
-    private void entityPlaceBlock(IBlockState blockState, BlockPos pos) {
+    private boolean entityPlaceBlock(IBlockState blockState, BlockPos pos) {
         this.entitySim.getLookHelper().setLookPosition(currentPos.getX(), currentPos.getY(), currentPos.getZ(), 360, 360);
         this.entitySim.setHeldItem(EnumHand.MAIN_HAND, blockState.getBlock().getItem(null, null, blockState));
-        this.entitySim.world.setBlockState(pos, blockState);
+        this.entitySim.world.setBlockState(pos, blockState, 2);
         this.entitySim.world.playSound(null, pos, blockState.getBlock().getSoundType().getPlaceSound(), SoundCategory.BLOCKS, 1.0f, (rand.nextFloat() - 0.5f) / 5);
         this.entitySim.swingArm(EnumHand.MAIN_HAND);
+        return true;
+    }
+
+    private static BlockPos transformedBlockPos(BlockPos pos, Mirror mirrorIn, Rotation rotationIn)
+    {
+        int i = pos.getX();
+        int j = pos.getY();
+        int k = pos.getZ();
+        boolean flag = true;
+
+        switch (mirrorIn)
+        {
+            case LEFT_RIGHT:
+                k = -k;
+                break;
+            case FRONT_BACK:
+                i = -i;
+                break;
+            default:
+                flag = false;
+        }
+
+        switch (rotationIn)
+        {
+            case COUNTERCLOCKWISE_90:
+                return new BlockPos(k, j, -i);
+            case CLOCKWISE_90:
+                return new BlockPos(-k, j, i);
+            case CLOCKWISE_180:
+                return new BlockPos(-i, j, -k);
+            default:
+                return flag ? new BlockPos(i, j, k) : pos;
+        }
     }
 }

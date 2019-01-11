@@ -5,6 +5,7 @@ import com.resimulators.simukraft.client.render.RenderParticleEntity;
 import com.resimulators.simukraft.client.render.RenderSim;
 import com.resimulators.simukraft.common.entity.EntityParticleSpawner;
 import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
+import com.resimulators.simukraft.event.RenderHandEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -25,6 +26,7 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void init(FMLInitializationEvent event) {
         MinecraftForge.EVENT_BUS.register(new HudGui());
+        MinecraftForge.EVENT_BUS.register(new RenderHandEvent());
         RenderSim.initSkinService();
         super.init(event);
     }
