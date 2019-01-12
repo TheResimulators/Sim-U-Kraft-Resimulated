@@ -5,6 +5,7 @@ import com.resimulators.simukraft.common.containers.SimContainer;
 import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
 import com.resimulators.simukraft.common.tileentity.TileCattle;
 import com.resimulators.simukraft.common.tileentity.TileFarm;
+import com.resimulators.simukraft.common.tileentity.TileMiner;
 import com.resimulators.simukraft.common.tileentity.TileSheep;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -40,12 +41,13 @@ public class GuiHandler implements IGuiHandler {
     @Override
     public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
         TileEntity tileEntity = world.getTileEntity(new BlockPos(x, y, z));
+        System.out.println("gui id " + ID);
         if (ID == GUI.SIM.ordinal())
             return new GuiSim(player);
         else if (ID == GUI.FARM.ordinal())
             return new GuiFarm((TileFarm) tileEntity);
         else if (ID == GUI.MINER.ordinal())
-            return new GuiMiner();
+            return new GuiMiner((TileMiner) tileEntity);
         else if (ID == GUI.START.ordinal())
             return new GuiStart();
         else if (ID == GUI.HIRED.ordinal())

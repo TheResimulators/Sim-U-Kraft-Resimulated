@@ -335,6 +335,8 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
                 return "Cattle Farmer";
             case 6:
                 return "Sheep Farmer";
+            case 7:
+                return "Miner";
         }
 
         return "Oh well, this is awkward.";

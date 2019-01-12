@@ -18,15 +18,21 @@ import javax.annotation.Nullable;
 import java.util.*;
 
 public class TileMiner extends TileEntity implements ISimJob {
-    private boolean building;
-    protected int width = 5;
-    protected int length = 5;
-    private String profession = "Farmer";
+    private final String profession = "Miner";
     private UUID id;
-    private int professionint = 2;
+    private int professionint = 7;
     private Boolean hired = false;
     private Set<Integer> sims = new HashSet<>();
     private List<String> sims_name = new ArrayList<>();
+    //mode, 0 = quarry, 1 = horizontal mining
+    private int mode = 0;
+    //width of quarry or width of strip mine shaft
+    private int width;
+    //depth of the quarry, distance forward from the miner block
+    private int depth;
+    //height used for strip mine height
+    private int height;
+    private boolean renderoutline = false;
 
     @Override
     public int getProfessionint() {
@@ -110,10 +116,11 @@ public class TileMiner extends TileEntity implements ISimJob {
     }
 
     public void openGui(World worldIn, BlockPos pos, EntityPlayer playerIn) {
+        System.out.println("hired " + getHired());
         if (getHired()) {
-            playerIn.openGui(SimUKraft.instance, GuiHandler.GUI.FARM.ordinal(), worldIn, pos.getX(), pos.getY(), pos.getZ());
+            playerIn.openGui(SimUKraft.instance, GuiHandler.GUI.MINER.ordinal(), worldIn, pos.getX(), pos.getY(), pos.getZ());
         } else {
-            PacketHandler.INSTANCE.sendToServer(new GetSimIdPacket(pos.getX(), pos.getY(), pos.getZ(),GuiHandler.GUI.FARM.ordinal()));
+            PacketHandler.INSTANCE.sendToServer(new GetSimIdPacket(pos.getX(), pos.getY(), pos.getZ(),GuiHandler.GUI.HIRED.ordinal()));
 
         }
     }
@@ -134,4 +141,44 @@ public class TileMiner extends TileEntity implements ISimJob {
         readFromNBT(packet.getNbtCompound());
 
     }
+
+    //mode, horizontal or quarry style
+    public int getMode() {
+        return mode;
+    }
+    //sets width of quarry to the right of the block
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    //sets depth of the quarry to the front of the block
+    public void setDepth(int depth) {
+        this.depth = depth;
+    }
+    //gets width
+    public int getWidth() {
+        return width;
+    }
+    //gets depth
+    public int getDepth() {
+        return depth;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    //used to render outline of the quarry. can be used to visualize the space it uses
+    public boolean isRenderoutline(){
+        return renderoutline;
+    }
+    //sets boolean to weather draw outline
+    public void setRenderoutline(boolean renderoutline){
+        this.renderoutline = renderoutline;
+    }
+
 }
