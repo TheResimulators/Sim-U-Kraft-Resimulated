@@ -9,13 +9,13 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 public enum EnumDay {
-    MONDAY ("Monday",0),
-    TUESDAY("Tuesday",1),
-    WEDNESDAY("Wednesday",2),
-    THRUSDAY("Thursday",3),
-    FRIDAY("Friday",4),
-    SATURDAY("Saturday",5),
-    SUNDAY("Sunday",6);
+    MONDAY ("Monday",1),
+    TUESDAY("Tuesday",2),
+    WEDNESDAY("Wednesday",3),
+    THRUSDAY("Thursday",4),
+    FRIDAY("Friday",5),
+    SATURDAY("Saturday",6),
+    SUNDAY("Sunday",0);
     String string;
     int num;
 
@@ -38,6 +38,8 @@ public enum EnumDay {
         private static int dayint = 0;
         private static boolean added = false;
         private static int totaldays = 0;
+        private static long prevticktime = 0;
+
         @Override
         public NBTTagCompound serializeNBT() {
             NBTTagCompound compound = new NBTTagCompound();
@@ -60,17 +62,24 @@ public enum EnumDay {
         public static void DayChange(TickEvent.WorldTickEvent event){
             if (!event.world.isRemote){
 
-                if (event.world.getWorldTime()%24000 == 0 && !added) {
+                if (event.world.getTotalWorldTime() == 0){
+                    dayint = 0;
+                    totaldays = 0;
+                }
+
+                if (prevticktime > event.world.getWorldTime() && !added) {
                     added = true;
                     dayint++;
-                    dayint = dayint%7;
+                    dayint = (dayint%7);
                     addtotalday();
                     updateAll();
+
                 }else{
-                    if (event.world.getWorldTime() != 0) {
+                    if (event.world.getWorldTime() != 23999) {
                         added = false;
                     }
                 }
+                prevticktime = event.world.getWorldTime();
         }}
 
         public static int getDayInt(){
