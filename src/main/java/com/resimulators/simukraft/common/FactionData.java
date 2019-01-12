@@ -3,6 +3,7 @@ package com.resimulators.simukraft.common;
 import com.resimulators.simukraft.SimUKraft;
 import com.resimulators.simukraft.common.capabilities.ModCapabilities;
 import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
+import com.resimulators.simukraft.network.ClientHirePacket;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
@@ -131,15 +132,23 @@ public class FactionData implements INBTSerializable<NBTTagCompound> {
     }
 
 
+    public void addUnemployedSim(EntitySim sim){
+        addUnemployedSim(sim.getUniqueID());
+    }
+
     public void addUnemployedSim(UUID sim) {
         if (sim != null) {
             unemployedsims.add(sim);
         }
     }
 
-    public void removeUnemplyedSim(EntitySim sim) {
+    public void removeUnemployedSim(EntitySim sim){
+        removeUnemployedSim(sim.getUniqueID());
+    }
+    public void removeUnemployedSim(UUID sim) {
         if (unemployedsims.contains(sim)) {
             unemployedsims.remove(sim);
+
         } else {
             SimUKraft.getLogger().debug("Removing sim that does not exist in faction: " + factionname + ", report to mod Author");
         }
@@ -150,19 +159,31 @@ public class FactionData implements INBTSerializable<NBTTagCompound> {
     }
 
 
-    public void addTotalSim(UUID sim) {
-        if (sim != null) {
-            totalSims.add(sim);
-        }
+    public void addTotalSim(EntitySim sim) {
+        addTotalSim(sim.getUniqueID());
+
 
     }
 
+    public void addTotalSim(UUID uuid){
+        if (uuid != null) {
+            totalSims.add(uuid);
+        }
+    }
+
     public void removeTotalSim(EntitySim sim) {
-        if (totalSims.contains(sim)) {
-            totalSims.remove(sim);
+        removeTotalSim(sim.getUniqueID());
+
+    }
+
+
+    public void removeTotalSim(UUID uuid){
+        if (totalSims.contains(uuid)) {
+            totalSims.remove(uuid);
         } else {
             SimUKraft.getLogger().debug("Removing sim that does not exist in faction: " + factionname + ", report to mod Author");
         }
+
     }
 
     public List<UUID> getTotalSims() {
@@ -197,10 +218,8 @@ public class FactionData implements INBTSerializable<NBTTagCompound> {
 
     public void sendFactionPacket(IMessage message){
         List<UUID> uuids = getPlayers();
-        System.out.println();
         for (UUID id:uuids){
             EntityPlayer player = FMLCommonHandler.instance().getMinecraftServerInstance().getEntityWorld().getPlayerEntityByUUID(id);
-            System.out.println("player to send faction data to " + player);
             if (player != null){
                 player.getCapability(ModCapabilities.PlayerCap,null).updateClientWithPacket(message,player);
             }
