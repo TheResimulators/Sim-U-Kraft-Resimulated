@@ -2,6 +2,7 @@ package com.resimulators.simukraft.common.tileentity;
 
 import com.resimulators.simukraft.GuiHandler;
 import com.resimulators.simukraft.SimUKraft;
+import com.resimulators.simukraft.client.model.RenderOutline;
 import com.resimulators.simukraft.common.interfaces.ISimIndustrial;
 import com.resimulators.simukraft.common.interfaces.ISimJob;
 import com.resimulators.simukraft.network.GetSimIdPacket;
@@ -11,6 +12,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -26,14 +28,19 @@ public class TileMiner extends TileEntity implements ISimJob {
     private List<String> sims_name = new ArrayList<>();
     //mode, 0 = quarry, 1 = horizontal mining
     private int mode = 0;
-    //width of quarry or width of strip mine shaft
-    private int width;
+    //default mode is quarry and the width of 5 and a depth of 5
+    //width of quarry or width of strip mine shaft/ width of quarry
+    private int width = 5;
     //depth of the quarry, distance forward from the miner block
-    private int depth;
+    private int depth = 5;
     //height used for strip mine height
-    private int height;
+    private int height = 3;
     private boolean renderoutline = false;
+    private EnumFacing facing;
 
+    public TileMiner(EnumFacing facing){
+        this.facing = facing;
+    }
     @Override
     public int getProfessionint() {
         return professionint;
@@ -141,7 +148,9 @@ public class TileMiner extends TileEntity implements ISimJob {
         readFromNBT(packet.getNbtCompound());
 
     }
-
+    public void setMode(int mode){
+        this.mode = mode;
+    }
     //mode, horizontal or quarry style
     public int getMode() {
         return mode;
@@ -181,4 +190,14 @@ public class TileMiner extends TileEntity implements ISimJob {
         this.renderoutline = renderoutline;
     }
 
+
+    public EnumFacing getFacing(){
+        return facing;
+    }
+    class RenderOutline{
+
+        RenderOutline(TileMiner miner){
+
+        }
+    }
 }
