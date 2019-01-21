@@ -8,6 +8,7 @@ import com.resimulators.simukraft.ConfigHandler;
 import com.resimulators.simukraft.GuiHandler;
 import com.resimulators.simukraft.Reference;
 import com.resimulators.simukraft.SimUKraft;
+import com.resimulators.simukraft.client.model.RenderOutline;
 import com.resimulators.simukraft.client.render.RenderSim;
 import com.resimulators.simukraft.common.command.CommandStructure;
 import com.resimulators.simukraft.common.entity.entitysim.NameStorage;

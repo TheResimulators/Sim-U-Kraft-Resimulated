@@ -1,12 +1,16 @@
 package com.resimulators.simukraft.proxy;
 
 import com.resimulators.simukraft.client.gui.HudGui;
+import com.resimulators.simukraft.client.model.RenderOutline;
 import com.resimulators.simukraft.client.render.RenderParticleEntity;
 import com.resimulators.simukraft.client.render.RenderSim;
 import com.resimulators.simukraft.common.entity.EntityParticleSpawner;
 import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
+import com.resimulators.simukraft.common.tileentity.TileMiner;
 import com.resimulators.simukraft.event.RenderHandEvent;
+import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -21,6 +25,7 @@ public class ClientProxy extends CommonProxy {
         super.preInit(event);
         RenderingRegistry.registerEntityRenderingHandler(EntitySim.class, RenderSim::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityParticleSpawner.class, RenderParticleEntity::new);
+        ClientRegistry.bindTileEntitySpecialRenderer(TileMiner.class, new RenderOutline());
     }
 
     @Override
