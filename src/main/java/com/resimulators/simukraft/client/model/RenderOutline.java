@@ -33,27 +33,23 @@ public class RenderOutline extends TileEntitySpecialRenderer<TileMiner>{
     @SideOnly(Side.CLIENT)
     @Override
     public void render(TileMiner te, double x, double y, double z, float partialTicks, int destroyStage, float alpha){
-        System.out.println("render outline " + te.isRenderoutline());
-        this.bindTexture(TEXTURE_OUTLINE_BEAM);
-        if (te.isRenderoutline()){
+        if (te.isRenderoutline() && (te.getMode() == 1 || te.getMode() == 0)){
             super.render(te,x,y,z,partialTicks,destroyStage,alpha);
             drawBoundingBox(te);
         }
     }
 
     private void drawBoundingBox(TileMiner miner){
-        GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
-        GlStateManager.disableCull();
-        GlStateManager.disableLighting();
-        GlStateManager.disableTexture2D();
-        GlStateManager.pushAttrib();
-        Color c = new Color(255, 255, 255, 150);
-        GlStateManager.depthMask(false);
-        GlStateManager.glLineWidth(0.4f);
-        GlStateManager.color(c.getRed(),c.getGreen(),c.getBlue(),c.getAlpha());
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferBuilder = tessellator.getBuffer();
-        bufferBuilder.setTranslation(miner.getPos().getX(),miner.getPos().getY(),miner.getPos().getZ());
+        GlStateManager.pushAttrib();
+        GlStateManager.pushMatrix();
+        this.bindTexture(TEXTURE_OUTLINE_BEAM);
+        GlStateManager.disableLighting();
+        GlStateManager.disableTexture2D();
+        Color c = new Color(255, 255, 255, 150);
+        GlStateManager.depthMask(true);
+        GlStateManager.glLineWidth(2f);
         int xposlow =  miner.getPos().getX();
         int xposhigh;
         int zposlow = miner.getPos().getZ();
@@ -63,48 +59,55 @@ public class RenderOutline extends TileEntitySpecialRenderer<TileMiner>{
         xposhigh = 1;
         zposhigh = 1;
         yposhigh = 1;
-        if (miner.getMode() == 1){
+        if (true){
             EnumFacing facing = miner.getFacing();
-            yposhigh = yposlow;
             switch(facing){
 
                 case NORTH:
-                    zposhigh = -miner.getDepth();
-                    xposhigh = miner.getWidth();
+                    xposhigh = miner.getPos().getX()+miner.getWidth();
+                    zposhigh = miner.getPos().getZ()-miner.getDepth();
                     break;
                 case EAST:
-                    zposhigh = miner.getDepth();
-                    xposhigh = miner.getWidth();
+                    zposhigh = miner.getPos().getX() + miner.getDepth();
+                    xposhigh = miner.getPos().getZ() + miner.getWidth();
                     break;
 
                 case SOUTH:
-                    zposhigh =  miner.getDepth();
-                    xposhigh = -miner.getWidth();
+                    zposhigh =miner.getPos().getX() + miner.getDepth();
+                    xposhigh =miner.getPos().getZ() -miner.getWidth();
                     break;
                 case WEST:
-                    zposhigh =  miner.getDepth();
-                    xposhigh = -miner.getWidth();
+                    zposhigh =miner.getPos().getX() + miner.getDepth();
+                    xposhigh =miner.getPos().getZ() -miner.getWidth();
                     break;
+                default:
+                    System.out.println("this should not happen");
             }}
+            bufferBuilder.setTranslation(miner.getPos().getX(),miner.getPos().getY(),miner.getPos().getZ());
             bufferBuilder.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR);
-            //AB
-            GlStateManager.pushMatrix();
-            bufferBuilder.pos(xposlow,yposlow,zposlow);//A
-            bufferBuilder.pos(xposhigh,yposhigh,zposlow).endVertex();//B
-            //AD
-            bufferBuilder.pos(xposlow,yposlow,zposlow).endVertex();//A
-            bufferBuilder.pos(xposlow,yposlow,zposhigh).endVertex();//D
-            //BC
-            bufferBuilder.pos(xposhigh,yposhigh,zposlow).endVertex();//B
-            bufferBuilder.pos(xposhigh,yposhigh,zposhigh).endVertex();//C
-            //CD
-            bufferBuilder.pos(xposhigh,yposhigh,zposhigh).endVertex();//C
-            bufferBuilder.pos(xposlow,yposlow,zposhigh).endVertex();//D
-            bufferBuilder.setTranslation(0,0,0);
-            GlStateManager.popMatrix();
-            GlStateManager.popAttrib();
-            GlStateManager.depthMask(true);
+            bufferBuilder.pos(1f,0.75f,1f).color(c.getRed(),c.getGreen(),c.getBlue(),c.getAlpha()).endVertex();
+            bufferBuilder.pos(1f,0.25f,1f).color(c.getRed(),c.getGreen(),c.getBlue(),c.getAlpha()).endVertex();
+            bufferBuilder.pos(1f,0.25f,0).color(c.getRed(),c.getGreen(),c.getBlue(),c.getAlpha()).endVertex();
+            bufferBuilder.pos(1f,0.75f,0).color(c.getRed(),c.getGreen(),c.getBlue(),c.getAlpha()).endVertex();
+            bufferBuilder.pos(4f,0.75f,0).color(c.getRed(),c.getGreen(),c.getBlue(),c.getAlpha()).endVertex();
+            bufferBuilder.pos(4f,0.25f,0).color(c.getRed(),c.getGreen(),c.getBlue(),c.getAlpha()).endVertex();
+            bufferBuilder.pos(4f,0.25f,1f).color(c.getRed(),c.getGreen(),c.getBlue(),c.getAlpha()).endVertex();
+            bufferBuilder.pos(4f,0.75f,1f).color(c.getRed(),c.getGreen(),c.getBlue(),c.getAlpha()).endVertex();
             tessellator.draw();
+            bufferBuilder.setTranslation(0,0,0);
+            GlStateManager.depthMask(true);
+            GlStateManager.popAttrib();
+            GlStateManager.popMatrix();
+
+
+
+        }
+
+
+
+        @Override
+        public boolean isGlobalRenderer(TileMiner miner){
+        return true;
         }
 
     }

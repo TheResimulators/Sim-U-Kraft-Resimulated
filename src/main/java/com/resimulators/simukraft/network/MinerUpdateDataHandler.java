@@ -12,12 +12,11 @@ public class MinerUpdateDataHandler implements IMessageHandler<MinerUpdateDataPa
     @Override
     public IMessage onMessage(MinerUpdateDataPacket message, MessageContext ctx) {
         IThreadListener mainthread = ctx.getServerHandler().player.getServerWorld();
-
-
         mainthread.addScheduledTask(()->{
             TileEntity entity =ctx.getServerHandler().player.world.getTileEntity(message.pos);
             entity.readFromNBT(message.compound);
             ctx.getServerHandler().player.world.notifyBlockUpdate(message.pos,entity.getBlockType().getBlockState().getBaseState(),entity.getBlockType().getBlockState().getBaseState(),0);
+            System.out.println("this has happened. server has been updated with new values");
         });
         return null;
     }

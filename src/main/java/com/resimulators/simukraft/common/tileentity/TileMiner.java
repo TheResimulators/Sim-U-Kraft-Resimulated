@@ -106,6 +106,10 @@ public class TileMiner extends TileEntity implements ISimJob {
         super.readFromNBT(nbt);
         setHired(nbt.getBoolean("hired"));
         professionint = nbt.getInteger("profession");
+        if (nbt.hasKey("facing")){
+        facing = EnumFacing.byName(nbt.getString("facing"));
+        System.out.println(facing);
+        }
         if (nbt.hasKey("id")) {
             id = nbt.getUniqueId("id");
         }
@@ -116,6 +120,7 @@ public class TileMiner extends TileEntity implements ISimJob {
         super.writeToNBT(nbt);
         nbt.setBoolean("hired", getHired());
         nbt.setInteger("profession", professionint);
+        if (facing != null) nbt.setString("facing",facing.getName());
         if (id != null) {
             nbt.setUniqueId("id", id);
         }
@@ -193,11 +198,5 @@ public class TileMiner extends TileEntity implements ISimJob {
 
     public EnumFacing getFacing(){
         return facing;
-    }
-    class RenderOutline{
-
-        RenderOutline(TileMiner miner){
-
-        }
     }
 }

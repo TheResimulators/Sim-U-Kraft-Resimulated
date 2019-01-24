@@ -15,6 +15,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.fml.client.GuiScrollingList;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import org.lwjgl.input.Keyboard;
+import scala.Int;
 
 import java.awt.*;
 import java.io.IOException;
@@ -28,6 +29,7 @@ public class GuiMiner extends GuiScreen {
     private String status = "";
     private GuiButton button1;
     private GuiButton button2;
+    private GuiButton applybutton;
     private int mouseX;
     private int mouseY;
     private int mode;
@@ -79,8 +81,9 @@ public class GuiMiner extends GuiScreen {
 
     @Override
     public void initGui() {
-        buttonList.add(button1 = new GuiButton(1,width/4-100,height - 80,"Change Mode"));
+        buttonList.add(button1 = new GuiButton(0,width/4-100,height - 80,"Change Mode"));
         buttonList.add(button2 = new GuiButton( 1,width/4-100,height-30,String.valueOf(miner.isRenderoutline())));
+        buttonList.add(applybutton = new GuiButton(2,width/4*3-100,height-30,"Apply"));
         heightbox = new GuiTextField(1,mc.fontRenderer,width/4*3+50,height-80,30,20);
         heightbox.setMaxStringLength(3);
         heightbox.setText(String.valueOf(miner.getHeight()));
@@ -116,10 +119,14 @@ public class GuiMiner extends GuiScreen {
                 }
                 if (mode == 1) mode = 0;
                 }
-            else{
+            else if (button.id == 1){
                 miner.setRenderoutline(!miner.isRenderoutline());
                 button.displayString = String.valueOf(miner.isRenderoutline());
                 }
+                else{
+                applychanges();
+
+       }
 
         super.actionPerformed(button);
     }
@@ -147,9 +154,20 @@ public class GuiMiner extends GuiScreen {
 
     @Override
     public void onGuiClosed(){
-        miner.setHeight(height);
-        miner.setWidth(width);
+
+    }
+
+    private void applychanges(){
+        if (heightbox.getText().equals(""))heights = 0;
+        else heights = Integer.parseInt(heightbox.getText());
+        if (depthbox.getText().equals("")) heights = 0;
+        else depths = Integer.parseInt(depthbox.getText());
+        widths = Integer.parseInt(widthbox.getText());
+        miner.setHeight(heights);
+        miner.setWidth(widths);
+        System.out.println("width from gui " + width);
         miner.setDepth(depths);
+
         miner.setMode(mode);
         PacketHandler.INSTANCE.sendToServer(new MinerUpdateDataPacket(miner.serializeNBT(),miner.getPos()));
     }
