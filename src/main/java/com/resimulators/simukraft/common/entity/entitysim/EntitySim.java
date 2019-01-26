@@ -38,6 +38,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -50,6 +51,8 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nullable;
+import java.sql.Time;
+import java.time.temporal.TemporalAccessor;
 import java.util.Random;
 
 /**
@@ -64,6 +67,7 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
     private boolean isPlaying;
     private EntityPlayer commander;
     private GameProfile playerProfile;
+    private Time time;
     //Builder profession related
     private Template structure;
     private boolean isAllowedToBuild;
@@ -113,7 +117,7 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
         this.setAlwaysRenderNameTag(false);
         this.pickups = new ItemStackHandler(18);
         this.toolinv = new ItemStackHandler(9);
-
+        time = new Time(System.currentTimeMillis());
     }
 
     @Override
@@ -172,9 +176,20 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
     public boolean processInteract(EntityPlayer player, EnumHand hand) {
         ItemStack itemStack = player.getHeldItem(hand);
         boolean flag = itemStack.getItem() == Items.NAME_TAG;
+        boolean flag3 = System.currentTimeMillis() - time.getTime() >= 3000;
         boolean flag2 = itemStack.getItem() == ModItems.DEBUG || itemStack.getItem() == ModItems.BLUEPRINT;
         if (flag) {
-            itemStack.interactWithEntity(player, this, hand);
+            if (flag3) {
+                if (!world.isRemote) {
+                    if (!itemStack.getDisplayName().equals(this.getName())) {
+                        player.sendStatusMessage(new TextComponentString(getName() + ": " + new String[]{"I don't want that name.", "Don't touch me with that.", "Hey, back off!", "Ruuude.", "No."}[rand.nextInt(5)]), true);
+                        time.setTime(System.currentTimeMillis());
+                    } else {
+                        player.sendStatusMessage(new TextComponentString(getName() + ": That's already my name."), true);
+                        time.setTime(System.currentTimeMillis());
+                    }
+                }
+            }
             return true;
         } else if (!this.holdingSpawnEggOfClass(itemStack, this.getClass()) && this.isEntityAlive() && !isReceivingOrders() && !isChild() && !player.isSneaking() && !flag2) {
             this.setCommander(player);
@@ -468,6 +483,17 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
         return livingData;
     }
 
+    @Override
+    public void setCustomNameTag(String name) {
+        if (SpecialNameStorage.specialNames.contains(name)) {
+            super.setCustomNameTag(name);
+            this.setStaff(true);
+            this.setFemale(SpecialNameStorage.femaleIndex.contains(name));
+        } else {
+            super.setCustomNameTag(name);
+        }
+    }
+
     public void setCommander(@Nullable EntityPlayer player) {
         this.commander = player;
     }
@@ -592,40 +618,38 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
     @Override
     public void onUpdate() {
         super.onUpdate();
-        if (!world.isRemote){
-        //heal counter. checks to heal after
-        updatenotworking();
-        if (endWork){
-            de_EquipSword(getActiveItemStack());
-        }
-        if (heal_counter / 20 > 4) {
-            if (hunger > 15 && getHealth() < 20) {
-                 heal(1.0f);
-                heal_counter = 0;
+        if (!world.isRemote) {
+            //heal counter. checks to heal after
+            updatenotworking();
+            if (endWork) {
+                de_EquipSword(getActiveItemStack());
             }
-        }
-        if (counter/20 > 60) {
-            if (hunger <= 0) {
-                this.attackEntityFrom(DamageSource.STARVE, 1.0f);
-                counter = 0;
-                hunger = 0;
-            } else {
-                if (hunger > 0) {
-                    hunger --;
-                    SaveSimData.get(this.world).SendFactionPacket(new HungerPacket(this.getFoodLevel(), this.getEntityId()),this.getFactionId());
+            if (heal_counter / 20 > 4) {
+                if (hunger > 15 && getHealth() < 20) {
+                    heal(1.0f);
+                    heal_counter = 0;
                 }
-
-                counter = 0;
             }
-        }
-        heal_counter++;
-        counter++;
+            if (counter / 20 > 60) {
+                if (hunger <= 0) {
+                    this.attackEntityFrom(DamageSource.STARVE, 1.0f);
+                    counter = 0;
+                    hunger = 0;
+                } else {
+                    if (hunger > 0) {
+                        hunger--;
+                        SaveSimData.get(this.world).SendFactionPacket(new HungerPacket(this.getFoodLevel(), this.getEntityId()), this.getFactionId());
+                    }
 
-    }
+                    counter = 0;
+                }
+            }
+            heal_counter++;
+            counter++;
+        }
     }
 
     private void updatenotworking() {
-
         if (getEndWork()) {
             if (counter / 20 > 10) {
                 setEndWork(false);
@@ -636,8 +660,6 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
         } else {
             counter = 0;
         }
-
-
     }
 
     private void de_EquipSword(ItemStack stack){
@@ -671,8 +693,6 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
     public BlockPos getJobBlockPos() {
         return jobBlockPos;
     }
-
-
 
     @Override
     public boolean attackEntityAsMob(Entity p_attackEntityAsMob_1_){
@@ -715,8 +735,6 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
     }
 
     public void setWorking(boolean working){
-
-
         this.working = working;
     }
 
@@ -734,7 +752,6 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
 
     public void setCowmode(cattleFarmMode.FarmMode cowmode){
         this.cowmode = cowmode;
-
     }
 
     public cattleFarmMode.FarmMode getCowmode(){
