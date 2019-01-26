@@ -4,8 +4,7 @@ import com.mojang.authlib.GameProfile;
 import com.resimulators.simukraft.ConfigHandler;
 import com.resimulators.simukraft.GuiHandler;
 import com.resimulators.simukraft.SimUKraft;
-import com.resimulators.simukraft.client.particle.TeleportParticle;
-import com.resimulators.simukraft.common.entity.EntityParticleSpawner;
+
 import com.resimulators.simukraft.common.entity.ai.*;
 import com.resimulators.simukraft.common.entity.ai.pathfinding.CustomPathNavigateGround;
 import com.resimulators.simukraft.common.entity.player.SaveSimData;
@@ -93,12 +92,13 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
     private BlockPos jobBlockPos;
     private boolean working = false;
     private boolean endWork = false;
+    private boolean returntoblock = false;
     private final InventoryBasic inventory;
     //Housing
     private StructureBuilding homeLocation;
 
 
-    //inventory AI related
+    //Inventory AI related
     private BlockChest emptychest;
     private BlockPos emptychestpos;
     //Milking related
@@ -109,12 +109,16 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
     private EntitySheep sheeptarget;
     private FarmModes.SheepMode sheepmode = FarmModes.SheepMode.SHEAR;
 
-    //teleportation related
+    //Teleportation related
+    private boolean shouldteleport = false;
     private BlockPos teleporttarget; 
     private boolean teleport;
     private int teleportdelay = 140;
     private int particlecooldown = 20;
     private boolean particlspawning;
+
+
+
     public EntitySim(World worldIn) {
         super(worldIn);
         this.navigator = new CustomPathNavigateGround(this,this.world);
@@ -139,6 +143,7 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
         this.setProfessionAIs();
         this.tasks.addTask(4, new EntityAIMoveIndoors(this));
         this.tasks.addTask(5, new EntityAIRestrictOpenDoor(this));
+        //this.tasks.addTask(6,new AISimReturnToBlock(this));
         this.tasks.addTask(6, new EntityAIOpenDoor(this, true));
         this.tasks.addTask(8, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0f, 1.0f));
         this.tasks.addTask(9, new EntityAIWanderAvoidWater(this, 0.6d));
@@ -148,12 +153,12 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
     private void setProfessionAIs() {
         this.tasks.addTask(2, new AISimBuild(this));
         this.tasks.addTask(3, new AISimGotoToWork(this));
-        this.tasks.addTask(4,new AISimKillCow(this));
-        this.tasks.addTask(5,new AISimGetInventory(this));
-        this.tasks.addTask(6,new AISimEmptyInventory(this));
-        this.tasks.addTask(7,new AISimMilkCow(this));
-        this.tasks.addTask(6,new AiSimShearSheep(this));
-        this.tasks.addTask(4,new AiSimAttackNearest(0.7,true,this));
+        this.tasks.addTask(4, new AISimKillCow(this));
+        this.tasks.addTask(5, new AISimGetInventory(this));
+        this.tasks.addTask(6, new AISimEmptyInventory(this));
+        this.tasks.addTask(7, new AISimMilkCow(this));
+        this.tasks.addTask(6, new AiSimShearSheep(this));
+        this.tasks.addTask(4, new AiSimAttackNearest(0.7,true,this));
     }
 
     private void setAdditionalAITasks() {
@@ -247,6 +252,7 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
         if (this.getHomeLocation() != null) {
             compound.setTag("HomeLocation", getHomeLocation().serializeNBT());
         }
+        compound.setBoolean("shouldteleport",shouldteleport);
     }
 
     @Override
@@ -289,8 +295,10 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
         this.Factionid = compound.getLong("Factionid");
         if (compound.hasKey("HomeLocation"))
             this.setHomeLocation(homeLocation.deserializeNBT(compound));
+        this.shouldteleport = compound.getBoolean("shouldteleport");
         this.setCanPickUpLoot(true);
         this.setAdditionalAITasks();
+            System.out.println("inv size " + toolinv.getSlots() + " " + pickups.getSlots());
     }
 
     @Override
@@ -835,6 +843,23 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
 
     public boolean isParticlspawning(){
         return this.particlspawning;
+    }
+
+
+    public void setShouldteleport(boolean teleport){
+        this.shouldteleport = teleport;
+    }
+
+    public boolean isShouldteleport(){
+        return shouldteleport;
+    }
+
+    public void setReturntoblock(boolean returnto){
+        this.returntoblock = returnto;
+    }
+
+    public boolean isReturntoblock(){
+        return returntoblock;
     }
 }
 
