@@ -109,7 +109,7 @@ public class FactionData implements INBTSerializable<NBTTagCompound> {
         factionId = compound.getLong("id");
         mode = compound.getInteger("mode");
 
-        sendFactionPacket(new UpdateClientFactionPacket(compound));
+        //sendFactionPacket(new UpdateClientFactionPacket(compound));
     }
 
 

@@ -252,7 +252,7 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
         if (this.getHomeLocation() != null) {
             compound.setTag("HomeLocation", getHomeLocation().serializeNBT());
         }
-        compound.setBoolean("shouldteleport",shouldteleport);
+        //compound.setBoolean("shouldteleport",shouldteleport);
     }
 
     @Override
@@ -295,10 +295,10 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
         this.Factionid = compound.getLong("Factionid");
         if (compound.hasKey("HomeLocation"))
             this.setHomeLocation(homeLocation.deserializeNBT(compound));
-        this.shouldteleport = compound.getBoolean("shouldteleport");
+        //this.shouldteleport = compound.getBoolean("shouldteleport");
         this.setCanPickUpLoot(true);
         this.setAdditionalAITasks();
-            System.out.println("inv size " + toolinv.getSlots() + " " + pickups.getSlots());
+            //System.out.println("inv size " + toolinv.getSlots() + " " + pickups.getSlots());
     }
 
     @Override
