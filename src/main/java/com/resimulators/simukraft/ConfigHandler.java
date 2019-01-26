@@ -1,17 +1,10 @@
 package com.resimulators.simukraft;
 
-import com.google.common.collect.Lists;
 import jdk.nashorn.internal.ir.annotations.Ignore;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.*;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-
-import java.io.File;
-import java.sql.Ref;
-import java.util.List;
 
 @Config(modid=Reference.MOD_ID, name = Reference.MOD_ID)
 public class ConfigHandler {
