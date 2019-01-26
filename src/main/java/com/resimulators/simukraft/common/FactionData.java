@@ -4,6 +4,7 @@ import com.resimulators.simukraft.SimUKraft;
 import com.resimulators.simukraft.common.capabilities.ModCapabilities;
 import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
 import com.resimulators.simukraft.network.ClientHirePacket;
+import com.resimulators.simukraft.network.UpdateClientFactionPacket;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
@@ -107,6 +108,8 @@ public class FactionData implements INBTSerializable<NBTTagCompound> {
         }
         factionId = compound.getLong("id");
         mode = compound.getInteger("mode");
+
+        sendFactionPacket(new UpdateClientFactionPacket(compound));
     }
 
 

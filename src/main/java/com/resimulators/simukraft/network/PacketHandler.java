@@ -42,6 +42,7 @@ public class PacketHandler {
         INSTANCE.registerMessage(SaveSimDataUpdateHandler.class,SaveSimDataUpdatePacket.class,29,Side.CLIENT);
         INSTANCE.registerMessage(UpdateDayHandler.class,UpdateDayPacket.class,30,Side.CLIENT);
         INSTANCE.registerMessage(MinerUpdateDataHandler.class,MinerUpdateDataPacket.class,31,Side.CLIENT);
+        INSTANCE.registerMessage(UpdateClientFactionHandler.class,UpdateClientFactionPacket.class,32,Side.CLIENT);
     }
 
 }
