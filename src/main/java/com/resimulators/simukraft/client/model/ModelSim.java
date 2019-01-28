@@ -58,11 +58,17 @@ public class ModelSim extends ModelBiped {
         GlStateManager.popMatrix();
     }
 
+    @Override
+    public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn) {
+        super.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entityIn);
+        copyModelAngles(this.bipedLeftArm, this.femaleArmLeft);
+        copyModelAngles(this.bipedRightArm, this.femaleArmRight);
     public void setVisible(boolean visible, boolean female) {
         setVisible(visible);
         if (female) {
             this.bipedLeftArm.showModel = !visible;
             this.bipedRightArm.showModel = !visible;
+            this.maleArmLeft.showModel = !visible;
             this.femaleArmLeft.showModel = visible;
             this.femaleArmRight.showModel = visible;
             this.smallArms = true;
