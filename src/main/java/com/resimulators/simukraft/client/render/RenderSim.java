@@ -22,6 +22,7 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.layers.*;
 import net.minecraft.client.resources.DefaultPlayerSkin;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
@@ -45,6 +46,7 @@ public class RenderSim extends RenderLiving<EntitySim> {
     public RenderSim(RenderManager renderManager) {
         super(renderManager, new ModelSim(0.0f), 0.5F);
         this.modelSim = (ModelSim) super.getMainModel();
+        this.addLayer(new LayerBipedArmor(this));
         this.addLayer(new LayerHeldItem(this));
         this.addLayer(new LayerArrow(this));
         this.addLayer(new LayerCustomHead(this.getMainModel().bipedHead));
@@ -74,6 +76,21 @@ public class RenderSim extends RenderLiving<EntitySim> {
         ItemStack itemstack = entitySim.getHeldItemMainhand();
         ItemStack itemstack1 = entitySim.getHeldItemOffhand();
         modelSim.setVisible(true, entitySim.getFemale());
+        modelSim.bipedHeadwear.showModel = entitySim.hasArmorInSlot(EntityEquipmentSlot.HEAD);
+        modelSim.bipedBodyWear.showModel = entitySim.hasArmorInSlot(EntityEquipmentSlot.CHEST);
+        if (entitySim.getFemale()) {
+            modelSim.femaleLeftArmwear.showModel = entitySim.hasArmorInSlot(EntityEquipmentSlot.CHEST);
+            modelSim.femaleRightArmwear.showModel = entitySim.hasArmorInSlot(EntityEquipmentSlot.CHEST);
+            modelSim.bipedLeftArmwear.showModel = false;
+            modelSim.bipedRightArmwear.showModel = false;
+        } else {
+            modelSim.femaleLeftArmwear.showModel = false;
+            modelSim.femaleRightArmwear.showModel = false;
+            modelSim.bipedLeftArmwear.showModel = entitySim.hasArmorInSlot(EntityEquipmentSlot.CHEST);
+            modelSim.bipedRightArmwear.showModel = entitySim.hasArmorInSlot(EntityEquipmentSlot.CHEST);
+        }
+        modelSim.bipedLeftLegwear.showModel = entitySim.hasArmorInSlot(EntityEquipmentSlot.LEGS);
+        modelSim.bipedRightLegwear.showModel = entitySim.hasArmorInSlot(EntityEquipmentSlot.LEGS);
         modelSim.isSneak = entitySim.isSneaking();
         ModelBiped.ArmPose modelbiped$armpose = ModelBiped.ArmPose.EMPTY;
         ModelBiped.ArmPose modelbiped$armpose1 = ModelBiped.ArmPose.EMPTY;
