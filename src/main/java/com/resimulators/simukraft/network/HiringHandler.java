@@ -25,15 +25,12 @@ public class HiringHandler implements IMessageHandler<HiringPacket, IMessage> {
             FactionData data = SaveSimData.get(ctx.getServerHandler().player.getServerWorld()).getfaction(ctx.getServerHandler().player.getCapability(ModCapabilities.PlayerCap,null).getfactionid());
             data.removeUnemployedSim(sim);
             data.sendFactionPacket(new ClientHirePacket(sim.getUniqueID(),message.x,message.y,message.z));
-            System.out.println("sim " + sim);
-            System.out.println("unemployed sims in faction " + data.getUnemployedSims());
             sim.setProfession(message.job);
             sim.setJobBlockPos(new BlockPos(message.x,message.y,message.z));
             SaveSimData.get(sim.getEntityWorld()).getfaction(sim.getFactionId()).sendFactionPacket(new ClientHirePacket(id,message.x,message.y,message.z));
             if (ctx.getServerHandler().player.getServerWorld().getTileEntity(new BlockPos(message.x,message.y,message.z)) instanceof ISimIndustrial ){
-            ((ISimIndustrial)ctx.getServerHandler().player.getServerWorld().getTileEntity(new BlockPos(message.x,message.y,message.z))).setSimname(ctx.getServerHandler().player.getServerWorld().getEntityFromUuid(id).getEntityId());
+                ((ISimIndustrial)ctx.getServerHandler().player.getServerWorld().getTileEntity(new BlockPos(message.x,message.y,message.z))).setSimname(ctx.getServerHandler().player.getServerWorld().getEntityFromUuid(id).getEntityId());
                 ((ISimIndustrial) ctx.getServerHandler().player.getServerWorld().getTileEntity(new BlockPos(message.x,message.y,message.z))).setHired(true);
-
             }
         });
         return null;

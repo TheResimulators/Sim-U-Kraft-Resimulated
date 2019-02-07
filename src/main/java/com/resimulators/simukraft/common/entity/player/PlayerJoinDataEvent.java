@@ -1,13 +1,11 @@
 package com.resimulators.simukraft.common.entity.player;
 
 import com.jcraft.jogg.Packet;
+import com.resimulators.simukraft.common.FactionData;
 import com.resimulators.simukraft.common.capabilities.ModCapabilities;
 import com.resimulators.simukraft.common.entity.entitysim.SimEventHandler;
 import com.resimulators.simukraft.common.interfaces.PlayerCapability;
-import com.resimulators.simukraft.network.FactionCreatedPacket;
-import com.resimulators.simukraft.network.PacketHandler;
-import com.resimulators.simukraft.network.PlayerUpdatePacket;
-import com.resimulators.simukraft.network.SaveSimDataUpdatePacket;
+import com.resimulators.simukraft.network.*;
 import com.sun.glass.ui.View;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.common.capabilities.Capability;
@@ -35,13 +33,16 @@ public class PlayerJoinDataEvent {
                 SaveSimData.get(event.player.world).getfaction(id).addPlayer(event.player.getUniqueID());
 
                 factionid = id;
-                SaveSimData.get(event.player.world).getfaction(factionid).sendFactionPacket(new FactionCreatedPacket(id,event.player.getName()));
+                FactionData data = SaveSimData.get(event.player.world).getfaction(factionid);
+                data.sendFactionPacket(new FactionCreatedPacket(id,event.player.getName()));
             }
+            FactionData data = SaveSimData.get(event.player.world).getfaction(factionid);
             if (SaveSimData.get(event.player.world) == null)
                 return;
                 event.player.getCapability(ModCapabilities.PlayerCap,null).updateClient(event.player);
                 PacketHandler.INSTANCE.sendTo(new SaveSimDataUpdatePacket(SaveSimData.get(event.player.world).serializeNBT()),(EntityPlayerMP) event.player);
             PacketHandler.INSTANCE.sendTo(new PlayerUpdatePacket(SaveSimData.get(event.player.world).getfaction(factionid).getTotalSims(), SaveSimData.get(event.player.world).getfaction(factionid).getUnemployedSims(), SimEventHandler.getCredits(),factionid,event.player.getCapability(ModCapabilities.PlayerCap,null).getmode()), (EntityPlayerMP) event.player);
+            PacketHandler.INSTANCE.sendToServer(new UpdateClientFactionPacket(data.serializeNBT()));
         }
     }
 }}
