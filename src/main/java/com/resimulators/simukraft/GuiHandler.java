@@ -53,6 +53,8 @@ public class GuiHandler implements IGuiHandler {
         else if (ID == GUI.HIRED.ordinal())
             return new GuiHire(tileEntity);
         else if (ID == GUI.SIM.ordinal())
+            return new GuiSim(player);
+        else if (ID == GUI.SIMINV.ordinal())
             return new GuiSimInv(player.inventory, (EntitySim) world.getEntityByID(x));
         else if (ID == GUI.BUILDER.ordinal())
             return new GuiBuilding(x, z, y);
