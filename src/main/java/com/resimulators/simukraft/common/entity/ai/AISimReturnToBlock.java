@@ -1,10 +1,7 @@
 package com.resimulators.simukraft.common.entity.ai;
 
 import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
-import com.sun.glass.ui.View;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.inventory.Slot;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -20,7 +17,7 @@ public class AISimReturnToBlock extends EntityAIBase {
     }
     @Override
     public boolean shouldExecute() {
-        return checkInvSpace() && sim.getWorking() && !sim.isReturntoblock()&& !sim.isShouldteleport();
+        return checkInvSpace() && sim.isWorking() && !sim.isReturntoblock()&& !sim.isShouldteleport();
     }
 
 

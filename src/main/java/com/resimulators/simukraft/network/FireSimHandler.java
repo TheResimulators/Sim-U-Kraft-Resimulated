@@ -25,6 +25,7 @@ public class FireSimHandler implements IMessageHandler<FireSimPacket, IMessage> 
                 EntitySim sim = (EntitySim) Minecraft.getMinecraft().world.getEntityByID(message.ids);
                 if (sim != null) {
                     sim.setProfession(0);
+                    sim.setNotWorking();
                 }
             }
         });

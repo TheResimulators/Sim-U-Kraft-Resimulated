@@ -1,21 +1,10 @@
 package com.resimulators.simukraft.common.entity.ai;
 
 import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
-import net.minecraft.entity.passive.EntityCow;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 public class AISimKillCow extends EntityAIBase{
@@ -35,7 +24,7 @@ public class AISimKillCow extends EntityAIBase{
     //        System.out.println("Distance " + sim.getDistance(sim.getJobBlockPos().getX(),sim.getJobBlockPos().getY()+ 1,sim.getJobBlockPos().getZ()));
       //      System.out.println("executing " + (sim.getLabeledProfession().equals("Cattle Farmer") && sim.getDistanceSq(sim.getJobBlockPos().add(0, 1, 0)) <= 3));
         //    System.out.println("job " + sim.getLabeledProfession().equals("Cattle Farmer"));
-            return sim.getDistance(sim.getJobBlockPos().getX(),sim.getJobBlockPos().getY(),sim.getJobBlockPos().getZ()) <= 3 && !sim.getWorking() && !sim.getLabeledProfession().equals("Nitwit");
+            return sim.getDistance(sim.getJobBlockPos().getX(),sim.getJobBlockPos().getY(),sim.getJobBlockPos().getZ()) <= 3 && !sim.isWorking() && !sim.getLabeledProfession().equals("Nitwit");
         }else {return false;
         }
     }
@@ -43,8 +32,8 @@ public class AISimKillCow extends EntityAIBase{
 
     @Override
     public void startExecuting(){
-        sim.setWorking(true);
-        System.out.println("Sim working " + sim.getWorking());
+        sim.setWorking();
+        System.out.println("Sim working " + sim.isWorking());
         }
 
     @Override

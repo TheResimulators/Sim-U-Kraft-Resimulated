@@ -43,7 +43,7 @@ public class AiSimShearSheep extends EntityAIBase {
     public boolean shouldContinueExecuting(){
         workshift--;
         if (workshift <= 0){
-            sim.setEndWork(true);
+            sim.setEndWork();
             workshift = 100;
             return false;
         }

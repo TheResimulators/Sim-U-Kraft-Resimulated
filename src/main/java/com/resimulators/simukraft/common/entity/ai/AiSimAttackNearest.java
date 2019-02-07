@@ -104,7 +104,7 @@ public class AiSimAttackNearest extends EntityAIBase {
         worktimelimit--;
 
         if (worktimelimit <= 0){
-            sim.setEndWork(true);
+            sim.setEndWork();
             worktimelimit = 100;
             return false;
 

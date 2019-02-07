@@ -9,13 +9,10 @@ import com.resimulators.simukraft.common.entity.ai.*;
 import com.resimulators.simukraft.common.entity.ai.pathfinding.CustomPathNavigateGround;
 import com.resimulators.simukraft.common.entity.player.SaveSimData;
 import com.resimulators.simukraft.common.enums.FarmModes;
-import com.resimulators.simukraft.common.tileentity.structure.Structure;
 import com.resimulators.simukraft.init.ModItems;
 import com.resimulators.simukraft.network.HungerPacket;
 import com.resimulators.simukraft.structure.StructureBuilding;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
-import net.minecraft.client.Minecraft;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
@@ -90,9 +87,14 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
     private int wealth;
     //Job Common
     private BlockPos jobBlockPos;
-    private boolean working = false;
-    private boolean endWork = false;
+    //workstatus: 0 = not working, 1 = going to work, 2 = working,3 = finish work
+    private int workstatus = 0;
     private boolean returntoblock = false;
+    //workcooldown: cooldown for when the sims worktime has expired. when is zero allows sims to work
+    private int workcooldown;
+    //worktime: increase every second the sim is working to only allow working a
+    //certain amount per day. this allows them to do other needs e.g eat socialize
+    private int worktime = 0;
     private final InventoryBasic inventory;
     //Housing
     private StructureBuilding homeLocation;
@@ -114,7 +116,6 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
     private BlockPos teleporttarget; 
     private boolean teleport;
     private int teleportdelay = 140;
-    private int particlecooldown = 20;
     private boolean particlspawning;
 
 
@@ -144,6 +145,7 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
         this.tasks.addTask(4, new EntityAIMoveIndoors(this));
         this.tasks.addTask(5, new EntityAIRestrictOpenDoor(this));
         //this.tasks.addTask(6,new AISimReturnToBlock(this));
+        this.tasks.addTask(6, new AISimTeleport(this));
         this.tasks.addTask(6, new EntityAIOpenDoor(this, true));
         this.tasks.addTask(8, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0f, 1.0f));
         this.tasks.addTask(9, new EntityAIWanderAvoidWater(this, 0.6d));
@@ -248,11 +250,11 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
         compound.setTag("Inventory", nbtTagList);
         compound.setInteger("hunger", this.hunger);
         compound.setLong("Factionid",Factionid);
-        compound.setBoolean("working",working);
+        compound.setInteger("workstatus",workstatus);
         if (this.getHomeLocation() != null) {
             compound.setTag("HomeLocation", getHomeLocation().serializeNBT());
         }
-        //compound.setBoolean("shouldteleport",shouldteleport);
+        compound.setBoolean("shouldteleport",shouldteleport);
     }
 
     @Override
@@ -278,7 +280,7 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
         if (compound.hasKey("FarmPos1") && compound.hasKey("FarmPos1"))
             this.setBounds(new StructureBoundingBox(this.getFarmPos1(), this.getFarmPos2()));
         if (compound.hasKey("working"))
-            this.working = compound.getBoolean("working");
+            this.workstatus = compound.getInteger("workstatus");
         NBTTagList nbtTagList = compound.getTagList("Inventory", 10);
         for (int i = 0; i < nbtTagList.tagCount(); i++) {
             ItemStack itemStack = new ItemStack(nbtTagList.getCompoundTagAt(i));
@@ -295,10 +297,10 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
         this.Factionid = compound.getLong("Factionid");
         if (compound.hasKey("HomeLocation"))
             this.setHomeLocation(homeLocation.deserializeNBT(compound));
-        //this.shouldteleport = compound.getBoolean("shouldteleport");
+        this.shouldteleport = compound.getBoolean("shouldteleport");
         this.setCanPickUpLoot(true);
         this.setAdditionalAITasks();
-            //System.out.println("inv size " + toolinv.getSlots() + " " + pickups.getSlots());
+
     }
 
     @Override
@@ -618,7 +620,7 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
         if (!world.isRemote){
         //heal counter. checks to heal after
         updatenotworking();
-        if (endWork){
+        if (getEndWork()){
             de_EquipSword(getActiveItemStack());
         }
         if (heal_counter / 20 > 4) {
@@ -653,7 +655,7 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
             setParticlspawning(false);
             teleportdelay = 140;
             teleporttarget = null;
-            setNoAI(false);
+            setAIMoveSpeed(0.7f);
 
 
         }else{
@@ -661,12 +663,17 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
         if (teleporttarget ==  null){
             teleport = false;
             particlspawning = false;
+            setAIMoveSpeed(0.7f);
         }
         if (teleportdelay <= 40 && teleporttarget != null){
+            setWorking();
             this.setPosition(getTeleporttarget().getX()+0.5f,getTeleporttarget().getY()+2,getTeleporttarget().getZ()+0.5f);
-
             teleporttarget=null;
         }
+            }
+
+            if (this.getProfession() == 0){
+                if (this.workstatus != 0)workstatus = 0;
             }
         }
 
@@ -677,7 +684,7 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
 
         if (getEndWork()) {
             if (counter / 20 > 10) {
-                setEndWork(false);
+                setEndWork();
                 counter = 0;
             } else {
                 counter++;
@@ -771,14 +778,12 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
         return flag;
     }
 
-    public void setWorking(boolean working){
-
-
-        this.working = working;
+    public void setWorking(){
+        this.workstatus = 2;
     }
 
-    public boolean getWorking(){
-        return working;
+    public boolean isWorking(){
+        return workstatus == 2;
     }
 
     public void setTargetCow(EntityCow cow){
@@ -798,12 +803,12 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
         return cowmode;
     }
 
-    public void setEndWork(boolean end_work){
-        this.endWork = end_work;
+    public void setEndWork(){
+        this.workstatus = 3;
     }
 
     public boolean getEndWork(){
-        return endWork;
+        return workstatus == 3;
     }
 
     public void setEmptychest(BlockChest chest,BlockPos pos){
@@ -861,6 +866,24 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
     public boolean isReturntoblock(){
         return returntoblock;
     }
+
+    public void setNotWorking(){
+        workstatus = 0;
+    }
+
+    public boolean isNotWorking(){
+        return workstatus == 0;
+    }
+    //same as going to work
+    public void setStartingWork(){
+        workstatus = 1;
+    }
+    //same as going to work
+    public boolean isStartingWork(){
+        return workstatus == 1;
+    }
+
+
 }
 
 

@@ -13,7 +13,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraftforge.common.IShearable;
 
 import javax.annotation.Nullable;
 import java.util.Comparator;
@@ -69,7 +68,7 @@ public class AISimNearestAttackableTarget <T extends EntityLivingBase> extends E
      */
     public boolean shouldExecute()
     {
-        if (!sim.getWorking()){
+        if (!sim.isWorking()){
             return false;}
         if (this.targetClass != EntityPlayer.class && this.targetClass != EntityPlayerMP.class)
         {
@@ -99,7 +98,7 @@ public class AISimNearestAttackableTarget <T extends EntityLivingBase> extends E
                         }
                     }
                     if (sim.getSheeptarget() == null){
-                        sim.setEndWork(true);
+                        sim.setEndWork();
                     }
                 }
 
