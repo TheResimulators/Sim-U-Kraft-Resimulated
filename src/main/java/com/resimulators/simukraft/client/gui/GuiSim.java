@@ -49,12 +49,13 @@ public class GuiSim extends GuiScreen {
             GlStateManager.disableLighting();
             drawString(mc.fontRenderer, simName, (width / 2 - 125 + 8), (height / 2 - 100 + 8), Color.WHITE.getRGB());
             drawString(mc.fontRenderer, "Gender: " + entitySim.getGender(), (width / 2 - 125 + 8), (height / 2 - 100 + 20), Color.WHITE.getRGB());
-            drawString(mc.fontRenderer, "Grown up: " + (entitySim.getGrowingAge() == 1 ? "true" : "false"), (width / 2 - 125 + 8), (height / 2 - 100 + 32), Color.WHITE.getRGB());
-            drawString(mc.fontRenderer, "Variation: " + entitySim.getVariation(), (width / 2 - 125 + 8), (height / 2 - 100 + 44), Color.WHITE.getRGB());
-            drawString(mc.fontRenderer, "Profession: " + entitySim.getLabeledProfession(), (width / 2 - 125 + 8), (height / 2 - 100 + 56), Color.WHITE.getRGB());
+            drawString(mc.fontRenderer, "Primary Hand: " + (entitySim.isLeftHanded() ? "Left" : "Right"), (width / 2 - 125 + 8), (height / 2 - 100 + 32), Color.WHITE.getRGB());
+            drawString(mc.fontRenderer, "Grown up: " + (entitySim.getGrowingAge() == 1 ? "true" : "false"), (width / 2 - 125 + 8), (height / 2 - 100 + 44), Color.WHITE.getRGB());
+            drawString(mc.fontRenderer, "Variation: " + entitySim.getVariation(), (width / 2 - 125 + 8), (height / 2 - 100 + 56), Color.WHITE.getRGB());
+            drawString(mc.fontRenderer, "Profession: " + entitySim.getLabeledProfession(), (width / 2 - 125 + 8), (height / 2 - 100 + 68), Color.WHITE.getRGB());
             drawString(mc.fontRenderer, "Building: " + entitySim.isAllowedToBuild(), (width / 2 - 125 + 8), (height / 2 - 100 + 80), Color.WHITE.getRGB());
-            drawString(mc.fontRenderer, "Hunger: " + entitySim.getFoodLevel(), (width / 2) - 40, (height / 4) * 3 + 30, Color.WHITE.getRGB());
-            drawString(mc.fontRenderer, "Health: " + entitySim.getHealth(), (width / 2) - 40, (height / 4) * 3 - 30, Color.WHITE.getRGB());
+            drawString(mc.fontRenderer, "Hunger: " + entitySim.getFoodLevel(), (width / 2 - 125 + 8), (height / 2 - 100 + 92), Color.WHITE.getRGB());
+            drawString(mc.fontRenderer, "Health: " + entitySim.getHealth(), (width / 2 - 125 + 8), (height / 2 - 100 + 104), Color.WHITE.getRGB());
             GlStateManager.enableLighting();
         }
         GlStateManager.popMatrix();
