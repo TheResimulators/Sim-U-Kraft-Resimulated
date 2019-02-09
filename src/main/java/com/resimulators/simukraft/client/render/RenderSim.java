@@ -76,7 +76,6 @@ public class RenderSim extends RenderLiving<EntitySim> {
         ItemStack itemstack = entitySim.getHeldItemMainhand();
         ItemStack itemstack1 = entitySim.getHeldItemOffhand();
         modelSim.setVisible(true, entitySim.getFemale());
-        modelSim.bipedHeadwear.showModel = entitySim.hasArmorInSlot(EntityEquipmentSlot.HEAD);
         modelSim.bipedBodyWear.showModel = entitySim.hasArmorInSlot(EntityEquipmentSlot.CHEST);
         if (entitySim.getFemale()) {
             modelSim.femaleLeftArmwear.showModel = entitySim.hasArmorInSlot(EntityEquipmentSlot.CHEST);

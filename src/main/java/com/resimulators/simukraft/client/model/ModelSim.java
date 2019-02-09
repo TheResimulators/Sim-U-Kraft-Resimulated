@@ -121,14 +121,22 @@ public class ModelSim extends ModelBiped {
             this.bipedLeftArm.showModel = !visible;
             this.bipedRightArm.showModel = !visible;
             this.maleArmLeft.showModel = !visible;
+            this.bipedLeftArmwear.showModel = !visible;
+            this.bipedRightArmwear.showModel = !visible;
             this.femaleArmLeft.showModel = visible;
             this.femaleArmRight.showModel = visible;
             this.femaleLeftArmwear.showModel = visible;
             this.femaleRightArmwear.showModel = visible;
             this.smallArms = true;
+        } else {
+            this.femaleArmLeft.showModel = !visible;
+            this.femaleArmRight.showModel = !visible;
+            this.femaleLeftArmwear.showModel = !visible;
+            this.femaleRightArmwear.showModel = !visible;
+            this.bipedLeftArmwear.showModel = visible;
+            this.bipedRightArmwear.showModel = visible;
+            this.smallArms = false;
         }
-        this.bipedLeftArmwear.showModel = visible;
-        this.bipedRightArmwear.showModel = visible;
         this.bipedLeftLegwear.showModel = visible;
         this.bipedRightLegwear.showModel = visible;
         this.bipedBodyWear.showModel = visible;
