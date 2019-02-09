@@ -41,22 +41,23 @@ public class SimEventHandler {
             if (!world.isRemote) {
                 UUID id = entity.getUniqueID();
                 if (SaveSimData.get(world) != null) {
-                    if (Minecraft.getMinecraft().player == null){
+                    if (Minecraft.getMinecraft().player == null) {
 
                         return;
                     }
                     Long playerid = ((EntitySim) entity).getFactionId();
                     FactionData data = SaveSimData.get(event.getWorld()).getFaction(playerid);
+                    if (data != null) {
                         if (!data.getTotalSims().contains(id)) {
                             data.addTotalSim(id);
                             data.addUnemployedSim(id);
                             data.sendFactionPacket(new SimSpawnPacket(id));
-
                         }
                     }
                 }
             }
         }
+    }
 
     @SubscribeEvent
     public void Sim_Death(LivingDeathEvent event) {
