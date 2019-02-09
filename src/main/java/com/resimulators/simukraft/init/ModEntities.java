@@ -38,8 +38,8 @@ public class ModEntities {
 
 
     public static void init() {
-        addEntity(EntitySim.class,"sim",0x000000, 0x000000);
-        addEntity(EntityParticleSpawner.class,"particle spawner");
+        addEntity(EntitySim.class, "sim", 0x000000, 0x000000);
+        addEntity(EntityParticleSpawner.class, "particle_spawner");
     }
 
     private static EntityEntryBuilder<Entity> createBuilder(Class<? extends Entity> entityClass, String name)
