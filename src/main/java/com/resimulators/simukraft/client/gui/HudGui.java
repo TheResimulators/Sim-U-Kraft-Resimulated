@@ -4,13 +4,10 @@ import com.resimulators.simukraft.common.capabilities.ModCapabilities;
 import com.resimulators.simukraft.common.entity.entitysim.SimEventHandler;
 import com.resimulators.simukraft.common.entity.player.SaveSimData;
 import com.resimulators.simukraft.common.enums.EnumDay;
-import com.resimulators.simukraft.common.interfaces.CowCapability;
 import com.resimulators.simukraft.common.interfaces.PlayerCapability;
-import ibxm.Player;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -18,7 +15,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 public class HudGui extends Gui {
@@ -48,11 +44,11 @@ public class HudGui extends Gui {
         if (mode == -2)
             return;
         long factionid = playerCap.getfactionid();
-        if (simData.getfaction(factionid) == null)
+        if (simData.getFaction(factionid) == null)
             return;
-        List<UUID> sims = simData.getfaction(factionid).getTotalSims();
+        List<UUID> sims = simData.getFaction(factionid).getTotalSims();
         int population = sims == null ? 0 : sims.size();
-        sims = simData.getfaction(factionid).getUnemployedSims();
+        sims = simData.getFaction(factionid).getUnemployedSims();
         int unemployedsize = sim == null ? 0 : sims.size();
         drawString(mc.fontRenderer, "Population " + population + ", Unemployed sims: " + unemployedsize, 1, 1, Color.WHITE.getRGB());
         drawString(mc.fontRenderer,"Day " + EnumDay.DayStorage.getTotaldays()+ " - " + EnumDay.getDay(EnumDay.DayStorage.getDayInt()).toString(),1,11,Color.WHITE.getRGB());

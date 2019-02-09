@@ -14,7 +14,7 @@ public class FactionCreatedHandler implements IMessageHandler<FactionCreatedPack
 
         mainthread.addScheduledTask(()->{
             SaveSimData.get(Minecraft.getMinecraft().world).addfaction(message.factionid,message.name);
-            SaveSimData.get(Minecraft.getMinecraft().world).getfaction(message.factionid).addPlayer(Minecraft.getMinecraft().player.getUniqueID());
+            SaveSimData.get(Minecraft.getMinecraft().world).getFaction(message.factionid).addPlayer(Minecraft.getMinecraft().player.getUniqueID());
             System.out.println("this was called faction is updated on client");
 
         });return null;

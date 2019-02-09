@@ -18,10 +18,10 @@ public class UpdateSimHandler implements IMessageHandler<UpdateSimPacket, IMessa
             String list = message.List;
             Long playerid = ctx.getServerHandler().player.getCapability(ModCapabilities.PlayerCap,null).getfactionid();
             if (list.equals("unemployed")) {
-                SaveSimData.get(ctx.getServerHandler().player.world).getfaction(playerid).addUnemployedSim(e);
+                SaveSimData.get(ctx.getServerHandler().player.world).getFaction(playerid).addUnemployedSim(e);
             }
             if (list.equals("total")) {
-                SaveSimData.get(ctx.getServerHandler().player.world).getfaction(playerid).addTotalSim(e);
+                SaveSimData.get(ctx.getServerHandler().player.world).getFaction(playerid).addTotalSim(e);
             }
         });
         return null;

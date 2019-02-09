@@ -20,8 +20,8 @@ public class FireSimHandler implements IMessageHandler<FireSimPacket, IMessage> 
         IThreadListener mainThread = Minecraft.getMinecraft();
         mainThread.addScheduledTask(() -> {
             UUID id = message.sims;
-            if (!SaveSimData.get(Minecraft.getMinecraft().world).getfaction(Minecraft.getMinecraft().player.getCapability(ModCapabilities.PlayerCap,null).getfactionid()).getUnemployedSims().contains(id)) {
-                SaveSimData.get(Minecraft.getMinecraft().world).getfaction(Minecraft.getMinecraft().player.getCapability(ModCapabilities.PlayerCap,null).getfactionid()).getUnemployedSims().add(id);
+            if (!SaveSimData.get(Minecraft.getMinecraft().world).getFaction(Minecraft.getMinecraft().player.getCapability(ModCapabilities.PlayerCap,null).getfactionid()).getUnemployedSims().contains(id)) {
+                SaveSimData.get(Minecraft.getMinecraft().world).getFaction(Minecraft.getMinecraft().player.getCapability(ModCapabilities.PlayerCap,null).getfactionid()).getUnemployedSims().add(id);
                 EntitySim sim = (EntitySim) Minecraft.getMinecraft().world.getEntityByID(message.ids);
                 if (sim != null) {
                     sim.setProfession(0);

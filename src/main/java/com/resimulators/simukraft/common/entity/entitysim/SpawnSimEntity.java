@@ -8,8 +8,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.IFMLHandledException;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
@@ -36,9 +34,9 @@ public class SpawnSimEntity {
                             ticks.put(player.getUniqueID(),tick);
                         if (ticks.get(player.getUniqueID())/20 > 5) {
                             ticks.put(player.getUniqueID(),0);
-                            int size = SaveSimData.get(world).getfaction(event.player.getCapability(ModCapabilities.PlayerCap,null).getfactionid()).getUnemployedSims().size();
+                            int size = SaveSimData.get(world).getFaction(event.player.getCapability(ModCapabilities.PlayerCap,null).getfactionid()).getUnemployedSims().size();
                             long factionid = event.player.getCapability(ModCapabilities.PlayerCap,null).getfactionid();
-                            FactionData data = SaveSimData.get(world).getfaction(factionid);
+                            FactionData data = SaveSimData.get(world).getFaction(factionid);
                             List<UUID> unemployedsimms =  data.getUnemployedSims();
                             data.getUnemployedSims();
                             if (size < 1) {

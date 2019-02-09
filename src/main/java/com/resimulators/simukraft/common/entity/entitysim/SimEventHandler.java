@@ -5,6 +5,7 @@ import com.resimulators.simukraft.common.interfaces.ISimJob;
 import com.resimulators.simukraft.network.SimDeathPacket;
 import com.resimulators.simukraft.network.SimSpawnPacket;
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.Entity;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -22,13 +23,11 @@ public class SimEventHandler {
     private static float credits = 10;
 
     public static float getCredits() {
-
         return credits;
     }
 
     public static float setCredits(float credit) {
         credits = credit;
-
         return credits;
     }
 
@@ -37,20 +36,23 @@ public class SimEventHandler {
     @SubscribeEvent
     public void Sim_Spawn(LivingSpawnEvent event) {
         World world = event.getWorld();
-        if (event.getEntity() instanceof EntitySim) {
+        Entity entity = event.getEntity();
+        if (entity instanceof EntitySim) {
             if (!world.isRemote) {
-                UUID id = event.getEntity().getUniqueID();
+                UUID id = entity.getUniqueID();
                 if (SaveSimData.get(world) != null) {
-                    if (Minecraft.getMinecraft().player == null)
-                        return;
-                    Long playerid = ((EntitySim) event.getEntity()).getFactionId();
-                    FactionData data = SaveSimData.get(event.getWorld()).getfaction(playerid);
-                    if (!data.getTotalSims().contains(id)) {
-                        data.addTotalSim(id);
-                        data.addUnemployedSim(id);
-                        data.sendFactionPacket(new SimSpawnPacket(id));
+                    if (Minecraft.getMinecraft().player == null){
 
+                        return;
                     }
+                    Long playerid = ((EntitySim) entity).getFactionId();
+                    FactionData data = SaveSimData.get(event.getWorld()).getFaction(playerid);
+                        if (!data.getTotalSims().contains(id)) {
+                            data.addTotalSim(id);
+                            data.addUnemployedSim(id);
+                            data.sendFactionPacket(new SimSpawnPacket(id));
+
+                        }
                     }
                 }
             }
@@ -65,7 +67,7 @@ public class SimEventHandler {
                 UUID id = event.getEntity().getPersistentID();
                 int ids = event.getEntity().getEntityId();
                 long factionid = sim.getFactionId();
-                FactionData data = SaveSimData.get(world).getfaction(factionid);
+                FactionData data = SaveSimData.get(world).getFaction(factionid);
                 data.removeTotalSim(sim);
                 data.removeUnemployedSim(sim.getUniqueID());
                 data.sendFactionPacket(new SimDeathPacket(ids,factionid));

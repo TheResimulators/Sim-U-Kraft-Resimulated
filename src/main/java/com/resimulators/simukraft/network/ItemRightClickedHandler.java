@@ -4,13 +4,8 @@ import com.resimulators.simukraft.ConfigHandler;
 import com.resimulators.simukraft.common.capabilities.ModCapabilities;
 import com.resimulators.simukraft.common.entity.player.SaveSimData;
 import net.minecraft.util.IThreadListener;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-import net.minecraftforge.fml.relauncher.Side;
-
-import java.util.UUID;
 
 public class ItemRightClickedHandler implements IMessageHandler<ItemRightClickedPacket,ItemClickedReturnPacket> {
     private int mode;
@@ -23,8 +18,8 @@ public class ItemRightClickedHandler implements IMessageHandler<ItemRightClicked
             if (ctx.getServerHandler().player.getServer().isDedicatedServer()){
                 mode = ConfigHandler.Server_Configs.mode;
             }
-            else if (SaveSimData.get(ctx.getServerHandler().player.world).getfaction(ctx.getServerHandler().player.getCapability(ModCapabilities.PlayerCap,null).getfactionid()).getMode() != -1){
-                mode = SaveSimData.get(ctx.getServerHandler().player.world).getfaction(ctx.getServerHandler().player.getCapability(ModCapabilities.PlayerCap,null).getfactionid()).getMode();
+            else if (SaveSimData.get(ctx.getServerHandler().player.world).getFaction(ctx.getServerHandler().player.getCapability(ModCapabilities.PlayerCap,null).getfactionid()).getMode() != -1){
+                mode = SaveSimData.get(ctx.getServerHandler().player.world).getFaction(ctx.getServerHandler().player.getCapability(ModCapabilities.PlayerCap,null).getfactionid()).getMode();
             }
 
             else{mode = -2;}
