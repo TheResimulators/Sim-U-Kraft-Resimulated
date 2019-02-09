@@ -1,17 +1,19 @@
 package com.resimulators.simukraft.common.entity.entitysim;
+import com.resimulators.simukraft.common.FactionData;
+import com.resimulators.simukraft.common.capabilities.ModCapabilities;
 import com.resimulators.simukraft.common.entity.player.SaveSimData;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.datafix.fixes.SpawnEggNames;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.IFMLHandledException;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 public class SpawnSimEntity {
     int tick;
@@ -21,8 +23,8 @@ public class SpawnSimEntity {
             World world = event.player.getEntityWorld();
 
             if (event.phase == TickEvent.Phase.START){
-
-                if (SaveSimData.get(world).isMode(event.player.getUniqueID()) != -1){
+                if (event.player.hasCapability(ModCapabilities.PlayerCap,null)){
+                if (event.player.getCapability(ModCapabilities.PlayerCap,null).getmode() != -1){
                     if (!world.isRemote){
                     Random rand = world.rand;
                         EntityPlayer player = event.player;
@@ -34,9 +36,15 @@ public class SpawnSimEntity {
                             ticks.put(player.getUniqueID(),tick);
                         if (ticks.get(player.getUniqueID())/20 > 5) {
                             ticks.put(player.getUniqueID(),0);
-                            if (SaveSimData.get(world).getUnemployedSims(SaveSimData.get(world).getPlayerFaction(player.getUniqueID())).size() < 1) {
+                            int size = SaveSimData.get(world).getfaction(event.player.getCapability(ModCapabilities.PlayerCap,null).getfactionid()).getUnemployedSims().size();
+                            long factionid = event.player.getCapability(ModCapabilities.PlayerCap,null).getfactionid();
+                            FactionData data = SaveSimData.get(world).getfaction(factionid);
+                            List<UUID> unemployedsimms =  data.getUnemployedSims();
+                            data.getUnemployedSims();
+                            if (size < 1) {
                                 EntitySim entity = new EntitySim(world);
-                                entity.setFactionid(SaveSimData.get(world).getPlayerFaction(event.player.getUniqueID()));
+                                SpawnEggNames name = new SpawnEggNames();
+                                entity.setFactionid(factionid);
                                 double entityx = player.posX + rand.nextInt(11)-5;
                                 double entityz = player.posZ + rand.nextInt(11)-5;
                                 int height = world.getHeight((int)entityx,(int)entityz);
@@ -51,4 +59,4 @@ public class SpawnSimEntity {
             }
         }
     }
-}
+}}

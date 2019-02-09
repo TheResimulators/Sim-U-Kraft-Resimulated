@@ -3,6 +3,7 @@ package com.resimulators.simukraft.client.gui;
 import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
 import com.resimulators.simukraft.network.PacketHandler;
 import com.resimulators.simukraft.network.SimInvPacket;
+import com.resimulators.simukraft.network.TeleportPacket;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
@@ -19,6 +20,7 @@ public class GuiSim extends GuiScreen {
     private EntitySim entitySim;
     private String simName;
     private GuiButton inv;
+    private GuiButton teleport;
 
     public GuiSim(EntityPlayer player) {
         try {

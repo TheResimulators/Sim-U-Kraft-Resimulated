@@ -1,5 +1,6 @@
 package com.resimulators.simukraft.network;
 
+import com.resimulators.simukraft.common.capabilities.ModCapabilities;
 import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
 import com.resimulators.simukraft.common.entity.player.SaveSimData;
 import net.minecraft.client.Minecraft;
@@ -19,12 +20,12 @@ public class FireSimHandler implements IMessageHandler<FireSimPacket, IMessage> 
         IThreadListener mainThread = Minecraft.getMinecraft();
         mainThread.addScheduledTask(() -> {
             UUID id = message.sims;
-            UUID playerid = Minecraft.getMinecraft().player.getUniqueID();
-            if (!SaveSimData.get(Minecraft.getMinecraft().world).getUnemployedSims(SaveSimData.get(Minecraft.getMinecraft().world).getPlayerFaction(Minecraft.getMinecraft().player.getUniqueID())).contains(id)) {
-                SaveSimData.get(Minecraft.getMinecraft().world).addUnemployedsim(id,SaveSimData.get(Minecraft.getMinecraft().world).getPlayerFaction(Minecraft.getMinecraft().player.getUniqueID()));
+            if (!SaveSimData.get(Minecraft.getMinecraft().world).getfaction(Minecraft.getMinecraft().player.getCapability(ModCapabilities.PlayerCap,null).getfactionid()).getUnemployedSims().contains(id)) {
+                SaveSimData.get(Minecraft.getMinecraft().world).getfaction(Minecraft.getMinecraft().player.getCapability(ModCapabilities.PlayerCap,null).getfactionid()).getUnemployedSims().add(id);
                 EntitySim sim = (EntitySim) Minecraft.getMinecraft().world.getEntityByID(message.ids);
                 if (sim != null) {
                     sim.setProfession(0);
+                    sim.setNotWorking();
                 }
             }
         });

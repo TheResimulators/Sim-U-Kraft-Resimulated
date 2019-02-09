@@ -42,7 +42,7 @@ public class GuiSheep extends GuiScreen {
 
     @Override
     public void initGui(){
-        buttonList.add(hirebutton = new menuButton(0,0,height-20,100,"Hire Cattle Farmer"));
+        buttonList.add(hirebutton = new menuButton(0,0,height-20,100,"Hire Sheep Farmer"));
         buttonList.add(showemployess = new menuButton(1,width-100,height-20,100,"Show employees"));
         buttonList.add(firebutton = new menuButton(2,5,height-20,"Fire"));
         firebutton.enabled = false;

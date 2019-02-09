@@ -1,5 +1,6 @@
 package com.resimulators.simukraft.network;
 
+import com.resimulators.simukraft.common.capabilities.ModCapabilities;
 import com.resimulators.simukraft.common.entity.player.SaveSimData;
 import net.minecraft.util.IThreadListener;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -15,12 +16,12 @@ public class UpdateSimHandler implements IMessageHandler<UpdateSimPacket, IMessa
         mainThread.addScheduledTask(() -> {
             UUID e = message.sims;
             String list = message.List;
-            Long playerid = SaveSimData.get(ctx.getServerHandler().player.world).getPlayerFaction(ctx.getServerHandler().player.getUniqueID());
+            Long playerid = ctx.getServerHandler().player.getCapability(ModCapabilities.PlayerCap,null).getfactionid();
             if (list.equals("unemployed")) {
-                SaveSimData.get(ctx.getServerHandler().player.world).addUnemployedsim(e,playerid);
+                SaveSimData.get(ctx.getServerHandler().player.world).getfaction(playerid).addUnemployedSim(e);
             }
             if (list.equals("total")) {
-                SaveSimData.get(ctx.getServerHandler().player.world).addtotalSim(e,playerid);
+                SaveSimData.get(ctx.getServerHandler().player.world).getfaction(playerid).addTotalSim(e);
             }
         });
         return null;

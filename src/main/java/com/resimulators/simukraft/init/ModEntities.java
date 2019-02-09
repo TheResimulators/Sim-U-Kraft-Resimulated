@@ -2,19 +2,62 @@ package com.resimulators.simukraft.init;
 
 import com.resimulators.simukraft.Reference;
 import com.resimulators.simukraft.SimUKraft;
+import com.resimulators.simukraft.common.entity.EntityParticleSpawner;
 import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.registry.EntityEntry;
+import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created by fabbe on 19/01/2018 - 9:34 PM.
  */
 public class ModEntities {
-    public static void init() {
-        createEntity(new ResourceLocation(Reference.MOD_ID + ":sim"), EntitySim.class, "sim", SimUKraft.instance, 0, 64, 1, true, 16769213, 16764308);
+    private static int modEntityid = 0;
+    public static Set<EntityEntry> ENTITIES = new HashSet<>();
+    public static List<String> ENTITY_NAMES = new ArrayList<>();
+
+
+
+    private static <T extends Entity> void addEntity(Class<T> entityClass, String name, int eggPrimary, int eggSecondary)
+    {
+        ENTITIES.add(createBuilder(entityClass, name)
+                .egg(eggPrimary, eggSecondary)
+                .build());
     }
 
-    private static void createEntity(ResourceLocation location, Class<? extends Entity> clazz, String name, Object modInstance, int id, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates, int eggPrimary, int eggSecondary) {
-        net.minecraftforge.fml.common.registry.EntityRegistry.registerModEntity(location, clazz, name, id, modInstance, trackingRange, updateFrequency, sendsVelocityUpdates, eggPrimary, eggSecondary);
+    private static <T extends Entity> void addEntity(Class<T> entityClass, String name) {
+        ENTITIES.add(createBuilder(entityClass,name).build());
+
+    }
+
+
+    public static void init() {
+        addEntity(EntitySim.class,"sim",0x000000, 0x000000);
+        addEntity(EntityParticleSpawner.class,"particle spawner");
+    }
+
+    private static EntityEntryBuilder<Entity> createBuilder(Class<? extends Entity> entityClass, String name)
+    {
+        System.out.println("entity registry id = " + modEntityid);
+        String entityName = String.format("%s.%s", Reference.MOD_ID, name);
+        System.out.println(entityName);
+        ENTITY_NAMES.add(entityName);
+        return EntityEntryBuilder.create()
+                .entity(entityClass)
+                .name(entityName)
+                .id(new ResourceLocation(Reference.MOD_ID,name),modEntityid++)
+                .tracker(64,1,true);
+    }
+
+    public static Set<EntityEntry> getEntities()
+    {
+        if(ENTITIES.isEmpty()) init();
+        return ENTITIES;
     }
 }

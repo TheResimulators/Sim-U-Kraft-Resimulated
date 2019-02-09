@@ -1,10 +1,10 @@
 package com.resimulators.simukraft.common.entity.entitysim;
+import com.resimulators.simukraft.common.FactionData;
 import com.resimulators.simukraft.common.entity.player.SaveSimData;
 import com.resimulators.simukraft.common.interfaces.ISimJob;
-import com.resimulators.simukraft.network.HiredSimDeathPacket;
-import com.resimulators.simukraft.network.PacketHandler;
 import com.resimulators.simukraft.network.SimDeathPacket;
 import com.resimulators.simukraft.network.SimSpawnPacket;
+import net.minecraft.client.Minecraft;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -19,7 +19,6 @@ import java.util.*;
 
 
 public class SimEventHandler {
-    private static SaveSimData data;
     private static float credits = 10;
 
     public static float getCredits() {
@@ -40,16 +39,22 @@ public class SimEventHandler {
         World world = event.getWorld();
         if (event.getEntity() instanceof EntitySim) {
             if (!world.isRemote) {
+                UUID id = event.getEntity().getUniqueID();
                 if (SaveSimData.get(world) != null) {
-                    if (!SaveSimData.get(world).getTotalSims(((EntitySim) event.getEntity()).getFactionId()).contains(event.getEntity().getUniqueID())) {
-                        SaveSimData.get(world).addtotalSim(event.getEntity().getUniqueID(), ((EntitySim) event.getEntity()).getFactionId());
-                        SaveSimData.get(world).addUnemployedsim(event.getEntity().getUniqueID(), ((EntitySim) event.getEntity()).getFactionId());
-                        SaveSimData.get(world).SendFactionPacket(new SimSpawnPacket(event.getEntity().getUniqueID()), ((EntitySim) event.getEntity()).getFactionId());
+                    if (Minecraft.getMinecraft().player == null)
+                        return;
+                    Long playerid = ((EntitySim) event.getEntity()).getFactionId();
+                    FactionData data = SaveSimData.get(event.getWorld()).getfaction(playerid);
+                    if (!data.getTotalSims().contains(id)) {
+                        data.addTotalSim(id);
+                        data.addUnemployedSim(id);
+                        data.sendFactionPacket(new SimSpawnPacket(id));
+
+                    }
                     }
                 }
             }
         }
-    }
 
     @SubscribeEvent
     public void Sim_Death(LivingDeathEvent event) {
@@ -59,19 +64,17 @@ public class SimEventHandler {
             if (!world.isRemote) {
                 UUID id = event.getEntity().getPersistentID();
                 int ids = event.getEntity().getEntityId();
-
-                SaveSimData.get(world).removeTotalSim(event.getEntity().getUniqueID(),((EntitySim) event.getEntity()).getFactionId());
-                SaveSimData.get(world).removeUnemployedSim(event.getEntity().getUniqueID(),((EntitySim) event.getEntity()).getFactionId());
-                SaveSimData.get(event.getEntity().world).SendFactionPacket(new SimDeathPacket(ids,((EntitySim) event.getEntity()).getFactionId()),((EntitySim) event.getEntity()).getFactionId());
-                for (TileEntity entity : SaveSimData.get(world).getJob_tiles()) {
+                long factionid = sim.getFactionId();
+                FactionData data = SaveSimData.get(world).getfaction(factionid);
+                data.removeTotalSim(sim);
+                data.removeUnemployedSim(sim.getUniqueID());
+                data.sendFactionPacket(new SimDeathPacket(ids,factionid));
+                for (TileEntity entity : data.getJobblocks()) {
                     ISimJob tile = (ISimJob) entity;
                     if (tile.getId() == id) {
-
                         tile.setHired(false);
                         tile.setId(null);
                         tile.removeSim(ids);
-
-                        SaveSimData.get(event.getEntity().world).SendFactionPacket(new HiredSimDeathPacket(entity.getPos().getX(), entity.getPos().getY(), entity.getPos().getZ(), ids),((EntitySim) event.getEntity()).getFactionId());
                         return;
 
                     }

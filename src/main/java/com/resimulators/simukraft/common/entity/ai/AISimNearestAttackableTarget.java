@@ -1,30 +1,20 @@
 package com.resimulators.simukraft.common.entity.ai;
 
-import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.resimulators.simukraft.common.capabilities.ModCapabilities;
 import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
-import com.resimulators.simukraft.common.enums.cattleFarmMode;
-import com.sun.org.apache.xpath.internal.operations.Mod;
+import com.resimulators.simukraft.common.enums.FarmModes;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
-import com.resimulators.simukraft.common.entity.ai.AISimNearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAITarget;
-import net.minecraft.entity.monster.EntityCreeper;
-import net.minecraft.entity.monster.EntitySkeleton;
-import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityCow;
+import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Items;
-import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.math.AxisAlignedBB;
 
 import javax.annotation.Nullable;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
@@ -78,29 +68,42 @@ public class AISimNearestAttackableTarget <T extends EntityLivingBase> extends E
      */
     public boolean shouldExecute()
     {
-        if (!sim.getWorking()){
+        if (!sim.isWorking()){
             return false;}
         if (this.targetClass != EntityPlayer.class && this.targetClass != EntityPlayerMP.class)
         {
-            List<T> list = this.taskOwner.world.<T>getEntitiesWithinAABB(this.targetClass, this.getTargetableArea(this.getTargetDistance()), this.targetEntitySelector);
+            List<T> list = this.taskOwner.world.getEntitiesWithinAABB(this.targetClass, this.getTargetableArea(this.getTargetDistance()), this.targetEntitySelector);
             if (list.isEmpty())
             {
                 return false;
             }
             else {
                 list.sort(this.sorter);
-                if (sim.getCowmode() == cattleFarmMode.FarmMode.MILK && sim.getLabeledProfession().equals("Cattle Farmer")){
+                if (sim.getCowmode() == FarmModes.CowMode.MILK && sim.getLabeledProfession().equals("Cattle Farmer") && targetEntity instanceof EntityCow && sim.getDistanceSq(sim.getJobBlockPos()) <= 4){
                     for (T aList : list) {
-                        if (aList.hasCapability(ModCapabilities.getCAP(), null)) {
-                            if (Objects.requireNonNull(aList.getCapability(ModCapabilities.getCAP(), null)).ismilkable()) {
+                        if (aList.hasCapability(ModCapabilities.CAP, null)) {
+                            if (Objects.requireNonNull(aList.getCapability(ModCapabilities.CAP, null)).ismilkable()) {
                                 this.targetEntity = aList;
                                 return true;
                             }
                         }
                     }
-                }else{this.targetEntity = list.get(0);}
+                }else if (sim.getSheepMode() == FarmModes.SheepMode.SHEAR && sim.getLabeledProfession().equals("Sheep Farmer") && targetEntity instanceof EntitySheep && sim.getDistanceSq(sim.getJobBlockPos()) <= 4){
+
+                    for (T alist : list){
+                        EntitySheep sheep = (EntitySheep) alist;
+                        if (!sheep.getSheared()){
+                            sim.setSheeptarget(sheep);
+                            break;
+                        }
+                    }
+                    if (sim.getSheeptarget() == null){
+                        sim.setEndWork();
+                    }
+                }
+
+                else{this.targetEntity = list.get(0);}
             }
-            System.out.println("this is being reached");
                 return true;
             }
         return false;
@@ -119,7 +122,7 @@ public class AISimNearestAttackableTarget <T extends EntityLivingBase> extends E
     public void startExecuting()
     {
         if (sim.getLabeledProfession().equals("Cattle Farmer")){
-        if (sim.getCowmode() == cattleFarmMode.FarmMode.KILL) {
+        if (sim.getCowmode() == FarmModes.CowMode.KILL) {
             this.taskOwner.setAttackTarget(this.targetEntity);
         } else{
             this.sim.setTargetCow((EntityCow) this.targetEntity);
@@ -127,7 +130,6 @@ public class AISimNearestAttackableTarget <T extends EntityLivingBase> extends E
         super.startExecuting();
     }
     else{
-            System.out.println("setting target " + this.targetEntity);
             this.taskOwner.setAttackTarget(this.targetEntity);}
     }
 

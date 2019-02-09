@@ -19,23 +19,16 @@ public class LoadStructureHandler implements IMessageHandler<LoadStructurePacket
         String name = message.name;
 
         mainThread.addScheduledTask(()->{
-            System.out.println("this is being reached loading file now");
             TileConstructor tile = null;
-            System.out.println("block at pos " + message.x+ " "+ message.y +" " + message.z);
             if (ctx.getServerHandler().player.getServerWorld().getTileEntity(new BlockPos(message.x,message.y,message.z)) instanceof TileConstructor){
                 tile = ((TileConstructor)ctx.getServerHandler().player.getServerWorld().getTileEntity(new BlockPos(message.x,message.y,message.z)));
-                System.out.println("setting tile");
             }
-            System.out.println(Loader.instance().getConfigDir() +"\\simukraft\\structures\\"+type +"\\" +name+".struct");
             if (new File(Loader.instance().getConfigDir() +"\\simukraft\\structures\\"+type +"\\" +name+".struct").exists()){
-                System.out.println("this file exists");
                 Structure file = Structure.load(new File(Loader.instance().getConfigDir() +"\\simukraft\\structures\\"+type +"\\" +name+".struct"));
                 file.setFacing(ctx.getServerHandler().player.getHorizontalFacing());
-                System.out.println("tile " + tile);
                 if (tile != null){
                 tile.setStructure(file);
                 tile.building = true;
-                System.out.println("called");
             }}
 
         });

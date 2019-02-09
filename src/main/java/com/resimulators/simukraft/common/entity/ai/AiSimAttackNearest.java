@@ -1,16 +1,10 @@
 package com.resimulators.simukraft.common.entity.ai;
 
 import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
-import com.resimulators.simukraft.common.enums.cattleFarmMode;
-import net.minecraft.block.BlockAir;
-import net.minecraft.entity.EntityCreature;
+import com.resimulators.simukraft.common.enums.FarmModes;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemAir;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.pathfinding.Path;
@@ -61,8 +55,7 @@ public class AiSimAttackNearest extends EntityAIBase {
         EntityLivingBase entitylivingbase = this.sim.getAttackTarget();
         if (!checkInvForSword()){
             return false;}
-        if (sim.getCowmode() == cattleFarmMode.FarmMode.MILK && sim.getLabeledProfession().equals("Cattle Farmer") ){
-            System.out.println("is this being called");
+        if (sim.getCowmode() == FarmModes.CowMode.MILK && sim.getLabeledProfession().equals("Cattle Farmer") ){
             return false;
 
         }
@@ -98,7 +91,6 @@ public class AiSimAttackNearest extends EntityAIBase {
             }
             else
             {
-                System.out.println(this.getAttackReachSqr(entitylivingbase) >= this.attacker.getDistanceSq(entitylivingbase.posX, entitylivingbase.getEntityBoundingBox().minY, entitylivingbase.posZ) && checkInvForSword());
                 return this.getAttackReachSqr(entitylivingbase) >= this.attacker.getDistanceSq(entitylivingbase.posX, entitylivingbase.getEntityBoundingBox().minY, entitylivingbase.posZ) && checkInvForSword();
             }
         }
@@ -112,7 +104,7 @@ public class AiSimAttackNearest extends EntityAIBase {
         worktimelimit--;
 
         if (worktimelimit <= 0){
-            sim.setEndWork(true);
+            sim.setEndWork();
             worktimelimit = 100;
             return false;
 
@@ -146,7 +138,6 @@ public class AiSimAttackNearest extends EntityAIBase {
      */
     public void startExecuting()
     {
-        System.out.println("this should not be called right now " + this.path);
         this.attacker.getNavigator().setPath(this.path, this.speedTowardsTarget);
         this.delayCounter = 0;
         if (sword == null || !(Objects.requireNonNull(sword).getItem() instanceof ItemSword)) sword = getSword();
@@ -174,6 +165,7 @@ public class AiSimAttackNearest extends EntityAIBase {
     {
         EntityLivingBase entitylivingbase = this.attacker.getAttackTarget();
         if (entitylivingbase != null) {
+            this.attacker.getLookHelper().setLookPositionWithEntity(entitylivingbase, 30.0F, 30.0F);
             this.attacker.getLookHelper().setLookPositionWithEntity(entitylivingbase, 30.0F, 30.0F);
             double d0 = this.attacker.getDistanceSq(entitylivingbase.posX, entitylivingbase.getEntityBoundingBox().minY, entitylivingbase.posZ);
             --this.delayCounter;

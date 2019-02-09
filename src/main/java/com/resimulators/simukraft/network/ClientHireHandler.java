@@ -1,8 +1,9 @@
 package com.resimulators.simukraft.network;
 
+import com.resimulators.simukraft.common.FactionData;
+import com.resimulators.simukraft.common.capabilities.ModCapabilities;
 import com.resimulators.simukraft.common.entity.player.SaveSimData;
 import com.resimulators.simukraft.common.interfaces.ISim;
-import com.resimulators.simukraft.common.tileentity.TileCattle;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.IThreadListener;
 import net.minecraft.util.math.BlockPos;
@@ -17,11 +18,17 @@ public class ClientHireHandler implements IMessageHandler<ClientHirePacket,IMess
     @Override
     public IMessage onMessage(ClientHirePacket message, MessageContext messageContext) {
         IThreadListener mainthread = Minecraft.getMinecraft();
-        System.out.println("This is being reached. WOOOOOOO");
-        mainthread.addScheduledTask(() ->
-                SaveSimData.get(Minecraft.getMinecraft().world).removeUnemployedSim(message.uuid, SaveSimData.get(Minecraft.getMinecraft().world).getPlayerFaction(Minecraft.getMinecraft().player.getUniqueID())));
-        ((ISim)Minecraft.getMinecraft().world.getTileEntity(new BlockPos(message.x,message.y,message.z))).setId(message.uuid);
+        mainthread.addScheduledTask(() ->{
 
+        long factionid = Minecraft.getMinecraft().player.getCapability(ModCapabilities.PlayerCap,null).getfactionid();
+        FactionData data = SaveSimData.get(Minecraft.getMinecraft().world).getfaction(factionid);
+        ISim tileentity = ((ISim)Minecraft.getMinecraft().world.getTileEntity(new BlockPos(message.x,message.y,message.z)));
+        tileentity.setId(message.uuid);
+        data.removeUnemployedSim(message.uuid);
+
+
+
+    });
         return null;
     }
 }

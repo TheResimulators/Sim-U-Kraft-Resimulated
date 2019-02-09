@@ -35,6 +35,14 @@ public class PacketHandler {
         INSTANCE.registerMessage(ClientStructureHandler.class,ClientStructuresPacket.class,22,Side.CLIENT);
         INSTANCE.registerMessage(ServerStructureHandler.class,ServerStructurePacket.class,23,Side.SERVER);
         INSTANCE.registerMessage(LoadStructureHandler.class,LoadStructurePacket.class,24,Side.SERVER);
+        INSTANCE.registerMessage(TeleportHandler.class,TeleportPacket.class,25,Side.SERVER);
+        INSTANCE.registerMessage(ClientTeleportHandler.class,ClientTeleportPacket.class,26,Side.CLIENT);
+        INSTANCE.registerMessage(SyncPlayerCapHandler.class,SyncPlayerCapPacket.class,27,Side.CLIENT);
+        INSTANCE.registerMessage(FactionCreatedHandler.class,FactionCreatedPacket.class,28,Side.CLIENT);
+        INSTANCE.registerMessage(SaveSimDataUpdateHandler.class,SaveSimDataUpdatePacket.class,29,Side.CLIENT);
+        INSTANCE.registerMessage(UpdateDayHandler.class,UpdateDayPacket.class,30,Side.CLIENT);
+        INSTANCE.registerMessage(MinerUpdateDataHandler.class,MinerUpdateDataPacket.class,31,Side.CLIENT);
+        INSTANCE.registerMessage(UpdateClientFactionHandler.class,UpdateClientFactionPacket.class,32,Side.CLIENT);
     }
 
 }

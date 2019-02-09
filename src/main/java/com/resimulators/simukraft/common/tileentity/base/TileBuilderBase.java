@@ -39,7 +39,7 @@ public class TileBuilderBase extends TileEntity {
 				// TODO: Check for items in adjacent inventories
 			    getBuildDirection();
 			    IBlockState block = structure.getBlock(xindex,y,zindex);
-                world.setBlockState(getPos().add(rotatedpos.getX()*xdir + xoffset,rotatedpos.getY() + 1,rotatedpos.getZ() *xdir + zoffest), block.withRotation(rotation));
+                world.setBlockState(getPos().add(rotatedpos.getX()*xdir + xoffset,rotatedpos.getY(),rotatedpos.getZ() *xdir + zoffest), block.withRotation(rotation));
                 System.out.println("zdir " + zdir);
                 System.out.println("block " + block);
                 System.out.println((block.getBlock() instanceof BlockControlBox));

@@ -4,20 +4,18 @@ import io.netty.buffer.ByteBuf;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 public class PlayerUpdatePacket implements IMessage {
-    Set<UUID> totalsim;
+    List<UUID> totalsim;
     int totalsimsize;
-    Set<UUID> unemployedsim;
+    List<UUID> unemployedsim;
     int unemployedsize;
     float credits;
     long factionid;
     int mode;
     public PlayerUpdatePacket(){}
-    public PlayerUpdatePacket(Set<UUID> totalsims, Set<UUID> unemployedsims, float credits,long factionid,int mode) {
+    public PlayerUpdatePacket(List<UUID> totalsims, List<UUID> unemployedsims, float credits, long factionid, int mode) {
         this.totalsim = totalsims;
         this.unemployedsim = unemployedsims;
         this.credits = credits;
@@ -36,13 +34,13 @@ public class PlayerUpdatePacket implements IMessage {
     public void fromBytes(ByteBuf bytebuf) {
         this.mode = bytebuf.readInt();
         this.totalsimsize = bytebuf.readInt();
-        totalsim = new HashSet<>(totalsimsize);
+        totalsim = new ArrayList<>(totalsimsize);
         for (int i = 0; i < this.totalsimsize; i++) {
             UUID sim = UUID.fromString(ByteBufUtils.readUTF8String(bytebuf));
             totalsim.add(sim);
         }
         this.unemployedsize = bytebuf.readInt();
-        unemployedsim = new HashSet<>(unemployedsize);
+        unemployedsim = new ArrayList<>(unemployedsize);
         for (int i = 0; i < this.unemployedsize; i++) {
             unemployedsim.add(UUID.fromString(ByteBufUtils.readUTF8String(bytebuf)));
         }

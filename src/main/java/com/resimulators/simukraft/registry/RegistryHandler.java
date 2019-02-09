@@ -2,6 +2,8 @@ package com.resimulators.simukraft.registry;
 
 import com.resimulators.simukraft.Reference;
 import com.resimulators.simukraft.SimUKraft;
+import com.resimulators.simukraft.common.entity.EntityParticleSpawner;
+import com.resimulators.simukraft.init.ModEntities;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
@@ -14,6 +16,7 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.registries.IForgeRegistry;
@@ -26,6 +29,7 @@ import java.util.Set;
 /**
  * Created by fabbe on 06/01/2018 - 2:45 AM.
  */
+@Mod.EventBusSubscriber(modid = Reference.MOD_ID)
 public class RegistryHandler {
     public static void registerBlock(Block block, String... names) {
         registerBlock(block, new ItemBlockMulti(block, names).setRegistryName(block.getRegistryName()), names);
@@ -52,7 +56,7 @@ public class RegistryHandler {
             for (final Block block : blocks) {
                 if (block.getRegistryName() != null) {
                     reg.register(block);
-                    SimUKraft.getLogger().info("Successfully added block: " + block.getLocalizedName() + " to the game.");
+                    SimUKraft.getLogger().info("Successfully added block: " + block.getRegistryName() + " to the game.");
                 } else
                     SimUKraft.getLogger().warn("Tried to register block without registry name, ignoring.");
             }
@@ -80,7 +84,7 @@ public class RegistryHandler {
             for (Item item : items.keySet()) {
                 if (item.getRegistryName() != null) {
                     reg.register(item);
-                    SimUKraft.getLogger().info("Successfully added item: " + item.getRegistryName().getNamespace() + " to the game.");
+                    SimUKraft.getLogger().info("Successfully added item: " + item.getRegistryName() + " to the game.");
                 } else
                     SimUKraft.getLogger().warn("Tried to register item without registry name, ignoring.");
             }
@@ -136,4 +140,14 @@ public class RegistryHandler {
             return p_getMetadata_1_ < names.length ? p_getMetadata_1_ : 0;
         }
     }
+
+
+
+        @SubscribeEvent
+        public static void RegisterEntities(RegistryEvent.Register<EntityEntry> event){
+            IForgeRegistry<EntityEntry> registry = event.getRegistry();
+            ModEntities.getEntities().forEach(registry::register);
+            SimUKraft.getLogger().info("entities registered");
+
+        }
 }
