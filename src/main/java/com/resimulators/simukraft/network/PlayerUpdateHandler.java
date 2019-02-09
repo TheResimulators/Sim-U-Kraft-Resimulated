@@ -23,12 +23,12 @@ public class PlayerUpdateHandler implements IMessageHandler<PlayerUpdatePacket, 
 
         mainThread.addScheduledTask(() -> {
             Minecraft.getMinecraft().player.getCapability(ModCapabilities.PlayerCap,null).setmode(message.mode);
-            SaveSimData.get(Minecraft.getMinecraft().world).getfaction(uuid).addPlayer(Minecraft.getMinecraft().player.getUniqueID());
+            SaveSimData.get(Minecraft.getMinecraft().world).getFaction(uuid).addPlayer(Minecraft.getMinecraft().player.getUniqueID());
             for (UUID id : message.totalsim) {
-                SaveSimData.get(Minecraft.getMinecraft().world).getfaction(uuid).addTotalSim(id);
+                SaveSimData.get(Minecraft.getMinecraft().world).getFaction(uuid).addTotalSim(id);
             }
             for (UUID id : message.unemployedsim) {
-                SaveSimData.get(Minecraft.getMinecraft().world).getfaction(uuid).addUnemployedSim(id);
+                SaveSimData.get(Minecraft.getMinecraft().world).getFaction(uuid).addUnemployedSim(id);
             }
             SimEventHandler.setCredits(message.credits);
         });

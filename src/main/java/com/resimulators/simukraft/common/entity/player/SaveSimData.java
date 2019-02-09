@@ -1,25 +1,19 @@
 package com.resimulators.simukraft.common.entity.player;
 
 import com.resimulators.simukraft.Reference;
+import com.resimulators.simukraft.SimUKraft;
 import com.resimulators.simukraft.common.FactionData;
-import com.resimulators.simukraft.common.interfaces.ISimJob;
 import com.resimulators.simukraft.network.PacketHandler;
 import com.resimulators.simukraft.network.SaveSimDataUpdatePacket;
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.MapStorage;
 import net.minecraft.world.storage.WorldSavedData;
 import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.relauncher.Side;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SaveSimData extends WorldSavedData {
     private static final String DATA_NAME = Reference.MOD_ID + "_SimData";
@@ -92,12 +86,13 @@ public class SaveSimData extends WorldSavedData {
     }
 
 
-    public FactionData getfaction(long id){
+    public FactionData getFaction(long id){
         for (FactionData data: factions){
             if (data.getFactionId() == id){
                 return data;
             }
         }
+        SimUKraft.getLogger().warn("getFaction returns null, a id was passed that does not exist");
         return null;
     }
 

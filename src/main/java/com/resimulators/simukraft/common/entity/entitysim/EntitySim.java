@@ -48,7 +48,6 @@ import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nullable;
 import java.sql.Time;
-import java.time.temporal.TemporalAccessor;
 import java.util.Objects;
 import java.util.Random;
 
@@ -141,7 +140,7 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
         this.tasks.addTask(0, new AISimEat(this));
         this.tasks.addTask(1, new EntityAISwimming(this));
         this.tasks.addTask(1, new AISimOpenGate(this,true));
-        this.tasks.addTask(2, new EntityAIAvoidEntity<>(this, EntityZombie.class, 8.0f, 0.6d, 0.6d));
+        this.tasks.addTask(2, new EntityAIAvoidEntity<>(this, EntityZombie.class, 8.0f, 0.3d, 0.8d));
         this.setProfessionAIs();
         this.tasks.addTask(4, new EntityAIMoveIndoors(this));
         this.tasks.addTask(5, new EntityAIRestrictOpenDoor(this));
@@ -655,7 +654,7 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
                     hunger += finalHeal;
                     final_stack.shrink(1);
                 }
-                Objects.requireNonNull(SaveSimData.get(this.world)).getfaction(this.getFactionId()).sendFactionPacket(new HungerPacket(hunger,this.getEntityId()));
+                Objects.requireNonNull(SaveSimData.get(this.world)).getFaction(this.getFactionId()).sendFactionPacket(new HungerPacket(hunger,this.getEntityId()));
             }
         }
     }
@@ -671,7 +670,7 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
         //heal counter. checks to heal after
         updatenotworking();
         if (getEndWork()){
-            de_EquipSword(getActiveItemStack());
+            unEquipItemStack(EnumHand.MAIN_HAND);
         }
         if (heal_counter / 20 > 4) {
             if (hunger > 15 && getHealth() < 20) {
@@ -687,7 +686,7 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
             } else {
                 if (hunger > 0) {
                     hunger --;
-                    Objects.requireNonNull(SaveSimData.get(this.world)).getfaction(this.getFactionId()).sendFactionPacket(new HungerPacket(hunger,this.getEntityId()));
+                    Objects.requireNonNull(SaveSimData.get(this.world)).getFaction(this.getFactionId()).sendFactionPacket(new HungerPacket(hunger,this.getEntityId()));
                 }
             }
         }
@@ -741,17 +740,39 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
         }
     }
 
-    private void de_EquipSword(ItemStack stack){
-        getHeldItemMainhand();
-            if (getHeldItemMainhand().getItem() instanceof ItemSword){
-                this.setHeldItem(EnumHand.MAIN_HAND,ItemStack.EMPTY);
-                for (int i = 0;i<toolinv.getSlots();i++){
-                    if (toolinv.getStackInSlot(i).isEmpty()){
-                        toolinv.insertItem(i,stack,false);
-                    }
-                }
-            }
+    //TODO Test Method
+    public boolean EquipItemStack(EntityPlayer playerIn){
+        //ItemStack cobleItemStack = new ItemStack();
+        this.setHeldItem(EnumHand.MAIN_HAND, playerIn.inventory.getStackInSlot(10) );
+        return true;
+    }
+
+    public boolean unEquipItemStack(EnumHand hand){
+        //If method called but there is nothing in hand.
+        if(getHeldItem(hand).isEmpty()) {
+            SimUKraft.getLogger().warn("unEquipItemStack called on an empty hand");
+            return true;
         }
+        //Tries to find an Empty inv slot to put item in hand in.
+        int emptySlot = findEmptyToolInvSlot();
+        //If there is an empty slot, put the item in inv and remove it from hand.
+        if(emptySlot != -1){
+            toolinv.insertItem( emptySlot, getHeldItem(hand), false );
+            this.setHeldItem(hand, ItemStack.EMPTY);
+            return true;
+        }
+        //If there is no empty slot, return false letting method call know there is no free inv space.
+        SimUKraft.getLogger().warn("unEquipItemStack called on a full Inventory");
+        return false;
+    }
+
+    public int findEmptyToolInvSlot(){
+        for(int i = 0; i < toolinv.getSlots(); i++){
+            if(toolinv.getStackInSlot(i).isEmpty()) return i;
+        }
+        //Returns null if unable to find an Empty ToolInv Slot
+        return -1;
+    }
 
     public void setHunger(int hunger) {
         this.hunger = hunger;
@@ -817,7 +838,6 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
 
             this.applyEnchantments(this, p_attackEntityAsMob_1_);
         }
-
         return flag;
     }
 
@@ -862,7 +882,6 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
         return emptychest;
     }
 
-
     public BlockPos getEmptychestpos(){return emptychestpos;}
 
     public EntitySheep getSheeptarget(){ return sheeptarget;}
@@ -891,7 +910,6 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
     public boolean isParticlspawning(){
         return this.particlspawning;
     }
-
 
     public void setShouldteleport(boolean teleport){
         this.shouldteleport = teleport;

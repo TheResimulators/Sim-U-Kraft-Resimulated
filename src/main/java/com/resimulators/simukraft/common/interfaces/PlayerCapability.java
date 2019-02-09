@@ -71,7 +71,7 @@ public interface PlayerCapability extends INBTSerializable<NBTTagCompound> {
 
         @Override
         public FactionData getfaction(long id) {
-            return SaveSimData.get(FMLCommonHandler.instance().getMinecraftServerInstance().getEntityWorld()).getfaction(id);
+            return SaveSimData.get(FMLCommonHandler.instance().getMinecraftServerInstance().getEntityWorld()).getFaction(id);
         }
 
         @Override
