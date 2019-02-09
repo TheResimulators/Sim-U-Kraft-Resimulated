@@ -7,6 +7,7 @@ import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
 import com.resimulators.simukraft.common.item.base.ItemBase;
 import com.resimulators.simukraft.common.tileentity.structure.Structure;
 import com.resimulators.simukraft.structure.StructureUtils;
+import net.minecraft.block.BlockChest;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
@@ -40,6 +41,9 @@ public class ItemBlueprint extends ItemBase {
                 compound.removeTag("posx");
                 compound.removeTag("posy");
                 compound.removeTag("posz");
+                compound.removeTag("cposx");
+                compound.removeTag("cposy");
+                compound.removeTag("cposz");
                 compound.removeTag("facing");
                 compound.removeTag("facing2");
                 stack.setTagCompound(compound);
@@ -52,8 +56,12 @@ public class ItemBlueprint extends ItemBase {
     @Override
     public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         if (!worldIn.isRemote && player.isSneaking()) {
-            this.setStartPos(player.getHeldItem(hand), pos.offset(facing));
-            this.setRotation(player.getHeldItem(hand), player.getAdjustedHorizontalFacing());
+            if (worldIn.getBlockState(pos).getBlock() instanceof BlockChest) {
+                this.setChestPos(player.getHeldItem(hand), pos);
+            } else {
+                this.setStartPos(player.getHeldItem(hand), pos.offset(facing));
+                this.setRotation(player.getHeldItem(hand), player.getAdjustedHorizontalFacing());
+            }
         } else if (!worldIn.isRemote && Keyboard.isKeyDown(Keyboard.KEY_LMENU) && false) {
             this.setStartPos(player.getHeldItem(hand), pos.offset(facing));
             this.setRotation(player.getHeldItem(hand), player.getAdjustedHorizontalFacing());
@@ -110,6 +118,30 @@ public class ItemBlueprint extends ItemBase {
         int posX = compound.getInteger("posx");
         int posY = compound.getInteger("posy");
         int posZ = compound.getInteger("posz");
+
+        return new BlockPos(posX, posY, posZ);
+    }
+
+    public void setChestPos(ItemStack stack, BlockPos pos) {
+        NBTTagCompound compound = stack.getTagCompound();
+        if (compound == null)
+            compound = new NBTTagCompound();
+
+        compound.setInteger("cposx", pos.getX());
+        compound.setInteger("cposy", pos.getY());
+        compound.setInteger("cposz", pos.getZ());
+
+        stack.setTagCompound(compound);
+    }
+
+    public BlockPos getChestPos(ItemStack stack) {
+        NBTTagCompound compound = stack.getTagCompound();
+        if (compound == null)
+            compound = new NBTTagCompound();
+
+        int posX = compound.getInteger("cposx");
+        int posY = compound.getInteger("cposy");
+        int posZ = compound.getInteger("cposz");
 
         return new BlockPos(posX, posY, posZ);
     }
