@@ -741,9 +741,8 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
     }
 
     //TODO Test Method
-    public boolean EquipItemStack(EntityPlayer playerIn){
-        //ItemStack cobleItemStack = new ItemStack();
-        this.setHeldItem(EnumHand.MAIN_HAND, playerIn.inventory.getStackInSlot(10) );
+    public boolean EquipItemStack(EnumHand hand, ItemStack stack) {
+        this.setHeldItem(hand, stack);
         return true;
     }
 
