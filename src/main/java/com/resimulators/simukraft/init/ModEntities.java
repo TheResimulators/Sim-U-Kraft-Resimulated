@@ -53,7 +53,6 @@ public class ModEntities {
                 .name(entityName)
                 .id(new ResourceLocation(Reference.MOD_ID,name),modEntityid++)
                 .tracker(64,1,true);
-
     }
 
     public static Set<EntityEntry> getEntities()

@@ -22,22 +22,19 @@ import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.InventoryBasic;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemFood;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemSword;
+import net.minecraft.item.*;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -50,6 +47,9 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nullable;
+import java.sql.Time;
+import java.time.temporal.TemporalAccessor;
+import java.util.Objects;
 import java.util.Random;
 
 /**
@@ -64,6 +64,7 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
     private boolean isPlaying;
     private EntityPlayer commander;
     private GameProfile playerProfile;
+    private Time time;
     //Builder profession related
     private Template structure;
     private boolean isAllowedToBuild;
@@ -132,7 +133,7 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
         this.setAlwaysRenderNameTag(false);
         this.pickups = new ItemStackHandler(18);
         this.toolinv = new ItemStackHandler(9);
-
+        time = new Time(System.currentTimeMillis());
     }
 
     @Override
@@ -193,9 +194,20 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
     public boolean processInteract(EntityPlayer player, EnumHand hand) {
         ItemStack itemStack = player.getHeldItem(hand);
         boolean flag = itemStack.getItem() == Items.NAME_TAG;
+        boolean flag3 = System.currentTimeMillis() - time.getTime() >= 3000;
         boolean flag2 = itemStack.getItem() == ModItems.DEBUG || itemStack.getItem() == ModItems.BLUEPRINT;
         if (flag) {
-            itemStack.interactWithEntity(player, this, hand);
+            if (flag3) {
+                if (!world.isRemote) {
+                    if (!itemStack.getDisplayName().equals(this.getName())) {
+                        player.sendStatusMessage(new TextComponentString(getName() + ": " + new String[]{"I don't want that name.", "Don't touch me with that.", "Hey, back off!", "Ruuude.", "No."}[rand.nextInt(5)]), true);
+                        time.setTime(System.currentTimeMillis());
+                    } else {
+                        player.sendStatusMessage(new TextComponentString(getName() + ": That's already my name."), true);
+                        time.setTime(System.currentTimeMillis());
+                    }
+                }
+            }
             return true;
         } else if (!this.holdingSpawnEggOfClass(itemStack, this.getClass()) && this.isEntityAlive() && !isReceivingOrders() && !isChild() && !player.isSneaking() && !flag2) {
             this.setCommander(player);
@@ -495,6 +507,17 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
         return livingData;
     }
 
+    @Override
+    public void setCustomNameTag(String name) {
+        if (SpecialNameStorage.specialNames.contains(name)) {
+            super.setCustomNameTag(name);
+            this.setStaff(true);
+            this.setFemale(SpecialNameStorage.femaleIndex.contains(name));
+        } else {
+            super.setCustomNameTag(name);
+        }
+    }
+
     public void setCommander(@Nullable EntityPlayer player) {
         this.commander = player;
     }
@@ -519,7 +542,30 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
 
     @Override
     protected void updateEquipmentIfNeeded(EntityItem itemEntity) {
-        //Used for picking up items
+        if (itemEntity.getItem().getItem() instanceof ItemArmor) {
+            EntityEquipmentSlot slot = EntityLiving.getSlotForItemStack(itemEntity.getItem());
+            ItemStack itemstack1 = this.getItemStackFromSlot(slot);
+
+            if (itemstack1.isEmpty()) {
+                this.setItemStackToSlot(slot, itemEntity.getItem().copy());
+                itemEntity.setDead();
+            } else {
+                if (((ItemArmor)this.getItemStackFromSlot(slot).getItem()).damageReduceAmount < ((ItemArmor) itemEntity.getItem().getItem()).damageReduceAmount) {
+                    this.setItemStackToSlot(slot, itemEntity.getItem().copy());
+                    itemEntity.setDead();
+                    this.entityDropItem(itemstack1, 1.7f);
+                }
+            }
+        }
+    }
+
+    @Override
+    public Iterable<ItemStack> getArmorInventoryList() {
+        return super.getArmorInventoryList();
+    }
+
+    public boolean hasArmorInSlot(EntityEquipmentSlot slot) {
+        return this.getItemStackFromSlot(slot) != ItemStack.EMPTY;
     }
 
     private boolean canSimPickupItem(Item item) {
@@ -607,6 +653,7 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
                     hunger += finalHeal;
                     final_stack.shrink(1);
                 }
+                Objects.requireNonNull(SaveSimData.get(this.world)).SendFactionPacket(new HungerPacket(this.getFoodLevel(), this.getEntityId()),this.getFactionId());
             }
         }
     }
@@ -638,11 +685,25 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
             } else {
                 if (hunger > 0) {
                     hunger --;
-                    SaveSimData.get(this.world).getfaction(this.getFactionId()).sendFactionPacket(new HungerPacket(hunger,this.getEntityId()));
+                    Objects.requireNonNull(SaveSimData.get(this.world)).getfaction(this.getFactionId()).sendFactionPacket(new HungerPacket(hunger,this.getEntityId()));
                 }
-
-                counter = 0;
             }
+            if (counter / 20 > 60) {
+                if (hunger <= 0) {
+                    this.attackEntityFrom(DamageSource.STARVE, 1.0f);
+                    counter = 0;
+                    hunger = 0;
+                } else {
+                    if (hunger > 0) {
+                        hunger--;
+                        Objects.requireNonNull(SaveSimData.get(this.world)).SendFactionPacket(new HungerPacket(this.getFoodLevel(), this.getEntityId()), this.getFactionId());
+                    }
+
+                    counter = 0;
+                }
+            }
+            heal_counter++;
+            counter++;
         }
         heal_counter++;
         counter++;
@@ -678,12 +739,10 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
                 if (this.workstatus != 0)workstatus = 0;
             }
         }
-
     }
 
 
     private void updatenotworking() {
-
         if (getEndWork()) {
             if (counter / 20 > 10) {
                 setEndWork();
@@ -694,8 +753,6 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
         } else {
             counter = 0;
         }
-
-
     }
 
     private void de_EquipSword(ItemStack stack){
@@ -730,7 +787,6 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
         return jobBlockPos;
     }
 
-
     public void setTeleporttarget(BlockPos teleporttarget){
         this.teleporttarget = teleporttarget;
     }
@@ -738,8 +794,7 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
     public BlockPos getTeleporttarget(){
         return teleporttarget;
     }
-
-
+  
     @Override
     public boolean attackEntityAsMob(Entity p_attackEntityAsMob_1_){
         float f = (float)this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue();
@@ -798,7 +853,6 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
 
     public void setCowmode(FarmModes.CowMode cowmode){
         this.cowmode = cowmode;
-
     }
 
     public FarmModes.CowMode getCowmode(){
