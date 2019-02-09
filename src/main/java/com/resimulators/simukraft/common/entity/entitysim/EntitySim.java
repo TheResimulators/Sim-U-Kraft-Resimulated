@@ -483,6 +483,8 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
         this.setStaff(randomizeBooleanWithChance(ConfigHandler.specialSpawn));
         this.setProfession(rand.nextInt(2)); //TODO: add more professions.
 
+        this.setLeftHanded(randomizeBooleanWithChance(10));
+
         if (this.getStaff()) {
             String name = SpecialNameStorage.specialNames.get(rand.nextInt(SpecialNameStorage.specialNames.size()));
             this.setCustomNameTag(name);
