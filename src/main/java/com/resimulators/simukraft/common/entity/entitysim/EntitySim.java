@@ -154,6 +154,7 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
 
     private void setProfessionAIs() {
         this.tasks.addTask(2, new AISimBuild(this));
+        this.tasks.addTask(2, new AISimQuarryMine(this,this.world));
         this.tasks.addTask(3, new AISimGotoToWork(this));
         this.tasks.addTask(4, new AISimKillCow(this));
         this.tasks.addTask(5, new AISimGetInventory(this));
@@ -656,6 +657,7 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
             teleportdelay = 140;
             teleporttarget = null;
             setAIMoveSpeed(0.7f);
+            setWorking();
 
 
         }else{
