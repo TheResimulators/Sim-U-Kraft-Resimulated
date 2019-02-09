@@ -1,7 +1,11 @@
 package com.resimulators.simukraft.event;
 
+import com.mojang.realmsclient.gui.ChatFormatting;
+import com.resimulators.simukraft.Utilities;
+import com.resimulators.simukraft.common.item.ItemBlueprint;
 import com.resimulators.simukraft.common.item.ItemPlanningSheet;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -10,8 +14,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderSpecificHandEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -23,11 +29,24 @@ import java.awt.*;
  * Created by fabbe on 23/10/2018 - 7:12 PM.
  */
 public class RenderHandEvent {
+
+    private int offsetX = 1;
+    private int offsetY = 1;
+
     private EntityPlayer player;
     private Vec3d playerPos;
-    private boolean holdingItem = false;
+
+    //Planning Sheet
+    private boolean holdingPlanningSheet = false;
     private BlockPos pos1;
     private BlockPos pos2;
+
+    //Blueprint
+    private boolean holdingBlueprint = false;
+    private String name;
+    private String author;
+    private BlockPos startPos;
+    private BlockPos chestPos;
 
     @SubscribeEvent
     public void playerEvent(RenderSpecificHandEvent event) {
@@ -37,24 +56,88 @@ public class RenderHandEvent {
             ItemPlanningSheet sheet = (ItemPlanningSheet) stack.getItem();
             pos1 = sheet.getBlockPos1(stack);
             pos2 = sheet.getBlockPos2(stack);
-            if (pos1 != null && pos2 != null) {
-                holdingItem = true;
-            }
+            holdingPlanningSheet = true;
         } else if (!(stack.getItem() instanceof ItemPlanningSheet) && event.getHand().equals(EnumHand.MAIN_HAND)) {
-            holdingItem = false;
+            holdingPlanningSheet = false;
+        }
+        if (stack.getItem() instanceof ItemBlueprint && event.getHand().equals(EnumHand.MAIN_HAND)) {
+            ItemBlueprint blueprint = (ItemBlueprint) stack.getItem();
+            name = blueprint.getStructure(stack);
+            author = blueprint.getAuthor(stack);
+            startPos = blueprint.getStartPos(stack);
+            chestPos = blueprint.getChestPos(stack);
+            holdingBlueprint = true;
+        } else if (!(stack.getItem() instanceof ItemBlueprint) && event.getHand().equals(EnumHand.MAIN_HAND)) {
+            holdingBlueprint = false;
         }
     }
 
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
     public void onRenderWorld(RenderWorldLastEvent event) {
-        if ((pos1 != null && pos2 != null) && holdingItem) {
+        if ((pos1 != null && pos2 != null) && holdingPlanningSheet) {
             double xPos = player.prevPosX + (player.posX - player.prevPosX) * event.getPartialTicks();
             double yPos = player.prevPosY + (player.posY - player.prevPosY) * event.getPartialTicks();
             double zPos = player.prevPosZ + (player.posZ - player.prevPosZ) * event.getPartialTicks();
             playerPos = new Vec3d(xPos, yPos, zPos);
-            if (player.getPosition().getDistance(pos1.getX(), pos1.getY(), pos1.getZ()) < 512.0D)
-                drawBoundingBox(playerPos, new Vec3d(pos1), new Vec3d(pos2), 2f);
+            if (player != null) {
+                if (player.getPosition().getDistance(pos1.getX(), pos1.getY(), pos1.getZ()) < 512.0D)
+                    drawBoundingBox(playerPos, new Vec3d(pos1), new Vec3d(pos2), 2f);
+            }
+        }
+        if ((startPos != null && chestPos != null && name != null && author != null) && holdingBlueprint) {
+            double xPos = player.prevPosX + (player.posX - player.prevPosX) * event.getPartialTicks();
+            double yPos = player.prevPosY + (player.posY - player.prevPosY) * event.getPartialTicks();
+            double zPos = player.prevPosZ + (player.posZ - player.prevPosZ) * event.getPartialTicks();
+            playerPos = new Vec3d(xPos, yPos, zPos);
+            if (player != null) {
+                if (player.getPosition().getDistance(startPos.getX(), startPos.getY(), startPos.getZ()) < 512.0D)
+                    drawBoundingBox(playerPos, new Vec3d(startPos), new Vec3d(startPos), 2f);
+                if (player.getPosition().getDistance(chestPos.getX(), chestPos.getY(), chestPos.getZ()) < 512.0D)
+                    drawBoundingBox(playerPos, new Vec3d(chestPos), new Vec3d(chestPos), 2f);
+            }
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    @SubscribeEvent
+    public void onRenderOverlay(RenderGameOverlayEvent event) {
+        if ((pos1 != null && pos2 != null) && holdingPlanningSheet) {
+            FontRenderer renderer = Minecraft.getMinecraft().fontRenderer;
+            String pos1Line = "Pos 1: " + Utilities.formatBlockPos(pos1);
+            String pos2Line = "Pos 2: " + Utilities.formatBlockPos(pos2);
+
+            int width = renderer.getStringWidth(pos1Line);
+            if (width < renderer.getStringWidth(pos2Line))
+                width = renderer.getStringWidth(pos2Line);
+
+            renderer.drawString(pos1Line, event.getResolution().getScaledWidth() - width - offsetX, offsetY, 0xFFFFFF, true);
+            renderer.drawString(pos2Line, event.getResolution().getScaledWidth() - width - offsetX, 10 + offsetY, 0xFFFFFF, true);
+        }
+        if ((startPos != null && chestPos != null && name != null && author != null) && holdingBlueprint) {
+            FontRenderer renderer = Minecraft.getMinecraft().fontRenderer;
+            if (name.equals(""))
+                name = ChatFormatting.DARK_RED + "Structure not set.";
+            if (author.equals(""))
+                author = ChatFormatting.DARK_RED + "Author not set.";
+
+            String nameLine = "Name: " + name;
+            String authorLine = "Author: " + author;
+            String startPosLine = "Start Position: " + Utilities.formatBlockPos(startPos);
+            String chestPosLine = "Chest Position: " + Utilities.formatBlockPos(chestPos);
+
+            int width = renderer.getStringWidth(nameLine);
+            if (width < renderer.getStringWidth(authorLine))
+                width = renderer.getStringWidth(authorLine);
+            if (width < renderer.getStringWidth(startPosLine))
+                width = renderer.getStringWidth(startPosLine);
+            if (width < renderer.getStringWidth(chestPosLine))
+                width = renderer.getStringWidth(chestPosLine);
+
+            renderer.drawString(nameLine, event.getResolution().getScaledWidth() - width - offsetX, offsetY, 0xFFFFFF, true);
+            renderer.drawString(authorLine, event.getResolution().getScaledWidth() - width - offsetX, 10 + offsetY, 0xFFFFFF, true);
+            renderer.drawString(startPosLine, event.getResolution().getScaledWidth() - width - offsetX, 20 + offsetY, 0xFFFFFF, true);
+            renderer.drawString(chestPosLine, event.getResolution().getScaledWidth() - width - offsetX, 30 + offsetY, 0xFFFFFF, true);
         }
     }
 
