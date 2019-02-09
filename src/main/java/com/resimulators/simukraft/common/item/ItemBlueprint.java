@@ -19,7 +19,6 @@ import net.minecraft.world.World;
 import org.lwjgl.input.Keyboard;
 
 import javax.annotation.Nullable;
-import java.io.File;
 import java.util.List;
 
 /**

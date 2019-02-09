@@ -653,7 +653,7 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
                     hunger += finalHeal;
                     final_stack.shrink(1);
                 }
-                Objects.requireNonNull(SaveSimData.get(this.world)).SendFactionPacket(new HungerPacket(this.getFoodLevel(), this.getEntityId()),this.getFactionId());
+                Objects.requireNonNull(SaveSimData.get(this.world)).getfaction(this.getFactionId()).sendFactionPacket(new HungerPacket(hunger,this.getEntityId()));
             }
         }
     }
@@ -688,22 +688,6 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
                     Objects.requireNonNull(SaveSimData.get(this.world)).getfaction(this.getFactionId()).sendFactionPacket(new HungerPacket(hunger,this.getEntityId()));
                 }
             }
-            if (counter / 20 > 60) {
-                if (hunger <= 0) {
-                    this.attackEntityFrom(DamageSource.STARVE, 1.0f);
-                    counter = 0;
-                    hunger = 0;
-                } else {
-                    if (hunger > 0) {
-                        hunger--;
-                        Objects.requireNonNull(SaveSimData.get(this.world)).SendFactionPacket(new HungerPacket(this.getFoodLevel(), this.getEntityId()), this.getFactionId());
-                    }
-
-                    counter = 0;
-                }
-            }
-            heal_counter++;
-            counter++;
         }
         heal_counter++;
         counter++;
