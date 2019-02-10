@@ -82,6 +82,7 @@ public class RenderSim extends RenderLiving<EntitySim> {
             modelSim.femaleRightArmwear.showModel = entitySim.hasArmorInSlot(EntityEquipmentSlot.CHEST);
             modelSim.bipedLeftArmwear.showModel = false;
             modelSim.bipedRightArmwear.showModel = false;
+
         } else {
             modelSim.femaleLeftArmwear.showModel = false;
             modelSim.femaleRightArmwear.showModel = false;

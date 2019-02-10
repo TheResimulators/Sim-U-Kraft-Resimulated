@@ -22,9 +22,10 @@ public class ModelSim extends ModelBiped {
     public ModelRenderer bipedBodyWear;
     public ModelRenderer femaleLeftArmwear;
     public ModelRenderer femaleRightArmwear;
-    ModelRenderer femaleArmLeft;
-    ModelRenderer femaleArmRight;
-    ModelRenderer maleArmLeft;
+    public ModelRenderer femaleArmLeft;
+    public ModelRenderer femaleArmRight;
+    public ModelRenderer maleArmLeft;
+    public ModelRenderer maleArmRight;
 
     public ModelSim(float modelSize) {
         super(modelSize, 0.0F, 64, 64);
@@ -110,9 +111,15 @@ public class ModelSim extends ModelBiped {
         copyModelAngles(this.bipedRightArm, this.bipedRightArmwear);
         copyModelAngles(this.bipedLeftArm, this.femaleLeftArmwear);
         copyModelAngles(this.bipedRightArm, this.femaleRightArmwear);
-        copyModelAngles(this.bipedLeftArm, this.femaleArmLeft);
-        copyModelAngles(this.bipedRightArm, this.femaleArmRight);
         copyModelAngles(this.bipedBody, this.bipedBodyWear);
+        copyModelAnglesWithoutPoints(this.bipedRightArm, this.femaleArmRight);
+        copyModelAnglesWithoutPoints(this.bipedLeftArm, this.femaleArmLeft);
+    }
+
+    private void copyModelAnglesWithoutPoints(ModelRenderer source, ModelRenderer dest) {
+        dest.rotateAngleX = source.rotateAngleX;
+        dest.rotateAngleY = source.rotateAngleY;
+        dest.rotateAngleZ = source.rotateAngleZ;
     }
 
     public void setVisible(boolean visible, boolean female) {
