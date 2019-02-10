@@ -51,5 +51,9 @@ public class ItemDebug extends ItemBase {
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+        tooltip.add("Right clicking a Sim with this will put the");
+        tooltip.add("item in the players off hand into the Sim's main hand.");
+        tooltip.add("");
+        tooltip.add("Shift + Right Click will print some info about the Sim in chat.");
     }
 }
