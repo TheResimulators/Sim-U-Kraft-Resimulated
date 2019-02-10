@@ -44,9 +44,13 @@ public class ModelSim extends ModelBiped {
         this.femaleRightArmwear.addBox(-2.0F, -2.0F, -2.0F, 3, 12, 4, modelSize + 0.25F);
         this.femaleRightArmwear.setRotationPoint(-5.0F, 2.5F, 10.0F);
 
+        this.maleArmRight = new ModelRenderer(this, 40, 16);
+        this.maleArmRight.addBox(-3.0F, -2.0F, -2.0F, 4, 12, 4, modelSize);
+        this.maleArmRight.setRotationPoint(-5.0F, 2.0F, 0.0F);
         this.maleArmLeft = new ModelRenderer(this, 32, 48);
         this.maleArmLeft.addBox(-1.0F, -2.0F, -2.0F, 4, 12, 4, modelSize);
         this.maleArmLeft.setRotationPoint(5.0F, 2.0F, 0.0F);
+        this.maleArmLeft.mirror = true;
         this.bipedLeftArmwear = new ModelRenderer(this, 48, 48);
         this.bipedLeftArmwear.addBox(-1.0F, -2.0F, -2.0F, 4, 12, 4, modelSize + 0.25F);
         this.bipedLeftArmwear.setRotationPoint(5.0F, 2.0F, 0.0F);
@@ -125,17 +129,18 @@ public class ModelSim extends ModelBiped {
     public void setVisible(boolean visible, boolean female) {
         setVisible(visible);
         if (female) {
-            this.bipedLeftArm.showModel = !visible;
-            this.bipedRightArm.showModel = !visible;
-            this.maleArmLeft.showModel = !visible;
-            this.bipedLeftArmwear.showModel = !visible;
-            this.bipedRightArmwear.showModel = !visible;
+            this.bipedLeftArm = this.femaleArmLeft;
+            this.bipedRightArm = this.femaleArmRight;
             this.femaleArmLeft.showModel = visible;
             this.femaleArmRight.showModel = visible;
+            this.bipedLeftArmwear.showModel = !visible;
+            this.bipedRightArmwear.showModel = !visible;
             this.femaleLeftArmwear.showModel = visible;
             this.femaleRightArmwear.showModel = visible;
             this.smallArms = true;
         } else {
+            this.bipedLeftArm = this.maleArmLeft;
+            this.bipedRightArm = this.maleArmRight;
             this.femaleArmLeft.showModel = !visible;
             this.femaleArmRight.showModel = !visible;
             this.femaleLeftArmwear.showModel = !visible;

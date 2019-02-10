@@ -8,9 +8,11 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumHandSide;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 
@@ -29,13 +31,16 @@ public class ItemDebug extends ItemBase {
     public boolean itemInteractionForEntity(ItemStack stack, EntityPlayer playerIn, EntityLivingBase target, EnumHand hand) {
         if (!playerIn.world.isRemote) {
             if (target instanceof EntitySim) {
-                playerIn.sendMessage(new TextComponentString("Profession: " + ((EntitySim) target).getProfession()));
-                playerIn.sendMessage(new TextComponentString("Gender: " + ((EntitySim) target).getGender()));
-                playerIn.sendMessage(new TextComponentString("Variation: " + ((EntitySim) target).getVariation()));
+                if (!playerIn.isSneaking() && !playerIn.getItemStackFromSlot(EntityEquipmentSlot.OFFHAND).isEmpty()) {
+                    ((EntitySim) target).EquipItemStack(EnumHand.MAIN_HAND, playerIn.getHeldItem(EnumHand.OFF_HAND));
+                }
 
                 if(playerIn.isSneaking()) {
                     playerIn.sendMessage(new TextComponentString("Item in Slot 10: " + playerIn.inventory.getStackInSlot(10)));
-                    ((EntitySim) target).EquipItemStack(EnumHand.MAIN_HAND, new ItemStack(Items.DIAMOND_SWORD, 1));
+                    playerIn.sendMessage(new TextComponentString("Profession: " + ((EntitySim) target).getProfession()));
+                    playerIn.sendMessage(new TextComponentString("Gender: " + ((EntitySim) target).getGender()));
+                    playerIn.sendMessage(new TextComponentString("Primary Hand: " + (target.getPrimaryHand() == EnumHandSide.RIGHT ? "Right" : "Left")));
+                    playerIn.sendMessage(new TextComponentString("Variation: " + ((EntitySim) target).getVariation()));
                 }
                 else ((EntitySim) target).unEquipItemStack(EnumHand.MAIN_HAND);
             }
