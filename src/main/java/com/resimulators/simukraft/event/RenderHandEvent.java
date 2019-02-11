@@ -6,24 +6,30 @@ import com.resimulators.simukraft.common.item.ItemBlueprint;
 import com.resimulators.simukraft.common.item.ItemPlanningSheet;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
+import net.minecraft.world.gen.structure.template.Template;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderSpecificHandEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
+import java.lang.reflect.Field;
+import java.util.List;
 
 /**
  * Created by fabbe on 23/10/2018 - 7:12 PM.
@@ -46,7 +52,10 @@ public class RenderHandEvent {
     private String name;
     private String author;
     private BlockPos startPos;
+    private BlockPos size;
     private BlockPos chestPos;
+    private Template template;
+    private List<Template.BlockInfo> blocks;
 
     @SubscribeEvent
     public void playerEvent(RenderSpecificHandEvent event) {
@@ -66,9 +75,19 @@ public class RenderHandEvent {
             author = blueprint.getAuthor(stack);
             startPos = blueprint.getStartPos(stack);
             chestPos = blueprint.getChestPos(stack);
+            template = blueprint.getTemplate();
+            if (template != null)
+                size = template.getSize();
+            try {
+                Field field = template.getClass().getDeclaredField("blocks");
+                field.setAccessible(true);
+                blocks = (List<Template.BlockInfo>) field.get(template);
+            } catch (NoSuchFieldException | IllegalAccessException | NullPointerException e) {}
             holdingBlueprint = true;
         } else if (!(stack.getItem() instanceof ItemBlueprint) && event.getHand().equals(EnumHand.MAIN_HAND)) {
             holdingBlueprint = false;
+            blocks = null;
+            template = null;
         }
     }
 
@@ -114,16 +133,17 @@ public class RenderHandEvent {
             renderer.drawString(pos1Line, event.getResolution().getScaledWidth() - width - offsetX, offsetY, 0xFFFFFF, true);
             renderer.drawString(pos2Line, event.getResolution().getScaledWidth() - width - offsetX, 10 + offsetY, 0xFFFFFF, true);
         }
-        if ((startPos != null && chestPos != null && name != null && author != null) && holdingBlueprint) {
+        if ((startPos != null && size != null && chestPos != null && name != null && author != null) && holdingBlueprint) {
             FontRenderer renderer = Minecraft.getMinecraft().fontRenderer;
             if (name.equals(""))
                 name = ChatFormatting.DARK_RED + "Structure not set.";
             if (author.equals(""))
                 author = ChatFormatting.DARK_RED + "Author not set.";
 
-            String nameLine = "Name: " + name;
-            String authorLine = "Author: " + author;
+            String nameLine = "Name: " + ChatFormatting.DARK_PURPLE + name;
+            String authorLine = "Author: " + ChatFormatting.DARK_PURPLE + author;
             String startPosLine = "Start Position: " + Utilities.formatBlockPos(startPos);
+            String sizePosLine = "Size: " + Utilities.formatBlockPos(size);
             String chestPosLine = "Chest Position: " + Utilities.formatBlockPos(chestPos);
 
             int width = renderer.getStringWidth(nameLine);
@@ -131,8 +151,11 @@ public class RenderHandEvent {
                 width = renderer.getStringWidth(authorLine);
             if (width < renderer.getStringWidth(startPosLine))
                 width = renderer.getStringWidth(startPosLine);
+            if (width < renderer.getStringWidth(sizePosLine))
+                width = renderer.getStringWidth(sizePosLine);
             if (width < renderer.getStringWidth(chestPosLine))
                 width = renderer.getStringWidth(chestPosLine);
+
 
             renderer.drawString(nameLine, event.getResolution().getScaledWidth() - width - offsetX, offsetY, 0xFFFFFF, true);
             renderer.drawString(authorLine, event.getResolution().getScaledWidth() - width - offsetX, 10 + offsetY, 0xFFFFFF, true);
