@@ -135,7 +135,7 @@ public class ItemPlanningSheet extends ItemBase {
                 return null;
             return new BlockPos(aPos[0], aPos[1], aPos[2]);
         } else
-            return null;
+            return new BlockPos(0, 0, 0);
     }
 
     public BlockPos getBlockPos2(ItemStack stack) {
@@ -146,7 +146,7 @@ public class ItemPlanningSheet extends ItemBase {
                 return null;
             return new BlockPos(aPos[0], aPos[1], aPos[2]);
         } else
-            return null;
+            return new BlockPos(0, 0, 0);
     }
 
     public StructureBoundingBox getStructureBounds(ItemStack stack) {
