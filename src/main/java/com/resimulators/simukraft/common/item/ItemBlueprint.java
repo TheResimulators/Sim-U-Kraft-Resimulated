@@ -237,6 +237,8 @@ public class ItemBlueprint extends ItemBase {
                 tooltip.add("Structure: " + ChatFormatting.DARK_RED + "No structure set");
             BlockPos pos = getStartPos(stack);
             tooltip.add("Build Position: " + Utilities.formatBlockPos(pos));
+            BlockPos chestPos = getChestPos(stack);
+            tooltip.add("Chest Position: " + Utilities.formatBlockPos(chestPos));
             EnumFacing facing = getRotation(stack);
             if (facing == null)
                 facing = EnumFacing.NORTH;
