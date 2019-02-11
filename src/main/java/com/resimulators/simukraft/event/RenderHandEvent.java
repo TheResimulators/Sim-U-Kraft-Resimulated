@@ -104,14 +104,20 @@ public class RenderHandEvent {
                     this.drawBoundingBox(playerPos, new Vec3d(pos1), new Vec3d(pos2), 2f, new Color(255, 255, 255, 150));
             }
         }
-        if ((startPos != null && chestPos != null && name != null && author != null) && holdingBlueprint) {
+        if ((startPos != null && size != null && chestPos != null && name != null && author != null) && holdingBlueprint) {
             double xPos = player.prevPosX + (player.posX - player.prevPosX) * event.getPartialTicks();
             double yPos = player.prevPosY + (player.posY - player.prevPosY) * event.getPartialTicks();
             double zPos = player.prevPosZ + (player.posZ - player.prevPosZ) * event.getPartialTicks();
             playerPos = new Vec3d(xPos, yPos, zPos);
             if (player != null) {
-                if (player.getPosition().getDistance(startPos.getX(), startPos.getY(), startPos.getZ()) < 512.0D)
+                if (player.getPosition().getDistance(startPos.getX(), startPos.getY(), startPos.getZ()) < 512.0D) {
+                    if (template != null && blocks != null) {
+                        preDrawStructure(playerPos, player.world, blocks, startPos);
+                    }
+                    if (blocks == null || blocks.isEmpty())
+                        size = new BlockPos(1, 1, 1);
                     this.drawBoundingBox(playerPos, new Vec3d(startPos), new Vec3d(startPos.add(size.getX() - 1, size.getY() - 1, size.getZ() - 1)), 2f, new Color(255, 255, 255, 150));
+                }
                 if (player.getPosition().getDistance(chestPos.getX(), chestPos.getY(), chestPos.getZ()) < 512.0D)
                     this.drawBoundingBox(playerPos, new Vec3d(chestPos), new Vec3d(chestPos), 2f, new Color(100, 255, 100, 150));
             }
@@ -262,5 +268,28 @@ public class RenderHandEvent {
 
         GL11.glDepthMask(true);
         GL11.glPopAttrib();
+    }
+
+    private void preDrawStructure(Vec3d player_pos, World world, List<Template.BlockInfo> blocksInfo, BlockPos startPos) {
+        Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+        BlockRendererDispatcher renderer = Minecraft.getMinecraft().getBlockRendererDispatcher();
+
+        GlStateManager.pushMatrix();
+
+        for (Template.BlockInfo info : blocksInfo) {
+            GlStateManager.pushMatrix();
+            GlStateManager.enableBlend();
+            GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+            BlockPos position = startPos.add(info.pos);
+            GlStateManager.translate(-player_pos.x, -player_pos.y, -player_pos.z);
+            GlStateManager.translate(position.getX(), position.getY(), position.getZ());
+            GlStateManager.color(1f, 1f, 1f, 0.8f);
+            GlStateManager.rotate(-90, 0, 1f, 0);
+            renderer.renderBlockBrightness(info.blockState, 1f);
+            GlStateManager.disableBlend();
+            GlStateManager.popMatrix();
+        }
+
+        GlStateManager.popMatrix();
     }
 }
