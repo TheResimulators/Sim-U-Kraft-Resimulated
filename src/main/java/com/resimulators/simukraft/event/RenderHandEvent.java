@@ -82,7 +82,7 @@ public class RenderHandEvent {
             playerPos = new Vec3d(xPos, yPos, zPos);
             if (player != null) {
                 if (player.getPosition().getDistance(pos1.getX(), pos1.getY(), pos1.getZ()) < 512.0D)
-                    drawBoundingBox(playerPos, new Vec3d(pos1), new Vec3d(pos2), 2f);
+                    this.drawBoundingBox(playerPos, new Vec3d(pos1), new Vec3d(pos2), 2f, new Color(255, 255, 255, 150));
             }
         }
         if ((startPos != null && chestPos != null && name != null && author != null) && holdingBlueprint) {
@@ -92,9 +92,9 @@ public class RenderHandEvent {
             playerPos = new Vec3d(xPos, yPos, zPos);
             if (player != null) {
                 if (player.getPosition().getDistance(startPos.getX(), startPos.getY(), startPos.getZ()) < 512.0D)
-                    drawBoundingBox(playerPos, new Vec3d(startPos), new Vec3d(startPos), 2f);
+                    this.drawBoundingBox(playerPos, new Vec3d(startPos), new Vec3d(startPos.add(size.getX() - 1, size.getY() - 1, size.getZ() - 1)), 2f, new Color(255, 255, 255, 150));
                 if (player.getPosition().getDistance(chestPos.getX(), chestPos.getY(), chestPos.getZ()) < 512.0D)
-                    drawBoundingBox(playerPos, new Vec3d(chestPos), new Vec3d(chestPos), 2f);
+                    this.drawBoundingBox(playerPos, new Vec3d(chestPos), new Vec3d(chestPos), 2f, new Color(100, 255, 100, 150));
             }
         }
     }
@@ -141,7 +141,7 @@ public class RenderHandEvent {
         }
     }
 
-    private static void drawBoundingBox(Vec3d player_pos, Vec3d posA, Vec3d posB, float width) {
+    private void drawBoundingBox(Vec3d player_pos, Vec3d posA, Vec3d posB, float width, Color c) {
         GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
         GL11.glDisable(GL11.GL_CULL_FACE);
         GL11.glDisable(GL11.GL_LIGHTING);
@@ -149,16 +149,14 @@ public class RenderHandEvent {
 
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        GL11.glTranslated(-player_pos.x, -player_pos.y, -player_pos.z);
 
-
-        Color c = new Color(255, 255, 255, 150);
-        GL11.glColor4d(c.getRed(), c.getGreen(), c.getBlue(), c.getAlpha());
         GL11.glLineWidth(width);
         GL11.glDepthMask(false);
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferBuilder = tessellator.getBuffer();
         bufferBuilder.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR);
+
+        bufferBuilder.setTranslation(-player_pos.x, -player_pos.y, -player_pos.z);
 
         double lowX;
         double lowY;
@@ -236,6 +234,8 @@ public class RenderHandEvent {
         bufferBuilder.pos(low.x+dx, low.y+dy, low.z).color(c.getRed(), c.getGreen(), c.getBlue(), c.getAlpha()).endVertex();    //H
 
         tessellator.draw();
+
+        tessellator.getBuffer().setTranslation(0, 0, 0);
 
         GL11.glDepthMask(true);
         GL11.glPopAttrib();
