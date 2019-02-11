@@ -14,9 +14,11 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.gen.structure.template.Template;
 import org.lwjgl.input.Keyboard;
 
 import javax.annotation.Nullable;
@@ -26,6 +28,8 @@ import java.util.List;
  * Created by fabbe on 03/02/2018 - 5:14 PM.
  */
 public class ItemBlueprint extends ItemBase {
+    private Template template;
+
     public ItemBlueprint(String name, CreativeTabs tab) {
         super(name, tab);
     }
@@ -51,6 +55,13 @@ public class ItemBlueprint extends ItemBase {
         }
 
         return ActionResult.newResult(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn));
+    }
+
+    @Override
+    public void onUpdate(ItemStack stack, World worldIn, Entity entity, int itemSlot, boolean isSelected) {
+        super.onUpdate(stack, worldIn, entity, itemSlot, isSelected);
+        if ((this.template == null || getStructure(stack).equals("")) && !worldIn.isRemote)
+            this.template = StructureUtils.loadStructure(entity.getServer(), entity.world, getStructure(stack));
     }
 
     @Override
@@ -217,6 +228,14 @@ public class ItemBlueprint extends ItemBase {
         if (compound == null)
             return "";
         return compound.getString("author");
+    }
+
+    public Template getTemplate() {
+        return template;
+    }
+
+    public void refreshStructure(MinecraftServer server, World world, ItemStack stack) {
+        this.template = StructureUtils.loadStructure(server, world, getStructure(stack));
     }
 
     @Override
