@@ -146,7 +146,7 @@ public class RenderHandEvent {
             if (author.equals(""))
                 author = ChatFormatting.DARK_RED + "Author not set.";
 
-            String nameLine = "Name: " + ChatFormatting.DARK_PURPLE + name;
+            String nameLine = "Name: " + ChatFormatting.DARK_PURPLE + Utilities.upperCaseFirstLetterInEveryWord(name.split("_"));
             String authorLine = "Author: " + ChatFormatting.DARK_PURPLE + author;
             String startPosLine = "Start Position: " + Utilities.formatBlockPos(startPos);
             String sizePosLine = "Size: " + Utilities.formatBlockPos(size);
@@ -165,8 +165,9 @@ public class RenderHandEvent {
 
             renderer.drawString(nameLine, event.getResolution().getScaledWidth() - width - offsetX, offsetY, 0xFFFFFF, true);
             renderer.drawString(authorLine, event.getResolution().getScaledWidth() - width - offsetX, 10 + offsetY, 0xFFFFFF, true);
-            renderer.drawString(startPosLine, event.getResolution().getScaledWidth() - width - offsetX, 20 + offsetY, 0xFFFFFF, true);
-            renderer.drawString(chestPosLine, event.getResolution().getScaledWidth() - width - offsetX, 30 + offsetY, 0xFFFFFF, true);
+            renderer.drawString(sizePosLine, event.getResolution().getScaledWidth() - width - offsetX, 20 + offsetY, 0xFFFFFF, true);
+            renderer.drawString(startPosLine, event.getResolution().getScaledWidth() - width - offsetX, 30 + offsetY, 0xFFFFFF, true);
+            renderer.drawString(chestPosLine, event.getResolution().getScaledWidth() - width - offsetX, 40 + offsetY, 0xFFFFFF, true);
         }
     }
 

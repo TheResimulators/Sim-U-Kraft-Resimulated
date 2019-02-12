@@ -254,6 +254,9 @@ public class ItemBlueprint extends ItemBase {
             }
             else
                 tooltip.add("Structure: " + ChatFormatting.DARK_RED + "No structure set");
+            Template template = getTemplate();
+            if (template != null)
+                tooltip.add("Size: " + Utilities.formatBlockPos(template.getSize()));
             BlockPos pos = getStartPos(stack);
             tooltip.add("Build Position: " + Utilities.formatBlockPos(pos));
             BlockPos chestPos = getChestPos(stack);
