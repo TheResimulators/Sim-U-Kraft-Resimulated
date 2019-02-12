@@ -247,6 +247,21 @@ public class ItemBlueprint extends ItemBase {
         return compound.getString("category");
     }
 
+    public void setPrice(ItemStack stack, double price) {
+        NBTTagCompound compound = stack.getTagCompound();
+        if (compound == null)
+            compound = new NBTTagCompound();
+        compound.setDouble("price", price);
+        stack.setTagCompound(compound);
+    }
+
+    public double getPrice(ItemStack stack) {
+        NBTTagCompound compound = stack.getTagCompound();
+        if (compound == null)
+            compound = new NBTTagCompound();
+        return compound.getDouble("price");
+    }
+
     public TemplatePlus getTemplate() {
         return template;
     }
@@ -276,6 +291,11 @@ public class ItemBlueprint extends ItemBase {
                 tooltip.add("Category: " + ChatFormatting.DARK_RED + "Category not set.");
             else
                 tooltip.add("Category: " + ChatFormatting.DARK_PURPLE + Utilities.upperCaseFirstLetterInEveryWord(getCategory(stack).split("_")));
+
+            if (getPrice(stack) == 0)
+                tooltip.add("Price: " + ChatFormatting.DARK_RED + "FREE");
+            else
+                tooltip.add("Price: " + ChatFormatting.DARK_PURPLE + "$" + getPrice(stack));
             TemplatePlus template = getTemplate();
             if (template != null)
                 tooltip.add("Size: " + Utilities.formatBlockPos(template.getSize()));

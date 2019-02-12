@@ -1,7 +1,11 @@
 package com.resimulators.simukraft.structure;
 
+import com.resimulators.simukraft.ConfigHandler;
+import com.resimulators.simukraft.Utilities;
+import net.minecraft.block.BlockAir;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.ResourceLocation;
@@ -10,11 +14,12 @@ import net.minecraft.util.StringUtils;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.template.PlacementSettings;
 import net.minecraft.world.gen.structure.template.Template;
-import net.minecraft.world.gen.structure.template.TemplateManager;
+
+import java.lang.reflect.Field;
+import java.util.List;
 
 /**
  * Created by fabbe on 22/10/2018 - 4:56 PM.
@@ -43,6 +48,7 @@ public class StructureUtils {
             template.setAuthor(author);
             NBTTagCompound compound = new NBTTagCompound();
             compound.setString("category", category);
+            compound.setDouble("price", calculatePrice(template.getBlocks(), template.getSize()));
             templateManager.writeTemplate(server, new ResourceLocation(name), compound);
             player.sendMessage(new TextComponentString("Saved " + name));
         }
@@ -82,5 +88,25 @@ public class StructureUtils {
     public static void placeStructure(World world, BlockPos pos, Template template, Mirror mirror, Rotation rotation, boolean ignoreEntities) {
         PlacementSettings placementSettings = (new PlacementSettings()).setMirror(mirror).setRotation(rotation).setIgnoreEntities(ignoreEntities);
         template.addBlocksToWorldChunk(world, pos, placementSettings);
+    }
+
+
+    public static double calculatePrice(List<TemplatePlus.BlockInfo> blocks, BlockPos size) {
+        double price = 0;
+        for (Template.BlockInfo info : blocks) {
+            if (!(info.blockState.getBlock() instanceof BlockAir)) {
+                try {
+                    Field field = info.blockState.getBlock().getClass().getDeclaredField("blockHardness");
+                    field.setAccessible(true);
+                    price += field.getFloat(info.blockState.getBlock()) * (info.blockState.getBlock().getHarvestLevel(info.blockState) + 1);
+                } catch (NoSuchFieldException | IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        price += size.getX() * 1.5d;
+        price += size.getY() * 2.2d;
+        price += size.getZ() * 1.5d;
+        return price * ConfigHandler.build_price;
     }
 }

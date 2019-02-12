@@ -143,6 +143,7 @@ public class CommandStructure extends CommandTreeBase {
                             ((ItemBlueprint) itemStack.getItem()).setAuthor(itemStack, template.getAuthor());
                             ((ItemBlueprint) itemStack.getItem()).refreshStructure(server, player.world, itemStack);
                             ((ItemBlueprint) itemStack.getItem()).setCategory(itemStack, template.getCategory());
+                            ((ItemBlueprint) itemStack.getItem()).setPrice(itemStack, template.getPrice());
                         }
                     }
                 }

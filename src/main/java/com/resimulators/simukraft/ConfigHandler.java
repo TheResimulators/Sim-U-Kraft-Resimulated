@@ -6,19 +6,23 @@ import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-@Config(modid=Reference.MOD_ID, name = Reference.MOD_ID)
+@Config(modid = Reference.MOD_ID, name = Reference.MOD_NAME)
 public class ConfigHandler {
 
 
     @Config.Name("Special Spawn Chance")
-    @Config.Comment("Decides from 1 out of X what chance special sims spawn with.")
+    @Config.Comment("Decides from 1 out of X what chance special sims spawn with. Settings this to 1 means that every Sim is a special Sim.")
     public static int specialSpawn = 500;
+
+    @Config.Name("Building Price Multiplier")
+    @Config.Comment("The price of the buildings is multiplied by this value.")
+    public static int build_price = 10;
 
     @Config.Name("Server Configs")
     @Config.Comment("Only used for dedicated server")
     public static ServerConfigs Server_Configs = new ServerConfigs();
 
-    @Mod.EventBusSubscriber(modid =Reference.MOD_ID)
+    @Mod.EventBusSubscriber(modid = Reference.MOD_ID)
     public static class ConfigEvents {
 
         @SubscribeEvent
