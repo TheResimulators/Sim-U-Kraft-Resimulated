@@ -31,7 +31,7 @@ public class StructureUtils {
      *  @param name - Name of the Structure.
      *  @param author - The author of the structure.
      */
-    public static void saveStructure(MinecraftServer server, EntityPlayer player, World world, BlockPos pos1, BlockPos pos2, Rotation rotation, String name, String author) {
+    public static void saveStructure(MinecraftServer server, EntityPlayer player, World world, BlockPos pos1, BlockPos pos2, Rotation rotation, String name, String author, String category) {
         if (pos1 != null && pos2 != null && !StringUtils.isNullOrEmpty(name)) {
             StructureBoundingBox bounds = new StructureBoundingBox(pos1, pos2);
             BlockPos size = new BlockPos(bounds.maxX - bounds.minX + 1, bounds.maxY - bounds.minY + 1, bounds.maxZ - bounds.minZ + 1);
@@ -42,6 +42,7 @@ public class StructureUtils {
             template.takeBlocksFromWorld(world, pos, size, false, Blocks.STRUCTURE_VOID);
             template.setAuthor(author);
             NBTTagCompound compound = new NBTTagCompound();
+            compound.setString("category", category);
             templateManager.writeTemplate(server, new ResourceLocation(name), compound);
             player.sendMessage(new TextComponentString("Saved " + name));
         }

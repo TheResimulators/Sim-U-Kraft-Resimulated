@@ -53,6 +53,7 @@ public class RenderHandEvent {
     private boolean holdingBlueprint = false;
     private String name;
     private String author;
+    private String category;
     private BlockPos startPos;
     private BlockPos size;
     private BlockPos chestPos;
@@ -75,6 +76,7 @@ public class RenderHandEvent {
             ItemBlueprint blueprint = (ItemBlueprint) stack.getItem();
             name = blueprint.getStructure(stack);
             author = blueprint.getAuthor(stack);
+            category = blueprint.getCategory(stack);
             startPos = blueprint.getStartPos(stack);
             chestPos = blueprint.getChestPos(stack);
             template = blueprint.getTemplate();
@@ -144,9 +146,12 @@ public class RenderHandEvent {
                 name = ChatFormatting.DARK_RED + "Structure not set.";
             if (author.equals(""))
                 author = ChatFormatting.DARK_RED + "Author not set.";
+            if (category.equals(""))
+                category = ChatFormatting.DARK_RED + "Category not set.";
 
             String nameLine = "Name: " + ChatFormatting.DARK_PURPLE + Utilities.upperCaseFirstLetterInEveryWord(name.split("_"));
             String authorLine = "Author: " + ChatFormatting.DARK_PURPLE + author;
+            String categoryLine = "Category: " + ChatFormatting.DARK_PURPLE + Utilities.upperCaseFirstLetterInEveryWord(category.split("_"));
             String startPosLine = "Start Position: " + Utilities.formatBlockPos(startPos);
             String sizePosLine = "Size: " + Utilities.formatBlockPos(size);
             String chestPosLine = "Chest Position: " + Utilities.formatBlockPos(chestPos);
@@ -154,6 +159,8 @@ public class RenderHandEvent {
             int width = renderer.getStringWidth(nameLine);
             if (width < renderer.getStringWidth(authorLine))
                 width = renderer.getStringWidth(authorLine);
+            if (width < renderer.getStringWidth(categoryLine))
+                width = renderer.getStringWidth(categoryLine);
             if (width < renderer.getStringWidth(startPosLine))
                 width = renderer.getStringWidth(startPosLine);
             if (width < renderer.getStringWidth(sizePosLine))
@@ -164,9 +171,10 @@ public class RenderHandEvent {
 
             renderer.drawString(nameLine, event.getResolution().getScaledWidth() - width - offsetX, offsetY, 0xFFFFFF, true);
             renderer.drawString(authorLine, event.getResolution().getScaledWidth() - width - offsetX, 10 + offsetY, 0xFFFFFF, true);
-            renderer.drawString(sizePosLine, event.getResolution().getScaledWidth() - width - offsetX, 20 + offsetY, 0xFFFFFF, true);
-            renderer.drawString(startPosLine, event.getResolution().getScaledWidth() - width - offsetX, 30 + offsetY, 0xFFFFFF, true);
-            renderer.drawString(chestPosLine, event.getResolution().getScaledWidth() - width - offsetX, 40 + offsetY, 0xFFFFFF, true);
+            renderer.drawString(categoryLine, event.getResolution().getScaledWidth() - width - offsetX, 20 + offsetY, 0xFFFFFF, true);
+            renderer.drawString(sizePosLine, event.getResolution().getScaledWidth() - width - offsetX, 40 + offsetY, 0xFFFFFF, true);
+            renderer.drawString(startPosLine, event.getResolution().getScaledWidth() - width - offsetX, 50 + offsetY, 0xFFFFFF, true);
+            renderer.drawString(chestPosLine, event.getResolution().getScaledWidth() - width - offsetX, 60 + offsetY, 0xFFFFFF, true);
         }
     }
 

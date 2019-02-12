@@ -232,6 +232,21 @@ public class ItemBlueprint extends ItemBase {
         return compound.getString("author");
     }
 
+    public void setCategory(ItemStack stack, String category) {
+        NBTTagCompound compound = stack.getTagCompound();
+        if (compound == null)
+            compound = new NBTTagCompound();
+        compound.setString("category", category);
+        stack.setTagCompound(compound);
+    }
+
+    public String getCategory(ItemStack stack) {
+        NBTTagCompound compound = stack.getTagCompound();
+        if (compound == null)
+            compound = new NBTTagCompound();
+        return compound.getString("category");
+    }
+
     public TemplatePlus getTemplate() {
         return template;
     }
@@ -256,6 +271,11 @@ public class ItemBlueprint extends ItemBase {
             }
             else
                 tooltip.add("Structure: " + ChatFormatting.DARK_RED + "No structure set");
+
+            if (getCategory(stack).equals(""))
+                tooltip.add("Category: " + ChatFormatting.DARK_RED + "Category not set.");
+            else
+                tooltip.add("Category: " + ChatFormatting.DARK_PURPLE + Utilities.upperCaseFirstLetterInEveryWord(getCategory(stack).split("_")));
             TemplatePlus template = getTemplate();
             if (template != null)
                 tooltip.add("Size: " + Utilities.formatBlockPos(template.getSize()));
