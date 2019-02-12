@@ -23,6 +23,7 @@ import com.resimulators.simukraft.common.tileentity.TileFarm;
 import com.resimulators.simukraft.common.world.Rent_collection;
 import com.resimulators.simukraft.init.*;
 import com.resimulators.simukraft.network.PacketHandler;
+import com.resimulators.simukraft.structure.StructureHandler;
 import com.sun.glass.ui.View;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
@@ -56,6 +57,7 @@ public class CommonProxy {
     }
 
     public void onServerStarting(FMLServerStartingEvent event) {
+        new StructureHandler(event.getServer().getEntityWorld());
         event.registerServerCommand(new CommandStructure());
 
     }
