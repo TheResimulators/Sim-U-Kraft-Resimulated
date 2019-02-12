@@ -68,6 +68,34 @@ public class Utilities {
         return Rotation.NONE;
     }
 
+    public static EnumFacing convertToFacing(Rotation rotation) {
+        switch(rotation) {
+            case NONE:
+                return EnumFacing.NORTH;
+            case CLOCKWISE_90:
+                return EnumFacing.EAST;
+            case CLOCKWISE_180:
+                return EnumFacing.SOUTH;
+            case COUNTERCLOCKWISE_90:
+                return EnumFacing.WEST;
+        }
+        return EnumFacing.NORTH;
+    }
+
+    public static int convertToInt(Rotation rotation) {
+        switch(rotation) {
+            case NONE:
+                return 0;
+            case CLOCKWISE_90:
+                return 90;
+            case CLOCKWISE_180:
+                return 180;
+            case COUNTERCLOCKWISE_90:
+                return -90;
+        }
+        return 0;
+    }
+
     public static boolean isInteger(String s) {
         try {
             Integer.parseInt(s);
