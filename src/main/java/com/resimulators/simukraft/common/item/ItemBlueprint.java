@@ -222,6 +222,7 @@ public class ItemBlueprint extends ItemBase {
             compound = new NBTTagCompound();
 
         compound.setString("author", author);
+        stack.setTagCompound(compound);
     }
 
     public String getAuthor(ItemStack stack) {

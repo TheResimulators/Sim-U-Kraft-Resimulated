@@ -16,7 +16,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.event.ClickEvent;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.template.Template;
@@ -176,8 +178,9 @@ public class CommandStructure extends CommandTreeBase {
                     sender.sendMessage(new TextComponentString(ChatFormatting.GREEN + "Structures on the server! (Page " + page + "/" + ((int)Math.ceil(files.length / 10.0)) + ")"));
                     for (int i = ((page * 10) - 10); i < (page * 10); i++) {
                         if (i < files.length)
-                            sender.sendMessage(new TextComponentString(Utilities.upperCaseFirstLetterInEveryWord(files[i].getName().split("_")).replace(".nbt", "") +
-                                    ChatFormatting.GRAY + "[" + ChatFormatting.AQUA + files[i].getName().replace(".nbt", "") + ChatFormatting.GRAY + "]"));
+                            sender.sendMessage(new TextComponentString(Utilities.upperCaseFirstLetterInEveryWord(files[i].getName().split("_")).replace(".nbt", "")
+                                    + ChatFormatting.GRAY + "[" + ChatFormatting.AQUA + files[i].getName().replace(".nbt", "") + ChatFormatting.GRAY + "]")
+                                    .setStyle(new Style().setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/structure load " + files[i].getName().replace(".nbt", "")))));
                         else break;
                     }
                 }
