@@ -1,5 +1,6 @@
 package com.resimulators.simukraft.common.command;
 
+import com.mojang.realmsclient.gui.ChatFormatting;
 import com.resimulators.simukraft.SimUKraft;
 import com.resimulators.simukraft.Utilities;
 import com.resimulators.simukraft.common.item.ItemBlueprint;
@@ -137,6 +138,7 @@ public class CommandStructure extends CommandTreeBase {
                         if (template != null) {
                             ((ItemBlueprint) itemStack.getItem()).setStructure(itemStack, args[0]);
                             ((ItemBlueprint) itemStack.getItem()).setAuthor(itemStack, template.getAuthor());
+                            ((ItemBlueprint) itemStack.getItem()).refreshStructure(server, player.world, itemStack);
                         }
                     }
                 }
@@ -162,44 +164,23 @@ public class CommandStructure extends CommandTreeBase {
 
         @Override
         public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-            List<String> structurelist = new ArrayList<>();
-            String folder = "";
-            if (args.length == 1) folder = args[0];
-            else if (args.length == 0) folder = "all";
-            if (args.length == 0 || args.length == 1 && types.contains(folder)) {
-                Entity entity = sender.getCommandSenderEntity();
-                if (entity instanceof EntityPlayer) {
-                    if (!folder.equals("all")) {
-                        if (new File(Loader.instance().getConfigDir() + "\\simukraft\\structures\\" + folder + "\\").exists()) {
-                            File file = new File(Loader.instance().getConfigDir() + "\\simukraft\\structures\\" + folder + "\\");
-                            structurelist.addAll(java.util.Arrays.asList(file.list()));
-                        }
-                    } else {
-                        if (new File(Loader.instance().getConfigDir() + "\\simukraft\\structures\\").exists()) {
-                            for (String string : types) {
-                                if (new File(Loader.instance().getConfigDir() + "\\simukraft\\structures\\" + string + "\\").exists()) {
-                                    File category = new File(Loader.instance().getConfigDir() + "\\simukraft\\structures\\" + string + "\\");
-                                    structurelist.addAll(java.util.Arrays.asList(category.list()));
-                                }
+            if (new File(server.getDataDirectory() + "/saves/" + server.getWorldName() + "/structures/").exists()) {
+                int page = 1;
+                if (args.length == 1)
+                    if (Utilities.isInteger(args[0]))
+                        page = Integer.parseInt(args[0]);
 
-                            }
-                        }
+                File[] files = new File(server.getDataDirectory() + "/saves/" + server.getWorldName() + "/structures/").listFiles();
+                if (files != null) {
+                    sender.sendMessage(new TextComponentString(ChatFormatting.GREEN + "Structures on the server! (Page " + page + "/" + ((int)Math.ceil(files.length / 10.0)) + ")"));
+                    for (int i = ((page * 10) - 10); i < (page * 10); i++) {
+                        if (i < files.length)
+                            sender.sendMessage(new TextComponentString(Utilities.upperCaseFirstLetterInEveryWord(files[i].getName().split("_")).replace(".nbt", "") +
+                                    ChatFormatting.GRAY + "[" + ChatFormatting.AQUA + files[i].getName().replace(".nbt", "") + ChatFormatting.GRAY + "]"));
+                        else break;
                     }
-                    StringBuilder builder = new StringBuilder();
-                    builder.append("Structure files: ");
-                    assert structurelist != null;
-                    for (String s : structurelist) {
-                        builder.append(s).append(", ");
-                    }
-                    String str = builder.toString().replace(".struct", "");
-                    sender.sendMessage(new TextComponentString(str.substring(0, str.length() - 2)));
-                } else {
-                    throw new WrongUsageException(getUsage(sender));
                 }
-            } else {
-                throw new WrongUsageException(getUsage(sender));
             }
-
         }
     }
 }
