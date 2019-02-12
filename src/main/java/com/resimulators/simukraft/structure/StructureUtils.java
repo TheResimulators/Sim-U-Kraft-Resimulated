@@ -36,12 +36,13 @@ public class StructureUtils {
             StructureBoundingBox bounds = new StructureBoundingBox(pos1, pos2);
             BlockPos size = new BlockPos(bounds.maxX - bounds.minX + 1, bounds.maxY - bounds.minY + 1, bounds.maxZ - bounds.minZ + 1);
             BlockPos pos = new BlockPos(bounds.minX, bounds.minY, bounds.minZ);
-            WorldServer worldServer = (WorldServer) world;
-            TemplateManager templateManager = worldServer.getStructureTemplateManager();
-            Template template = templateManager.getTemplate(server, new ResourceLocation(name));
+            StructureHandler handler = StructureHandler.getInstance();
+            TemplateManagerPlus templateManager = handler.getTemplateManager();
+            TemplatePlus template = templateManager.getTemplate(server, new ResourceLocation(name));
             template.takeBlocksFromWorld(world, pos, size, false, Blocks.STRUCTURE_VOID);
             template.setAuthor(author);
-            templateManager.writeTemplate(server, new ResourceLocation(name));
+            NBTTagCompound compound = new NBTTagCompound();
+            templateManager.writeTemplate(server, new ResourceLocation(name), compound);
             player.sendMessage(new TextComponentString("Saved " + name));
         }
     }
@@ -53,11 +54,11 @@ public class StructureUtils {
      * @param name - Name of the Structure.
      * @return Building template that can then be either placed immediately in the world or iterated through.
      */
-    public static Template loadStructure(MinecraftServer server, World world, String name) {
+    public static TemplatePlus loadStructure(MinecraftServer server, World world, String name) {
         if (!StringUtils.isNullOrEmpty(name)) {
-            WorldServer worldServer = (WorldServer)world;
-            TemplateManager templateManager = worldServer.getStructureTemplateManager();
-            Template template = templateManager.get(server, new ResourceLocation(name));
+            StructureHandler handler = StructureHandler.getInstance();
+            TemplateManagerPlus templateManager = handler.getTemplateManager();
+            TemplatePlus template = templateManager.get(server, new ResourceLocation(name));
             if (template == null)
                 return null;
             else {

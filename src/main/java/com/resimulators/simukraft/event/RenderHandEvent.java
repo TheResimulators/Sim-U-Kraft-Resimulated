@@ -1,9 +1,11 @@
 package com.resimulators.simukraft.event;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
+import com.resimulators.simukraft.SimUKraft;
 import com.resimulators.simukraft.Utilities;
 import com.resimulators.simukraft.common.item.ItemBlueprint;
 import com.resimulators.simukraft.common.item.ItemPlanningSheet;
+import com.resimulators.simukraft.structure.TemplatePlus;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
@@ -54,7 +56,7 @@ public class RenderHandEvent {
     private BlockPos startPos;
     private BlockPos size;
     private BlockPos chestPos;
-    private Template template;
+    private TemplatePlus template;
     private List<Template.BlockInfo> blocks;
 
     @SubscribeEvent
@@ -76,13 +78,10 @@ public class RenderHandEvent {
             startPos = blueprint.getStartPos(stack);
             chestPos = blueprint.getChestPos(stack);
             template = blueprint.getTemplate();
-            if (template != null)
+            if (template != null) {
                 size = template.getSize();
-            try {
-                Field field = template.getClass().getDeclaredField("blocks");
-                field.setAccessible(true);
-                blocks = (List<Template.BlockInfo>) field.get(template);
-            } catch (NoSuchFieldException | IllegalAccessException | NullPointerException e) {}
+                blocks = template.getBlocks();
+            }
             holdingBlueprint = true;
         } else if (!(stack.getItem() instanceof ItemBlueprint) && event.getHand().equals(EnumHand.MAIN_HAND)) {
             holdingBlueprint = false;
@@ -277,7 +276,7 @@ public class RenderHandEvent {
 
         GlStateManager.pushMatrix();
 
-        for (Template.BlockInfo info : blocksInfo) {
+        for (TemplatePlus.BlockInfo info : blocksInfo) {
             GlStateManager.pushMatrix();
             GlStateManager.enableBlend();
             GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);

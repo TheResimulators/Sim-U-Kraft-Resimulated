@@ -6,6 +6,7 @@ import com.resimulators.simukraft.Utilities;
 import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
 import com.resimulators.simukraft.common.item.base.ItemBase;
 import com.resimulators.simukraft.structure.StructureUtils;
+import com.resimulators.simukraft.structure.TemplatePlus;
 import net.minecraft.block.BlockChest;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
@@ -28,7 +29,7 @@ import java.util.List;
  * Created by fabbe on 03/02/2018 - 5:14 PM.
  */
 public class ItemBlueprint extends ItemBase {
-    private Template template;
+    private TemplatePlus template;
 
     public ItemBlueprint(String name, CreativeTabs tab) {
         super(name, tab);
@@ -230,7 +231,7 @@ public class ItemBlueprint extends ItemBase {
         return compound.getString("author");
     }
 
-    public Template getTemplate() {
+    public TemplatePlus getTemplate() {
         return template;
     }
 
@@ -254,7 +255,7 @@ public class ItemBlueprint extends ItemBase {
             }
             else
                 tooltip.add("Structure: " + ChatFormatting.DARK_RED + "No structure set");
-            Template template = getTemplate();
+            TemplatePlus template = getTemplate();
             if (template != null)
                 tooltip.add("Size: " + Utilities.formatBlockPos(template.getSize()));
             BlockPos pos = getStartPos(stack);

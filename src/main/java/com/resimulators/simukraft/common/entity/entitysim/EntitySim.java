@@ -12,6 +12,7 @@ import com.resimulators.simukraft.common.enums.FarmModes;
 import com.resimulators.simukraft.init.ModItems;
 import com.resimulators.simukraft.network.HungerPacket;
 import com.resimulators.simukraft.structure.StructureBuilding;
+import com.resimulators.simukraft.structure.TemplatePlus;
 import net.minecraft.block.BlockChest;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
@@ -65,7 +66,7 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
     private GameProfile playerProfile;
     private Time time;
     //Builder profession related
-    private Template structure;
+    private TemplatePlus structure;
     private boolean isAllowedToBuild;
     private BlockPos startPos;
     private EnumFacing facing;
@@ -364,11 +365,11 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
         return "Oh well, this is awkward.";
     }
 
-    public void setStructure(Template structure) {
+    public void setStructure(TemplatePlus structure) {
         this.structure = structure;
     }
 
-    public Template getStructure() {
+    public TemplatePlus getStructure() {
         return this.structure;
     }
 

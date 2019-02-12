@@ -4,6 +4,7 @@ import com.resimulators.simukraft.SimUKraft;
 import com.resimulators.simukraft.Utilities;
 import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
 import com.resimulators.simukraft.common.tileentity.structure.Structure;
+import com.resimulators.simukraft.structure.TemplatePlus;
 import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.ai.EntityAIBase;
@@ -36,7 +37,7 @@ import java.util.*;
  */
 public class AISimBuild extends EntityAIBase {
     private EntitySim entitySim;
-    private Template structure;
+    private TemplatePlus structure;
     private int progress;
     private BlockPos startPos;
     private BlockPos currentPos;
@@ -101,9 +102,7 @@ public class AISimBuild extends EntityAIBase {
             PlacementSettings settings = (new PlacementSettings().setIgnoreEntities(false).setRotation(Utilities.convertFromFacing(facing)).setMirror(Mirror.NONE));
             try {
                 World world = entitySim.world;
-                Field field = structure.getClass().getDeclaredField("blocks");
-                field.setAccessible(true);
-                List<Template.BlockInfo> blocks = (List<Template.BlockInfo>) field.get(structure);
+                List<Template.BlockInfo> blocks = structure.getBlocks();
                 for (Template.BlockInfo info : blocks) {
                     BlockPos blockpos = info.pos;
                     BlockRotationProcessor processor = new BlockRotationProcessor(blockpos, settings);
@@ -130,7 +129,7 @@ public class AISimBuild extends EntityAIBase {
                 entitySim.setAllowedToBuild(false);
                 entitySim.setStructure(null);
                 entitySim.setStartPos(null);
-            } catch (NoSuchFieldException | IllegalAccessException | ClassCastException e) {
+            } catch (ClassCastException e) {
                 //Do Nothing
             }
         }

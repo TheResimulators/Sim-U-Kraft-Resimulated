@@ -6,6 +6,7 @@ import com.resimulators.simukraft.Utilities;
 import com.resimulators.simukraft.common.item.ItemBlueprint;
 import com.resimulators.simukraft.init.ModItems;
 import com.resimulators.simukraft.structure.StructureUtils;
+import com.resimulators.simukraft.structure.TemplatePlus;
 import net.minecraft.command.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -83,7 +84,7 @@ public class CommandStructure extends CommandTreeBase {
 
         @Override
         public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-            if (!server.getEntityWorld().isRemote && !StringUtils.isNullOrEmpty(args[0])) {
+            if (!server.getEntityWorld().isRemote && args.length == 2) {
                 if (sender.getCommandSenderEntity() instanceof EntityPlayer) {
                     EntityPlayer player = (EntityPlayer) sender.getCommandSenderEntity();
                     if (player.getHeldItemMainhand().getItem() == ModItems.PLANNING_SHEET) {
@@ -104,7 +105,7 @@ public class CommandStructure extends CommandTreeBase {
                             if (coords2.length == 3)
                                 pos2 = new BlockPos(coords2[0], coords2[1], coords2[2]);
                         }
-                        StructureUtils.saveStructure(server, player, player.world, pos1, pos2, Utilities.convertFromFacing(player.getHorizontalFacing()), args[0], player.getName());
+                        StructureUtils.saveStructure(server, player, player.world, pos1, pos2, Utilities.convertFromFacing(player.getHorizontalFacing()), args[0], player.getName(), args[1]);
                     }
                 }
             }
@@ -134,7 +135,7 @@ public class CommandStructure extends CommandTreeBase {
                     EntityPlayer player = (EntityPlayer) sender;
                     ItemStack itemStack = player.getHeldItemMainhand();
                     if (player.getHeldItemMainhand().getItem() == ModItems.BLUEPRINT) {
-                        Template template = StructureUtils.loadStructure(server, player.world, args[0]);
+                        TemplatePlus template = StructureUtils.loadStructure(server, player.world, args[0]);
                         if (template != null) {
                             ((ItemBlueprint) itemStack.getItem()).setStructure(itemStack, args[0]);
                             ((ItemBlueprint) itemStack.getItem()).setAuthor(itemStack, template.getAuthor());
