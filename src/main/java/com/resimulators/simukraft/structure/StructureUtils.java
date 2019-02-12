@@ -49,6 +49,7 @@ public class StructureUtils {
             NBTTagCompound compound = new NBTTagCompound();
             compound.setString("category", category);
             compound.setDouble("price", calculatePrice(template.getBlocks(), template.getSize()));
+            compound.setString("facing", Utilities.convertToFacing(rotation).getName());
             templateManager.writeTemplate(server, new ResourceLocation(name), compound);
             player.sendMessage(new TextComponentString("Saved " + name));
         }

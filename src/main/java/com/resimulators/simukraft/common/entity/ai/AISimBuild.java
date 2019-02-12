@@ -42,6 +42,7 @@ public class AISimBuild extends EntityAIBase {
     private BlockPos startPos;
     private BlockPos currentPos;
     private EnumFacing facing;
+    private PlacementSettings settings;
     private int cooldown = 0;
     private int tries = 0;
     private Random rand = new Random();
@@ -86,6 +87,7 @@ public class AISimBuild extends EntityAIBase {
         this.specialPositions.clear();
         this.specialStates.clear();
         this.specialIndex = 0;
+        settings = (new PlacementSettings().setIgnoreEntities(false).setRotation(Utilities.convertFromFacing(facing)).setMirror(Mirror.NONE));
         SimUKraft.getLogger().info("Executing AISimBuild");
     }
 
@@ -99,7 +101,13 @@ public class AISimBuild extends EntityAIBase {
         //TODO: Needs a lot of improvement. Works with the new building system for now, but still needs inventory support and better looking building.
         //TODO: For instance, line of sight to the place where the block is supposed to go as well as being within reach.
         if (entitySim.isAllowedToBuild()) {
-            PlacementSettings settings = (new PlacementSettings().setIgnoreEntities(false).setRotation(Utilities.convertFromFacing(facing)).setMirror(Mirror.NONE));
+            if (Utilities.convertFromFacing(facing).equals(Rotation.CLOCKWISE_90)) {
+                startPos = startPos.add(structure.getSize().getX() - 1, 0, 0);
+            } else if (Utilities.convertFromFacing(facing).equals(Rotation.CLOCKWISE_180)) {
+                startPos = startPos.add(structure.getSize().getX() - 1, 0, structure.getSize().getZ() - 1);
+            } else if (Utilities.convertFromFacing(facing).equals(Rotation.COUNTERCLOCKWISE_90)) {
+                startPos = startPos.add(0, 0, structure.getSize().getZ() - 1);
+            }
             try {
                 World world = entitySim.world;
                 List<Template.BlockInfo> blocks = structure.getBlocks();
@@ -125,7 +133,6 @@ public class AISimBuild extends EntityAIBase {
                         }
                     }
                 }
-                field.setAccessible(false);
                 entitySim.setAllowedToBuild(false);
                 entitySim.setStructure(null);
                 entitySim.setStartPos(null);

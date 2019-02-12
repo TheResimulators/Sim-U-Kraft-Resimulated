@@ -17,6 +17,7 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -56,6 +57,7 @@ public class RenderHandEvent {
     private String category;
     private double price;
     private BlockPos startPos;
+    private Rotation rotation;
     private BlockPos size;
     private BlockPos chestPos;
     private TemplatePlus template;
@@ -80,6 +82,7 @@ public class RenderHandEvent {
             category = blueprint.getCategory(stack);
             price = blueprint.getPrice(stack);
             startPos = blueprint.getStartPos(stack);
+            rotation = Utilities.convertFromFacing(blueprint.getRotation(stack));
             chestPos = blueprint.getChestPos(stack);
             template = blueprint.getTemplate();
             if (template != null) {
@@ -104,10 +107,10 @@ public class RenderHandEvent {
             playerPos = new Vec3d(xPos, yPos, zPos);
             if (player != null) {
                 if (player.getPosition().getDistance(pos1.getX(), pos1.getY(), pos1.getZ()) < 512.0D)
-                    this.drawBoundingBox(playerPos, new Vec3d(pos1), new Vec3d(pos2), 2f, new Color(255, 255, 255, 150));
+                    this.drawBoundingBox(playerPos, new Vec3d(pos1), new Vec3d(pos2), Rotation.NONE, 2f, new Color(255, 255, 255, 150));
             }
         }
-        if ((startPos != null && size != null && chestPos != null && name != null && author != null) && holdingBlueprint) {
+        if ((startPos != null && size != null && chestPos != null && rotation != null && name != null && author != null) && holdingBlueprint) {
             double xPos = player.prevPosX + (player.posX - player.prevPosX) * event.getPartialTicks();
             double yPos = player.prevPosY + (player.posY - player.prevPosY) * event.getPartialTicks();
             double zPos = player.prevPosZ + (player.posZ - player.prevPosZ) * event.getPartialTicks();
@@ -115,14 +118,14 @@ public class RenderHandEvent {
             if (player != null) {
                 if (player.getPosition().getDistance(startPos.getX(), startPos.getY(), startPos.getZ()) < 512.0D) {
                     if (template != null && blocks != null) {
-                        preDrawStructure(playerPos, player.world, blocks, startPos);
+                        preDrawStructure(playerPos, player.world, blocks, startPos, size, rotation);
                     }
-                    if (blocks == null || blocks.isEmpty())
+                    if ((blocks == null || blocks.isEmpty()) && (size.getX() < 1 && size.getY() < 1 && size.getZ() < 1))
                         size = new BlockPos(1, 1, 1);
-                    this.drawBoundingBox(playerPos, new Vec3d(startPos), new Vec3d(startPos.add(size.getX() - 1, size.getY() - 1, size.getZ() - 1)), 2f, new Color(255, 255, 255, 150));
+                    this.drawBoundingBox(playerPos, new Vec3d(startPos), new Vec3d(startPos.add(size.getX() - 1, size.getY() - 1, size.getZ() - 1)), rotation, 2f, new Color(255, 255, 255, 150));
                 }
                 if (player.getPosition().getDistance(chestPos.getX(), chestPos.getY(), chestPos.getZ()) < 512.0D)
-                    this.drawBoundingBox(playerPos, new Vec3d(chestPos), new Vec3d(chestPos), 2f, new Color(100, 255, 100, 150));
+                    this.drawBoundingBox(playerPos, new Vec3d(chestPos), new Vec3d(chestPos), Rotation.NONE, 2f, new Color(100, 255, 100, 150));
             }
         }
     }
@@ -184,7 +187,7 @@ public class RenderHandEvent {
         }
     }
 
-    private void drawBoundingBox(Vec3d player_pos, Vec3d posA, Vec3d posB, float width, Color c) {
+    private void drawBoundingBox(Vec3d player_pos, Vec3d posA, Vec3d posB, Rotation rotation, float width, Color c) {
         GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
         GL11.glDisable(GL11.GL_CULL_FACE);
         GL11.glDisable(GL11.GL_LIGHTING);
@@ -284,18 +287,30 @@ public class RenderHandEvent {
         GL11.glPopAttrib();
     }
 
-    private void preDrawStructure(Vec3d player_pos, World world, List<Template.BlockInfo> blocksInfo, BlockPos startPos) {
+    private void preDrawStructure(Vec3d player_pos, World world, List<TemplatePlus.BlockInfo> blocksInfo, BlockPos startPos, BlockPos size,  Rotation rotation) {
         Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
         BlockRendererDispatcher renderer = Minecraft.getMinecraft().getBlockRendererDispatcher();
 
         GlStateManager.pushMatrix();
+        GlStateManager.translate(startPos.getX(), startPos.getY(), startPos.getZ());
+        GlStateManager.translate(-player_pos.x, -player_pos.y, -player_pos.z);
+
+        if (rotation.equals(Rotation.CLOCKWISE_90)) {
+            GlStateManager.rotate(-90, 0, 1, 0);
+            GlStateManager.translate(0, 0, -size.getZ());
+        } else if (rotation.equals(Rotation.CLOCKWISE_180)) {
+            GlStateManager.rotate(180, 0, 1, 0);
+            GlStateManager.translate(-size.getX(), 0, -size.getZ());
+        } else if (rotation.equals(Rotation.COUNTERCLOCKWISE_90)) {
+            GlStateManager.rotate(90, 0, 1, 0);
+            GlStateManager.translate(-size.getX(), 0, 0);
+        }
 
         for (TemplatePlus.BlockInfo info : blocksInfo) {
             GlStateManager.pushMatrix();
             GlStateManager.enableBlend();
             GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-            BlockPos position = startPos.add(info.pos);
-            GlStateManager.translate(-player_pos.x, -player_pos.y, -player_pos.z);
+            BlockPos position = info.pos;
             GlStateManager.translate(position.getX(), position.getY(), position.getZ());
             GlStateManager.color(1f, 1f, 1f, 0.8f);
             GlStateManager.rotate(-90, 0, 1f, 0);
