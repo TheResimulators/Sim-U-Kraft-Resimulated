@@ -2,7 +2,6 @@ package com.resimulators.simukraft.client.gui;
 
 import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
 import com.resimulators.simukraft.common.interfaces.ISim;
-import com.resimulators.simukraft.common.interfaces.ISimJob;
 import com.resimulators.simukraft.network.HiringPacket;
 import com.resimulators.simukraft.network.PacketHandler;
 import com.resimulators.simukraft.network.UpdateJobIdPacket;
@@ -19,7 +18,7 @@ import java.util.List;
 
 public class GuiHire extends GuiScreen {
     private String name;
-    private Set<Integer> sim_id = new HashSet<>();
+    private Set<Integer> simId = new HashSet<>();
     private World world;
     private TileEntity tileEntity;
     private int mouseX;
@@ -32,13 +31,13 @@ public class GuiHire extends GuiScreen {
     private Set<UUID> sims = new HashSet<>();
     private String profession = "";
 
-    public GuiHire(TileEntity tileEntity){
+    public GuiHire(TileEntity tileEntity) {
         this.tileEntity = tileEntity;
-        this.profession = ((ISim)tileEntity).getProfession();
+        this.profession = ((ISim) tileEntity).getProfession();
     }
 
-    public void add_sim(int id) {
-        sim_id.add(id);
+    public void addSim(int id) {
+        simId.add(id);
     }
 
     @Override
@@ -50,8 +49,8 @@ public class GuiHire extends GuiScreen {
             }
             this.mouseX = mouseX;
             this.mouseY = mouseY;
-            super.drawScreen(mouseX, mouseY, partialTicks);
         }
+        super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
     @Override
@@ -75,6 +74,7 @@ public class GuiHire extends GuiScreen {
                 }
             }
         }
+        super.updateScreen();
     }
 
     @Override
@@ -92,37 +92,30 @@ public class GuiHire extends GuiScreen {
         int pos = 0;
         sims.clear();
         world = Minecraft.getMinecraft().world;
-        int num = 0;
-        List<String> names = ((ISim)tileEntity).getnames();
-        for (int id: ((ISim)tileEntity).getSims())
-        {
-            int xpos = pos*100+20+pos*5;
+        for (int id : ((ISim) tileEntity).getSims()) {
+            int xpos = pos * 100 + 20 + pos * 5;
 
             if (xpos > width - 60) {
                 pos = 0;
                 xpos = pos * 100 + 20;
                 ypos += 25;
-
             }
             EntitySim sim = (EntitySim) world.getEntityByID(id);
-            sim_id.add(id);
-            name = names.get(num);
-            if (name == null) {
-                name = "Error";
+            if (sim != null) {
+                simId.add(sim.getEntityId());
+                buttonList.add(button = new SimButton(i, xpos, ypos, sim.getName(), sim.getEntityId()));
+                if (!status.equals("hiring")) {
+                    button.visible = false;
+                    button.enabled = false;
+                }
+                if (ypos > height - 40) {
+                    button.enabled = false;
+                    button.visible = false;
+                    button.clicked = true;
+                }
+                i++;
+                pos++;
             }
-            buttonList.add(button = new SimButton(i, xpos, ypos, name, id));
-            if (!status.equals("hiring")) {
-                button.visible = false;
-                button.enabled = false;
-            }
-            if (ypos > height - 40) {
-                button.enabled = false;
-                button.visible = false;
-                button.clicked = true;
-            }
-            i++;
-            pos++;
-            num++;
         }
 
         super.initGui();
@@ -137,8 +130,8 @@ public class GuiHire extends GuiScreen {
         }
         if (button instanceof SimButton) {
             ((SimButton) button).clicked = true;
-            ((ISim)tileEntity).setHired(true);
-            PacketHandler.INSTANCE.sendToServer(new HiringPacket(((SimButton) button).simid,((ISim)tileEntity).getProfessionint(),tileEntity.getPos().getX(),tileEntity.getPos().getY(),tileEntity.getPos().getZ()));
+            ((ISim) tileEntity).setHired(true);
+            PacketHandler.INSTANCE.sendToServer(new HiringPacket(((SimButton) button).simid, ((ISim) tileEntity).getProfessionID(), tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ()));
             PacketHandler.INSTANCE.sendToServer(new UpdateJobIdPacket(((SimButton) button).simid, tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ()));
             mc.displayGuiScreen(null);
         }
