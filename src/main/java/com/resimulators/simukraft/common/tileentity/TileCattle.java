@@ -66,7 +66,7 @@ public class TileCattle extends TileEntity implements ITickable,ISimIndustrial {
     }
 
     @Override
-    public int getProfessionint() {
+    public int getProfessionID() {
         return professionint;
     }
 

@@ -70,7 +70,7 @@ public class TileConstructor extends TileBuilderBase implements ITickable,ISimJo
 	}
 
 	@Override
-	public int getProfessionint() {
+	public int getProfessionID() {
 		return professionint;
 	}
 

@@ -1,7 +1,6 @@
 package com.resimulators.simukraft.client.gui;
 
 import com.resimulators.simukraft.common.tileentity.TileSheep;
-import com.resimulators.simukraft.common.tileentity.TileSheep;
 import com.resimulators.simukraft.network.HiringPacket;
 import com.resimulators.simukraft.network.PacketHandler;
 import net.minecraft.client.gui.GuiButton;
@@ -120,7 +119,7 @@ public class GuiSheep extends GuiScreen {
                 mc.displayGuiScreen(null);
                 break;
             case 5:
-                PacketHandler.INSTANCE.sendToServer(new HiringPacket(selectedbutton,tileSheep.getProfessionint(),tileSheep.getPos().getX(),tileSheep.getPos().getY(),tileSheep.getPos().getZ()));
+                PacketHandler.INSTANCE.sendToServer(new HiringPacket(selectedbutton,tileSheep.getProfessionID(),tileSheep.getPos().getX(),tileSheep.getPos().getY(),tileSheep.getPos().getZ()));
                 tileSheep.setHired(true);
                 mc.displayGuiScreen(null);
                 System.out.println("get sim from world using id " + selectedbutton);

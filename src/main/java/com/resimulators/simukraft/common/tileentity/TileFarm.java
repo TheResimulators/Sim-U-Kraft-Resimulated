@@ -43,7 +43,7 @@ public class TileFarm extends TileEntity implements ITickable,ISimJob {
     }
 
     @Override
-    public int getProfessionint() {
+    public int getProfessionID() {
         return professionint;
     }
 

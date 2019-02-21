@@ -1,27 +1,15 @@
 package com.resimulators.simukraft.client.gui;
 
-import com.resimulators.simukraft.common.capabilities.ModCapabilities;
-import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
-import com.resimulators.simukraft.common.entity.player.SaveSimData;
 import com.resimulators.simukraft.common.tileentity.TileMiner;
 import com.resimulators.simukraft.network.MinerUpdateDataPacket;
 import com.resimulators.simukraft.network.PacketHandler;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.server.MinecraftServer;
-import net.minecraftforge.fml.client.GuiScrollingList;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import org.lwjgl.input.Keyboard;
-import scala.Int;
 
 import java.awt.*;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 
 public class GuiMiner extends GuiScreen {
     TileMiner miner;
@@ -82,7 +70,7 @@ public class GuiMiner extends GuiScreen {
     @Override
     public void initGui() {
         buttonList.add(button1 = new GuiButton(0,width/4-100,height - 80,"Change Mode"));
-        buttonList.add(button2 = new GuiButton( 1,width/4-100,height-30,String.valueOf(miner.isRenderoutline())));
+        buttonList.add(button2 = new GuiButton( 1,width/4-100,height-30,String.valueOf(miner.isRenderOutline())));
         buttonList.add(applybutton = new GuiButton(2,width/4*3-100,height-30,"Apply"));
         heightbox = new GuiTextField(1,mc.fontRenderer,width/4*3+50,height-80,30,20);
         heightbox.setMaxStringLength(3);
@@ -120,8 +108,8 @@ public class GuiMiner extends GuiScreen {
                 if (mode == 1) mode = 0;
                 }
             else if (button.id == 1){
-                miner.setRenderoutline(!miner.isRenderoutline());
-                button.displayString = String.valueOf(miner.isRenderoutline());
+                miner.setRenderOutline(!miner.isRenderOutline());
+                button.displayString = String.valueOf(miner.isRenderOutline());
                 }
                 else{
                 applychanges();
@@ -165,7 +153,6 @@ public class GuiMiner extends GuiScreen {
         widths = Integer.parseInt(widthbox.getText());
         miner.setHeight(heights);
         miner.setWidth(widths);
-        System.out.println("width from gui " + width);
         miner.setDepth(depths);
 
         miner.setMode(mode);

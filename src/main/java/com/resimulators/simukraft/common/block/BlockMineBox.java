@@ -48,7 +48,6 @@ public class BlockMineBox extends BlockBase implements ITileEntityProvider {
             TileEntity entity = worldIn.getTileEntity(pos);
             if (entity instanceof TileMiner){
                 ((TileMiner) entity).openGui(worldIn,pos,playerIn);
-                System.out.println("is this happening");
             }
 
 		}

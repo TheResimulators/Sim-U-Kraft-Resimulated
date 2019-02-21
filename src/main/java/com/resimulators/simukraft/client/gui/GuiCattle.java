@@ -1,11 +1,8 @@
 package com.resimulators.simukraft.client.gui;
 
-import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
-import com.resimulators.simukraft.common.interfaces.ISim;
 import com.resimulators.simukraft.common.tileentity.TileCattle;
 import com.resimulators.simukraft.network.HiringPacket;
 import com.resimulators.simukraft.network.PacketHandler;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 
@@ -122,7 +119,7 @@ public class GuiCattle extends GuiScreen{
                 mc.displayGuiScreen(null);
                 break;
             case 5:
-                PacketHandler.INSTANCE.sendToServer(new HiringPacket(selectedbutton,tileCattle.getProfessionint(),tileCattle.getPos().getX(),tileCattle.getPos().getY(),tileCattle.getPos().getZ()));
+                PacketHandler.INSTANCE.sendToServer(new HiringPacket(selectedbutton,tileCattle.getProfessionID(),tileCattle.getPos().getX(),tileCattle.getPos().getY(),tileCattle.getPos().getZ()));
                 tileCattle.setHired(true);
                 mc.displayGuiScreen(null);
                 System.out.println("get sim from world using id " + selectedbutton);

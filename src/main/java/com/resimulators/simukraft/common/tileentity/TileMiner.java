@@ -2,8 +2,6 @@ package com.resimulators.simukraft.common.tileentity;
 
 import com.resimulators.simukraft.GuiHandler;
 import com.resimulators.simukraft.SimUKraft;
-import com.resimulators.simukraft.client.model.RenderOutline;
-import com.resimulators.simukraft.common.interfaces.ISimIndustrial;
 import com.resimulators.simukraft.common.interfaces.ISimJob;
 import com.resimulators.simukraft.network.GetSimIdPacket;
 import com.resimulators.simukraft.network.PacketHandler;
@@ -22,7 +20,7 @@ import java.util.*;
 public class TileMiner extends TileEntity implements ISimJob {
     private final String profession = "Miner";
     private UUID id;
-    private int professionint = 7;
+    private int professionID = 7;
     private Boolean hired = false;
     private Set<Integer> sims = new HashSet<>();
     private List<String> sims_name = new ArrayList<>();
@@ -35,15 +33,15 @@ public class TileMiner extends TileEntity implements ISimJob {
     private int depth = 5;
     //height used for strip mine height
     private int height = 3;
-    private boolean renderoutline = false;
+    private boolean renderOutline = false;
     private EnumFacing facing;
 
     public TileMiner(EnumFacing facing){
         this.facing = facing;
     }
     @Override
-    public int getProfessionint() {
-        return professionint;
+    public int getProfessionID() {
+        return professionID;
     }
 
     @Override
@@ -105,7 +103,7 @@ public class TileMiner extends TileEntity implements ISimJob {
     public void readFromNBT(NBTTagCompound nbt) {
         super.readFromNBT(nbt);
         setHired(nbt.getBoolean("hired"));
-        professionint = nbt.getInteger("profession");
+        professionID = nbt.getInteger("profession");
         if (nbt.hasKey("facing")){
         facing = EnumFacing.byName(nbt.getString("facing"));
         System.out.println(facing);
@@ -119,7 +117,7 @@ public class TileMiner extends TileEntity implements ISimJob {
     public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
         super.writeToNBT(nbt);
         nbt.setBoolean("hired", getHired());
-        nbt.setInteger("profession", professionint);
+        nbt.setInteger("profession", professionID);
         if (facing != null) nbt.setString("facing",facing.getName());
         if (id != null) {
             nbt.setUniqueId("id", id);
@@ -128,7 +126,6 @@ public class TileMiner extends TileEntity implements ISimJob {
     }
 
     public void openGui(World worldIn, BlockPos pos, EntityPlayer playerIn) {
-        System.out.println("hired " + getHired());
         if (getHired()) {
             playerIn.openGui(SimUKraft.instance, GuiHandler.GUI.MINER.ordinal(), worldIn, pos.getX(), pos.getY(), pos.getZ());
         } else {
@@ -162,11 +159,11 @@ public class TileMiner extends TileEntity implements ISimJob {
     }
     //sets width of quarry to the right of the block
     public void setWidth(int width) {
-        this.width = width;
+        this.width = width - 1;
     }
 
     public void setHeight(int height) {
-        this.height = height;
+        this.height = height - 1;
     }
 
     //sets depth of the quarry to the front of the block
@@ -187,12 +184,12 @@ public class TileMiner extends TileEntity implements ISimJob {
     }
 
     //used to render outline of the quarry. can be used to visualize the space it uses
-    public boolean isRenderoutline(){
-        return renderoutline;
+    public boolean isRenderOutline(){
+        return renderOutline;
     }
     //sets boolean to weather draw outline
-    public void setRenderoutline(boolean renderoutline){
-        this.renderoutline = renderoutline;
+    public void setRenderOutline(boolean renderOutline){
+        this.renderOutline = renderOutline;
     }
 
 

@@ -41,7 +41,6 @@ public class GuiHandler implements IGuiHandler {
     @Override
     public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
         TileEntity tileEntity = world.getTileEntity(new BlockPos(x, y, z));
-        System.out.println("gui id " + ID);
         if (ID == GUI.SIM.ordinal())
             return new GuiSim(player);
         else if (ID == GUI.FARM.ordinal())

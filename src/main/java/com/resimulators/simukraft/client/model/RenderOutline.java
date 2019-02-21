@@ -1,10 +1,6 @@
 package com.resimulators.simukraft.client.model;
 
 import com.resimulators.simukraft.common.tileentity.TileMiner;
-import com.resimulators.simukraft.network.MinerUpdateDataPacket;
-import jdk.nashorn.internal.ir.Block;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
@@ -12,17 +8,9 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
-import net.minecraftforge.client.event.RenderWorldLastEvent;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.minecart.MinecartCollisionEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GLSync;
 
 import java.awt.*;
 
@@ -33,7 +21,7 @@ public class RenderOutline extends TileEntitySpecialRenderer<TileMiner>{
     @SideOnly(Side.CLIENT)
     @Override
     public void render(TileMiner te, double x, double y, double z, float partialTicks, int destroyStage, float alpha){
-        if (te.isRenderoutline() && (te.getMode() == 1 || te.getMode() == 0)){
+        if (te.isRenderOutline() && (te.getMode() == 1 || te.getMode() == 0)){
             super.render(te,x,y,z,partialTicks,destroyStage,alpha);
             drawBoundingBox(te);
         }

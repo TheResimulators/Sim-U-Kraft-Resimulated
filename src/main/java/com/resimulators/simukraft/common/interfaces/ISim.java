@@ -18,7 +18,7 @@ public interface ISim {
 
     String getProfession();
 
-    int getProfessionint();
+    int getProfessionID();
 
     void addSim(int sim);
 
