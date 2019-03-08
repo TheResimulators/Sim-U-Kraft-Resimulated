@@ -703,7 +703,7 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
             setParticlspawning(false);
             teleportdelay = 140;
             teleporttarget = null;
-            setAIMoveSpeed(0.7f);
+            setNoAI(false);
             setWorking();
 
 
@@ -712,10 +712,12 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
         if (teleporttarget ==  null){
             teleport = false;
             particlspawning = false;
+            this.setShouldteleport(false);
             setAIMoveSpeed(0.7f);
         }
         if (teleportdelay <= 40 && teleporttarget != null){
             setWorking();
+
             this.setPosition(getTeleporttarget().getX()+0.5f,getTeleporttarget().getY()+2,getTeleporttarget().getZ()+0.5f);
             teleporttarget=null;
         }

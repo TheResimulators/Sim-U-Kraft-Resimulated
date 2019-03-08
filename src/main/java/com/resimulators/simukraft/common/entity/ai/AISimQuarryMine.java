@@ -1,11 +1,11 @@
 package com.resimulators.simukraft.common.entity.ai;
 
-import com.resimulators.simukraft.SimUKraft;
 import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
 import com.resimulators.simukraft.common.entity.player.SaveSimData;
 import com.resimulators.simukraft.common.tileentity.TileMiner;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockStairs;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -14,6 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.Rotation;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
@@ -23,15 +24,19 @@ import net.minecraftforge.items.IItemHandler;
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 import java.util.UUID;
+
 
 public class AISimQuarryMine extends EntityAIBase {
     private World world;
     private EntitySim sim;
-    private int miningDelay = 2;
+    private int miningDelay = 5;
     private BlockPos targetPos;
     private EnumFacing forward = null;
-    private boolean pathfound = false;
+    private boolean pathFound = false;
+    private double currentDistance = 0;
+    private int timeout = 10;
     private int stairPosX = 0;
     private int stairPosY = 0;
     private int stairPosZ = 0;
@@ -43,16 +48,21 @@ public class AISimQuarryMine extends EntityAIBase {
     private int width = 0;
     private int depth = 0;
     private TileMiner miner;
-
+    private Random rand = new Random();
     public AISimQuarryMine(EntitySim sim, World world) {
         this.sim = sim;
         this.world = world;
+
         setMutexBits(3);
     }
 
     @Override
     public boolean shouldExecute() {
-        return sim.getProfession() == 7 && sim.isWorking();
+        if (sim.isWorking() && sim.getJobBlockPos() != null && world.getTileEntity(sim.getJobBlockPos()) != null){
+        boolean shouldmine = ((TileMiner) Objects.requireNonNull(world.getTileEntity(sim.getJobBlockPos()))).isShouldmine();
+        return sim.getProfession() == 7 && sim.isWorking() && shouldmine;
+        }
+        return false;
     }
 
     @Override
@@ -61,9 +71,9 @@ public class AISimQuarryMine extends EntityAIBase {
         y = 0;
         z = 0;
         direction = 0;
-        stairPosX = 0;
+        stairPosX = 1;
         stairPosY = 0;
-        stairPosZ = 0;
+        stairPosZ = 1;
         miner = (TileMiner) world.getTileEntity(sim.getJobBlockPos());
         if (miner == null)
             return;
@@ -76,25 +86,20 @@ public class AISimQuarryMine extends EntityAIBase {
 
     @Override
     public void updateTask() {
-        /** if (targetPos != null && sim.getDistanceSq(targetPos) > 3 && !pathfound && sim.isWorking()) {
-         Vec3d position = RandomPositionGenerator.findRandomTargetBlockTowards(sim, 3, 0, new Vec3d(targetPos.getX() + 0.5f, targetPos.getY(), targetPos.getZ() + 0.5f));
-         System.out.println("position " + position);
-         if (position != null) {
-         pathfound = sim.getNavigator().tryMoveToXYZ(position.x, position.y, position.z, 0.7d);
-         }
-         }**/
 
-        if (miningDelay <= 0) {
-            miningDelay = 1;
-            if (targetPos != null) {
-                targetPos = sim.getJobBlockPos().add(0,-1,0);
+
+        if (targetPos == null) {
+            pathFound = false;
+            if (miningDelay <= 0) {
+                miningDelay = 5;
+                targetPos = sim.getJobBlockPos().add(0, -1, 0);
                 targetPos = targetPos.offset(miner.getFacing());
                 targetPos = targetPos.offset(miner.getFacing().rotateY());
-                if (x > width){
+                if (x > width) {
                     x = 0;
                     z++;
                 }
-                if (z > depth){
+                if (z > depth) {
                     x = 0;
                     z = 0;
                     y++;
@@ -115,71 +120,100 @@ public class AISimQuarryMine extends EntityAIBase {
                             player.sendMessage(new TextComponentString("Miner " + sim.getName() + " has finished mining at position " + sim.getJobBlockPos() + "\n and has been fired"));
                         }
                     }
+
                     sim.setJobBlockPos(null);
-                } else {
-                    world.setBlockState(targetPos, Blocks.AIR.getDefaultState());
-                    if (y == stairPosY) {
-                        //to the right of the miner block
-                        if (z == 0 && direction == 0 && x == stairPosX) {
-                            if (x == width) {
-                                direction = 1;
-                                stairPosZ += 1;
-                                placeBlock(targetPos, Blocks.OAK_STAIRS, miner.getFacing().getOpposite());
-                            } else {
-                                placeBlock(targetPos, Blocks.OAK_STAIRS, miner.getFacing().rotateYCCW());
-                                stairPosX += 1;
-                            }
-                            stairPosY += 1;
-                        }
-
-                        //direction same facing as the miner blocks
-                        if (x == width && direction == 1 && z == stairPosZ) {
-                            if (z == depth) {
-                                direction = 2;
-                                placeBlock(targetPos, Blocks.OAK_STAIRS, miner.getFacing().rotateY());
-                                if (stairPosX > 0)
-                                    stairPosX -= 1;
-                            } else {
-                                placeBlock(targetPos, Blocks.OAK_STAIRS, miner.getFacing().getOpposite());
-                                stairPosZ += 1;
-                            }
-                            stairPosY += 1;
-                        }
-
-                        //from right to left
-                        if (z == depth && direction == 2 && x == stairPosX) {
-                            if (x == 0) {
-                                direction = 3;
-                                stairPosZ -= 1;
-                                placeBlock(targetPos, Blocks.OAK_STAIRS, miner.getFacing());
-                            } else {
-                                placeBlock(targetPos, Blocks.OAK_STAIRS, miner.getFacing().rotateY());
-                                stairPosX -= 1;
-                            }
-                            stairPosY += 1;
-                        }
-
-                        //coming back towards the miner block
-                        if (x == 0 && direction == 3 && z == stairPosZ) {
-                            if (z == 0) {
-                                direction = 0;
-                                placeBlock(targetPos, Blocks.OAK_STAIRS, miner.getFacing().rotateYCCW());
-                                stairPosX += 1;
-                            } else {
-                                placeBlock(targetPos, Blocks.OAK_STAIRS, miner.getFacing());
-                                stairPosZ -= 1;
-                            }
-                            stairPosY += 1;
-                        }
-                    }
-                    x++;
                 }
+                x++;
+            } else miningDelay--;
+
+        } else {
+            if (targetPos != sim.getJobBlockPos()) {
+                if (sim.getDistance(targetPos.getX(),targetPos.getY(),targetPos.getZ()) <= 3){
+                world.setBlockState(targetPos, Blocks.AIR.getDefaultState());
+                animate();
+                if (y == stairPosY) {
+                    //to the right of the miner block
+                    if (z == 0 && direction == 0 && x == stairPosX) {
+                        if (x == width) {
+                            direction = 1;
+                            stairPosZ += 1;
+                            placeBlock(targetPos, Blocks.OAK_STAIRS, miner.getFacing().getOpposite());
+                        } else {
+                            placeBlock(targetPos, Blocks.OAK_STAIRS, miner.getFacing().rotateYCCW());
+                            stairPosX += 1;
+                        }
+                        stairPosY += 1;
+                    }
+
+                    //direction same facing as the miner blocks
+                    if (x == width+1 && direction == 1 && z == stairPosZ) {
+                        if (z == depth) {
+                            direction = 2;
+                            placeBlock(targetPos, Blocks.OAK_STAIRS, miner.getFacing().rotateY());
+                            if (stairPosX > 0)
+                                stairPosX -= 1;
+                        } else {
+                            placeBlock(targetPos, Blocks.OAK_STAIRS, miner.getFacing().getOpposite());
+                            stairPosZ += 1;
+                        }
+                        stairPosY += 1;
+                    }
+
+                    //from right to left
+                    if (z == depth+1 && direction == 2 && x == stairPosX) {
+                        if (x == 0) {
+                            direction = 3;
+                            stairPosZ -= 1;
+                            placeBlock(targetPos, Blocks.OAK_STAIRS, miner.getFacing());
+                        } else {
+                            placeBlock(targetPos, Blocks.OAK_STAIRS, miner.getFacing().rotateY());
+                            stairPosX -= 1;
+                        }
+                        stairPosY += 1;
+                    }
+
+                    //coming back towards the miner block
+                    if (x == 0 && direction == 3 && z == stairPosZ) {
+                        if (z == 0) {
+                            direction = 0;
+                            placeBlock(targetPos, Blocks.OAK_STAIRS, miner.getFacing().rotateYCCW());
+                            stairPosX += 1;
+                        } else {
+                            placeBlock(targetPos, Blocks.OAK_STAIRS, miner.getFacing());
+                            stairPosZ -= 1;
+                        }
+                        stairPosY += 1;
+                    }
+                }
+                targetPos = null;
+            }else {
+                    // pathfinding towards block
+
+                    if (!pathFound && sim.getDistance(targetPos.getX(),targetPos.getY(),targetPos.getZ()) > 3){
+                        pathFound = sim.getNavigator().tryMoveToXYZ(targetPos.getX(),targetPos.getY() + 1,targetPos.getZ(),sim.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue());
+                        currentDistance = sim.getDistance(targetPos.getX(),targetPos.getY(),targetPos.getZ());
+                    }else if (sim.getDistance(targetPos.getX(),targetPos.getY(),targetPos.getZ()) >= currentDistance){
+                        timeout--;
+                    }
+                    if (timeout <= 0){
+                        timeout = 10;
+                        pathFound = false;
+                    }
+                }
+
+            } else {
+                targetPos = null;
             }
-        } else miningDelay--;
+        }
     }
+
 
     @Override
     public boolean shouldContinueExecuting() {
+        if (width != miner.getWidth() || depth != miner.getDepth()){
+            System.out.println("width or depth changed. stopping AIsd");
+            return false;
+        }
         return shouldExecute();
     }
 
@@ -242,5 +276,11 @@ public class AISimQuarryMine extends EntityAIBase {
             }
         }
 
+    }
+
+    private void animate(){
+        sim.getLookHelper().setLookPosition(targetPos.getX(),targetPos.getY(),targetPos.getZ(),360,360);
+        sim.world.playSound(null,targetPos,world.getBlockState(targetPos).getBlock().getSoundType().getBreakSound(), SoundCategory.BLOCKS,1.0f,(rand.nextFloat() - 0.5f) / 5);
+        sim.swingArm(sim.getActiveHand());
     }
 }

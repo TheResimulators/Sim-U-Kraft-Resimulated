@@ -1,6 +1,7 @@
 package com.resimulators.simukraft.client.gui;
 
 import com.resimulators.simukraft.common.tileentity.TileMiner;
+import com.resimulators.simukraft.network.ClientUpdateMIningPacket;
 import com.resimulators.simukraft.network.MinerUpdateDataPacket;
 import com.resimulators.simukraft.network.PacketHandler;
 import net.minecraft.client.gui.GuiButton;
@@ -18,6 +19,7 @@ public class GuiMiner extends GuiScreen {
     private GuiButton button1;
     private GuiButton button2;
     private GuiButton applybutton;
+    private GuiButton minebutton;
     private int mouseX;
     private int mouseY;
     private int mode;
@@ -55,6 +57,7 @@ public class GuiMiner extends GuiScreen {
         widthbox.drawTextBox();
         mc.fontRenderer.drawString("Width",width/4*3,height-100,Color.WHITE.getRGB());
         mc.fontRenderer.drawString("Render Outline",width/4-100,height-50,Color.WHITE.getRGB());
+        mc.fontRenderer.drawString("Mining",width/4*3 -100,height-100,Color.WHITE.getRGB());
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
@@ -72,6 +75,7 @@ public class GuiMiner extends GuiScreen {
         buttonList.add(button1 = new GuiButton(0,width/4-100,height - 80,"Change Mode"));
         buttonList.add(button2 = new GuiButton( 1,width/4-100,height-30,String.valueOf(miner.isRenderOutline())));
         buttonList.add(applybutton = new GuiButton(2,width/4*3-100,height-30,"Apply"));
+        buttonList.add(minebutton = new GuiButton(3,width/4 *3 - 100,height - 80,80,20,Boolean.toString(miner.isShouldmine())));
         heightbox = new GuiTextField(1,mc.fontRenderer,width/4*3+50,height-80,30,20);
         heightbox.setMaxStringLength(3);
         heightbox.setText(String.valueOf(miner.getHeight()));
@@ -111,8 +115,19 @@ public class GuiMiner extends GuiScreen {
                 miner.setRenderOutline(!miner.isRenderOutline());
                 button.displayString = String.valueOf(miner.isRenderOutline());
                 }
-                else{
+                else if (button.id == 2){
                 applychanges();
+                }
+                else if(button.id == 3){
+                    if (miner.isShouldmine()){
+                        miner.setShouldmine(false);
+                        button.displayString = "False";
+                    }
+                    else {
+                        miner.setShouldmine(true);
+                        button.displayString = "True";
+                    }
+                    PacketHandler.INSTANCE.sendToServer(new ClientUpdateMIningPacket(miner.isShouldmine(),miner.getPos()));
 
        }
 

@@ -13,12 +13,13 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.*;
 
 public class TileMiner extends TileEntity implements ISimJob {
-    private final String profession = "Miner";
     private UUID id;
     private int professionID = 7;
     private Boolean hired = false;
@@ -35,6 +36,7 @@ public class TileMiner extends TileEntity implements ISimJob {
     private int height = 3;
     private boolean renderOutline = false;
     private EnumFacing facing;
+    private boolean shouldmine = false;
 
     public TileMiner(EnumFacing facing){
         this.facing = facing;
@@ -56,7 +58,7 @@ public class TileMiner extends TileEntity implements ISimJob {
 
     @Override
     public String getProfession() {
-        return profession;
+        return "Miner";
     }
 
     @Override
@@ -111,6 +113,10 @@ public class TileMiner extends TileEntity implements ISimJob {
         if (nbt.hasKey("id")) {
             id = nbt.getUniqueId("id");
         }
+        shouldmine = nbt.getBoolean("shouldmine");
+        width = nbt.getInteger("width");
+        height = nbt.getInteger("height");
+        depth = nbt.getInteger("depth");
     }
 
     @Override
@@ -122,6 +128,10 @@ public class TileMiner extends TileEntity implements ISimJob {
         if (id != null) {
             nbt.setUniqueId("id", id);
         }
+        nbt.setBoolean("shouldmine",shouldmine);
+        nbt.setInteger("width",width);
+        nbt.setInteger("height",height);
+        nbt.setInteger("depth",depth);
         return nbt;
     }
 
@@ -159,11 +169,11 @@ public class TileMiner extends TileEntity implements ISimJob {
     }
     //sets width of quarry to the right of the block
     public void setWidth(int width) {
-        this.width = width - 1;
+        this.width = width;
     }
 
     public void setHeight(int height) {
-        this.height = height - 1;
+        this.height = height;
     }
 
     //sets depth of the quarry to the front of the block
@@ -195,5 +205,28 @@ public class TileMiner extends TileEntity implements ISimJob {
 
     public EnumFacing getFacing(){
         return facing;
+    }
+
+    public void setShouldmine(boolean mine){
+        shouldmine = mine;
+    }
+
+    public boolean isShouldmine(){
+        return this.shouldmine;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public net.minecraft.util.math.AxisAlignedBB getRenderBoundingBox(){
+        net.minecraft.util.math.AxisAlignedBB box;
+        if (getFacing() != null){
+        box = new net.minecraft.util.math.AxisAlignedBB(getPos().offset(facing.getOpposite()).offset(facing.getOpposite().rotateY()),getPos().offset(getFacing(),depth+2).offset(getFacing().rotateY(),width + 2));
+        } else {
+            return super.getRenderBoundingBox();
+        }
+
+        return box;
+
+
     }
 }

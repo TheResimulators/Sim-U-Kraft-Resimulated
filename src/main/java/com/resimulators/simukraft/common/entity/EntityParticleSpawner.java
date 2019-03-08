@@ -3,10 +3,8 @@ package com.resimulators.simukraft.common.entity;
 
 import com.resimulators.simukraft.client.particle.TeleportParticle;
 import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
-import com.resimulators.simukraft.common.entity.player.SaveSimData;
 import com.resimulators.simukraft.network.ClientTeleportPacket;
 import com.resimulators.simukraft.network.PacketHandler;
-import com.sun.xml.internal.bind.v2.runtime.reflect.Lister;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
@@ -81,9 +79,9 @@ public class EntityParticleSpawner extends Entity {
                     double posz = posZ + rand.nextFloat()-0.5;
                     Minecraft.getMinecraft().effectRenderer.addEffect(new TeleportParticle(world,posx,posY+ 1.5f + rand.nextFloat()-0.5,posz,0,-0.7,0));
                     if (sim != null){
-                    float simposx = (float) sim.posX + rand.nextFloat() + 0.5f;
+                    float simposx = (float) sim.posX + rand.nextFloat() - 0.5f;
                     float simposy = (float) sim.posY + 1.5f + rand.nextFloat() - 0.5f;
-                    float simposz = (float) sim.posZ + rand.nextFloat() + 0.5f;
+                    float simposz = (float) sim.posZ + rand.nextFloat() - 0.5f;
                     Minecraft.getMinecraft().effectRenderer.addEffect(new TeleportParticle(world,simposx,simposy,simposz,0,-0.7  ,0));}
                 }}else{particlecooldown--;}
         }

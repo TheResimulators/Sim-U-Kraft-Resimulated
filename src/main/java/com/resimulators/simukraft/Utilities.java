@@ -55,6 +55,9 @@ public class Utilities {
     }
 
     public static Rotation convertFromFacing(EnumFacing facing) {
+        if (facing == null) {
+            return Rotation.NONE;
+        }
         switch(facing) {
             case NORTH:
                 return Rotation.NONE;

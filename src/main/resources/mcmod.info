@@ -4,7 +4,7 @@
   "name": "Sim-U-Kraft: Resimulated",
   "description": "A full rewrite of Sim-U-Kraft",
   "version": "${version}",
-  "mcversion": "${mcversion}",
+  "mcversion": "${mc_version}",
   "url": "",
   "updateUrl": "",
   "authorList": ["aidie8", "Astavie", "fabbe50", "General5001", "SomeRandomNerd", "sulrwin"],

@@ -28,7 +28,7 @@ public class AISimTeleport extends EntityAIBase {
         spawner.updateClient();
         sim.setParticlspawning(true);
         sim.setTeleport(true);
-        sim.setAIMoveSpeed(0);
+        sim.setNoAI(true);
     }
 
     @Override
