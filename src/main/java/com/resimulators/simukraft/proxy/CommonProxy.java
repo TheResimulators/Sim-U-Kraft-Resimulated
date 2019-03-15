@@ -1,15 +1,7 @@
 package com.resimulators.simukraft.proxy;
 
-import com.mojang.authlib.AuthenticationService;
-import com.mojang.authlib.GameProfileRepository;
-import com.mojang.authlib.minecraft.MinecraftSessionService;
-import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
-import com.resimulators.simukraft.ConfigHandler;
 import com.resimulators.simukraft.GuiHandler;
-import com.resimulators.simukraft.Reference;
 import com.resimulators.simukraft.SimUKraft;
-import com.resimulators.simukraft.client.model.RenderOutline;
-import com.resimulators.simukraft.client.render.RenderSim;
 import com.resimulators.simukraft.common.command.CommandStructure;
 import com.resimulators.simukraft.common.entity.entitysim.NameStorage;
 import com.resimulators.simukraft.common.entity.entitysim.SpecialNameStorage;
@@ -24,9 +16,7 @@ import com.resimulators.simukraft.common.world.Rent_collection;
 import com.resimulators.simukraft.init.*;
 import com.resimulators.simukraft.network.PacketHandler;
 import com.resimulators.simukraft.structure.StructureHandler;
-import com.sun.glass.ui.View;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.common.network.NetworkRegistry;

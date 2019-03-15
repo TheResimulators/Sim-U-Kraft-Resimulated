@@ -74,7 +74,8 @@ public class AISimQuarryMine extends EntityAIBase {
         stairPosX = 1;
         stairPosY = 0;
         stairPosZ = 1;
-        miner = (TileMiner) world.getTileEntity(sim.getJobBlockPos());
+        if (world.getTileEntity(sim.getJobBlockPos()) instanceof TileMiner)
+            miner = (TileMiner) world.getTileEntity(sim.getJobBlockPos());
         if (miner == null)
             return;
 

@@ -82,7 +82,8 @@ public class RenderHandEvent {
             category = blueprint.getCategory(stack);
             price = blueprint.getPrice(stack);
             startPos = blueprint.getStartPos(stack);
-            rotation = Utilities.convertFromFacing(blueprint.getRotation(stack));
+            if (blueprint.getRotation(stack) != null)
+                rotation = Utilities.convertFromFacing(blueprint.getRotation(stack));
             chestPos = blueprint.getChestPos(stack);
             template = blueprint.getTemplate();
             if (template != null) {
