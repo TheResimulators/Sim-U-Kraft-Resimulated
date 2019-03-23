@@ -81,8 +81,9 @@ public class AISimQuarryMine extends EntityAIBase{
         direction = 0;
         stairPosX = 1;
         stairPosY = 0;
-        stairPosZ = 0;
-        miner = (TileMiner) world.getTileEntity(sim.getJobBlockPos());
+        stairPosZ = 1;
+        if (world.getTileEntity(sim.getJobBlockPos()) instanceof TileMiner)
+            miner = (TileMiner) world.getTileEntity(sim.getJobBlockPos());
         if (miner == null)
             return;
         sim.setHeldItem(EnumHand.MAIN_HAND,new ItemStack(Items.DIAMOND_PICKAXE));
