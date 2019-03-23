@@ -42,11 +42,11 @@ public class AISimGotoToWork extends EntityAIBase {
     @Override
     public void updateTask(){
         if (attempts < 5){
-            sim.getNavigator().tryMoveToXYZ(sim.getJobBlockPos().getX(),sim.getJobBlockPos().getY()+0.5d,sim.getJobBlockPos().getZ(),0.7d);
+            sim.getNavigator().tryMoveToXYZ(sim.getJobBlockPos().getX(),sim.getJobBlockPos().getY(),sim.getJobBlockPos().getZ(),0.7d);
             attempts++;
 
         } else{
-            sim.attemptTeleport(sim.getJobBlockPos().getX(),sim.getJobBlockPos().getY()+0.5d,sim.getJobBlockPos().getZ());
+            sim.attemptTeleport(sim.getJobBlockPos().getX(),sim.getJobBlockPos().getY(),sim.getJobBlockPos().getZ());
             attempts = 0;
             sim.setShouldteleport(true);
             sim.setTeleporttarget(sim.getJobBlockPos());

@@ -37,6 +37,9 @@ public class TileMiner extends TileEntity implements ISimJob {
     private boolean renderOutline = false;
     private EnumFacing facing;
     private boolean shouldmine = false;
+    private int xprogress = 0;
+    private int zprogress = 0;
+    private int yprogress = 0;
 
     public TileMiner(EnumFacing facing){
         this.facing = facing;
@@ -117,6 +120,9 @@ public class TileMiner extends TileEntity implements ISimJob {
         width = nbt.getInteger("width");
         height = nbt.getInteger("height");
         depth = nbt.getInteger("depth");
+        xprogress = nbt.getInteger("xprogress");
+        zprogress = nbt.getInteger("zprogress");
+        yprogress = nbt.getInteger("yprogress");
     }
 
     @Override
@@ -132,6 +138,9 @@ public class TileMiner extends TileEntity implements ISimJob {
         nbt.setInteger("width",width);
         nbt.setInteger("height",height);
         nbt.setInteger("depth",depth);
+        nbt.setInteger("xprogress",xprogress);
+        nbt.setInteger("zprogress",zprogress);
+        nbt.setInteger("yprogress",yprogress);
         return nbt;
     }
 
@@ -224,9 +233,30 @@ public class TileMiner extends TileEntity implements ISimJob {
         } else {
             return super.getRenderBoundingBox();
         }
-
         return box;
+    }
 
+    public void setXprogress(int xprogress) {
+        this.xprogress = xprogress;
+    }
 
+    public void setZprogress(int zprogress) {
+        this.zprogress = zprogress;
+    }
+
+    public void setYprogress(int yprogress) {
+        this.yprogress = yprogress;
+    }
+
+    public int getXprogress() {
+        return xprogress;
+    }
+
+    public int getZprogress() {
+        return zprogress;
+    }
+
+    public int getYprogress() {
+        return yprogress;
     }
 }

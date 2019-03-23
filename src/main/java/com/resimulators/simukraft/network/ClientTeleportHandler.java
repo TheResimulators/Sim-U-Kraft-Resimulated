@@ -18,8 +18,6 @@ public class ClientTeleportHandler implements IMessageHandler<ClientTeleportPack
            EntitySim sim = (EntitySim) Minecraft.getMinecraft().world.getEntityByID(message.simid);
            if (sim != null){
                EntityParticleSpawner spawner = (EntityParticleSpawner) Minecraft.getMinecraft().world.getEntityByID(message.particlespawner);
-               System.out.println("spawner object " + spawner);
-               System.out.println("spawner id " + message.particlespawner);
                spawner.setSim(sim);
            }
         });

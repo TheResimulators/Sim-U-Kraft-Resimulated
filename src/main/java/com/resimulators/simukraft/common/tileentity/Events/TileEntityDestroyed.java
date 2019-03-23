@@ -24,11 +24,9 @@ public class TileEntityDestroyed {
     public static void TileDestroy(BlockPos pos, WorldServer world) {
 
         ISim entity = (ISim) world.getTileEntity(pos);
-        System.out.println("this has made it here");
 
         if (entity.getId() != null) {
             EntitySim sim = (EntitySim) world.getEntityFromUuid(entity.getId());
-            System.out.println("sim " +sim);
             sim.setTeleport(false);
             sim.setTeleporttarget(null);
             SaveSimData.get(world).getFaction(sim.getFactionId()).addUnemployedSim(sim.getUniqueID());

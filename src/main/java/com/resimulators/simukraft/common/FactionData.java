@@ -8,6 +8,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -224,5 +225,13 @@ public class FactionData implements INBTSerializable<NBTTagCompound> {
             }
         }
     }
+    public void sendFactionChatMessage(String string){
+        List<UUID> uuids = getPlayers();
+        for (UUID id:uuids){
+            EntityPlayer player = FMLCommonHandler.instance().getMinecraftServerInstance().getEntityWorld().getPlayerEntityByUUID(id);
+            if (player != null){
+                player.sendMessage(new TextComponentString(string));
+            }
+        }}
 
 }
