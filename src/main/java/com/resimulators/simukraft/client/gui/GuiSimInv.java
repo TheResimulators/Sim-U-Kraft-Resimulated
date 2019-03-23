@@ -6,6 +6,7 @@ package com.resimulators.simukraft.client.gui;
 import com.resimulators.simukraft.Reference;
 import com.resimulators.simukraft.common.containers.SimContainer;
 import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
@@ -31,10 +32,9 @@ public class GuiSimInv extends GuiContainer {
         GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
         this.mc.getTextureManager().bindTexture(new ResourceLocation(Reference.MOD_ID, "textures/guis/simgui.png"));
         this.drawTexturedModalRect(guiLeft, guiTop, 0, 0, this.xSize, this.ySize);
-
-        this.mc.fontRenderer.drawString(s, width/2 - this.mc.fontRenderer.getStringWidth(s)/2- 20, height/2-ySize/2+5, 4210752);
-        this.mc.fontRenderer.drawString(this.playerInv.getDisplayName().getFormattedText(), width/2-this.mc.fontRenderer.getStringWidth(this.playerInv.getDisplayName().getFormattedText())-30, height/2-6, 4210752);
-        this.mc.fontRenderer.drawString(ss,width/2 - this.mc.fontRenderer.getStringWidth(ss)/2- 30,(height/3)-12,4210752);
+        this.mc.fontRenderer.drawString(s, guiLeft + this.xSize/2 - this.mc.fontRenderer.getStringWidth(s)/2- 20, guiTop+5, 4210752);
+        this.mc.fontRenderer.drawString(this.playerInv.getDisplayName().getFormattedText(), guiLeft+xSize/2-this.mc.fontRenderer.getStringWidth(this.playerInv.getDisplayName().getFormattedText())-30, guiTop+this.ySize/2-6, 4210752);
+        this.mc.fontRenderer.drawString(ss,guiLeft + this.xSize/2 - this.mc.fontRenderer.getStringWidth(ss)/2-30,guiTop + 35,4210752);
     }
 
 

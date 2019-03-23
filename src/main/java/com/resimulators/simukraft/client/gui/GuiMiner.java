@@ -43,7 +43,6 @@ public class GuiMiner extends GuiScreen {
         drawDefaultBackground();
         this.mouseX = mouseX;
         this.mouseY = mouseY;
-
         if (mode == 0){
             mc.fontRenderer.drawString("Quarry Mode",width/4-mc.fontRenderer.getStringWidth("Quarry Mode")/2,height - 100,Color.WHITE.getRGB());
             depthbox.drawTextBox();
