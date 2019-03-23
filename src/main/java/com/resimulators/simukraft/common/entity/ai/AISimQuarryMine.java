@@ -140,139 +140,126 @@ public class AISimQuarryMine extends EntityAIBase{
 
         } else {
             if (targetPos != sim.getJobBlockPos()) {
-                if (checkinvforitem((world.getBlockState(targetPos).getBlock().getItemDropped(world.getBlockState(targetPos),rand,0)),true)){
-                if (sim.getDistance(targetPos.getX(),targetPos.getY(),targetPos.getZ()) <= 5){
-                addItemtoInv(new ItemStack(Item.getItemFromBlock(world.getBlockState(targetPos).getBlock())));
-                world.setBlockState(targetPos, Blocks.AIR.getDefaultState());
-                animate();
-                if (y == stairPosY) {
-                    //to the right of the miner block
-                    if (z == 0 && direction == 0 && x == stairPosX) {
-                        if (x == width) {
-                            if (checkForSlab()){
-                            direction = 1;
-                            stairPosZ += 1;
-                            placeBlock(targetPos, Blocks.WOODEN_SLAB, miner.getFacing().getOpposite());
-                            }else endWork("day");
-                        } else {
-                            if (checkForStairs()){
-                            placeBlock(targetPos, Blocks.OAK_STAIRS, miner.getFacing().rotateYCCW());
-                            stairPosX += 1;
-                            stairPosY += 1;
-                        }else endWork("day");}
-
-                    }
-
-                    //direction same facing as the miner blocks
-                    if ((x == width || x == width-1) && direction == 1 && z == stairPosZ) {
-                        if (x == width){
-                            if (z == depth){
-                                if (checkForSlab()){
-                                placeBlock(targetPos,Blocks.WOODEN_SLAB,EnumFacing.NORTH);
-                                direction = 2;
-                                stairPosX-= 2;
-                                stairPosY++;
-                                }else {endWork("day");}
-                            }else{
-                                if (checkForStairs()){
-                                placeBlock(targetPos, Blocks.OAK_STAIRS,miner.getFacing().getOpposite());
-                                stairPosZ++;
-                                stairPosY++;
-                                } else endWork("day");
+                if (checkinvforitem((world.getBlockState(targetPos).getBlock().getItemDropped(world.getBlockState(targetPos), rand, 0)), true)) {
+                    if (sim.getDistance(targetPos.getX(), targetPos.getY(), targetPos.getZ()) <= 5) {
+                        addItemtoInv(new ItemStack(Item.getItemFromBlock(world.getBlockState(targetPos).getBlock())));
+                        world.setBlockState(targetPos, Blocks.AIR.getDefaultState());
+                        animate();
+                        if (y == stairPosY) {
+                            //to the right of the miner block
+                            if (z == 0 && direction == 0 && x == stairPosX) {
+                                if (x == width) {
+                                    direction = 1;
+                                    stairPosZ += 1;
+                                    placeBlock(targetPos, Blocks.WOODEN_SLAB, miner.getFacing().getOpposite());
+                                } else {
+                                    placeBlock(targetPos, Blocks.OAK_STAIRS, miner.getFacing().rotateYCCW());
+                                    stairPosX += 1;
+                                    stairPosY += 1;
+                                }
                             }
 
-                        }else if (x == width-1){
-                            if (z == depth){
-                                if (checkForStairs()){
-                                placeBlock(targetPos,Blocks.OAK_STAIRS,miner.getFacing().rotateY());
-                            }else endWork("day");}
                         }
-                    }
-                    if (direction == 2 && z == depth){
-                        System.out.println("why this ain't worken");
-                    }
-                    //from right to left
-                    if ((z == depth || z == depth-1) && direction == 2 && x == stairPosX) {
-                        if (z == depth){
-                            if (x == 1){
-                                if (checkForSlab()){
-                                placeBlock(targetPos,Blocks.WOODEN_SLAB,miner.getFacing());
-                                direction = 3;
-                                stairPosY++;
-                                stairPosZ-=2;
-                                }else endWork("day");
-                            }else{
-                                if (checkForStairs()){
-                                placeBlock(targetPos,Blocks.OAK_STAIRS,miner.getFacing().rotateY());
-                                stairPosY++;
-                                stairPosX--;
-                            }else endWork("day");}
-                        }else if (z == depth-1){
-                            if (x == 1){
-                                if (checkForStairs()){
-                                placeBlock(targetPos,Blocks.OAK_STAIRS,miner.getFacing());
-                            }else endWork("day");}
-                        }
-                    }
 
-                    //coming back towards the miner block
-                    if ((x == 1 || x == 2) && direction == 3 && z == stairPosZ) {
-                        if (x == 1){
-                            if (z == 0){
-                                if (checkForSlab()){
-                                placeBlock(targetPos,Blocks.WOODEN_SLAB,miner.getFacing());
-                                stairPosX++;
-                                direction = 0;
-                                }else endWork("day");
-                            }else{
-                                if (checkForStairs()){
-                                placeBlock(targetPos,Blocks.OAK_STAIRS,miner.getFacing());
-                                stairPosZ--;
-                                stairPosY++;
-                            }else endWork("day");}
-                        }else{
-                            if (z == 0){
-                                if (checkForStairs()) {
+                        //direction same facing as the miner blocks
+                        if ((x == width || x == width - 1) && direction == 1 && z == stairPosZ) {
+                            if (x == width) {
+                                if (z == depth) {
+                                        placeBlock(targetPos, Blocks.WOODEN_SLAB, EnumFacing.NORTH);
+                                        direction = 2;
+                                        stairPosX -= 2;
+                                        stairPosY++;
+
+                                } else {
+                                        placeBlock(targetPos, Blocks.OAK_STAIRS, miner.getFacing().getOpposite());
+                                        stairPosZ++;
+                                        stairPosY++;
+                                }
+
+                            } else if (x == width - 1) {
+                                if (z == depth) {
+                                        placeBlock(targetPos, Blocks.OAK_STAIRS, miner.getFacing().rotateY());
+                                }
+                            }
+                        }
+                        //from right to left
+                        if ((z == depth || z == depth - 1) && direction == 2 && x == stairPosX) {
+                            if (z == depth) {
+                                if (x == 1) {
+                                        placeBlock(targetPos, Blocks.WOODEN_SLAB, miner.getFacing());
+                                        direction = 3;
+                                        stairPosY++;
+                                        stairPosZ -= 2;
+                                } else {
+                                        placeBlock(targetPos, Blocks.OAK_STAIRS, miner.getFacing().rotateY());
+                                        stairPosY++;
+                                        stairPosX--;
+                                }
+                            } else if (z == depth - 1) {
+                                if (x == 1) {
+                                        placeBlock(targetPos, Blocks.OAK_STAIRS, miner.getFacing());
+                                }
+                            }
+                        }
+
+                        //coming back towards the miner block
+                        if ((x == 1 || x == 2) && direction == 3 && z == stairPosZ) {
+                            if (x == 1) {
+                                if (z == 0) {
+                                    placeBlock(targetPos, Blocks.WOODEN_SLAB, miner.getFacing());
+                                    stairPosX++;
+                                    direction = 0;
+
+                                } else {
+
+                                    placeBlock(targetPos, Blocks.OAK_STAIRS, miner.getFacing());
+                                    stairPosZ--;
+                                    stairPosY++;
+                                }
+                            } else {
+                                if (z == 0) {
                                     placeBlock(targetPos, Blocks.OAK_STAIRS, miner.getFacing().rotateYCCW());
                                     stairPosY++;
                                     direction = 0;
-                                }else endWork("day");
+                                }
                             }
                         }
-                    }
-                }
-                targetPos = null;
-            }else {
+
+                    targetPos = null;
+                } else {
                     // pathfinding towards block
 
-                    if (!pathFound && sim.getDistance(targetPos.getX(),targetPos.getY(),targetPos.getZ()) >= 2){
-                        if (tries > 2){
-                            sim.attemptTeleport(targetPos.getX(),targetPos.getY()+2,targetPos.getZ());
+                    if (!pathFound && sim.getDistance(targetPos.getX(), targetPos.getY(), targetPos.getZ()) >= 2) {
+                        if (tries > 2) {
+                            sim.attemptTeleport(targetPos.getX(), targetPos.getY() + 2, targetPos.getZ());
                         }
                         int randomOffset = 0;
-                        if (tries != 0) randomOffset = rand.nextInt(tries)-1;
+                        if (tries != 0) randomOffset = rand.nextInt(tries) - 1;
 
-                        Vec3d vec = new Vec3d(targetPos.getX()+randomOffset,targetPos.getY()+1,targetPos.getZ()+randomOffset);
-                        pathFound = sim.getNavigator().tryMoveToXYZ(vec.x,vec.y,vec.z,sim.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue());
-                        currentDistance = sim.getDistance(targetPos.getX(),targetPos.getY(),targetPos.getZ());
-                        if (pathFound)tries = 0;
-                    }else if (sim.getDistance(targetPos.getX(),targetPos.getY(),targetPos.getZ()) >= currentDistance){
+                        Vec3d vec = new Vec3d(targetPos.getX() + randomOffset, targetPos.getY() + 1, targetPos.getZ() + randomOffset);
+                        pathFound = sim.getNavigator().tryMoveToXYZ(vec.x, vec.y, vec.z, sim.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue());
+                        currentDistance = sim.getDistance(targetPos.getX(), targetPos.getY(), targetPos.getZ());
+                        if (pathFound) tries = 0;
+                    } else if (sim.getDistance(targetPos.getX(), targetPos.getY(), targetPos.getZ()) >= currentDistance) {
                         timeout--;
                     }
-                    if (timeout <= 0){
+                    if (timeout <= 0) {
                         timeout = 10;
                         tries++;
                         pathFound = false;
                     }
                 }
-
-            }else{
-                    endWork("day");
-                    targetPos = null;
-                }} else {
+            }
+            else{
+                endWork("day");
                 targetPos = null;
-            }}
+                }
+            }
+            else {
+                targetPos = null;
+            }
         }
+    }
 
 
     @Override
@@ -287,6 +274,11 @@ public class AISimQuarryMine extends EntityAIBase{
 
     private void placeBlock(BlockPos pos, Block block, EnumFacing facing) {
         int timesToRotate = 0;
+        if (!checkinvforitem(Item.getItemFromBlock(block),false)){
+            endWork("day");
+            return;
+        }
+        takeItemFromInv(new ItemStack(Item.getItemFromBlock(block)));
         IBlockState state = block.getDefaultState();
         if (block instanceof BlockStairs && pos != null) {
                 EnumFacing blockfacing = block.getDefaultState().getValue(BlockStairs.FACING);
@@ -339,7 +331,19 @@ public class AISimQuarryMine extends EntityAIBase{
             if (!ItemHandlerHelper.insertItemStacked(inv,item,false).isEmpty()){
                 endWork("day");
             }
+    }
+
+    private void takeItemFromInv(ItemStack item){
+        IItemHandler inv = sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.SOUTH);
+        for (int i= 0; i< inv.getSlots();i++){
+            if (inv.getStackInSlot(i).getItem().equals(item.getItem())){
+                ItemStack stack = inv.getStackInSlot(i);
+                stack.shrink(1);
+
+                inv.insertItem(i,stack,true);
+            }
         }
+    }
 
     private void animate(){
         sim.getLookHelper().setLookPosition(targetPos.getX(),targetPos.getY(),targetPos.getZ(),360,360);
@@ -359,14 +363,5 @@ public class AISimQuarryMine extends EntityAIBase{
         miner.setXprogress(x);
         miner.setZprogress(z);
         miner.setYprogress(y);
-    }
-
-
-    private boolean checkForStairs(){
-        return checkinvforitem(Item.getItemFromBlock(Blocks.OAK_STAIRS),false);
-    }
-
-    private boolean checkForSlab(){
-        return checkinvforitem(Item.getItemFromBlock(Blocks.WOODEN_SLAB),false);
     }
 }
