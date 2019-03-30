@@ -29,7 +29,6 @@ public class AISimGetInventory extends EntityAIBase {
 
     @Override
     public boolean shouldExecute() {
-
         return sim.getEndWork();
     }
 

@@ -13,6 +13,7 @@ import com.resimulators.simukraft.init.ModItems;
 import com.resimulators.simukraft.network.HungerPacket;
 import com.resimulators.simukraft.structure.StructureBuilding;
 import com.resimulators.simukraft.structure.TemplatePlus;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
@@ -37,6 +38,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.ILockableContainer;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.template.Template;
@@ -49,6 +51,7 @@ import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nullable;
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Random;
 
@@ -944,7 +947,28 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
     public boolean isStartingWork(){
         return workstatus == 1;
     }
+    // distance is in each direction
 
+
+
+    public ArrayList<ILockableContainer> getClosestInvs(int distance ){
+        ArrayList<ILockableContainer> chests = new ArrayList<>();
+        startPos = this.getJobBlockPos().add(-2,0,-2);
+            for (int x = 0; x < 4; x++) {
+                for (int z = 0; z < 4; z++) {
+                     BlockPos pos = startPos.add(x,0,z);
+                    Block block = this.world.getBlockState(startPos).getBlock();
+                    if (block instanceof BlockChest) {
+                        BlockChest chest = (BlockChest) block;
+                        if (!chests.contains(chest.getContainer(this.world,startPos,true))){
+                            chests.add(chest.getContainer(this.world,startPos,true));
+                            }
+                        }
+                    }
+                }
+        return chests;
+
+        }
 
 }
 

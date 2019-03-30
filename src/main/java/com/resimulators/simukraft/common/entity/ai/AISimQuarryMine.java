@@ -13,10 +13,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.Rotation;
@@ -24,21 +21,19 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.world.ILockableContainer;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import javax.annotation.Nullable;
-import java.util.List;
-import java.util.Objects;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 
 public class AISimQuarryMine extends EntityAIBase{
     private World world;
+    private boolean findingResources;
     private EntitySim sim;
     private int miningDelay = 2;
     private BlockPos targetPos;
@@ -98,6 +93,10 @@ public class AISimQuarryMine extends EntityAIBase{
 
     @Override
     public void updateTask() {
+
+        if (findingResources){
+            return;
+        }
         if (targetPos == null) {
             pathFound = false;
             if (miningDelay <= 0) {
@@ -150,7 +149,6 @@ public class AISimQuarryMine extends EntityAIBase{
                             if (z == 0 && direction == 0 && x == stairPosX) {
                                 if (x == width) {
                                     direction = 1;
-                                    stairPosZ += 1;
                                     placeBlock(targetPos, Blocks.WOODEN_SLAB, miner.getFacing().getOpposite());
                                 } else {
                                     placeBlock(targetPos, Blocks.OAK_STAIRS, miner.getFacing().rotateYCCW());
@@ -158,8 +156,6 @@ public class AISimQuarryMine extends EntityAIBase{
                                     stairPosY += 1;
                                 }
                             }
-
-                        }
 
                         //direction same facing as the miner blocks
                         if ((x == width || x == width - 1) && direction == 1 && z == stairPosZ) {
@@ -209,7 +205,6 @@ public class AISimQuarryMine extends EntityAIBase{
                                     placeBlock(targetPos, Blocks.WOODEN_SLAB, miner.getFacing());
                                     stairPosX++;
                                     direction = 0;
-
                                 } else {
 
                                     placeBlock(targetPos, Blocks.OAK_STAIRS, miner.getFacing());
@@ -224,6 +219,7 @@ public class AISimQuarryMine extends EntityAIBase{
                                 }
                             }
                         }
+                    }
 
                     targetPos = null;
                 } else {
@@ -251,7 +247,7 @@ public class AISimQuarryMine extends EntityAIBase{
                 }
             }
             else{
-                endWork("day");
+                endWork("full");
                 targetPos = null;
                 }
             }
@@ -275,7 +271,7 @@ public class AISimQuarryMine extends EntityAIBase{
     private void placeBlock(BlockPos pos, Block block, EnumFacing facing) {
         int timesToRotate = 0;
         if (!checkinvforitem(Item.getItemFromBlock(block),false)){
-            endWork("day");
+            endWork("place");
             return;
         }
         takeItemFromInv(new ItemStack(Item.getItemFromBlock(block)));
@@ -329,7 +325,7 @@ public class AISimQuarryMine extends EntityAIBase{
     private void addItemtoInv(ItemStack item) {
         IItemHandler inv = sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.SOUTH);
             if (!ItemHandlerHelper.insertItemStacked(inv,item,false).isEmpty()){
-                endWork("day");
+                endWork("full");
             }
     }
 
@@ -353,15 +349,75 @@ public class AISimQuarryMine extends EntityAIBase{
     }
 
     private void endWork(String endOfDay){
-        if (endOfDay.equals("day")) {
-             String string = String.format("Miner %s, doesn't have enough space to mine. or doesn't have the required%n resources (stairs, slabs, ect) to continue", sim.getName());
+        if (endOfDay.equals("full")) {
+             String string = String.format("Miner %s, doesn't have enough space to mine.", sim.getName());
              SaveSimData.get(sim.world).getFaction(sim.getFactionId()).sendFactionChatMessage(string);
         }
-        sim.setEndWork();
-        sim.setNotWorking();
+        if (endOfDay.equals("place")){
+            String string = String.format("Miner %s, doesn't have any stairs or slabs to place,",sim.getName());
+            SaveSimData.get(sim.world).getFaction(sim.getFactionId()).sendFactionChatMessage(string);
+
+        }
+        findingResources = true;
         sim.getNavigator().tryMoveToXYZ(sim.getJobBlockPos().getX(),sim.getJobBlockPos().getY(),sim.getJobBlockPos().getZ(),sim.getAIMoveSpeed());
         miner.setXprogress(x);
         miner.setZprogress(z);
         miner.setYprogress(y);
+    }
+
+    private boolean isSimInvFull(){
+        IItemHandler inv = sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.SOUTH);
+        for (int i = 0;i<inv.getSlots();i++){
+            if (inv.getStackInSlot(i).isEmpty()){
+                return false;
+            }
+        }
+        return true;
+    }
+    //TODO: finish this
+    private void emptyInv(ArrayList<ILockableContainer> chests){
+        IItemHandler inv = sim.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.SOUTH);
+        ArrayList<ItemStack> items = new ArrayList<>();
+        for (int i = 0;i<inv.getSlots();i++){
+            items.add(inv.getStackInSlot(i));
+        }
+        tries = 0;
+        while (items.size() > 0 && tries < 3){
+            tries++;
+            for (ILockableContainer chest: chests){
+                for (int i = 0;i<chest.getSizeInventory();i++){
+                    ItemStack stack = chest.getStackInSlot(i);
+                    for (ItemStack simStack:items){
+                        if (stack.getItem().equals(simStack) && stack.getCount() < stack.getMaxStackSize()){
+                            if (stack.getCount() + simStack.getCount() > stack.getMaxStackSize()){
+                                int overfill = stack.getCount() + simStack.getCount() - stack.getMaxStackSize();
+                                simStack.setCount(overfill);
+                            }else{
+                                stack.setCount(stack.getCount()+simStack.getCount());
+                                chest.setInventorySlotContents(i,stack);
+                                items.remove(simStack);
+                            }
+                        }
+                    }
+                }
+            }
+
+            for (int i = 0;i<inv.getSlots();i++){
+                for (ItemStack stack :items){
+                    if (stack.equals(inv.getStackInSlot(i))){
+                        items.remove(stack);
+                        continue;// totally not complete yet
+                    }
+                }
+
+            }
+        }
+    }
+
+    private void searchChests(){
+        ArrayList<ILockableContainer> chests = sim.getClosestInvs(3);
+        for (ILockableContainer chest: chests){
+            if (!checkinvforitem(Item.getItemFromBlock(Blocks.OAK_STAIRS),false));
+        }
     }
 }
