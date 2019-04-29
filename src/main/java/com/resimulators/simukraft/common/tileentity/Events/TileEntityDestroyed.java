@@ -12,6 +12,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @Mod.EventBusSubscriber
 public class TileEntityDestroyed {
+
     @SubscribeEvent
     public static void BlockDestroyed(BlockEvent.BreakEvent event) {
         if (!event.getWorld().isRemote) {

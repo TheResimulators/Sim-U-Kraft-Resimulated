@@ -5,10 +5,12 @@ import com.resimulators.simukraft.ConfigHandler;
 import com.resimulators.simukraft.GuiHandler;
 import com.resimulators.simukraft.SimUKraft;
 
+import com.resimulators.simukraft.common.block.BlockMineBox;
 import com.resimulators.simukraft.common.entity.ai.*;
 import com.resimulators.simukraft.common.entity.ai.pathfinding.CustomPathNavigateGround;
 import com.resimulators.simukraft.common.entity.player.SaveSimData;
 import com.resimulators.simukraft.common.enums.FarmModes;
+import com.resimulators.simukraft.common.interfaces.ISim;
 import com.resimulators.simukraft.init.ModItems;
 import com.resimulators.simukraft.network.HungerPacket;
 import com.resimulators.simukraft.structure.StructureBuilding;
@@ -23,6 +25,7 @@ import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.InventoryBasic;
@@ -953,17 +956,20 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
 
     public ArrayList<ILockableContainer> getClosestInvs(int distance ){
         ArrayList<ILockableContainer> chests = new ArrayList<>();
-        startPos = this.getJobBlockPos().add(-2,0,-2);
-            for (int x = 0; x < 4; x++) {
-                for (int z = 0; z < 4; z++) {
+        startPos = this.getJobBlockPos().add(-distance/2,0,-distance/2);
+            for (int x = 0; x < distance*2; x++) {
+                for (int z = 0; z < distance*2; z++) {
                      BlockPos pos = startPos.add(x,0,z);
-                    Block block = this.world.getBlockState(startPos).getBlock();
-                    if (block instanceof BlockChest) {
+                    Block block = this.world.getBlockState(pos).getBlock();
+                    if (block instanceof ISim){
+                        continue;
+                    }
+                    else if (block instanceof BlockChest) {
                         BlockChest chest = (BlockChest) block;
-                        if (!chests.contains(chest.getContainer(this.world,startPos,true))){
-                            chests.add(chest.getContainer(this.world,startPos,true));
+                        if (!chests.contains(chest.getContainer(this.world,pos,true))){
+                            chests.add(chest.getContainer(this.world,pos,true));
                             }
-                        }
+                    }
                     }
                 }
         return chests;
