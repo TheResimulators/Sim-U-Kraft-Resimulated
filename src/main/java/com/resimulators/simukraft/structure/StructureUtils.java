@@ -101,7 +101,13 @@ public class StructureUtils {
                     field.setAccessible(true);
                     price += field.getFloat(info.blockState.getBlock()) * (info.blockState.getBlock().getHarvestLevel(info.blockState) + 1);
                 } catch (NoSuchFieldException | IllegalAccessException e) {
-                    e.printStackTrace();
+                    try {
+                        Field field = info.blockState.getBlock().getClass().getDeclaredField("field_149782_v");
+                        field.setAccessible(true);
+                        price += field.getFloat(info.blockState.getBlock()) * (info.blockState.getBlock().getHarvestLevel(info.blockState) + 1);
+                    } catch (NoSuchFieldException | IllegalAccessException e1) {
+                        e1.printStackTrace();
+                    }
                 }
             }
         }

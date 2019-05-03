@@ -84,7 +84,7 @@ public class StructureBuilding {
         return new StructureBuilding(name, category, bounds);
     }
 
-    private enum EnumCategory {
+    public enum EnumCategory {
         UNKNOWN(0, "unknown"),
         RESIDENTIAL(1, "residential"),
         INDUSTRIAL(2, "industrial");
