@@ -5,6 +5,7 @@ import com.resimulators.simukraft.SimUKraft;
 import com.resimulators.simukraft.Utilities;
 import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
 import com.resimulators.simukraft.common.item.base.ItemBase;
+import com.resimulators.simukraft.event.RenderHandEvent;
 import com.resimulators.simukraft.structure.StructureUtils;
 import com.resimulators.simukraft.structure.TemplatePlus;
 import net.minecraft.block.BlockChest;
@@ -30,7 +31,7 @@ import java.util.List;
  */
 public class ItemBlueprint extends ItemBase {
     private TemplatePlus template;
-
+    private EnumFacing currentRotation;
     public ItemBlueprint(String name, CreativeTabs tab) {
         super(name, tab);
     }
@@ -76,7 +77,8 @@ public class ItemBlueprint extends ItemBase {
             }
         } else if (!worldIn.isRemote && Keyboard.isKeyDown(Keyboard.KEY_LMENU) && false) {
             this.setStartPos(player.getHeldItem(hand), pos.offset(facing));
-            this.setRotation(player.getHeldItem(hand), player.getAdjustedHorizontalFacing());
+      //      this.setRotation(player.getHeldItem(hand), player.getAdjustedHorizontalFacing());
+            this.currentRotation = player.getAdjustedHorizontalFacing();
             StructureUtils.placeStructure(worldIn, getStartPos(player.getHeldItem(hand)), StructureUtils.loadStructure(player.getServer(), player.world, getStructure(player.getHeldItem(hand))), Mirror.NONE, Utilities.convertFromFacing(getRotation(player.getHeldItem(hand))), true);
         }
 
@@ -309,5 +311,9 @@ public class ItemBlueprint extends ItemBase {
             tooltip.add("Facing: " + ChatFormatting.DARK_PURPLE + Utilities.upperCaseFirstLetter(facing.getName()));
             tooltip.add(ChatFormatting.DARK_AQUA + "Hold '" + ChatFormatting.GOLD + "left shift" + ChatFormatting.DARK_AQUA + "' for more information.");
         }
+    }
+
+    public EnumFacing getCurrentRotation(){
+        return currentRotation;
     }
 }

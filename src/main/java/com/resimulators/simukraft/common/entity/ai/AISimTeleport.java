@@ -13,7 +13,7 @@ public class AISimTeleport extends EntityAIBase {
     }
     @Override
     public boolean shouldExecute() {
-        return this.sim.isShouldteleport() && this.sim.getTeleporttarget() != null;
+        return this.sim.isShouldteleport() && this.sim.getTeleporttarget() != null && !sim.isWorking();
 
     }
 

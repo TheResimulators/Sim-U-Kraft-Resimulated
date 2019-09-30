@@ -22,7 +22,6 @@ import java.io.File;
  * Created by fabbe on 15/01/2018 - 8:43 PM.
  */
 public class BlockConstructorBox extends BlockContainerBase {
-	public static final File FILE = new File(Loader.instance().getConfigDir(), Reference.MOD_ID + "\\structures\\industrial\\cattle_farm.struct");
 
     public BlockConstructorBox(String name, CreativeTabs tab, Material blockMaterialIn, MapColor blockMapColorIn) {
         super(name, tab, blockMaterialIn, blockMapColorIn);
@@ -41,6 +40,8 @@ public class BlockConstructorBox extends BlockContainerBase {
         TileEntity tile = worldIn.getTileEntity(pos);
         if (tile instanceof TileConstructor) {
             TileConstructor tiles = (TileConstructor) tile;
+            tiles.setfacing(playerIn.getHorizontalFacing());
+            System.out.println(tiles.getFacing());
             if (worldIn.isRemote) {
                tiles.openGui(worldIn,pos,playerIn);
             }}

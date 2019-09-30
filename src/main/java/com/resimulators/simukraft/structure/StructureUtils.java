@@ -1,11 +1,15 @@
 package com.resimulators.simukraft.structure;
 
 import com.resimulators.simukraft.ConfigHandler;
+import com.resimulators.simukraft.SimUKraft;
 import com.resimulators.simukraft.Utilities;
+import com.sun.imageio.plugins.common.I18N;
 import net.minecraft.block.BlockAir;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.ResourceLocation;
@@ -13,12 +17,17 @@ import net.minecraft.util.Rotation;
 import net.minecraft.util.StringUtils;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.template.PlacementSettings;
 import net.minecraft.world.gen.structure.template.Template;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.Marker;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -50,6 +59,8 @@ public class StructureUtils {
             compound.setString("category", category);
             compound.setDouble("price", calculatePrice(template.getBlocks(), template.getSize()));
             compound.setString("facing", Utilities.convertToFacing(rotation).getName());
+            NBTTagList list = writeBlockRequirments(template.getBlocks());
+            compound.setTag("required",list);
             templateManager.writeTemplate(server, new ResourceLocation(name), compound);
             player.sendMessage(new TextComponentString("Saved " + name));
         }
@@ -116,4 +127,32 @@ public class StructureUtils {
         price += size.getZ() * 1.5d;
         return price * ConfigHandler.build_price;
     }
+
+
+    private static NBTTagList writeBlockRequirments(List<TemplatePlus.BlockInfo> blocks){
+        NBTTagList blocklist = new NBTTagList();
+        HashMap<String,Integer> blocknames = new HashMap<>();
+        for(TemplatePlus.BlockInfo blockInfo:blocks){
+            String name = blockInfo.blockState.getBlock().getRegistryName().toString();
+            if (!name.equals(Blocks.AIR.getRegistryName().toString())){
+                if (!blocknames.containsKey(name)){
+                    blocknames.put(name,1);
+                }
+                else{
+                    blocknames.put(name,blocknames.get(name)+1);
+                    System.out.println("block name and amount," + name + ", " + blocknames.get(name));
+                }
+            }
+        }
+
+        for (String name:blocknames.keySet()){
+            NBTTagCompound compound = new NBTTagCompound();
+            int value = blocknames.get(name);
+            compound.setString("block",name);
+            compound.setInteger("amount",value);
+            blocklist.appendTag(compound);
+        }
+        return blocklist;
+    }
 }
+

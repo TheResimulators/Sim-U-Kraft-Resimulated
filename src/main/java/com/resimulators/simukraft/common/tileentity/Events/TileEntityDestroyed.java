@@ -32,6 +32,11 @@ public class TileEntityDestroyed {
             sim.setTeleporttarget(null);
             SaveSimData.get(world).getFaction(sim.getFactionId()).addUnemployedSim(sim.getUniqueID());
             SaveSimData.get(world).getFaction(sim.getFactionId()).sendFactionPacket(new FireSimPacket(sim.getUniqueID(),sim.getEntityId()));
+            if (sim.getProfession() == 1){
+                sim.setStructure(null);
+                sim.setAllowedToBuild(false);
+                sim.setStartPos(null);
+            }
             sim.setProfession(0);
             entity.setId(null);
         }

@@ -40,16 +40,6 @@ public class TileBuilderBase extends TileEntity {
 			    getBuildDirection();
 			    IBlockState block = structure.getBlock(xindex,y,zindex);
                 world.setBlockState(getPos().add(rotatedpos.getX()*xdir + xoffset,rotatedpos.getY(),rotatedpos.getZ() *xdir + zoffest), block.withRotation(rotation));
-                System.out.println("zdir " + zdir);
-                System.out.println("block " + block);
-                System.out.println((block.getBlock() instanceof BlockControlBox));
-			    if (block.getBlock() instanceof BlockControlBox){
-			        System.out.println("this is true");
-                    ((BlockControlBox)block.getBlock()).name = structure.getName();
-                    System.out.println("structure name " + structure.getName());
-					((BlockControlBox)block.getBlock()).isresidential = structure.isResidential();
-                    ((BlockControlBox)block.getBlock()).createNewTileEntity(world,0);
-                }
 				progress++;
 			}
 		}

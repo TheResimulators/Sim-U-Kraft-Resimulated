@@ -13,14 +13,10 @@ public class ClientStructureHandler implements IMessageHandler<ClientStructuresP
     @Override
     public IMessage onMessage(ClientStructuresPacket message, MessageContext ctx) {
         IThreadListener mainThread = Minecraft.getMinecraft();
-        System.out.println("industrial things " + message.industrial);
         mainThread.addScheduledTask(() -> {
-            System.out.println("client structure packet handler");
-
 
             if (Minecraft.getMinecraft().currentScreen instanceof GuiBuilding){
-                System.out.println("industrial at handler");
-                ((GuiBuilding) Minecraft.getMinecraft().currentScreen).setstructures(message.industrial,message.residential,message.commercial,message.custom);
+                ((GuiBuilding) Minecraft.getMinecraft().currentScreen).setstructures(message.industrial,message.residential,message.commercial,message.custom,message.structureinfos);
             }
         });
 

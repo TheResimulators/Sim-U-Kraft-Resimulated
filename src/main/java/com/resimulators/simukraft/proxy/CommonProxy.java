@@ -13,6 +13,7 @@ import com.resimulators.simukraft.common.interfaces.PlayerCapability;
 import com.resimulators.simukraft.common.tileentity.Events.TileEntityCreate;
 import com.resimulators.simukraft.common.tileentity.TileFarm;
 import com.resimulators.simukraft.common.world.Rent_collection;
+import com.resimulators.simukraft.common.world.WorldCreationEvent;
 import com.resimulators.simukraft.init.*;
 import com.resimulators.simukraft.network.PacketHandler;
 import com.resimulators.simukraft.structure.StructureHandler;
@@ -59,5 +60,6 @@ public class CommonProxy {
         MinecraftForge.EVENT_BUS.register(new SpawnSimEntity());
         MinecraftForge.EVENT_BUS.register(new TileFarm());
         MinecraftForge.EVENT_BUS.register(new TileEntityCreate());
+
     }
 }

@@ -1,5 +1,6 @@
 package com.resimulators.simukraft;
 
+import com.resimulators.simukraft.common.world.WorldCreationEvent;
 import com.resimulators.simukraft.proxy.CommonProxy;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;

@@ -63,7 +63,7 @@ public class AISimQuarryMine extends EntityAIBase {
 
     @Override
     public boolean shouldExecute() {
-        if (sim.isWorking() && sim.getJobBlockPos() != null && world.getTileEntity(sim.getJobBlockPos()) != null) {
+        if (sim.isWorking() && sim.getJobBlockPos() != null && world.getTileEntity(sim.getJobBlockPos()) != null && world.getTileEntity(sim.getJobBlockPos()) instanceof TileMiner) {
             boolean shouldmine = ((TileMiner) Objects.requireNonNull(world.getTileEntity(sim.getJobBlockPos()))).isShouldmine();
             return sim.getProfession() == 7 && sim.isWorking() && shouldmine;
         }

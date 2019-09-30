@@ -6,6 +6,7 @@ import com.resimulators.simukraft.Utilities;
 import com.resimulators.simukraft.common.item.ItemBlueprint;
 import com.resimulators.simukraft.common.item.ItemPlanningSheet;
 import com.resimulators.simukraft.structure.TemplatePlus;
+import com.resimulators.simukraft.util.RotationHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
@@ -16,14 +17,17 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.template.Template;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderSpecificHandEvent;
+import net.minecraftforge.client.event.RenderTooltipEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -58,6 +62,7 @@ public class RenderHandEvent {
     private double price;
     private BlockPos startPos;
     private Rotation rotation;
+    private Rotation currentRotation;
     private BlockPos size;
     private BlockPos chestPos;
     private TemplatePlus template;
@@ -84,6 +89,7 @@ public class RenderHandEvent {
             startPos = blueprint.getStartPos(stack);
             if (blueprint.getRotation(stack) != null)
                 rotation = Utilities.convertFromFacing(blueprint.getRotation(stack));
+                currentRotation = Utilities.convertFromFacing(blueprint.getCurrentRotation());
             chestPos = blueprint.getChestPos(stack);
             template = blueprint.getTemplate();
             if (template != null) {
@@ -123,7 +129,7 @@ public class RenderHandEvent {
                     }
                     if ((blocks == null || blocks.isEmpty()) && (size.getX() < 1 && size.getY() < 1 && size.getZ() < 1))
                         size = new BlockPos(1, 1, 1);
-                    this.drawBoundingBox(playerPos, new Vec3d(startPos), new Vec3d(startPos.add(size.getX() - 1, size.getY() - 1, size.getZ() - 1)), rotation, 2f, new Color(255, 255, 255, 150));
+                    this.drawBoundingBox(playerPos, new Vec3d(startPos), new Vec3d(startPos.add(size.getX() - 1, size.getY() - 1, -size.getZ() + 1)), rotation, 2f, new Color(255, 255, 255, 150));
                 }
                 if (player.getPosition().getDistance(chestPos.getX(), chestPos.getY(), chestPos.getZ()) < 512.0D)
                     this.drawBoundingBox(playerPos, new Vec3d(chestPos), new Vec3d(chestPos), Rotation.NONE, 2f, new Color(100, 255, 100, 150));
@@ -202,9 +208,12 @@ public class RenderHandEvent {
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferBuilder = tessellator.getBuffer();
         bufferBuilder.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR);
-
         bufferBuilder.setTranslation(-player_pos.x, -player_pos.y, -player_pos.z);
-
+        BlockPos rotationPoint = new BlockPos(posA);
+        BlockPos newBPoint = new BlockPos(posB).add(-rotationPoint.getX(),-rotationPoint.getY(),-rotationPoint.getZ());
+        newBPoint = newBPoint.rotate(rotation.add(currentRotation));
+        newBPoint = newBPoint.add(rotationPoint.getX(),rotationPoint.getY(),rotationPoint.getZ());
+        posB = new Vec3d(newBPoint.getX(),newBPoint.getY(),newBPoint.getZ());
         double lowX;
         double lowY;
         double lowZ;
@@ -295,19 +304,25 @@ public class RenderHandEvent {
         GlStateManager.pushMatrix();
         GlStateManager.translate(startPos.getX(), startPos.getY(), startPos.getZ());
         GlStateManager.translate(-player_pos.x, -player_pos.y, -player_pos.z);
-
+        rotation = rotation.add(Utilities.convertFromFacing(Utilities.convertToFacing(currentRotation).getOpposite()));
+        System.out.println(rotation);
         if (rotation.equals(Rotation.CLOCKWISE_90)) {
             GlStateManager.rotate(-90, 0, 1, 0);
-            GlStateManager.translate(0, 0, -size.getZ());
+            GlStateManager.translate(-size.getX()+1, 0, -1);
         } else if (rotation.equals(Rotation.CLOCKWISE_180)) {
             GlStateManager.rotate(180, 0, 1, 0);
-            GlStateManager.translate(-size.getX(), 0, -size.getZ());
+            GlStateManager.translate(-size.getX(),0,-1);
         } else if (rotation.equals(Rotation.COUNTERCLOCKWISE_90)) {
             GlStateManager.rotate(90, 0, 1, 0);
             GlStateManager.translate(-size.getX(), 0, 0);
+        }else if(rotation.equals(Rotation.NONE)){
+            //GlStateManager.rotate(90,0,1,0);
+            GlStateManager.translate(-size.getX()+1,0,0);
+
         }
 
         for (TemplatePlus.BlockInfo info : blocksInfo) {
+
             GlStateManager.pushMatrix();
             GlStateManager.enableBlend();
             GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);

@@ -13,6 +13,7 @@ import java.util.List;
  */
 public class TemplatePlus extends Template {
     private String category = "";
+    private String profession = "";
     private double price = 0;
 
     @Override
@@ -42,5 +43,10 @@ public class TemplatePlus extends Template {
             SimUKraft.getLogger().warn(e);
         }
         return blocks;
+    }
+
+
+    public String getProfession(){
+        return profession;
     }
 }

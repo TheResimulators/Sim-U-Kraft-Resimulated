@@ -2,6 +2,7 @@ package com.resimulators.simukraft.common.entity.ai;
 
 import com.resimulators.simukraft.SimUKraft;
 import com.resimulators.simukraft.Utilities;
+import com.resimulators.simukraft.common.block.BlockControlBox;
 import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
 import com.resimulators.simukraft.structure.TemplatePlus;
 import net.minecraft.block.state.IBlockState;
@@ -218,7 +219,12 @@ public class AISimBuild extends EntityAIBase {
         this.entitySim.world.setBlockState(pos, blockState, 2);
         this.entitySim.world.playSound(null, pos, blockState.getBlock().getSoundType().getPlaceSound(), SoundCategory.BLOCKS, 1.0f, (rand.nextFloat() - 0.5f) / 5);
         this.entitySim.swingArm(EnumHand.MAIN_HAND);
+        if (blockState.getBlock() instanceof BlockControlBox){
+            ((BlockControlBox) blockState.getBlock()).profession = structure.getProfession();
+            ((BlockControlBox) blockState.getBlock()).createNewTileEntity(world,1);
+        }
         return true;
+
     }
 
     private static BlockPos transformedBlockPos(BlockPos pos, Mirror mirrorIn, Rotation rotationIn)

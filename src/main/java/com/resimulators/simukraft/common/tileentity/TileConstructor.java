@@ -11,6 +11,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -28,6 +29,7 @@ public class TileConstructor extends TileBuilderBase implements ITickable,ISimJo
 	private Boolean hired = false;
 	private Set<Integer> sims = new HashSet<>();
 	private List<String> sims_name = new ArrayList<>();
+	private EnumFacing facing;
 	@Override
 	public void update() {
 
@@ -110,7 +112,6 @@ public class TileConstructor extends TileBuilderBase implements ITickable,ISimJo
 
 	public void openGui(World worldIn, BlockPos pos, EntityPlayer playerIn){
 		if (getHired()) {
-
 			PacketHandler.INSTANCE.sendToServer(new ServerStructurePacket(pos.getX(),pos.getY(),pos.getZ()));
 		} else{
 			PacketHandler.INSTANCE.sendToServer(new GetSimIdPacket(pos.getX(),pos.getY(),pos.getZ(),GuiHandler.GUI.HIRED.ordinal()));
@@ -118,6 +119,13 @@ public class TileConstructor extends TileBuilderBase implements ITickable,ISimJo
 		}
 	}
 
+	public void setfacing(EnumFacing facing){
+		this.facing = facing;
+	}
+
+	public EnumFacing getFacing(){
+		return this.facing;
+	}
 
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {

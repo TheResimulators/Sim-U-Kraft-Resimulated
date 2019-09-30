@@ -12,6 +12,7 @@ public class StructureBuilding {
     private String name;
     private EnumCategory category;
     private StructureBoundingBox bounds;
+    private String profession;
 
     /**
      * @param name - Name of building.
@@ -84,10 +85,16 @@ public class StructureBuilding {
         return new StructureBuilding(name, category, bounds);
     }
 
+
+    public String getProfession() {
+        return profession;
+    }
+
     public enum EnumCategory {
         UNKNOWN(0, "unknown"),
         RESIDENTIAL(1, "residential"),
-        INDUSTRIAL(2, "industrial");
+        INDUSTRIAL(2, "industrial"),
+        COMMERCIAL(3,"commercial");
 
         private int id;
         private String name;

@@ -3,7 +3,10 @@ package com.resimulators.simukraft.network;
 import com.resimulators.simukraft.GuiHandler;
 import com.resimulators.simukraft.Reference;
 import com.resimulators.simukraft.SimUKraft;
+import com.resimulators.simukraft.structure.StructureUtils;
+import com.resimulators.simukraft.structure.TemplatePlus;
 import net.minecraft.client.Minecraft;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.IThreadListener;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -24,33 +27,38 @@ public class ServerStructureHandler implements IMessageHandler<ServerStructurePa
         List<String> commercialList = new ArrayList<>();
         List<String> customList = new ArrayList<>();
         mainThread.addScheduledTask(() ->{
+            MinecraftServer server = ctx.getServerHandler().player.server;
+            String filepath = ctx.getServerHandler().player.getServerWorld().getSaveHandler().getWorldDirectory().getAbsolutePath() + "/structures/";
+            File folder = new File(filepath);
+            ArrayList<TemplatePlus> structures = new ArrayList<>();
+            System.out.println(folder.listFiles());
+            if (folder.exists()){
+            if (folder.listFiles().length > 0 ){
+            for (File file:folder.listFiles()){
 
-            if (new File(Loader.instance().getConfigDir()+"\\simukraft\\structures\\").exists()){
-                System.out.println("the config file exists");
-               if (new File(Loader.instance().getConfigDir()+"\\simukraft\\structures\\residential\\").exists()){
-                   System.out.println("residential folder exists");
-                   File residential = new File(Loader.instance().getConfigDir()+"\\simukraft\\structures\\residential\\");
-                   residentialList.addAll(Arrays.asList(residential.list()));
-               }
-                if (new File(Loader.instance().getConfigDir()+"\\simukraft\\structures\\industrial\\").exists()){
-                    System.out.println("industrial buildings exist");
-                    File industrial = new File(Loader.instance().getConfigDir()+"\\simukraft\\structures\\industrial\\");
-                    industrialList.addAll(Arrays.asList(industrial.list()));
-           }
-                if (new File(Loader.instance().getConfigDir()+"\\simukraft\\structures\\commercial\\").exists()){
-                    System.out.println("commercial works");
-                    File commercial = new File(Loader.instance().getConfigDir()+"\\simukraft\\structures\\commercial\\");
-                    commercialList.addAll(Arrays.asList(commercial.list()));
-            }
-                if (new File(Loader.instance().getConfigDir()+"\\simukraft\\structures\\special\\").exists()){
-                    System.out.println("custom works");
-                    File custom = new File(Loader.instance().getConfigDir()+"\\simukraft\\structures\\special\\");
-                    customList.addAll(Arrays.asList(custom.list()));
+                TemplatePlus structure  = StructureUtils.loadStructure(server,ctx.getServerHandler().player.world,file.getName().replace(".nbt",""));
+                String category = structure.getCategory();
+
+                switch (category){
+
+                    default:
+                        customList.add(file.getName());
+                        break;
+                    case "residential":
+                        residentialList.add(file.getName());
+                        break;
+                    case "commercial":
+                        commercialList.add(file.getName());
+                        break;
+                    case "industrial":
+                        industrialList.add(file.getName());
+                        break;
+
                 }
-                System.out.println("config dir " + Loader.instance().getConfigDir());
-                System.out.println("files " + residentialList + " " + industrialList + " " + commercialList + " " + customList);}
-                PacketHandler.INSTANCE.sendTo(new ClientStructuresPacket(residentialList,industrialList,commercialList,customList),ctx.getServerHandler().player);
-            System.out.println("poses " + message.x + message.y + message.z);
+                structures.add(structure);
+
+            }}}
+            PacketHandler.INSTANCE.sendTo(new ClientStructuresPacket(residentialList,industrialList,commercialList,customList,structures),ctx.getServerHandler().player);
             Minecraft.getMinecraft().player.openGui(SimUKraft.instance, GuiHandler.GUI.BUILDER.ordinal(),ctx.getServerHandler().player.getServerWorld(),message.x,message.y,message.z);
         });
         return null;

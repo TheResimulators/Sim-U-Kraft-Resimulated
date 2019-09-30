@@ -44,6 +44,7 @@ public class EntityParticleSpawner extends Entity {
 
     @Override
     protected void writeEntityToNBT(NBTTagCompound compound) {
+        System.out.println(sim.getUniqueID());
         compound.setUniqueId("sim id",sim.getUniqueID());
 
     }
@@ -66,7 +67,10 @@ public class EntityParticleSpawner extends Entity {
             if (sim != null ){
         if (!sim.getTeleport() || !sim.isParticlspawning() || sim.getTeleporttarget() == null){
             world.removeEntity(this);
-        }}}
+        }}else {
+                world.removeEntity(this);
+            }
+        }
 
         if (world.isRemote){
             if (sim == null)

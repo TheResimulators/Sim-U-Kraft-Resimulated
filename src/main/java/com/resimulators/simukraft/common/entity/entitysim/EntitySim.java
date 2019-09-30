@@ -103,7 +103,7 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
     //certain amount per day. this allows them to do other needs e.g eat socialize
     private int worktime = 0;
     private final InventoryBasic inventory;
-    //Housing
+    //housing
     private StructureBuilding homeLocation;
 
 

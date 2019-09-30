@@ -1,5 +1,6 @@
 package com.resimulators.simukraft.client.gui;
 
+import com.resimulators.simukraft.network.ClientStructuresPacket;
 import com.resimulators.simukraft.network.LoadStructurePacket;
 import com.resimulators.simukraft.network.PacketHandler;
 import net.minecraft.client.gui.GuiButton;
@@ -21,6 +22,7 @@ public class GuiBuilding extends GuiScreen {
     private List<String> commercial = new ArrayList<>();
     private List<String> industrial = new ArrayList<>();
     private List<String> special = new ArrayList<>();
+    private List<ClientStructuresPacket.StructureInfo> structureInfos;
     private int xpos;
     private int ypos;
     private int zpos;
@@ -115,11 +117,12 @@ public class GuiBuilding extends GuiScreen {
     }
 
 
-    public void setstructures(List<String> industrial,List<String> commercial,List<String> residential, List<String> special){
+    public void setstructures(List<String> industrial, List<String> commercial, List<String> residential, List<String> special, List<ClientStructuresPacket.StructureInfo> structureInfos){
         this.industrial = industrial;
         this.commercial = commercial;
         this.residential = residential;
         this.special = special;
+        this.structureInfos = structureInfos;
         addbuttons();
     }
 
@@ -134,7 +137,7 @@ public class GuiBuilding extends GuiScreen {
                 y += 30;
                 xi = 0;
             }
-            buttonList.add(new structureButton(i,x*xi + 10,y,string.replace(".struct",""),"industrial"));
+            buttonList.add(new structureButton(i,x*xi + 10,y,string.replace(".nbt",""),"industrial"));
             buttonList.get(buttonList.size()-1).enabled = false;
             buttonList.get(buttonList.size()-1).visible = false;
             industrialbuttons.add((structureButton) buttonList.get(buttonList.size()-1));
