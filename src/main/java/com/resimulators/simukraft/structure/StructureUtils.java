@@ -55,6 +55,8 @@ public class StructureUtils {
             TemplatePlus template = templateManager.getTemplate(server, new ResourceLocation(name));
             template.takeBlocksFromWorld(world, pos, size, false, Blocks.STRUCTURE_VOID);
             template.setAuthor(author);
+            template.setCategory(category);
+            template.setRotation(Utilities.convertToFacing(rotation));
             NBTTagCompound compound = new NBTTagCompound();
             compound.setString("category", category);
             compound.setDouble("price", calculatePrice(template.getBlocks(), template.getSize()));

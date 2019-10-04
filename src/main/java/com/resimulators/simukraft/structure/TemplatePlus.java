@@ -1,7 +1,10 @@
 package com.resimulators.simukraft.structure;
 
 import com.resimulators.simukraft.SimUKraft;
+import com.resimulators.simukraft.Utilities;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Rotation;
 import net.minecraft.world.gen.structure.template.Template;
 
 import java.lang.reflect.Field;
@@ -14,6 +17,7 @@ import java.util.List;
 public class TemplatePlus extends Template {
     private String category = "";
     private String profession = "";
+    private EnumFacing rotation;
     private double price = 0;
 
     @Override
@@ -23,6 +27,8 @@ public class TemplatePlus extends Template {
             category = compound.getString("category");
         if (compound.hasKey("price"))
             price = compound.getDouble("price");
+        if (compound.hasKey("facing"))
+            rotation = EnumFacing.byName(compound.getString("facing"));
     }
 
     public String getCategory() {
@@ -48,5 +54,14 @@ public class TemplatePlus extends Template {
 
     public String getProfession(){
         return profession;
+    }
+
+    public EnumFacing getRotation(){return rotation;}
+
+    public void setRotation(EnumFacing facing) {
+        this.rotation = facing;
+    }
+    public void setCategory(String category) {
+        this.category = category;
     }
 }

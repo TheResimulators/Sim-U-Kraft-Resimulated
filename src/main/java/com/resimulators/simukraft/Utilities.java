@@ -99,6 +99,23 @@ public class Utilities {
         return 0;
     }
 
+    public static Rotation convertFromInt(int rotation){
+
+        switch(rotation){
+            case 0:
+                return Rotation.NONE;
+            case 90:
+                return Rotation.CLOCKWISE_90;
+            case 180:
+                return Rotation.CLOCKWISE_180;
+            case -90:
+                return Rotation.COUNTERCLOCKWISE_90;
+
+
+        }
+        return Rotation.NONE;
+    }
+
     public static boolean isInteger(String s) {
         try {
             Integer.parseInt(s);

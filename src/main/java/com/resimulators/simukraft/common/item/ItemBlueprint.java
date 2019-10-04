@@ -31,7 +31,6 @@ import java.util.List;
  */
 public class ItemBlueprint extends ItemBase {
     private TemplatePlus template;
-    private EnumFacing currentRotation;
     public ItemBlueprint(String name, CreativeTabs tab) {
         super(name, tab);
     }
@@ -73,12 +72,13 @@ public class ItemBlueprint extends ItemBase {
                 this.setChestPos(player.getHeldItem(hand), pos);
             } else {
                 this.setStartPos(player.getHeldItem(hand), pos.offset(facing));
-                this.setRotation(player.getHeldItem(hand), player.getAdjustedHorizontalFacing());
+                //this.setRotation(player.getHeldItem(hand), player.getAdjustedHorizontalFacing());
+                this.setCurrentRotation(player.getHeldItem(hand), player.getAdjustedHorizontalFacing());
+
             }
         } else if (!worldIn.isRemote && Keyboard.isKeyDown(Keyboard.KEY_LMENU) && false) {
             this.setStartPos(player.getHeldItem(hand), pos.offset(facing));
-      //      this.setRotation(player.getHeldItem(hand), player.getAdjustedHorizontalFacing());
-            this.currentRotation = player.getAdjustedHorizontalFacing();
+            this.setCurrentRotation(player.getHeldItem(hand), player.getAdjustedHorizontalFacing());
             StructureUtils.placeStructure(worldIn, getStartPos(player.getHeldItem(hand)), StructureUtils.loadStructure(player.getServer(), player.world, getStructure(player.getHeldItem(hand))), Mirror.NONE, Utilities.convertFromFacing(getRotation(player.getHeldItem(hand))), true);
         }
 
@@ -170,6 +170,7 @@ public class ItemBlueprint extends ItemBase {
         stack.setTagCompound(compound);
     }
 
+
     public EnumFacing getRotation(ItemStack stack) {
         NBTTagCompound compound = stack.getTagCompound();
         if (compound == null)
@@ -178,6 +179,16 @@ public class ItemBlueprint extends ItemBase {
         String facing = compound.getString("facing");
 
         return EnumFacing.byName(facing);
+    }
+
+    public void setCurrentRotation(ItemStack stack, EnumFacing facing) {
+        NBTTagCompound compound = stack.getTagCompound();
+        if (compound == null)
+            compound = new NBTTagCompound();
+
+        compound.setString("currentfacing", facing.getName());
+
+        stack.setTagCompound(compound);
     }
 
     public void setAddRotation(ItemStack stack, EnumFacing facing) {
@@ -313,7 +324,14 @@ public class ItemBlueprint extends ItemBase {
         }
     }
 
-    public EnumFacing getCurrentRotation(){
-        return currentRotation;
+    public EnumFacing getCurrentRotation(ItemStack stack) {
+        NBTTagCompound compound = stack.getTagCompound();
+        if (compound == null)
+            compound = new NBTTagCompound();
+
+        String facing = compound.getString("currentfacing");
+
+        return EnumFacing.byName(facing);
     }
+
 }

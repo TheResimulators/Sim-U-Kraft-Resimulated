@@ -7,6 +7,7 @@ import com.resimulators.simukraft.common.item.ItemBlueprint;
 import com.resimulators.simukraft.init.ModItems;
 import com.resimulators.simukraft.structure.StructureUtils;
 import com.resimulators.simukraft.structure.TemplatePlus;
+import net.minecraft.client.Minecraft;
 import net.minecraft.command.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -28,6 +29,7 @@ import net.minecraftforge.server.command.CommandTreeBase;
 import net.minecraftforge.server.command.CommandTreeHelp;
 
 import java.io.File;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -87,6 +89,15 @@ public class CommandStructure extends CommandTreeBase {
         @Override
         public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
             if (!server.getEntityWorld().isRemote && args.length == 2) {
+                String category = args[1];
+                ArrayList categories = new ArrayList<String>(){{
+                    add("residential");
+                    add("commercial");
+                    add("special");
+                    add("industrial");
+                }
+                };
+                if (categories.contains(category)){
                 if (sender.getCommandSenderEntity() instanceof EntityPlayer) {
                     EntityPlayer player = (EntityPlayer) sender.getCommandSenderEntity();
                     if (player.getHeldItemMainhand().getItem() == ModItems.PLANNING_SHEET) {
@@ -108,8 +119,16 @@ public class CommandStructure extends CommandTreeBase {
                                 pos2 = new BlockPos(coords2[0], coords2[1], coords2[2]);
                         }
                         StructureUtils.saveStructure(server, player, player.world, pos1, pos2, Utilities.convertFromFacing(player.getHorizontalFacing()), args[0], player.getName(), args[1]);
+                        }
                     }
+                }else {
+                    sender.sendMessage(new TextComponentString(ChatFormatting.RED + "Please enter a valid Category (Residential, Commercial, Industrial, Special)"));
+
+
                 }
+            } else if (args.length != 2){
+                sender.sendMessage(new TextComponentString(ChatFormatting.RED + "Error: Invalid input" +
+                        "\nPlease include a name and a category to save your structure."));
             }
         }
     }
@@ -144,6 +163,7 @@ public class CommandStructure extends CommandTreeBase {
                             ((ItemBlueprint) itemStack.getItem()).refreshStructure(server, player.world, itemStack);
                             ((ItemBlueprint) itemStack.getItem()).setCategory(itemStack, template.getCategory());
                             ((ItemBlueprint) itemStack.getItem()).setPrice(itemStack, template.getPrice());
+                            ((ItemBlueprint) itemStack.getItem()).setRotation(itemStack, template.getRotation());
                         }
                     }
                 }

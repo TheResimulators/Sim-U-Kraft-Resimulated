@@ -32,7 +32,11 @@ import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.Marker;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GLSync;
+import org.lwjgl.opengl.Util;
 
 import java.awt.*;
 import java.lang.reflect.Field;
@@ -45,6 +49,7 @@ public class RenderHandEvent {
 
     private int offsetX = 1;
     private int offsetY = 1;
+    private int timmer = 100;
 
     private EntityPlayer player;
     private Vec3d playerPos;
@@ -87,9 +92,10 @@ public class RenderHandEvent {
             category = blueprint.getCategory(stack);
             price = blueprint.getPrice(stack);
             startPos = blueprint.getStartPos(stack);
+
             if (blueprint.getRotation(stack) != null)
                 rotation = Utilities.convertFromFacing(blueprint.getRotation(stack));
-                currentRotation = Utilities.convertFromFacing(blueprint.getCurrentRotation());
+                currentRotation = Utilities.convertFromFacing(blueprint.getCurrentRotation(stack));
             chestPos = blueprint.getChestPos(stack);
             template = blueprint.getTemplate();
             if (template != null) {
@@ -113,8 +119,9 @@ public class RenderHandEvent {
             double zPos = player.prevPosZ + (player.posZ - player.prevPosZ) * event.getPartialTicks();
             playerPos = new Vec3d(xPos, yPos, zPos);
             if (player != null) {
-                if (player.getPosition().getDistance(pos1.getX(), pos1.getY(), pos1.getZ()) < 512.0D)
+                if (player.getPosition().getDistance(pos1.getX(), pos1.getY(), pos1.getZ()) < 512.0D){
                     this.drawBoundingBox(playerPos, new Vec3d(pos1), new Vec3d(pos2), Rotation.NONE, 2f, new Color(255, 255, 255, 150));
+                }
             }
         }
         if ((startPos != null && size != null && chestPos != null && rotation != null && name != null && author != null) && holdingBlueprint) {
@@ -129,7 +136,7 @@ public class RenderHandEvent {
                     }
                     if ((blocks == null || blocks.isEmpty()) && (size.getX() < 1 && size.getY() < 1 && size.getZ() < 1))
                         size = new BlockPos(1, 1, 1);
-                    this.drawBoundingBox(playerPos, new Vec3d(startPos), new Vec3d(startPos.add(size.getX() - 1, size.getY() - 1, -size.getZ() + 1)), rotation, 2f, new Color(255, 255, 255, 150));
+                    this.drawBoundingBox(playerPos, new Vec3d(startPos), new Vec3d(startPos.add(size.getX() - 1, size.getY() - 1, size.getZ() - 1)), rotation, 2f, new Color(255, 255, 255, 150));
                 }
                 if (player.getPosition().getDistance(chestPos.getX(), chestPos.getY(), chestPos.getZ()) < 512.0D)
                     this.drawBoundingBox(playerPos, new Vec3d(chestPos), new Vec3d(chestPos), Rotation.NONE, 2f, new Color(100, 255, 100, 150));
@@ -211,7 +218,6 @@ public class RenderHandEvent {
         bufferBuilder.setTranslation(-player_pos.x, -player_pos.y, -player_pos.z);
         BlockPos rotationPoint = new BlockPos(posA);
         BlockPos newBPoint = new BlockPos(posB).add(-rotationPoint.getX(),-rotationPoint.getY(),-rotationPoint.getZ());
-        newBPoint = newBPoint.rotate(rotation.add(currentRotation));
         newBPoint = newBPoint.add(rotationPoint.getX(),rotationPoint.getY(),rotationPoint.getZ());
         posB = new Vec3d(newBPoint.getX(),newBPoint.getY(),newBPoint.getZ());
         double lowX;
@@ -300,26 +306,52 @@ public class RenderHandEvent {
     private void preDrawStructure(Vec3d player_pos, World world, List<TemplatePlus.BlockInfo> blocksInfo, BlockPos startPos, BlockPos size,  Rotation rotation) {
         Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
         BlockRendererDispatcher renderer = Minecraft.getMinecraft().getBlockRendererDispatcher();
-
         GlStateManager.pushMatrix();
         GlStateManager.translate(startPos.getX(), startPos.getY(), startPos.getZ());
         GlStateManager.translate(-player_pos.x, -player_pos.y, -player_pos.z);
-        rotation = rotation.add(Utilities.convertFromFacing(Utilities.convertToFacing(currentRotation).getOpposite()));
-        System.out.println(rotation);
+        int rotationint = Utilities.convertToInt(rotation);
+        int currentrotationint = Utilities.convertToInt(currentRotation);
+
+        Rotation oldrot = rotation;
+        if (currentrotationint-rotationint < -90){currentrotationint += 360;}
+        rotation = Utilities.convertFromInt((currentrotationint-rotationint)%360);
+
+        if (timmer <0){
+            timmer = 500;
+
+            System.out.println(rotationint);
+            System.out.println(currentrotationint);
+            System.out.println(currentrotationint-rotationint);
+            System.out.println("old rotation: " +oldrot);
+            System.out.println("new rotation: " + rotation);
+            System.out.println("my rotation: " + currentRotation);
+        }else{timmer--;}
+
+
+       if (currentRotation.equals(Rotation.NONE)){
+            GlStateManager.translate(size.getX()-1,0,0);
+
+        }else if(currentRotation.equals(Rotation.CLOCKWISE_180)){
+           GlStateManager.translate(0,0,size.getZ()-1);
+       }
+        else if(currentRotation.equals(Rotation.CLOCKWISE_90)){
+            GlStateManager.translate(size.getX()-1,0,size.getZ()-1);
+       }
         if (rotation.equals(Rotation.CLOCKWISE_90)) {
-            GlStateManager.rotate(-90, 0, 1, 0);
+            GlStateManager.rotate(270, 0, 1, 0);
             GlStateManager.translate(-size.getX()+1, 0, -1);
         } else if (rotation.equals(Rotation.CLOCKWISE_180)) {
             GlStateManager.rotate(180, 0, 1, 0);
-            GlStateManager.translate(-size.getX(),0,-1);
+            GlStateManager.translate(-1,0,-1);
         } else if (rotation.equals(Rotation.COUNTERCLOCKWISE_90)) {
             GlStateManager.rotate(90, 0, 1, 0);
-            GlStateManager.translate(-size.getX(), 0, 0);
+            GlStateManager.translate(-1, 0,-size.getZ()+1);
         }else if(rotation.equals(Rotation.NONE)){
-            //GlStateManager.rotate(90,0,1,0);
-            GlStateManager.translate(-size.getX()+1,0,0);
+            GlStateManager.rotate(0, 0, 1, 0);
+            GlStateManager.translate(-size.getX()+1,0,-size.getZ()+1);
 
         }
+
 
         for (TemplatePlus.BlockInfo info : blocksInfo) {
 
