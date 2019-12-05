@@ -218,6 +218,14 @@ public class RenderHandEvent {
         bufferBuilder.setTranslation(-player_pos.x, -player_pos.y, -player_pos.z);
         BlockPos rotationPoint = new BlockPos(posA);
         BlockPos newBPoint = new BlockPos(posB).add(-rotationPoint.getX(),-rotationPoint.getY(),-rotationPoint.getZ());
+        int rotationint = Utilities.convertToInt(rotation);
+        int currentrotationint = Utilities.convertToInt(currentRotation);
+
+
+        if (currentrotationint-rotationint < -90){currentrotationint += 360;}
+        rotation = Utilities.convertFromInt((currentrotationint-rotationint)%360);
+
+        newBPoint = newBPoint.rotate(currentRotation.add(Rotation.CLOCKWISE_180).add(Rotation.CLOCKWISE_90));
         newBPoint = newBPoint.add(rotationPoint.getX(),rotationPoint.getY(),rotationPoint.getZ());
         posB = new Vec3d(newBPoint.getX(),newBPoint.getY(),newBPoint.getZ());
         double lowX;
@@ -312,21 +320,9 @@ public class RenderHandEvent {
         int rotationint = Utilities.convertToInt(rotation);
         int currentrotationint = Utilities.convertToInt(currentRotation);
 
-        Rotation oldrot = rotation;
+
         if (currentrotationint-rotationint < -90){currentrotationint += 360;}
         rotation = Utilities.convertFromInt((currentrotationint-rotationint)%360);
-
-        if (timmer <0){
-            timmer = 500;
-
-            System.out.println(rotationint);
-            System.out.println(currentrotationint);
-            System.out.println(currentrotationint-rotationint);
-            System.out.println("old rotation: " +oldrot);
-            System.out.println("new rotation: " + rotation);
-            System.out.println("my rotation: " + currentRotation);
-        }else{timmer--;}
-
 
        if (currentRotation.equals(Rotation.NONE)){
             GlStateManager.translate(size.getX()-1,0,0);

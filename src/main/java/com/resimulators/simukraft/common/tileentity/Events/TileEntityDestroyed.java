@@ -28,6 +28,7 @@ public class TileEntityDestroyed {
 
         if (entity.getId() != null) {
             EntitySim sim = (EntitySim) world.getEntityFromUuid(entity.getId());
+            if (sim == null)return;
             sim.setTeleport(false);
             sim.setTeleporttarget(null);
             SaveSimData.get(world).getFaction(sim.getFactionId()).addUnemployedSim(sim.getUniqueID());

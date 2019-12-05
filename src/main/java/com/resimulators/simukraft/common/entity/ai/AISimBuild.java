@@ -8,6 +8,7 @@ import com.resimulators.simukraft.structure.TemplatePlus;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.RandomPositionGenerator;
+import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -15,8 +16,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.template.BlockRotationProcessor;
 import net.minecraft.world.gen.structure.template.PlacementSettings;
 import net.minecraft.world.gen.structure.template.Template;
 
@@ -39,9 +40,14 @@ public class AISimBuild extends EntityAIBase {
     private TemplatePlus structure;
     private int progress;
     private BlockPos startPos;
+    private BlockPos buildPos;
+    private int xdir = 1;
+    private int zdir = 1;
     private BlockPos currentPos;
     private EnumFacing facing;
+    private EnumFacing currentfacing;
     private PlacementSettings settings;
+
     private boolean rotated = false;
     private int cooldown = 0;
     private int tries = 0;
@@ -86,6 +92,8 @@ public class AISimBuild extends EntityAIBase {
         this.startPos = this.entitySim.getStartPos();
         this.currentPos = this.entitySim.getStartPos();
         this.facing = this.entitySim.getFacing();
+        this.currentfacing = this.entitySim.getCurrentfacing();
+        this.buildPos = startPos;
         this.specialPositions.clear();
         this.specialStates.clear();
         this.specialIndex = 0;
@@ -94,7 +102,109 @@ public class AISimBuild extends EntityAIBase {
         for (Template.BlockInfo info : blocks) {
             blockLocations.put(startPos.add(info.pos), info);
         }
+        System.out.println(structure);
+        System.out.println(structure.getSize());
+        System.out.println("facing " + Utilities.convertFromFacing(facing));
+        System.out.println("current facing " + Utilities.convertFromFacing(currentfacing));
+        IBlockState state = Blocks.DIRT.getDefaultState();
+
+        double width = structure.getSize().getX();
+        double depth = structure.getSize().getZ();
+        double difference = width - depth;
+
+
+        if (Utilities.convertFromFacing(facing).equals(Rotation.NONE) || Utilities.convertFromFacing(facing).equals(Rotation.CLOCKWISE_180)){
+            startPos = startPos.offset(currentfacing,(int)difference);
+        }
+        BlockPos worldcenter = startPos.offset(currentfacing,(int)(depth/2-0.5d));
+        worldcenter = worldcenter.offset(currentfacing.rotateY(),(int)(width/2-0.5d));
+        BlockPos center = new BlockPos(width/2-0.5,0,depth/2-0.5);
+        System.out.println(worldcenter);
+        world.setBlockState(worldcenter.add(0,6,0),Blocks.DIAMOND_BLOCK.getDefaultState());
+        for (Template.BlockInfo info: blocks){
+            BlockPos position = info.pos;
+            int diffx = position.getX() - center.getX();
+            int diffz = position.getZ() - center.getZ();
+            System.out.println(position);
+            position = new BlockPos(diffx,position.getY(),diffz);
+            position = position.rotate(Utilities.convertFromFacing(facing));
+            System.out.println(position);
+            position = position.add(worldcenter.getX(),worldcenter.getY(),worldcenter.getZ());
+           // position = position.add(startPos.getX(),startPos.getY(),startPos.getZ());
+            if (info.blockState.getBlock() != Blocks.AIR)
+            world.setBlockState(position,state);
+
+        }
+
     }
+
+    public void leftovers() {
+        /*if (Utilities.convertFromFacing(currentfacing).equals(Rotation.CLOCKWISE_90)) {
+            startPos = startPos.add(structure.getSize().getX() - 1, 0, structure.getSize().getZ()-1);
+        } else if (Utilities.convertFromFacing(currentfacing).equals(Rotation.CLOCKWISE_180)) {
+            startPos = startPos.add(0,0, structure.getSize().getZ()-1);
+        } else if (Utilities.convertFromFacing(currentfacing).equals(Rotation.NONE)) {
+            startPos = startPos.add(structure.getSize().getX(), 0, 0);
+        } else if(Utilities.convertFromFacing(currentfacing).equals(Rotation.COUNTERCLOCKWISE_90)){
+            startPos = startPos.add(0, 0, -structure.getSize().getZ()+1);
+        }
+        if (Utilities.convertFromFacing(facing).equals(Rotation.CLOCKWISE_90) && Utilities.convertFromFacing(currentfacing).equals(Rotation.COUNTERCLOCKWISE_90)){
+            startPos = startPos.add(0,0,structure.getSize().getZ()-1);
+        }
+        if (Utilities.convertFromFacing(facing).equals(Rotation.CLOCKWISE_180) && Utilities.convertFromFacing(currentfacing).equals(Rotation.NONE)){
+            startPos = startPos.add(-1,0,-structure.getSize().getZ()+1);
+        }
+        if (Utilities.convertFromFacing(facing).equals(Rotation.COUNTERCLOCKWISE_90) && Utilities.convertFromFacing(currentfacing).equals(Rotation.CLOCKWISE_90)){
+            startPos = startPos.add(1,0,0);
+        }
+        if (Utilities.convertFromFacing(facing).equals(Rotation.CLOCKWISE_180) && Utilities.convertFromFacing(currentfacing).equals(Rotation.CLOCKWISE_180)){
+            startPos = startPos.add(0,0,-structure.getSize().getZ()+1);
+        }
+        if (Utilities.convertFromFacing(facing).equals(Rotation.COUNTERCLOCKWISE_90) && Utilities.convertFromFacing(currentfacing).equals(Rotation.COUNTERCLOCKWISE_90)){
+            startPos = startPos.add(1,0,structure.getSize().getZ()-1);
+        }
+        if (Utilities.convertFromFacing(facing).equals(Rotation.NONE) && Utilities.convertFromFacing(currentfacing).equals(Rotation.NONE)){
+            startPos = startPos.add(-1,0,0);
+        }
+        if (Utilities.convertFromFacing(facing).equals(Rotation.NONE) && Utilities.convertFromFacing(currentfacing).equals(Rotation.COUNTERCLOCKWISE_90)){
+            startPos = startPos.add(0,0,structure.getSize().getZ()-1);
+        }
+        if (Utilities.convertFromFacing(facing).equals(Rotation.CLOCKWISE_180) && Utilities.convertFromFacing(currentfacing).equals(Rotation.CLOCKWISE_180)){
+            startPos = startPos.add(0,0,-structure.getSize().getZ()+1);
+        }
+        if (Utilities.convertFromFacing(facing).equals(Rotation.CLOCKWISE_90) && Utilities.convertFromFacing(currentfacing).equals(Rotation.NONE)){
+            startPos = startPos.add(-1,0,0);
+        }
+        if (Utilities.convertFromFacing(facing).equals(Rotation.CLOCKWISE_180) && Utilities.convertFromFacing(currentfacing).equals(Rotation.CLOCKWISE_180)){
+            startPos = startPos.add(0,0,-structure.getSize().getZ()+1);
+        }
+        /*
+         if (rotation.equals(Rotation.CLOCKWISE_90)) {
+         GlStateManager.rotate(270, 0, 1, 0);
+         GlStateManager.translate(-size.getX()+1, 0, -1);
+         } else if (rotation.equals(Rotation.CLOCKWISE_180)) {
+         GlStateManager.rotate(180, 0, 1, 0);
+         GlStateManager.translate(-1,0,-1);
+         } else if (rotation.equals(Rotation.COUNTERCLOCKWISE_90)) {
+         GlStateManager.rotate(90, 0, 1, 0);
+         GlStateManager.translate(-1, 0,-size.getZ()+1);
+         }else if(rotation.equals(Rotation.NONE)){
+         GlStateManager.rotate(0, 0, 1, 0);
+         GlStateManager.translate(-size.getX()+1,0,-size.getZ()+1);
+         }
+*/
+  /*      EnumFacing facingforward = currentfacing;
+        EnumFacing facingright = currentfacing.rotateY();
+        for(int i = 0; i <blocks.size();i++){
+
+
+            BlockPos pos = info.pos;
+            pos = Template.transformedBlockPos(settings,pos);
+            pos = pos.add(startPos.getX(),startPos.getY(),startPos.getZ());
+            if (info.blockState.getBlock() != Blocks.AIR){
+            world.setBlockState(pos,state);}
+*/}
+
 
     @Override
     public void resetTask() {
@@ -109,20 +219,25 @@ public class AISimBuild extends EntityAIBase {
         //TODO: For instance, line of sight to the place where the block is supposed to go as well as being within reach.
         if (entitySim.isAllowedToBuild() && cooldown <= 0) {
             cooldown = 10;
-            if (!rotated) {
+            if (!rotated) {/*
                 if (Utilities.convertFromFacing(facing).equals(Rotation.CLOCKWISE_90)) {
                     startPos = startPos.add(structure.getSize().getX() - 1, 0, 0);
                 } else if (Utilities.convertFromFacing(facing).equals(Rotation.CLOCKWISE_180)) {
                     startPos = startPos.add(structure.getSize().getX() - 1, 0, structure.getSize().getZ() - 1);
                 } else if (Utilities.convertFromFacing(facing).equals(Rotation.COUNTERCLOCKWISE_90)) {
                     startPos = startPos.add(0, 0, structure.getSize().getZ() - 1);
-                }
+                }*/
                 currentPos = startPos;
                 rotated = true;
             }
             if ((info == null) || lastPos != currentPos) {
                 lastPos = currentPos;
                 info = blockLocations.get(currentPos);
+                tries++;
+            }
+            if (tries >10){
+                tries = 0;
+                entitySim.setAllowedToBuild(false);
             }
             if (info != null) {
                 if (entitySim != null && entitySim.getPosition().distanceSq(currentPos.getX(), currentPos.getY(), currentPos.getZ()) <= 25) {
@@ -155,14 +270,14 @@ public class AISimBuild extends EntityAIBase {
                                 }
                             }
 
-                            if (info.pos.getX() < structure.getSize().getX())
-                                currentPos = currentPos.add(1, 0, 0);
+                            if (info.pos.getX() < structure.getSize().getX() * xdir)
+                                currentPos = currentPos.add(xdir, 0, 0);
                             else {
-                                currentPos = currentPos.add(-structure.getSize().getX(), 0, 0);
-                                if (info.pos.getZ() < structure.getSize().getZ()) {
-                                    currentPos = currentPos.add(0, 0, 1);
+                                currentPos = currentPos.add(-structure.getSize().getX()*xdir, 0, 0);
+                                if (info.pos.getZ() < structure.getSize().getZ()*zdir) {
+                                    currentPos = currentPos.add(0, 0, zdir);
                                 } else {
-                                    currentPos = currentPos.add(0, 1, -structure.getSize().getZ());
+                                    currentPos = currentPos.add(-structure.getSize().getX()*xdir, 1, -structure.getSize().getZ() * zdir);
                                 }
                             }
 

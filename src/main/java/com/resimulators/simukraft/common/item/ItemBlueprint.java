@@ -95,12 +95,18 @@ public class ItemBlueprint extends ItemBase {
             }
 
             //Interaction logic begin
+            int rotationint = Utilities.convertToInt(Utilities.convertFromFacing(getRotation(stack)));
+            int currentrotationint = Utilities.convertToInt(Utilities.convertFromFacing(this.getCurrentRotation(stack)));
 
+
+            if (currentrotationint-rotationint < -90){currentrotationint += 360;}
+            Rotation rotation = Utilities.convertFromInt((currentrotationint-rotationint)%360);
             SimUKraft.getLogger().info("Building");
             ((EntitySim) target).setStructure(StructureUtils.loadStructure(playerIn.getServer(), playerIn.world, getStructure(stack)));
             ((EntitySim) target).setAllowedToBuild(true);
             ((EntitySim) target).setStartPos(getStartPos(stack));
-            ((EntitySim) target).setFacing(getRotation(stack));
+            ((EntitySim) target).setFacing(Utilities.convertToFacing(rotation));
+            ((EntitySim) target).setCurrentfacing(Utilities.convertToFacing(Utilities.convertFromFacing(getCurrentRotation(stack))));
 
             //Interaction logic end
 

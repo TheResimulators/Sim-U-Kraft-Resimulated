@@ -76,6 +76,7 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
     private boolean isAllowedToBuild;
     private BlockPos startPos;
     private EnumFacing facing;
+    private EnumFacing currentfacing;
     //Inventory
     private ItemStackHandler toolinv;
     private ItemStackHandler pickups;
@@ -976,6 +977,14 @@ public class EntitySim extends EntityAgeable implements INpc, ICapabilityProvide
 
         }
 
+
+        public EnumFacing getCurrentfacing(){
+        return currentfacing;
+        }
+        public void setCurrentfacing(EnumFacing facing){
+            currentfacing = facing;
+
+        }
 }
 
 
