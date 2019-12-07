@@ -41,8 +41,6 @@ public class AISimBuild extends EntityAIBase {
     private int progress;
     private BlockPos startPos;
     private BlockPos buildPos;
-    private int xdir = 1;
-    private int zdir = 1;
     private BlockPos currentPos;
     private EnumFacing facing;
     private EnumFacing currentfacing;
@@ -121,7 +119,7 @@ public class AISimBuild extends EntityAIBase {
         BlockPos center = new BlockPos(width/2-0.5,0,depth/2-0.5);
         System.out.println(worldcenter);
         world.setBlockState(worldcenter.add(0,6,0),Blocks.DIAMOND_BLOCK.getDefaultState());
-        for (Template.BlockInfo info: blocks){
+       /* for (Template.BlockInfo info: blocks){
             BlockPos position = info.pos;
             int diffx = position.getX() - center.getX();
             int diffz = position.getZ() - center.getZ();
@@ -130,11 +128,10 @@ public class AISimBuild extends EntityAIBase {
             position = position.rotate(Utilities.convertFromFacing(facing));
             System.out.println(position);
             position = position.add(worldcenter.getX(),worldcenter.getY(),worldcenter.getZ());
-           // position = position.add(startPos.getX(),startPos.getY(),startPos.getZ());
             if (info.blockState.getBlock() != Blocks.AIR)
             world.setBlockState(position,state);
 
-        }
+        }*/
 
     }
 
@@ -205,12 +202,6 @@ public class AISimBuild extends EntityAIBase {
             world.setBlockState(pos,state);}
 */}
 
-
-    @Override
-    public void resetTask() {
-
-    }
-
     Template.BlockInfo info;
     BlockPos lastPos;
     @Override
@@ -219,42 +210,36 @@ public class AISimBuild extends EntityAIBase {
         //TODO: For instance, line of sight to the place where the block is supposed to go as well as being within reach.
         if (entitySim.isAllowedToBuild() && cooldown <= 0) {
             cooldown = 10;
-            if (!rotated) {/*
-                if (Utilities.convertFromFacing(facing).equals(Rotation.CLOCKWISE_90)) {
-                    startPos = startPos.add(structure.getSize().getX() - 1, 0, 0);
-                } else if (Utilities.convertFromFacing(facing).equals(Rotation.CLOCKWISE_180)) {
-                    startPos = startPos.add(structure.getSize().getX() - 1, 0, structure.getSize().getZ() - 1);
-                } else if (Utilities.convertFromFacing(facing).equals(Rotation.COUNTERCLOCKWISE_90)) {
-                    startPos = startPos.add(0, 0, structure.getSize().getZ() - 1);
-                }*/
-                currentPos = startPos;
-                rotated = true;
-            }
+
             if ((info == null) || lastPos != currentPos) {
                 lastPos = currentPos;
                 info = blockLocations.get(currentPos);
-                tries++;
-            }
-            if (tries >10){
-                tries = 0;
-                entitySim.setAllowedToBuild(false);
+
             }
             if (info != null) {
-                if (entitySim != null && entitySim.getPosition().distanceSq(currentPos.getX(), currentPos.getY(), currentPos.getZ()) <= 25) {
+                BlockPos position = info.pos;
+
+                double width = structure.getSize().getX();
+                double depth = structure.getSize().getZ();
+
+
+
+                BlockPos worldcenter = startPos.offset(currentfacing,(int)(depth/2-0.5d));
+                worldcenter = worldcenter.offset(currentfacing.rotateY(),(int)(width/2-0.5d));
+                BlockPos center = new BlockPos(width/2-0.5,0,depth/2-0.5);
+
+                int diffx = position.getX() - center.getX();
+                int diffz = position.getZ() - center.getZ();
+                System.out.println(position);
+                position = new BlockPos(diffx,position.getY(),diffz);
+                position = position.rotate(Utilities.convertFromFacing(facing));
+                position = position.add(worldcenter.getX(),worldcenter.getY(),worldcenter.getZ());
+                if (entitySim != null && entitySim.getPosition().distanceSq(position.getX(),position.getY(),position.getZ()) <= 25) {
                     IBlockState state = info.blockState.withRotation(settings.getRotation());
-                    if ((world.getBlockState(startPos.add(info.pos)).getBlock().equals(info.blockState.getBlock()))) {
-                        if (info.pos.getX() < structure.getSize().getX())
-                            currentPos = currentPos.add(1, 0, 0);
-                        else {
-                            currentPos = currentPos.add(-structure.getSize().getX(), 0, 0);
-                            if (info.pos.getZ() < structure.getSize().getZ()) {
-                                currentPos = currentPos.add(0, 0, 1);
-                            } else {
-                                currentPos = currentPos.add(0, 1, -structure.getSize().getZ());
-                            }
-                        }
+                    if ((world.getBlockState(position).getBlock().equals(info.blockState.getBlock()))) {
+                       GetNextBlock();
                     } else {
-                        if (entityPlaceBlock(state, startPos.add(transformedBlockPos(info.pos, settings.getMirror(), settings.getRotation())))) {
+                        if (entityPlaceBlock(state, position)) {
                             if (info.tileentityData != null) {
                                 TileEntity tileentity = world.getTileEntity(info.pos);
                                 if (tileentity != null) {
@@ -268,18 +253,10 @@ public class AISimBuild extends EntityAIBase {
                                     tileentity.rotate(settings.getRotation());
                                     tileentity.markDirty();
                                 }
+                                GetNextBlock();
                             }
 
-                            if (info.pos.getX() < structure.getSize().getX() * xdir)
-                                currentPos = currentPos.add(xdir, 0, 0);
-                            else {
-                                currentPos = currentPos.add(-structure.getSize().getX()*xdir, 0, 0);
-                                if (info.pos.getZ() < structure.getSize().getZ()*zdir) {
-                                    currentPos = currentPos.add(0, 0, zdir);
-                                } else {
-                                    currentPos = currentPos.add(-structure.getSize().getX()*xdir, 1, -structure.getSize().getZ() * zdir);
-                                }
-                            }
+
 
                             SimUKraft.getLogger().info("Placing block " + info.blockState.getBlock().getLocalizedName() + " at " + currentPos.add(info.pos));
                             if (info.pos.getY() >= structure.getSize().getY()) {
@@ -293,12 +270,31 @@ public class AISimBuild extends EntityAIBase {
                         }
                     }
                 } else {
-                    SimUKraft.getLogger().info("Polling position: " + startPos.add(info.pos) + ", Current position: " + currentPos + ", Distance from entity: " + entitySim.getPosition().distanceSq(currentPos.getX(), currentPos.getY(), currentPos.getZ()) + ", Block Position: " + info.pos);
-                    moveEntityCloser(currentPos);
+                    SimUKraft.getLogger().info("Polling position: " + startPos.add(info.pos) + ",Sim's position: "+entitySim.getPosition() +", Current position: " + position + ", Distance from entity: " + entitySim.getPosition().distanceSq(position.getX(),position.getY(),position.getZ()) + ", Block Position: " + position);
+                    moveEntityCloser(position);
                 }
+            }else{tries++;}
+            if (tries >10){
+                tries = 0;
+                entitySim.setAllowedToBuild(false);
             }
-        } else
-            cooldown--;
+        }else cooldown--;
+    }
+
+    private void GetNextBlock(){
+        if (info.pos.getX() < structure.getSize().getX()-1){
+            currentPos = currentPos.add(1, 0, 0);
+        }
+        else {
+            currentPos = currentPos.add(-(structure.getSize().getX()-1), 0, 0);
+            if (info.pos.getZ() < structure.getSize().getZ()-1) {
+                currentPos = currentPos.add(0, 0, 1);
+            } else {
+                currentPos = currentPos.add(0, 1, -(structure.getSize().getZ()-1));
+            }
+        }
+
+
     }
 
     private void moveEntityCloser(BlockPos thePos) {
@@ -372,5 +368,11 @@ public class AISimBuild extends EntityAIBase {
             default:
                 return flag ? new BlockPos(i, j, k) : pos;
         }
+    }
+
+
+    @Override
+    public void resetTask() {
+
     }
 }
