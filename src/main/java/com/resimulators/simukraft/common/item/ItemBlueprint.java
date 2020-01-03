@@ -61,18 +61,23 @@ public class ItemBlueprint extends ItemBase {
     @Override
     public void onUpdate(ItemStack stack, World worldIn, Entity entity, int itemSlot, boolean isSelected) {
         super.onUpdate(stack, worldIn, entity, itemSlot, isSelected);
-        if ((this.template == null || getStructure(stack).equals("")) && !worldIn.isRemote)
-            this.template = StructureUtils.loadStructure(entity.getServer(), entity.world, getStructure(stack));
+
+
+        refreshStructure(entity.getServer(),worldIn,((EntityPlayer) entity).getHeldItem(EnumHand.MAIN_HAND));
+
+        if ((this.template == null || getStructure(stack).equals("")) && !worldIn.isRemote){
+            this.template = StructureUtils.loadStructure(entity.getServer(), entity.world, getStructure(stack));}
     }
+
 
     @Override
     public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         if (!worldIn.isRemote && player.isSneaking()) {
+
             if (worldIn.getBlockState(pos).getBlock() instanceof BlockChest) {
                 this.setChestPos(player.getHeldItem(hand), pos);
             } else {
                 this.setStartPos(player.getHeldItem(hand), pos.offset(facing));
-                //this.setRotation(player.getHeldItem(hand), player.getAdjustedHorizontalFacing());
                 this.setCurrentRotation(player.getHeldItem(hand), player.getAdjustedHorizontalFacing());
 
             }

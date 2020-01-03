@@ -18,17 +18,19 @@ public class ClientHireHandler implements IMessageHandler<ClientHirePacket,IMess
     @Override
     public IMessage onMessage(ClientHirePacket message, MessageContext messageContext) {
         IThreadListener mainthread = Minecraft.getMinecraft();
-        mainthread.addScheduledTask(() ->{
+        mainthread.addScheduledTask(new Runnable() {
+            @Override
+            public void run() {
 
-        long factionid = Minecraft.getMinecraft().player.getCapability(ModCapabilities.PlayerCap,null).getfactionid();
-        FactionData data = SaveSimData.get(Minecraft.getMinecraft().world).getFaction(factionid);
-        ISim tileentity = ((ISim)Minecraft.getMinecraft().world.getTileEntity(new BlockPos(message.x,message.y,message.z)));
-        tileentity.setId(message.uuid);
-        data.removeUnemployedSim(message.uuid);
+                long factionid = Minecraft.getMinecraft().player.getCapability(ModCapabilities.PlayerCap, null).getfactionid();
+                FactionData data = SaveSimData.get(Minecraft.getMinecraft().world).getFaction(factionid);
+                ISim tileentity = ((ISim) Minecraft.getMinecraft().world.getTileEntity(new BlockPos(message.x, message.y, message.z)));
+                tileentity.setId(message.uuid);
+                data.removeUnemployedSim(message.uuid);
 
 
-
-    });
+            }
+        });
         return null;
     }
 }

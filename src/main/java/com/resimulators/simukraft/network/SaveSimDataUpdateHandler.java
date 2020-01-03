@@ -12,9 +12,12 @@ public class SaveSimDataUpdateHandler implements IMessageHandler<SaveSimDataUpda
     public IMessage onMessage(SaveSimDataUpdatePacket message, MessageContext ctx) {
         IThreadListener mainthread = Minecraft.getMinecraft();
 
-        mainthread.addScheduledTask(()->{
+        mainthread.addScheduledTask(new Runnable() {
+            @Override
+            public void run() {
 
-            SaveSimData.get(Minecraft.getMinecraft().world).deserializeNBT(message.data);
+                SaveSimData.get(Minecraft.getMinecraft().world).deserializeNBT(message.data);
+            }
         });
         return null;
     }

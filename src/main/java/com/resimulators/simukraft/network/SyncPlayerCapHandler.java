@@ -13,9 +13,12 @@ public class SyncPlayerCapHandler implements IMessageHandler<SyncPlayerCapPacket
         IThreadListener mainThread = Minecraft.getMinecraft();
 
 
-        mainThread.addScheduledTask(()->{
-        Minecraft.getMinecraft().player.getCapability(ModCapabilities.PlayerCap,null).deserializeNBT(message.compound);
-        System.out.println("handler "+ Minecraft.getMinecraft().player.getCapability(ModCapabilities.PlayerCap,null).getfactionid());
+        mainThread.addScheduledTask(new Runnable() {
+            @Override
+            public void run() {
+                Minecraft.getMinecraft().player.getCapability(ModCapabilities.PlayerCap, null).deserializeNBT(message.compound);
+                System.out.println("handler " + Minecraft.getMinecraft().player.getCapability(ModCapabilities.PlayerCap, null).getfactionid());
+            }
         });
         return null;
     }

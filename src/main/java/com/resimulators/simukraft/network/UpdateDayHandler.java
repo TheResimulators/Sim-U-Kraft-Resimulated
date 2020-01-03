@@ -12,10 +12,13 @@ public class UpdateDayHandler implements IMessageHandler<UpdateDayPacket,IMessag
     public IMessage onMessage(UpdateDayPacket message, MessageContext ctx){
         IThreadListener mainthread = Minecraft.getMinecraft();
 
-        mainthread.addScheduledTask(()->{
-            EnumDay.DayStorage.setDayInt(message.daynum);
+        mainthread.addScheduledTask(new Runnable() {
+            @Override
+            public void run() {
+                EnumDay.DayStorage.setDayInt(message.daynum);
 
 
+            }
         });
 
 

@@ -16,12 +16,15 @@ public class HiredSimDeathHandler implements IMessageHandler<HiredSimDeathPacket
     @Override
     public IMessage onMessage(HiredSimDeathPacket message, MessageContext ctx) {
         IThreadListener mainThread = Minecraft.getMinecraft();
-        mainThread.addScheduledTask(() -> {
-            BlockPos pos = new BlockPos(message.x, message.y, message.z);
-            TileEntity tile = Minecraft.getMinecraft().world.getTileEntity(pos);
-            ((ISimJob) tile).removeSim(message.id);
-            ((ISimJob) tile).setHired(false);
-            ((ISimJob) tile).setId(null);
+        mainThread.addScheduledTask(new Runnable() {
+            @Override
+            public void run() {
+                BlockPos pos = new BlockPos(message.x, message.y, message.z);
+                TileEntity tile = Minecraft.getMinecraft().world.getTileEntity(pos);
+                ((ISimJob) tile).removeSim(message.id);
+                ((ISimJob) tile).setHired(false);
+                ((ISimJob) tile).setId(null);
+            }
         });
         return null;
     }

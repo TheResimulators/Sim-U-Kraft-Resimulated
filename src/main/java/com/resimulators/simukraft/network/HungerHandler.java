@@ -15,10 +15,13 @@ public class HungerHandler implements IMessageHandler<HungerPacket,IMessage> {
     public IMessage onMessage(HungerPacket message, MessageContext ctx) {
         IThreadListener mainthread = Minecraft.getMinecraft();
 
-        mainthread.addScheduledTask(() -> {
-            EntitySim sim = (EntitySim) Minecraft.getMinecraft().world.getEntityByID(message.id);
-            if (sim != null) {
-                sim.setHunger(message.hunger);
+        mainthread.addScheduledTask(new Runnable() {
+            @Override
+            public void run() {
+                EntitySim sim = (EntitySim) Minecraft.getMinecraft().world.getEntityByID(message.id);
+                if (sim != null) {
+                    sim.setHunger(message.hunger);
+                }
             }
         });
         return null;

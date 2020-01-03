@@ -23,7 +23,7 @@ public class WorldCreationEvent {
             }
 
             System.out.println("this happened");
-
+            System.out.println(event.getWorld().getProviderName());
             if (server != null) {
                 if (!new File("./saves/" + server.getWorldName() + "/structures/").exists()) {
                     File folder = new File(server.getDataDirectory() + "/saves/" + server.getWorldName() + "/structures/");

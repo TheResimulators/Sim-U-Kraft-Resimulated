@@ -13,14 +13,16 @@ public class ModeChangeHandler implements IMessageHandler<ModeChangePacket,IMess
     public IMessage onMessage(ModeChangePacket message, MessageContext ctx) {
         IThreadListener mainthread = ctx.getServerHandler().player.getServerWorld();
 
-        mainthread.addScheduledTask(() -> {
-            PlayerCapability capability = ctx.getServerHandler().player.getCapability(ModCapabilities.PlayerCap,null);
-            capability.setenabled(true);
-            capability.setmode(message.mode);
-            SaveSimData.get(ctx.getServerHandler().player.world).getFaction(capability.getfactionid()).setMode(message.mode);
+        mainthread.addScheduledTask(new Runnable() {
+            @Override
+            public void run() {
+                PlayerCapability capability = ctx.getServerHandler().player.getCapability(ModCapabilities.PlayerCap, null);
+                capability.setenabled(true);
+                capability.setmode(message.mode);
+                SaveSimData.get(ctx.getServerHandler().player.world).getFaction(capability.getfactionid()).setMode(message.mode);
 
 
-
+            }
         });
         return null;
     }

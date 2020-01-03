@@ -3,10 +3,7 @@ package com.resimulators.simukraft;
 import com.resimulators.simukraft.client.gui.*;
 import com.resimulators.simukraft.common.containers.SimContainer;
 import com.resimulators.simukraft.common.entity.entitysim.EntitySim;
-import com.resimulators.simukraft.common.tileentity.TileCattle;
-import com.resimulators.simukraft.common.tileentity.TileFarm;
-import com.resimulators.simukraft.common.tileentity.TileMiner;
-import com.resimulators.simukraft.common.tileentity.TileSheep;
+import com.resimulators.simukraft.common.tileentity.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -56,7 +53,7 @@ public class GuiHandler implements IGuiHandler {
         else if (ID == GUI.SIMINV.ordinal())
             return new GuiSimInv(player.inventory, (EntitySim) world.getEntityByID(x));
         else if (ID == GUI.BUILDER.ordinal())
-            return new GuiBuilding(x, z, y);
+            return new GuiBuilding(x, z, y,(TileConstructor) tileEntity);
         else if (ID == GUI.CATTLE.ordinal())
             return new GuiCattle((TileCattle) tileEntity);
         else if (ID == GUI.SHEEP.ordinal())

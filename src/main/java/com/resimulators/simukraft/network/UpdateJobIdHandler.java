@@ -13,13 +13,16 @@ public class UpdateJobIdHandler implements IMessageHandler<UpdateJobIdPacket,IMe
     @Override
     public IMessage onMessage(UpdateJobIdPacket message, MessageContext ctx) {
         IThreadListener mainthread = ctx.getServerHandler().player.getServerWorld();
-        mainthread.addScheduledTask(() -> {
-            BlockPos pos = new BlockPos(message.x, message.y, message.z);
-            TileEntity tile = ctx.getServerHandler().player.getServerWorld().getTileEntity(pos);
-            EntitySim sim = (EntitySim) ctx.getServerHandler().player.getServerWorld().getEntityByID(message.id);
-            if (tile instanceof ISimJob) {
-                ((ISimJob) tile).setId(sim.getPersistentID());
-                ((ISimJob)tile).setHired(true);
+        mainthread.addScheduledTask(new Runnable() {
+            @Override
+            public void run() {
+                BlockPos pos = new BlockPos(message.x, message.y, message.z);
+                TileEntity tile = ctx.getServerHandler().player.getServerWorld().getTileEntity(pos);
+                EntitySim sim = (EntitySim) ctx.getServerHandler().player.getServerWorld().getEntityByID(message.id);
+                if (tile instanceof ISimJob) {
+                    ((ISimJob) tile).setId(sim.getPersistentID());
+                    ((ISimJob) tile).setHired(true);
+                }
             }
         });
         return null;

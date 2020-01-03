@@ -12,11 +12,14 @@ public class ClientUpdateMinerHandler implements IMessageHandler<ClientUpdateMIn
     public IMessage onMessage(ClientUpdateMIningPacket message, MessageContext ctx) {
         IThreadListener mainthread = ctx.getServerHandler().player.server;
 
-        mainthread.addScheduledTask(()->{
-            World world = ctx.getServerHandler().player.world;
-            TileMiner miner =(TileMiner) world.getTileEntity(message.pos);
-            if (miner != null){
-            miner.setShouldmine(message.mining);
+        mainthread.addScheduledTask(new Runnable() {
+            @Override
+            public void run() {
+                World world = ctx.getServerHandler().player.world;
+                TileMiner miner = (TileMiner) world.getTileEntity(message.pos);
+                if (miner != null) {
+                    miner.setShouldmine(message.mining);
+                }
             }
         });
         return null;

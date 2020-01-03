@@ -15,13 +15,16 @@ public class SimDeathHandler implements IMessageHandler<SimDeathPacket, IMessage
     @Override
     public IMessage onMessage(SimDeathPacket message, MessageContext ctx) {
         IThreadListener mainThread = Minecraft.getMinecraft();
-        mainThread.addScheduledTask(() -> {
-            int id = message.sims;
-            EntitySim e = (EntitySim) Minecraft.getMinecraft().world.getEntityByID(id);
-            System.out.println("entity " + e);
-            System.out.println("entity long " + e.getFactionId());
-            SaveSimData.get(Minecraft.getMinecraft().world).getFaction(message.factionid).removeUnemployedSim(e);
-            SaveSimData.get(Minecraft.getMinecraft().world).getFaction(message.factionid).removeTotalSim(e);
+        mainThread.addScheduledTask(new Runnable() {
+            @Override
+            public void run() {
+                int id = message.sims;
+                EntitySim e = (EntitySim) Minecraft.getMinecraft().world.getEntityByID(id);
+                System.out.println("entity " + e);
+                System.out.println("entity long " + e.getFactionId());
+                SaveSimData.get(Minecraft.getMinecraft().world).getFaction(message.factionid).removeUnemployedSim(e);
+                SaveSimData.get(Minecraft.getMinecraft().world).getFaction(message.factionid).removeTotalSim(e);
+            }
         });
         return null;
     }

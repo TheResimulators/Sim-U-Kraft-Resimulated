@@ -8,6 +8,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -39,9 +41,13 @@ public class ModEntities {
 
     public static void init() {
         addEntity(EntitySim.class, "sim", 0x000000, 0x000000);
+
+
+    }
+    @SideOnly(Side.CLIENT)
+    public static void ClientEntitiesinit(){
         addEntity(EntityParticleSpawner.class, "particle_spawner");
     }
-
     private static EntityEntryBuilder<Entity> createBuilder(Class<? extends Entity> entityClass, String name)
     {
         System.out.println("entity registry id = " + modEntityid);

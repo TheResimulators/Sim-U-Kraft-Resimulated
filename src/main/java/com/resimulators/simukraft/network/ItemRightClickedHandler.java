@@ -14,17 +14,19 @@ public class ItemRightClickedHandler implements IMessageHandler<ItemRightClicked
         IThreadListener mainThread = ctx.getServerHandler().player.getServerWorld();
 
 
-        mainThread.addScheduledTask(() -> {
-            if (ctx.getServerHandler().player.getServer().isDedicatedServer()){
-                mode = ConfigHandler.Server_Configs.mode;
+        mainThread.addScheduledTask(new Runnable() {
+            @Override
+            public void run() {
+                if (ctx.getServerHandler().player.getServer().isDedicatedServer()) {
+                    mode = ConfigHandler.Server_Configs.mode;
+                } else if (SaveSimData.get(ctx.getServerHandler().player.world).getFaction(ctx.getServerHandler().player.getCapability(ModCapabilities.PlayerCap, null).getfactionid()).getMode() != -1) {
+                    mode = SaveSimData.get(ctx.getServerHandler().player.world).getFaction(ctx.getServerHandler().player.getCapability(ModCapabilities.PlayerCap, null).getfactionid()).getMode();
+                } else {
+                    mode = -2;
+                }
+                ctx.getServerHandler().player.getHeldItem(message.handin).shrink(1);
+                System.out.println("modes " + mode);
             }
-            else if (SaveSimData.get(ctx.getServerHandler().player.world).getFaction(ctx.getServerHandler().player.getCapability(ModCapabilities.PlayerCap,null).getfactionid()).getMode() != -1){
-                mode = SaveSimData.get(ctx.getServerHandler().player.world).getFaction(ctx.getServerHandler().player.getCapability(ModCapabilities.PlayerCap,null).getfactionid()).getMode();
-            }
-
-            else{mode = -2;}
-            ctx.getServerHandler().player.getHeldItem(message.handin).shrink(1);
-            System.out.println("modes " + mode);
         });
 
     return new ItemClickedReturnPacket(ctx.getServerHandler().player.getServer().isDedicatedServer(),message.handin,message.stack,mode);

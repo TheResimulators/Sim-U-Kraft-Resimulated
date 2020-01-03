@@ -46,10 +46,8 @@ import java.util.List;
  * Created by fabbe on 23/10/2018 - 7:12 PM.
  */
 public class RenderHandEvent {
-
     private int offsetX = 1;
     private int offsetY = 1;
-    private int timmer = 100;
 
     private EntityPlayer player;
     private Vec3d playerPos;
@@ -93,9 +91,9 @@ public class RenderHandEvent {
             price = blueprint.getPrice(stack);
             startPos = blueprint.getStartPos(stack);
 
-            if (blueprint.getRotation(stack) != null)
+            if (blueprint.getRotation(stack) != null){
                 rotation = Utilities.convertFromFacing(blueprint.getRotation(stack));
-                currentRotation = Utilities.convertFromFacing(blueprint.getCurrentRotation(stack));
+                currentRotation = Utilities.convertFromFacing(blueprint.getCurrentRotation(stack));}
             chestPos = blueprint.getChestPos(stack);
             template = blueprint.getTemplate();
             if (template != null) {
@@ -354,10 +352,11 @@ public class RenderHandEvent {
             GlStateManager.pushMatrix();
             GlStateManager.enableBlend();
             GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+            GlStateManager.rotate(-90, 0, 1f, 0);
             BlockPos position = info.pos;
             GlStateManager.translate(position.getX(), position.getY(), position.getZ());
             GlStateManager.color(1f, 1f, 1f, 0.8f);
-            GlStateManager.rotate(-90, 0, 1f, 0);
+
             renderer.renderBlockBrightness(info.blockState, 1f);
             GlStateManager.disableBlend();
             GlStateManager.popMatrix();

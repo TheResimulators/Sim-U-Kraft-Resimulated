@@ -13,10 +13,13 @@ public class ClientStructureHandler implements IMessageHandler<ClientStructuresP
     @Override
     public IMessage onMessage(ClientStructuresPacket message, MessageContext ctx) {
         IThreadListener mainThread = Minecraft.getMinecraft();
-        mainThread.addScheduledTask(() -> {
+        mainThread.addScheduledTask(new Runnable() {
+            @Override
+            public void run() {
 
-            if (Minecraft.getMinecraft().currentScreen instanceof GuiBuilding){
-                ((GuiBuilding) Minecraft.getMinecraft().currentScreen).setstructures(message.industrial,message.residential,message.commercial,message.custom,message.structureinfos);
+                if (Minecraft.getMinecraft().currentScreen instanceof GuiBuilding) {
+                    ((GuiBuilding) Minecraft.getMinecraft().currentScreen).setstructures(message.industrial, message.residential, message.commercial, message.custom, message.structureinfos);
+                }
             }
         });
 

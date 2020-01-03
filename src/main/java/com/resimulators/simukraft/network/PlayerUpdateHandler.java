@@ -21,16 +21,19 @@ public class PlayerUpdateHandler implements IMessageHandler<PlayerUpdatePacket, 
         System.out.println("Faction: " + message.factionid);
         Long uuid = message.factionid;
 
-        mainThread.addScheduledTask(() -> {
-            Minecraft.getMinecraft().player.getCapability(ModCapabilities.PlayerCap,null).setmode(message.mode);
-            SaveSimData.get(Minecraft.getMinecraft().world).getFaction(uuid).addPlayer(Minecraft.getMinecraft().player.getUniqueID());
-            for (UUID id : message.totalsim) {
-                SaveSimData.get(Minecraft.getMinecraft().world).getFaction(uuid).addTotalSim(id);
+        mainThread.addScheduledTask(new Runnable() {
+            @Override
+            public void run() {
+                Minecraft.getMinecraft().player.getCapability(ModCapabilities.PlayerCap, null).setmode(message.mode);
+                SaveSimData.get(Minecraft.getMinecraft().world).getFaction(uuid).addPlayer(Minecraft.getMinecraft().player.getUniqueID());
+                for (UUID id : message.totalsim) {
+                    SaveSimData.get(Minecraft.getMinecraft().world).getFaction(uuid).addTotalSim(id);
+                }
+                for (UUID id : message.unemployedsim) {
+                    SaveSimData.get(Minecraft.getMinecraft().world).getFaction(uuid).addUnemployedSim(id);
+                }
+                SimEventHandler.setCredits(message.credits);
             }
-            for (UUID id : message.unemployedsim) {
-                SaveSimData.get(Minecraft.getMinecraft().world).getFaction(uuid).addUnemployedSim(id);
-            }
-            SimEventHandler.setCredits(message.credits);
         });
         return null;
     }

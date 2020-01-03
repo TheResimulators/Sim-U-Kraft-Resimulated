@@ -1,5 +1,6 @@
 package com.resimulators.simukraft.client.gui;
 
+import com.resimulators.simukraft.common.tileentity.TileConstructor;
 import com.resimulators.simukraft.network.ClientStructuresPacket;
 import com.resimulators.simukraft.network.LoadStructurePacket;
 import com.resimulators.simukraft.network.PacketHandler;
@@ -26,11 +27,13 @@ public class GuiBuilding extends GuiScreen {
     private int xpos;
     private int ypos;
     private int zpos;
+    private TileConstructor constructor;
 
-    public GuiBuilding(int xpos,int zpos,int ypos){
+    public GuiBuilding(int xpos, int zpos, int ypos, TileConstructor constructor){
         this.xpos = xpos;
         this.zpos = zpos;
         this.ypos = ypos;
+        this.constructor = constructor;
     }
     @Override
     public void drawScreen(int mouseX, int mouseY,float partialTicks) {
@@ -108,7 +111,6 @@ public class GuiBuilding extends GuiScreen {
 
             default:
                 if (button instanceof structureButton){
-                    System.out.println("button pressed");
                     PacketHandler.INSTANCE.sendToServer(new LoadStructurePacket(button.displayString,((structureButton) button).type,xpos,ypos,zpos));
                     mc.displayGuiScreen(null);
                     break;

@@ -16,11 +16,14 @@ public class ReturnUpdateSimIdHandler implements IMessageHandler<ReturnUpdateSim
     @Override
     public IMessage onMessage(ReturnUpdateSimIdPacket message, MessageContext ctx) {
         IThreadListener mainthread = Minecraft.getMinecraft();
-        mainthread.addScheduledTask(() -> {
-            BlockPos pos = new BlockPos(message.x, message.y, message.z);
-            TileEntity tile = Minecraft.getMinecraft().world.getTileEntity(pos);
-            if (tile instanceof ISimJob) {
-                ((ISimJob) tile).setId(message.uuid);
+        mainthread.addScheduledTask(new Runnable() {
+            @Override
+            public void run() {
+                BlockPos pos = new BlockPos(message.x, message.y, message.z);
+                TileEntity tile = Minecraft.getMinecraft().world.getTileEntity(pos);
+                if (tile instanceof ISimJob) {
+                    ((ISimJob) tile).setId(message.uuid);
+                }
             }
         });
         return null;

@@ -11,9 +11,12 @@ public class CreditsHandler implements IMessageHandler<CreditsPacket, IMessage> 
     @Override
     public IMessage onMessage(CreditsPacket message, MessageContext ctx) {
         IThreadListener mainThread = Minecraft.getMinecraft();
-        mainThread.addScheduledTask(() ->{
+        mainThread.addScheduledTask(new Runnable() {
+            @Override
+            public void run() {
                 System.out.println("is this happening twice");
                 SimEventHandler.setCredits(message.credit);
+            }
         });
         return null;
     }

@@ -14,12 +14,15 @@ public class ClientTeleportHandler implements IMessageHandler<ClientTeleportPack
     public IMessage onMessage(ClientTeleportPacket message, MessageContext ctx) {
         IThreadListener mainThread = Minecraft.getMinecraft();
 
-        mainThread.addScheduledTask(() -> {
-           EntitySim sim = (EntitySim) Minecraft.getMinecraft().world.getEntityByID(message.simid);
-           if (sim != null){
-               EntityParticleSpawner spawner = (EntityParticleSpawner) Minecraft.getMinecraft().world.getEntityByID(message.particlespawner);
-               spawner.setSim(sim);
-           }
+        mainThread.addScheduledTask(new Runnable() {
+            @Override
+            public void run() {
+                EntitySim sim = (EntitySim) Minecraft.getMinecraft().world.getEntityByID(message.simid);
+                if (sim != null) {
+                    EntityParticleSpawner spawner = (EntityParticleSpawner) Minecraft.getMinecraft().world.getEntityByID(message.particlespawner);
+                    spawner.setSim(sim);
+                }
+            }
         });
 
         return null;

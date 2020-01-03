@@ -23,18 +23,22 @@ public class ItemClickedReturnHandler implements IMessageHandler<ItemClickedRetu
     public IMessage onMessage(ItemClickedReturnPacket message, MessageContext ctx) {
         IThreadListener maintThread = Minecraft.getMinecraft();
 
-        maintThread.addScheduledTask(() -> {
-            EnumHand handIn = message.handin;
-            boolean isdedicated = message.isdedicated;
-            EntityPlayerSP playerIn = Minecraft.getMinecraft().player;
-            World worldIn = Minecraft.getMinecraft().world;
+        maintThread.addScheduledTask(new Runnable() {
+            @Override
+            public void run() {
+                EnumHand handIn = message.handin;
+                boolean isdedicated = message.isdedicated;
+                EntityPlayerSP playerIn = Minecraft.getMinecraft().player;
+                World worldIn = Minecraft.getMinecraft().world;
 
-            if (Minecraft.getMinecraft().player.getCapability(ModCapabilities.PlayerCap,null).getmode() == -1){
-                playerIn.openGui(SimUKraft.instance, GuiHandler.GUI.START.ordinal(), worldIn,0,0,0);
-                if (Minecraft.getMinecraft().currentScreen instanceof GuiStart){
-                ((GuiStart) Minecraft.getMinecraft().currentScreen).SetModeFactors(isdedicated,message.mode);}
-                //playerIn.getHeldItem(handIn).shrink(playerIn.getHeldItem(handIn).getCount());
+                if (Minecraft.getMinecraft().player.getCapability(ModCapabilities.PlayerCap, null).getmode() == -1) {
+                    playerIn.openGui(SimUKraft.instance, GuiHandler.GUI.START.ordinal(), worldIn, 0, 0, 0);
+                    if (Minecraft.getMinecraft().currentScreen instanceof GuiStart) {
+                        ((GuiStart) Minecraft.getMinecraft().currentScreen).SetModeFactors(isdedicated, message.mode);
+                    }
+                    //playerIn.getHeldItem(handIn).shrink(playerIn.getHeldItem(handIn).getCount());
 
+                }
             }
         });
         return null;

@@ -7,8 +7,10 @@ import com.resimulators.simukraft.common.tileentity.base.TileBuilderBase;
 import com.resimulators.simukraft.network.GetSimIdPacket;
 import com.resimulators.simukraft.network.PacketHandler;
 import com.resimulators.simukraft.network.ServerStructurePacket;
+import jdk.nashorn.internal.ir.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
@@ -30,6 +32,9 @@ public class TileConstructor extends TileBuilderBase implements ITickable,ISimJo
 	private Set<Integer> sims = new HashSet<>();
 	private List<String> sims_name = new ArrayList<>();
 	private EnumFacing facing;
+	private BlockPos posA;
+	private BlockPos posB;
+	private boolean render;
 	@Override
 	public void update() {
 
@@ -135,7 +140,9 @@ public class TileConstructor extends TileBuilderBase implements ITickable,ISimJo
 		if (nbt.hasKey("id")) {
 			id = nbt.getUniqueId("id");
 		}
-
+		render = nbt.getBoolean("render");
+		posA = BlockPos.fromLong(nbt.getLong("posA"));
+		posB = BlockPos.fromLong(nbt.getLong("PosB"));
 	}
 
 	@Override
@@ -146,6 +153,11 @@ public class TileConstructor extends TileBuilderBase implements ITickable,ISimJo
 		if (id != null) {
 			nbt.setUniqueId("id", id);
 		}
+		nbt.setBoolean("render",render);
+		nbt.setLong("posA",posA.toLong());
+		nbt.setLong("posB",posB.toLong());
+
+
 		return nbt;
 	}
 	
@@ -165,4 +177,30 @@ public class TileConstructor extends TileBuilderBase implements ITickable,ISimJo
 	    readFromNBT(packet.getNbtCompound());
 
     }
+
+
+    public void setPosA(BlockPos pos){
+		posA = pos;
+	}
+
+	public void setPosB(BlockPos pos){
+		posB = pos;
+	}
+
+	public BlockPos getPosA(){
+		return posA;
+	}
+
+	public BlockPos getPosB(){
+		return posB;
+	}
+	public void setrender(boolean bool){
+		render = bool;
+		System.out.println(render);
+
+	}
+
+	public boolean isRender(){
+		return render;
+	}
 }

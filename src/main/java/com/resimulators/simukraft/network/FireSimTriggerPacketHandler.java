@@ -14,12 +14,15 @@ public class FireSimTriggerPacketHandler implements IMessageHandler<FireSimTrigg
     public IMessage onMessage(FireSimTriggerPacket message, MessageContext ctx) {
         IThreadListener mainThread = ctx.getServerHandler().player.getServerWorld();
 
-        mainThread.addScheduledTask(() -> {
-            TileEntity tile = ctx.getServerHandler().player.world.getTileEntity(new BlockPos(message.x, message.y, message.z));
-            if (tile instanceof ISimJob) {
-                ((ISimJob) tile).setHired(false);
+        mainThread.addScheduledTask(new Runnable() {
+            @Override
+            public void run() {
+                TileEntity tile = ctx.getServerHandler().player.world.getTileEntity(new BlockPos(message.x, message.y, message.z));
+                if (tile instanceof ISimJob) {
+                    ((ISimJob) tile).setHired(false);
+                }
+                TileEntityDestroyed.TileDestroy(new BlockPos(message.x, message.y, message.z), ctx.getServerHandler().player.getServerWorld());
             }
-            TileEntityDestroyed.TileDestroy(new BlockPos(message.x, message.y, message.z), ctx.getServerHandler().player.getServerWorld());
         });
         return null;
     }

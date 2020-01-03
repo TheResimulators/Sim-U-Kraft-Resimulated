@@ -26,40 +26,45 @@ public class ServerStructureHandler implements IMessageHandler<ServerStructurePa
         List<String> industrialList = new ArrayList<>();
         List<String> commercialList = new ArrayList<>();
         List<String> customList = new ArrayList<>();
-        mainThread.addScheduledTask(() ->{
-            MinecraftServer server = ctx.getServerHandler().player.server;
-            String filepath = ctx.getServerHandler().player.getServerWorld().getSaveHandler().getWorldDirectory().getAbsolutePath() + "/structures/";
-            File folder = new File(filepath);
-            ArrayList<TemplatePlus> structures = new ArrayList<>();
-            System.out.println(folder.listFiles());
-            if (folder.exists()){
-            if (folder.listFiles().length > 0 ){
-            for (File file:folder.listFiles()){
+        mainThread.addScheduledTask(new Runnable() {
+            @Override
+            public void run() {
+                MinecraftServer server = ctx.getServerHandler().player.server;
+                String filepath = ctx.getServerHandler().player.getServerWorld().getSaveHandler().getWorldDirectory().getAbsolutePath() + "/structures/";
+                File folder = new File(filepath);
+                ArrayList<TemplatePlus> structures = new ArrayList<>();
+                System.out.println(folder.listFiles());
+                if (folder.exists()) {
+                    if (folder.listFiles().length > 0) {
+                        for (File file : folder.listFiles()) {
 
-                TemplatePlus structure  = StructureUtils.loadStructure(server,ctx.getServerHandler().player.world,file.getName().replace(".nbt",""));
-                String category = structure.getCategory();
+                            TemplatePlus structure = StructureUtils.loadStructure(server, ctx.getServerHandler().player.world, file.getName().replace(".nbt", ""));
+                            String category = structure.getCategory();
 
-                switch (category){
+                            switch (category) {
 
-                    default:
-                        customList.add(file.getName());
-                        break;
-                    case "residential":
-                        residentialList.add(file.getName());
-                        break;
-                    case "commercial":
-                        commercialList.add(file.getName());
-                        break;
-                    case "industrial":
-                        industrialList.add(file.getName());
-                        break;
+                                default:
+                                    customList.add(file.getName());
+                                    break;
+                                case "residential":
+                                    residentialList.add(file.getName());
+                                    break;
+                                case "commercial":
+                                    commercialList.add(file.getName());
+                                    break;
+                                case "industrial":
+                                    industrialList.add(file.getName());
+                                    break;
 
+                            }
+                            structures.add(structure);
+
+                        }
+                    }
                 }
-                structures.add(structure);
-
-            }}}
-            PacketHandler.INSTANCE.sendTo(new ClientStructuresPacket(residentialList,industrialList,commercialList,customList,structures),ctx.getServerHandler().player);
-            Minecraft.getMinecraft().player.openGui(SimUKraft.instance, GuiHandler.GUI.BUILDER.ordinal(),ctx.getServerHandler().player.getServerWorld(),message.x,message.y,message.z);
+                PacketHandler.INSTANCE.sendTo(new ClientStructuresPacket(residentialList, industrialList, commercialList, customList, structures), ctx.getServerHandler().player);
+                Minecraft.getMinecraft().player.openGui(SimUKraft.instance, GuiHandler.GUI.BUILDER.ordinal(), ctx.getServerHandler().player.getServerWorld(), message.x, message.y, message.z);
+            }
         });
         return null;
     }

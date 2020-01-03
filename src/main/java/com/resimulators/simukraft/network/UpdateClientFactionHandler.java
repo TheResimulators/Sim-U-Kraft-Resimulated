@@ -13,10 +13,13 @@ public class UpdateClientFactionHandler implements IMessageHandler<UpdateClientF
         IThreadListener mainThread = Minecraft.getMinecraft();
 
 
-        mainThread.addScheduledTask(()->{
-           long id  = Minecraft.getMinecraft().player.getCapability(ModCapabilities.PlayerCap,null).getfactionid();
-            Minecraft.getMinecraft().player.getCapability(ModCapabilities.PlayerCap,null).getfaction(id).deserializeNBT(message.compound);
+        mainThread.addScheduledTask(new Runnable() {
+            @Override
+            public void run() {
+                long id = Minecraft.getMinecraft().player.getCapability(ModCapabilities.PlayerCap, null).getfactionid();
+                Minecraft.getMinecraft().player.getCapability(ModCapabilities.PlayerCap, null).getfaction(id).deserializeNBT(message.compound);
 
+            }
         });
 
 

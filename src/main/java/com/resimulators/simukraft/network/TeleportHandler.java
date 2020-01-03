@@ -18,16 +18,20 @@ public class TeleportHandler implements IMessageHandler<TeleportPacket,IMessage>
          mainThread = ctx.getServerHandler().player.getServerWorld();}
         else{ mainThread = Minecraft.getMinecraft();}
 
-        mainThread.addScheduledTask(() -> {
-            EntitySim sim;
-            if (FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER){ sim = (EntitySim) ctx.getServerHandler().player.getServerWorld().getEntityByID(packet.id);}
-            else{
-                sim =(EntitySim) Minecraft.getMinecraft().world.getEntityByID(packet.id);
-            }
-            System.out.println("teleport at packet " + packet.teleport);
-            sim.setTeleport(packet.teleport);
-            System.out.println("sim teleport after setting " + sim.getTeleport());
+        mainThread.addScheduledTask(new Runnable() {
+            @Override
+            public void run() {
+                EntitySim sim;
+                if (FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER) {
+                    sim = (EntitySim) ctx.getServerHandler().player.getServerWorld().getEntityByID(packet.id);
+                } else {
+                    sim = (EntitySim) Minecraft.getMinecraft().world.getEntityByID(packet.id);
+                }
+                System.out.println("teleport at packet " + packet.teleport);
+                sim.setTeleport(packet.teleport);
+                System.out.println("sim teleport after setting " + sim.getTeleport());
 
+            }
         });
 
         return null;

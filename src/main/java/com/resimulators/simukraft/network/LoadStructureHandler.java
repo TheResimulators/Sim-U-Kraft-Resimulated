@@ -22,18 +22,26 @@ public class LoadStructureHandler implements IMessageHandler<LoadStructurePacket
     public IMessage onMessage(LoadStructurePacket message, MessageContext ctx) {
         IThreadListener mainThread = ctx.getServerHandler().player.getServerWorld();
         String name = message.name;
-        mainThread.addScheduledTask(()->{
-            TileConstructor tile = null;
-            WorldServer world = ctx.getServerHandler().player.getServerWorld();
-            if (ctx.getServerHandler().player.getServerWorld().getTileEntity(new BlockPos(message.x,message.y,message.z)) instanceof TileConstructor){
-                tile = ((TileConstructor)ctx.getServerHandler().player.getServerWorld().getTileEntity(new BlockPos(message.x,message.y,message.z)));
+        mainThread.addScheduledTask(new Runnable() {
+            @Override
+            public void run() {
+                TileConstructor tile = null;
+                WorldServer world = ctx.getServerHandler().player.getServerWorld();
+                if (ctx.getServerHandler().player.getServerWorld().getTileEntity(new BlockPos(message.x, message.y, message.z)) instanceof TileConstructor) {
+                    tile = ((TileConstructor) ctx.getServerHandler().player.getServerWorld().getTileEntity(new BlockPos(message.x, message.y, message.z)));
+                }
+                TemplatePlus template = StructureUtils.loadStructure(world.getMinecraftServer(), ctx.getServerHandler().player.world, message.name.replace(".nbt", ""));
+                EntitySim sim = ((EntitySim) world.getEntityFromUuid(tile.getId()));
+                sim.setStructure(template);
+                sim.setFacing(tile.getFacing());
+                sim.setStartPos(tile.getPos().offset(tile.getFacing()));
+                sim.setAllowedToBuild(false);
+                tile.setPosA(tile.getPos().offset(tile.getFacing()));
+                BlockPos blockpos = tile.getPos().offset(tile.getFacing().rotateY(), template.getSize().getX()).offset(tile.getFacing(), template.getSize().getZ());
+                tile.setPosB(blockpos);
+                tile.setrender(true);
+
             }
-            TemplatePlus template = StructureUtils.loadStructure(world.getMinecraftServer(),ctx.getServerHandler().player.world,message.name.replace(".nbt",""));
-            EntitySim sim = ((EntitySim)world.getEntityFromUuid(tile.getId()));
-            sim.setStructure(template);
-            sim.setFacing(tile.getFacing());
-            sim.setStartPos(tile.getPos().offset(tile.getFacing()));
-            sim.setAllowedToBuild(true);
         });
         return null;
     }
